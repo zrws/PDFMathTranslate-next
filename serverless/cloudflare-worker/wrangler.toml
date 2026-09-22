@@ -1,0 +1,14 @@
+name = "pdf2zh-key-proxy"
+main = "worker.js"
+compatibility_date = "2026-09-01"
+workers_dev = true
+
+# 可选：每日限额需要 KV（在控制台建命名空间后取消注释并填 id）
+# [[kv_namespaces]]
+# binding = "RATE_LIMIT"
+# id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+[vars]
+# 非敏感配置可写在这里；敏感项请用 `wrangler secret put` 或控制台加密变量设置
+# UPSTREAM_BASE_URL = "https://api.siliconflow.cn"
+# DAILY_LIMIT = "2000"
