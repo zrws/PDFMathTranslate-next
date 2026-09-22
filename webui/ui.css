@@ -1,0 +1,247 @@
+/* ==========================================================================
+   PDFMathTranslate-next · 弹窗 / 提示 / 原生感
+   - 对话框（遮罩 + 卡片）、Toast 提示（成功 / 失败 / 信息 / 加载）
+   - 桌面应用观感：禁用网页痕迹（文本选中、拖拽、右键、缩放、滚动条）
+   ========================================================================== */
+
+/* ------------------------------------------------------------ 原生感强化 */
+html, body {
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 仅输入类元素允许选中与文本光标 */
+input, textarea, [contenteditable="true"] {
+  -webkit-user-select: text;
+  user-select: text;
+  cursor: text;
+}
+
+img, svg, a {
+  -webkit-user-drag: none;
+  user-drag: none;
+}
+
+/* 细窄滚动条，接近桌面应用观感 */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(15, 23, 42, 0.18);
+  border: 3px solid transparent;
+  background-clip: content-box;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(15, 23, 42, 0.32); background-clip: content-box; }
+::-webkit-scrollbar-corner { background: transparent; }
+
+/* 去除焦点虚线框，但保留键盘可达性提示 */
+:focus { outline: none; }
+:focus-visible { box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.12); }
+
+/* --------------------------------------------------------------- 遮罩层 */
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(2, 6, 23, 0.45);
+  z-index: 100;
+  animation: overlay-in 0.12s ease-out;
+}
+
+@keyframes overlay-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes dialog-in {
+  from { opacity: 0; transform: translateY(6px) scale(0.985); }
+  to { opacity: 1; transform: none; }
+}
+
+/* --------------------------------------------------------------- 对话框 */
+.dialog {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 440px;
+  max-width: 100%;
+  padding: 24px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.18), 0 2px 6px rgba(15, 23, 42, 0.08);
+  animation: dialog-in 0.14s ease-out;
+}
+
+.dialog.narrow { width: 380px; text-align: center; align-items: center; }
+
+.dialog-title { margin: 0; font-size: 16px; font-weight: 600; }
+.dialog-desc { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.6; }
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.dialog-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--muted-bg);
+  color: var(--text);
+}
+
+/* 危险确认按钮 */
+.btn-destructive { background: #dc2626; color: #fff; }
+.btn-destructive:hover { background: #b91c1c; }
+
+/* 加载指示器 */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(15, 23, 42, 0.15);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* --------------------------------------------------------------- Toast */
+.toast-stack {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 200;
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 360px;
+  padding: 12px 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.14), 0 2px 6px rgba(15, 23, 42, 0.06);
+  pointer-events: auto;
+  animation: toast-in 0.16s ease-out;
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+.toast.leaving { animation: toast-out 0.16s ease-in forwards; }
+
+@keyframes toast-out {
+  to { opacity: 0; transform: translateY(6px); }
+}
+
+.toast-icon { flex: 0 0 auto; margin-top: 1px; }
+.toast-icon.success { color: #16b94a; }
+.toast-icon.error { color: #dc2626; }
+.toast-icon.info { color: #165dff; }
+.toast-icon.loading { color: var(--muted); }
+
+.toast-texts { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1 1 auto; }
+.toast-title { font-size: 14px; font-weight: 500; }
+.toast-desc { font-size: 12px; color: var(--muted); word-break: break-word; }
+
+.toast-close {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin: -2px -6px 0 0;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.toast-close:hover { background: rgba(15, 23, 42, 0.06); color: var(--text); }
+
+/* 加载型 toast 的进度条 */
+.toast-progress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--primary) 40%, transparent 40%);
+  background-size: 250% 100%;
+  animation: toast-progress 1.2s linear infinite;
+  border-radius: 0 0 10px 10px;
+}
+
+@keyframes toast-progress {
+  from { background-position: 0 0; }
+  to { background-position: -250% 0; }
+}
+
+/* ------------------------------------------------------------ 深色主题 */
+:root { color-scheme: light; }
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #020617;
+  --sidebar-bg: #0b1220;
+  --card: #0f172a;
+  --border: #1e293b;
+  --border-strong: #334155;
+  --text: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --muted: #94a3b8;
+  --primary: #f8fafc;
+  --primary-fg: #0f172a;
+  --muted-bg: #1e293b;
+  --accent-bg: #111c30;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: rgba(226, 232, 240, 0.18);
+  background-clip: content-box;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(226, 232, 240, 0.3);
+  background-clip: content-box;
+}
+
+[data-theme="dark"] .toast,
+[data-theme="dark"] .dialog,
+[data-theme="dark"] .file-card,
+[data-theme="dark"] .card {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+[data-theme="dark"] .overlay { background: rgba(2, 6, 23, 0.62); }
+
+[data-theme="dark"] .btn-destructive { background: #b91c1c; color: #fef2f2; }
+[data-theme="dark"] .btn-destructive:hover { background: #991b1b; }
+
+/* 预览图片：浅色纸张在深色界面中加一层描边，避免"发白刺眼" */
+.preview-image {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  border-radius: 6px;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.18);
+  background: #ffffff;
+}
+
+.preview-area { overflow: hidden; }

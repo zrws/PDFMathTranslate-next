@@ -1,0 +1,29 @@
+# 运行时与便携环境（体积大，不入库）
+uv-python/
+uv-tools/
+uv-cache/
+uvpkg/
+bin/
+home/
+logs/
+pdf2zh_files/
+dist/
+
+# 构建产物
+launcher/bin/
+launcher/obj/
+launcher/publish/
+webui/design-export/
+*.pyc
+__pycache__/
+*.log
+version.json
+PDFMathTranslate.exe
+source/.git-upstream/
+.tmp-install-section.md
+
+# 本机配置与敏感信息（含 GitHub token，绝不入库）
+.codely-cli/
+CODELY.md
+.tmp-*/
+.tmp-*.md
