@@ -92,18 +92,21 @@ internal static class UpdateChecker
 
         var total = response.Content.Headers.ContentLength ?? info.Size;
         await using var source = await response.Content.ReadAsStreamAsync(cancellationToken);
-        await using var target = File.Create(targetPath);
-
         var buffer = new byte[81920];
         long read = 0;
-        int chunk;
-        while ((chunk = await source.ReadAsync(buffer, cancellationToken)) > 0)
+        await using (var target = File.Create(targetPath))
         {
-            await target.WriteAsync(buffer.AsMemory(0, chunk), cancellationToken);
-            read += chunk;
-            progress(read, total);
+            int chunk;
+            while ((chunk = await source.ReadAsync(buffer, cancellationToken)) > 0)
+            {
+                await target.WriteAsync(buffer.AsMemory(0, chunk), cancellationToken);
+                read += chunk;
+                progress(read, total);
+            }
+            await target.FlushAsync(cancellationToken);
         }
 
+        // 必须先释放写入流，Windows 才允许重新打开文件进行哈希校验。
         if (!string.IsNullOrEmpty(info.Sha256) && !await VerifySha256Async(targetPath, info.Sha256))
         {
             throw new InvalidOperationException("安装包 SHA256 校验未通过。");

@@ -5,6 +5,7 @@ import multiprocessing
 import multiprocessing.connection
 import multiprocessing.queues
 import queue
+import re
 import threading
 import traceback
 from collections.abc import AsyncGenerator
@@ -517,11 +518,23 @@ async def _translate_in_subprocess(
                 raise cb.error
 
 
+def _split_glossary_paths(value: str | None) -> list[str]:
+    """Split the legacy glossary path string used by CLI and Web UI.
+
+    Older callers joined paths with commas while the Web UI uses semicolons.
+    Keep accepting both delimiters at the engine boundary so settings written
+    by either interface remain usable.  Empty entries are ignored.
+    """
+    if not value:
+        return []
+    return [part.strip() for part in re.split(r"[;,]", value) if part.strip()]
+
+
 def _get_glossaries(settings: SettingsModel) -> list[Glossary] | None:
     glossaries = []
     if not settings.translation.glossaries:
         return None
-    for file in settings.translation.glossaries.split(","):
+    for file in _split_glossary_paths(settings.translation.glossaries):
         glossaries.append(
             Glossary.from_csv(Path(file), target_lang_out=settings.translation.lang_out)
         )

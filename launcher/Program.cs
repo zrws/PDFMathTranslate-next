@@ -91,16 +91,17 @@ internal static class Program
         MessageBox.Show(message, "PDFMathTranslate", MessageBoxButtons.OK, MessageBoxIcon.Error);
     }
 
-    /// <summary>选择启动入口：默认新界面（start-webui.py），--legacy-gui 走 Gradio 旧界面。</summary>
+    /// <summary>选择启动入口；完整版可用 --legacy-gui，精简安装包自动回退到新界面。</summary>
     private static string ResolveEntryScript(string[] args)
     {
         var modern = Path.Combine(Root, "start-webui.py");
         var classic = Path.Combine(Root, "start-gui-direct.py");
-        if (args.Any(a => string.Equals(a, "--legacy-gui", StringComparison.OrdinalIgnoreCase)))
+        if (File.Exists(classic) &&
+            args.Any(a => string.Equals(a, "--legacy-gui", StringComparison.OrdinalIgnoreCase)))
         {
             return classic;
         }
-        return File.Exists(modern) ? modern : classic;
+        return modern;
     }
     private static string? FindPortablePython(string root)
     {

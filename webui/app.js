@@ -184,6 +184,7 @@
     file: null,
     task: null,
     pollTimer: null,
+    polling: false,
     settings: null,
     submitting: false,
     prefs: {},
@@ -271,13 +272,80 @@
   }
 
   /* --------------------------------------------------------------- 下载 */
-  function triggerDownload(url) {
+  var directoryRequest = null;
+
+  function desktopBridgeAvailable() {
+    return !!(window.chrome && window.chrome.webview && window.chrome.webview.postMessage);
+  }
+
+  function renderDownloadDirectory(path) {
+    var input = $("download-directory");
+    if (input) input.value = path || "";
+  }
+
+  function chooseDownloadDirectory() {
+    if (!desktopBridgeAvailable()) {
+      ui.alert("仅桌面版支持选择目录", "浏览器模式会使用浏览器自身的默认下载目录。");
+      return Promise.resolve(null);
+    }
+    if (directoryRequest) return directoryRequest.promise;
+
+    var resolveRequest;
+    var promise = new Promise(function (resolve) { resolveRequest = resolve; });
+    directoryRequest = { promise: promise, resolve: resolveRequest };
+    window.chrome.webview.postMessage(JSON.stringify({ type: "choose-download-directory" }));
+    return promise;
+  }
+
+  function ensureDownloadDirectory() {
+    // 普通浏览器不能由网页指定文件系统目录，交给浏览器自身的下载设置。
+    if (!desktopBridgeAvailable()) return Promise.resolve(true);
+    if (state.prefs.download_directory) return Promise.resolve(true);
+    return chooseDownloadDirectory().then(function (path) {
+      if (!path) return false;
+      state.prefs.download_directory = path;
+      renderDownloadDirectory(path);
+      return savePrefs({ download_directory: path }).then(function () { return true; });
+    });
+  }
+
+  function performDownload(url) {
     var link = document.createElement("a");
     link.href = url;
     link.download = "";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  }
+
+  function triggerDownload(url) {
+    return ensureDownloadDirectory().then(function (ready) {
+      if (!ready) {
+        ui.info("已取消下载", "选择并保存默认下载目录后即可下载。");
+        return false;
+      }
+      performDownload(url);
+      return true;
+    });
+  }
+
+  function taskDownloadUrl(task, kind) {
+    return "/api/tasks/" + task.id + "/download?kind=" + encodeURIComponent(kind) +
+      "&source=" + encodeURIComponent(task.filename || "document.pdf");
+  }
+
+  if (desktopBridgeAvailable()) {
+    window.chrome.webview.addEventListener("message", function (event) {
+      var message = event.data || {};
+      if (message.type !== "download-directory-selected") return;
+      var request = directoryRequest;
+      directoryRequest = null;
+      if (message.path) {
+        state.prefs.download_directory = message.path;
+        renderDownloadDirectory(message.path);
+      }
+      if (request) request.resolve(message.path || null);
+    });
   }
 
   /* --------------------------------------------------------------- 首页 */
@@ -325,6 +393,19 @@
     var historyBtn = $("home-history-btn");
     if (historyBtn) historyBtn.addEventListener("click", function () { showPage("queue"); });
 
+    var promoUse = $("promo-use");
+    if (promoUse) promoUse.addEventListener("click", function () {
+      var service = $("svc");
+      if (service) {
+        var option = Array.prototype.slice.call(service.options).filter(function (item) {
+          return /SiliconFlow/i.test(item.value) || /SiliconFlow/i.test(item.textContent);
+        })[0];
+        if (option) service.value = option.value;
+      }
+      showPage("settings");
+      ui.info("已选择 SiliconFlow", "请在设置页确认并保存翻译服务。");
+    });
+
     initPreviewNav();
 
     var removeFile = $("file-remove");
@@ -334,6 +415,7 @@
         show($("file-row"), false);
         state.preview = { source: null, page: 1, pages: 1 };
         setText($("preview-badge"), "未选择文件");
+        setText($("preview-nav-status"), "未选择文件");
         var area = $("preview-area");
         if (area) area.textContent = "PDF 预览";
         ui.info("已移除文件", "可以重新选择一份 PDF");
@@ -424,6 +506,7 @@
       pages: resolvePages(),
       no_dual: !switchChecked("双语对照输出", true),
       no_mono: !switchChecked("单语纯净输出", true),
+      watermark_output_mode: switchChecked("输出无水印", false) ? "no_watermark" : "watermarked",
       auto_term_extraction: switchChecked("自动术语提取", false),
     };
     if (payload.no_dual && payload.no_mono) {
@@ -450,15 +533,25 @@
     pollTask();
   }
 
+  function firstActiveTask(tasks, excludeId) {
+    var candidates = tasks.filter(function (task) { return task.id !== excludeId; });
+    return candidates.filter(function (task) { return task.status === "running"; })[0] ||
+      candidates.filter(function (task) { return task.status === "queued"; })[0] ||
+      null;
+  }
+
   function pollTask() {
-    if (!state.task) return;
-    api("/api/tasks/" + state.task.id)
-      .then(function (task) {
+    if (!state.task || state.polling) return;
+    state.polling = true;
+    var taskId = state.task.id;
+    api("/api/tasks")
+      .then(function (tasks) {
+        refreshQueue(tasks);
+        var task = tasks.filter(function (item) { return item.id === taskId; })[0];
+        if (!task) return;
         state.task = task;
         renderProgress(task);
         if (task.status === "done" || task.status === "failed" || task.status === "cancelled") {
-          if (state.pollTimer) { clearInterval(state.pollTimer); state.pollTimer = null; }
-          refreshQueue();
           refreshHistory();
           refreshOutputs();
           if (task.status === "done") {
@@ -477,13 +570,26 @@
           } else {
             ui.info("已取消", "任务已停止");
           }
+
+          // 当前任务结束后继续跟踪同一份队列快照中的下一项，避免主页停在
+          // 已完成状态，而任务队列仍有正在变化的进度。
+          var nextTask = firstActiveTask(tasks, task.id);
+          if (nextTask) {
+            state.task = nextTask;
+            renderProgress(nextTask);
+          } else if (state.pollTimer) {
+            clearInterval(state.pollTimer);
+            state.pollTimer = null;
+          }
         }
       })
-      .catch(function () { /* 轮询失败静默重试 */ });
+      .catch(function () { /* 轮询失败静默重试 */ })
+      .then(function () { state.polling = false; });
   }
 
   function renderProgress(task) {
-    setText($("progress-desc"), task.status === "running" ? "任务进行中" : statusLabel(task.status));
+    var progressLabel = task.status === "running" ? "任务进行中" : statusLabel(task.status);
+    setText($("progress-desc"), (task.filename ? task.filename + " · " : "") + progressLabel);
     setText($("progress-status"), task.message || statusLabel(task.status));
     var percent = Math.round(task.progress || 0);
     setText($("progress-percent"), percent + "%");
@@ -519,7 +625,7 @@
       ui.alert("暂无可下载文件", "翻译完成后才能下载。");
       return;
     }
-    triggerDownload("/api/tasks/" + state.task.id + "/download?kind=" + kind);
+    triggerDownload(taskDownloadUrl(state.task, kind));
   }
 
   function revealOutput(task) {
@@ -550,6 +656,7 @@
     var url = state.preview.source + (state.preview.source.indexOf("?") >= 0 ? "&" : "?") + "page=" + target + "&width=900";
     area.innerHTML = "<img class=\"preview-image\" alt=\"第 " + target + " 页\" src=\"" + url + "\">";
     setText($("preview-badge"), "第 " + target + " / " + total + " 页");
+    setText($("preview-nav-status"), "第 " + target + " / " + total + " 页");
     var prev = $("preview-prev");
     var next = $("preview-next");
     if (prev) prev.disabled = target <= 1;
@@ -590,6 +697,13 @@
       if (autoUpdate) autoUpdate.checked = state.prefs.auto_update !== false;
       var openOutput = switchRowInput("翻译完成后打开输出目录");
       if (openOutput) openOutput.checked = state.prefs.open_output_dir === true;
+      renderDownloadDirectory(state.prefs.download_directory || "");
+      if (desktopBridgeAvailable()) {
+        window.chrome.webview.postMessage(JSON.stringify({
+          type: "set-download-directory",
+          path: state.prefs.download_directory || "",
+        }));
+      }
       var themeSelect = $("theme");
       if (themeSelect) {
         themeSelect.value = state.prefs.theme === "dark" ? "深色" : (state.prefs.theme === "light" ? "浅色" : "跟随系统");
@@ -665,15 +779,15 @@
   }
 
   /* ----------------------------------------------------------- 任务队列 */
-  function refreshQueue() {
-    return api("/api/tasks").then(function (tasks) {
+  function refreshQueue(snapshot) {
+    return (snapshot ? Promise.resolve(snapshot) : api("/api/tasks")).then(function (tasks) {
       var running = tasks.filter(function (t) { return t.status === "running" || t.status === "queued"; }).length;
       setText($("queue-meta"), tasks.length ? "共 " + tasks.length + " 个任务 · " + running + " 个进行中" : "暂无任务");
       var container = $("task-list");
-      if (!container) return;
-      if (!tasks.length) {
-        container.innerHTML = '<p class="hint">还没有翻译任务，去「翻译工作台」上传一份 PDF 试试。</p>';
-        return;
+       if (!container) return tasks;
+       if (!tasks.length) {
+         container.innerHTML = '<p class="hint">还没有翻译任务，去「翻译工作台」上传一份 PDF 试试。</p>';
+         return tasks;
       }
       container.innerHTML = tasks.map(function (task) {
         var actions = "";
@@ -682,14 +796,14 @@
         }
         if (task.status === "done") {
           if (task.outputs && task.outputs.dual) {
-            actions += '<a class="icon-btn" title="下载双语版" href="/api/tasks/' + task.id + '/download?kind=dual" download>' + icon("i-download") + "</a>";
+            actions += '<button class="icon-btn" title="下载双语版" data-download-task="' + task.id + '" data-download-kind="dual">' + icon("i-download") + "</button>";
           }
           if (task.outputs && task.outputs.mono) {
-            actions += '<a class="icon-btn" title="下载单语版" href="/api/tasks/' + task.id + '/download?kind=mono" download>' + icon("i-download") + "</a>";
+            actions += '<button class="icon-btn" title="下载单语版" data-download-task="' + task.id + '" data-download-kind="mono">' + icon("i-download") + "</button>";
           }
           actions += '<button class="icon-btn" title="打开输出目录" data-reveal="' + task.id + '">' + icon("i-folder-open") + "</button>";
         }
-        return '<div class="task-row">' +
+        return '<div class="task-row" data-task-id="' + task.id + '">' +
           '<div class="task-info">' +
           '<span class="dot ' + statusDotClass(task.status) + '"></span>' +
           '<span class="task-text">' +
@@ -706,6 +820,13 @@
         });
       });
 
+      Array.prototype.slice.call(container.querySelectorAll("button[data-download-task]")).forEach(function (button) {
+        button.addEventListener("click", function () {
+          var task = tasks.filter(function (item) { return item.id === button.dataset.downloadTask; })[0];
+          if (task) triggerDownload(taskDownloadUrl(task, button.dataset.downloadKind));
+        });
+      });
+
       Array.prototype.slice.call(container.querySelectorAll("button[data-retry]")).forEach(function (button) {
         button.addEventListener("click", function () {
           postJson("/api/tasks/" + button.dataset.retry + "/retry", {})
@@ -719,7 +840,8 @@
             .catch(function (error) { ui.error("重试失败", error.message); });
         });
       });
-    }).catch(function () { });
+       return tasks;
+    }).catch(function () { return []; });
   }
 
   /* --------------------------------------------------------- 翻译历史 */
@@ -754,9 +876,14 @@
       var cards = [];
       done.forEach(function (task) {
         var outputs = task.outputs || {};
-        [["dual", "双语对照", "公式保留"], ["mono", "单语纯净", "无水印"]].forEach(function (spec) {
+        [["dual", "双语对照", "公式保留"], ["mono", "单语纯净", null]].forEach(function (spec) {
           var kind = spec[0];
           if (!outputs[kind]) return;
+          var badge = spec[2];
+          if (kind === "mono") {
+            var watermarkMode = (task.options && task.options.watermark_output_mode) || task.watermark_output_mode || (state.settings && state.settings.watermark_output_mode);
+            badge = watermarkMode === "no_watermark" ? "无水印" : "含水印";
+          }
           var fileName = outputs[kind].split(/[\\/]/).pop();
           var meta = [pagesLabel(task), fmtTime(task.finished_at)].filter(Boolean).join(" · ");
           cards.push('<article class="file-card">' +
@@ -768,10 +895,10 @@
             "</span></div>" +
             '<div class="chips">' +
             '<span class="chip chip-solid">' + spec[1] + "</span>" +
-            '<span class="chip chip-outline">' + spec[2] + "</span>" +
+            '<span class="chip chip-outline">' + badge + "</span>" +
             "</div>" +
             '<div class="file-actions">' +
-            '<a class="btn sm btn-secondary" href="/api/tasks/' + task.id + '/download?kind=' + kind + '" download>' + icon("i-download") + "下载</a>" +
+            '<button class="btn sm btn-secondary" data-output-download="' + task.id + '" data-download-kind="' + kind + '">' + icon("i-download") + "下载</button>" +
             '<button class="icon-btn outline" title="在资源管理器中显示" data-reveal-output="' + task.id + '">' + icon("i-folder-open") + "</button>" +
             "</div></article>");
         });
@@ -782,6 +909,13 @@
         button.addEventListener("click", function () {
           var task = done.filter(function (t) { return t.id === button.dataset.revealOutput; })[0];
           if (task) revealOutput(task);
+        });
+      });
+
+      Array.prototype.slice.call(container.querySelectorAll("button[data-output-download]")).forEach(function (button) {
+        button.addEventListener("click", function () {
+          var task = done.filter(function (item) { return item.id === button.dataset.outputDownload; })[0];
+          if (task) triggerDownload(taskDownloadUrl(task, button.dataset.downloadKind));
         });
       });
 
@@ -806,16 +940,19 @@
     if (!all) return;
     all.addEventListener("click", function () {
       api("/api/tasks").then(function (tasks) {
-        var urls = [];
+        var downloads = [];
         tasks.forEach(function (task) {
           if (task.status !== "done" || !task.outputs) return;
           ["dual", "mono"].forEach(function (kind) {
-            if (task.outputs[kind]) urls.push("/api/tasks/" + task.id + "/download?kind=" + kind);
+            if (task.outputs[kind]) downloads.push(taskDownloadUrl(task, kind));
           });
         });
-        if (!urls.length) { ui.alert("没有可下载的文件", "完成一次翻译后再试。"); return; }
-        urls.forEach(function (url, index) { setTimeout(function () { triggerDownload(url); }, index * 350); });
-        ui.success("已开始下载", "共 " + urls.length + " 个文件");
+        if (!downloads.length) { ui.alert("没有可下载的文件", "完成一次翻译后再试。"); return; }
+        ensureDownloadDirectory().then(function (ready) {
+          if (!ready) { ui.info("已取消下载", "选择并保存默认下载目录后即可下载。"); return; }
+          downloads.forEach(function (url, index) { setTimeout(function () { performDownload(url); }, index * 350); });
+          ui.success("已开始下载", "共 " + downloads.length + " 个文件");
+        });
       });
     });
   }
@@ -823,6 +960,16 @@
   /* ----------------------------------------------------------- 术语表 */
   function refreshGlossary() {
     return api("/api/glossary").then(function (rows) {
+      var homeTerms = $("terms-list");
+      if (homeTerms) {
+        if (!rows.length) {
+          homeTerms.innerHTML = '<p class="hint">还没有常用术语。</p>';
+        } else {
+          homeTerms.innerHTML = rows.slice(0, 8).map(function (row) {
+            return '<span class="chip chip-solid">' + esc(row.source) + ' → ' + esc(row.target) + '</span>';
+          }).join("");
+        }
+      }
       var container = $("glossary-body");
       if (!container) return;
       var head = '<div class="table-row table-head">' +
@@ -894,7 +1041,7 @@
             ui.alert("暂无自动提取的术语表", "在翻译工作台开启「自动术语提取」后翻译一次即可生成。");
             return;
           }
-          triggerDownload("/api/tasks/" + withGlossary.id + "/download?kind=glossary");
+          triggerDownload(taskDownloadUrl(withGlossary, "glossary"));
         });
       });
     }
@@ -907,6 +1054,11 @@
     { value: "serif", label: "衬线（宋体 / serif）" },
     { value: "script", label: "手写体（script）" },
   ];
+
+  function normalizeWorkbenchLang(value) {
+    if (value === "zh") return "zh-CN";
+    return value;
+  }
 
   function fillOptions(select, options, currentValue) {
     if (!select) return;
@@ -942,12 +1094,35 @@
       if ($("qps")) $("qps").value = settings.qps;
       if ($("workers")) $("workers").value = settings.pool_max_workers == null ? "" : settings.pool_max_workers;
       fillOptions($("font"), FONT_OPTIONS, settings.primary_font_family || "");
-      if ($("uilang")) $("uilang").value = settings.ui_lang === "zh" ? "简体中文" : "English";
+      if ($("uilang")) $("uilang").value = "简体中文（当前）";
+
+      // Keep the workbench in sync with persisted translation defaults. Without
+      // this, submitting from the home page silently overwrites saved settings.
+      if ($("langfrom") && settings.lang_in) $("langfrom").value = normalizeWorkbenchLang(settings.lang_in);
+      if ($("langto") && settings.lang_out) $("langto").value = normalizeWorkbenchLang(settings.lang_out);
+      var pageRange = $("pagerange");
+      if (pageRange && settings.pages) {
+        if (settings.pages === "1-5") pageRange.value = "前 5 页（快速试译）";
+        else if (/^(全部|all|1-)$/.test(String(settings.pages))) pageRange.value = "全部页面";
+        else {
+          pageRange.value = "自定义页码";
+          if ($("customrange")) $("customrange").value = settings.pages;
+        }
+        pageRange.dispatchEvent(new Event("change"));
+      }
+      var dual = switchRowInput("双语对照输出");
+      if (dual && typeof settings.no_dual === "boolean") dual.checked = !settings.no_dual;
+      var mono = switchRowInput("单语纯净输出");
+      if (mono && typeof settings.no_mono === "boolean") mono.checked = !settings.no_mono;
+      var watermark = switchRowInput("输出无水印");
+      if (watermark && settings.watermark_output_mode) watermark.checked = settings.watermark_output_mode === "no_watermark";
+      var autoTerms = switchRowInput("自动术语提取");
+      if (autoTerms && typeof settings.auto_term_extraction === "boolean") autoTerms.checked = settings.auto_term_extraction;
       var autoUpdate = switchRowInput("启动时自动检查更新");
       if (autoUpdate) autoUpdate.checked = state.prefs.auto_update !== false;
       var openOutput = switchRowInput("翻译完成后打开输出目录");
       if (openOutput) openOutput.checked = state.prefs.open_output_dir === true;
-      setText($("topbar-lang-text"), settings.ui_lang === "zh" ? "简体中文" : "English");
+      setText($("topbar-lang-text"), "简体中文");
     }).catch(function (error) {
       ui.error("无法连接后端", error.message);
     });
@@ -960,6 +1135,12 @@
       model: $("model") ? $("model").value : null,
       custom_system_prompt: $("prompt") ? $("prompt").value : null,
       primary_font_family: $("font") ? $("font").value : null,
+      lang_in: $("langfrom") ? $("langfrom").value : null,
+      lang_out: $("langto") ? $("langto").value : null,
+      no_dual: !switchChecked("双语对照输出", true),
+      no_mono: !switchChecked("单语纯净输出", true),
+      watermark_output_mode: switchChecked("输出无水印", false) ? "no_watermark" : "watermarked",
+      auto_term_extraction: switchChecked("自动术语提取", false),
     };
     var key = $("apikey") ? $("apikey").value.trim() : "";
     if (key) payload.api_key = key;
@@ -1001,6 +1182,17 @@
     if (save) save.addEventListener("click", saveSettings);
     var topbar = $("topbar-save");
     if (topbar) topbar.addEventListener("click", saveSettings);
+    var chooseDirectory = $("choose-download-directory");
+    if (chooseDirectory) {
+      chooseDirectory.addEventListener("click", function () {
+        chooseDownloadDirectory().then(function (path) {
+          if (!path) return;
+          savePrefs({ download_directory: path }).then(function () {
+            ui.success("下载目录已保存", path);
+          });
+        });
+      });
+    }
     var reset = $("reset-settings");
     if (reset) {
       reset.addEventListener("click", function () {
@@ -1011,7 +1203,14 @@
           destructive: true,
         }).then(function (ok) {
           if (!ok) return;
-          putJson("/api/settings", { service: "SiliconFlowFree", custom_system_prompt: "", qps: 4 })
+          putJson("/api/settings", {
+            service: "SiliconFlowFree",
+            api_key: "",
+            base_url: "",
+            model: "",
+            custom_system_prompt: "",
+            qps: 4,
+          })
             .then(function () { ui.success("已恢复默认设置", "当前使用 SiliconFlow 免费引擎"); return loadSettings(); })
             .catch(function (error) { ui.error("恢复失败", error.message); });
         });
@@ -1059,8 +1258,17 @@
     showPage((window.location.hash || "").replace(/^#/, "") || DEFAULT_PAGE);
     applyTheme("system");
     loadPrefs();
-    loadSettings();
-    refreshQueue();
+    loadSettings().then(function () { refreshOutputs(); });
+    refreshQueue().then(function (tasks) {
+      // A reload must resume polling for the task that is still running on the
+      // server; otherwise the home progress card remains at its placeholder.
+      var active = firstActiveTask(tasks);
+      if (active) {
+        state.task = active;
+        renderProgress(active);
+        startPolling();
+      }
+    });
     refreshHistory();
     refreshOutputs();
     refreshGlossary();

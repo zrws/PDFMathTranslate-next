@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using Microsoft.Web.WebView2;
 using Microsoft.Web.WebView2.WinForms;
 
@@ -17,6 +18,7 @@ internal sealed class MainForm : Form
     private bool _webUiShown;
     private bool _updateInProgress;
     private CancellationTokenSource? _updateCts;
+    private string? _downloadDirectory;
 
     public MainForm(BackendRunner backend, int port)
     {
@@ -105,28 +107,34 @@ internal sealed class MainForm : Form
         webSettings.IsGeneralAutofillEnabled = false;
         webSettings.IsPinchZoomEnabled = false;
 
-        // 下载：静默保存到「下载」目录，不显示浏览器式下载提示
+        // 下载：首次选择默认目录，之后按「PDF名_日期」归档并保留同名版本。
         core.DownloadStarting += (_, e) =>
         {
             try
             {
-                var downloads = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
+                var downloads = ResolveDownloadDirectory(promptWhenMissing: true);
+                if (string.IsNullOrWhiteSpace(downloads))
+                {
+                    e.Cancel = true;
+                    e.Handled = true;
+                    return;
+                }
+
                 Directory.CreateDirectory(downloads);
                 var name = Path.GetFileName(e.ResultFilePath);
-                var target = Path.Combine(downloads, name);
-                var index = 1;
-                while (File.Exists(target))
-                {
-                    var stem = Path.GetFileNameWithoutExtension(name);
-                    var ext = Path.GetExtension(name);
-                    target = Path.Combine(downloads, $"{stem} ({index++}){ext}");
-                }
+                if (string.IsNullOrWhiteSpace(name)) name = "document.pdf";
+                var sourceName = DownloadQueryValue(e.DownloadOperation.Uri, "source") ?? name;
+                var sourceStem = SafePathSegment(Path.GetFileNameWithoutExtension(sourceName));
+                var archive = Path.Combine(downloads, $"{sourceStem}_{DateTime.Now:yyyy-MM-dd}");
+                Directory.CreateDirectory(archive);
+                var target = UniqueFilePath(archive, name);
                 e.ResultFilePath = target;
+                Program.AppendLog($"下载文件保存到：{target}");
             }
-            catch
+            catch (Exception ex)
             {
-                // 保底：交给 WebView2 默认行为
+                Program.AppendLog("准备下载目录失败：" + ex.Message);
+                e.Cancel = true;
             }
             e.Handled = true;
         };
@@ -166,8 +174,169 @@ internal sealed class MainForm : Form
                 case "openconfig":
                     Program.OpenInExplorer(Program.ConfigDirectory);
                     break;
+                default:
+                    HandleWebMessage(message);
+                    break;
             }
         };
+    }
+
+    private void HandleWebMessage(string message)
+    {
+        try
+        {
+            using var doc = JsonDocument.Parse(message);
+            if (!doc.RootElement.TryGetProperty("type", out var typeElement)) return;
+            var type = typeElement.GetString();
+            if (type == "choose-download-directory")
+            {
+                var selected = PromptForDownloadDirectory();
+                _webView.CoreWebView2?.PostWebMessageAsJson(JsonSerializer.Serialize(new
+                {
+                    type = "download-directory-selected",
+                    path = selected,
+                }));
+            }
+            else if (type == "set-download-directory" &&
+                     doc.RootElement.TryGetProperty("path", out var pathElement))
+            {
+                var path = pathElement.GetString();
+                if (!string.IsNullOrWhiteSpace(path) && Path.IsPathFullyQualified(path))
+                {
+                    _downloadDirectory = path;
+                }
+            }
+        }
+        catch (JsonException)
+        {
+            // 普通字符串消息已由上方 switch 处理；未知内容直接忽略。
+        }
+    }
+
+    private string? ResolveDownloadDirectory(bool promptWhenMissing)
+    {
+        if (!string.IsNullOrWhiteSpace(_downloadDirectory)) return _downloadDirectory;
+
+        foreach (var prefsPath in PreferenceFileCandidates())
+        {
+            try
+            {
+                if (!File.Exists(prefsPath)) continue;
+                using var doc = JsonDocument.Parse(File.ReadAllText(prefsPath));
+                if (doc.RootElement.TryGetProperty("download_directory", out var value))
+                {
+                    var path = value.GetString();
+                    if (!string.IsNullOrWhiteSpace(path) && Path.IsPathFullyQualified(path))
+                    {
+                        _downloadDirectory = path;
+                        return path;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Program.AppendLog($"读取下载目录偏好失败（{prefsPath}）：{ex.Message}");
+            }
+        }
+
+        return promptWhenMissing ? PromptForDownloadDirectory() : null;
+    }
+
+    private string? PromptForDownloadDirectory()
+    {
+        using var dialog = new FolderBrowserDialog
+        {
+            Description = "选择 PDFMathTranslate 的默认下载目录",
+            UseDescriptionForTitle = true,
+            ShowNewFolderButton = true,
+            SelectedPath = _downloadDirectory ?? Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+        };
+        if (dialog.ShowDialog(this) != DialogResult.OK || string.IsNullOrWhiteSpace(dialog.SelectedPath))
+        {
+            return null;
+        }
+
+        Directory.CreateDirectory(dialog.SelectedPath);
+        _downloadDirectory = Path.GetFullPath(dialog.SelectedPath);
+        SaveDownloadDirectoryPreference(_downloadDirectory);
+        return _downloadDirectory;
+    }
+
+    private static IEnumerable<string> PreferenceFileCandidates()
+    {
+        yield return Path.Combine(Program.ConfigDirectory, "ui-prefs.json");
+        yield return Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "PDFMathTranslate", ".config", "pdf2zh", "ui-prefs.json");
+    }
+
+    private static void SaveDownloadDirectoryPreference(string directory)
+    {
+        Exception? lastError = null;
+        foreach (var prefsPath in PreferenceFileCandidates())
+        {
+            try
+            {
+                var parent = Path.GetDirectoryName(prefsPath)
+                    ?? throw new InvalidOperationException("下载偏好目录无效");
+                Directory.CreateDirectory(parent);
+                JsonObject prefs;
+                if (File.Exists(prefsPath))
+                {
+                    prefs = JsonNode.Parse(File.ReadAllText(prefsPath))?.AsObject() ?? new JsonObject();
+                }
+                else
+                {
+                    prefs = new JsonObject();
+                }
+                prefs["download_directory"] = directory;
+                File.WriteAllText(
+                    prefsPath,
+                    prefs.ToJsonString(new JsonSerializerOptions { WriteIndented = true }));
+                return;
+            }
+            catch (Exception ex)
+            {
+                lastError = ex;
+            }
+        }
+        if (lastError is not null) throw lastError;
+    }
+
+    private static string? DownloadQueryValue(string uriText, string key)
+    {
+        if (!Uri.TryCreate(uriText, UriKind.Absolute, out var uri)) return null;
+        foreach (var pair in uri.Query.TrimStart('?').Split('&', StringSplitOptions.RemoveEmptyEntries))
+        {
+            var parts = pair.Split('=', 2);
+            if (!string.Equals(Uri.UnescapeDataString(parts[0]), key, StringComparison.OrdinalIgnoreCase)) continue;
+            return parts.Length == 2
+                ? Uri.UnescapeDataString(parts[1].Replace("+", " "))
+                : string.Empty;
+        }
+        return null;
+    }
+
+    private static string SafePathSegment(string value)
+    {
+        var invalid = Path.GetInvalidFileNameChars();
+        var safe = new string(value.Select(ch => invalid.Contains(ch) ? '_' : ch).ToArray()).Trim(' ', '.');
+        return string.IsNullOrWhiteSpace(safe) ? "document" : safe;
+    }
+
+    private static string UniqueFilePath(string directory, string fileName)
+    {
+        var safeName = SafePathSegment(Path.GetFileName(fileName));
+        var target = Path.Combine(directory, safeName);
+        if (!File.Exists(target)) return target;
+
+        var stem = Path.GetFileNameWithoutExtension(safeName);
+        var extension = Path.GetExtension(safeName);
+        for (var index = 2; ; index++)
+        {
+            target = Path.Combine(directory, $"{stem} ({index}){extension}");
+            if (!File.Exists(target)) return target;
+        }
     }
 
     private bool IsInternalUri(string uri)
@@ -345,9 +514,16 @@ internal sealed class MainForm : Form
             Padding = new Padding(12, 8, 12, 0),
             Text = $"正在下载 v{info.Version} …",
         };
-        var bar = new ProgressBar { Dock = DockStyle.Bottom, Minimum = 0, Maximum = 100 };
+        var bar = new ProgressBar
+        {
+            Dock = DockStyle.Bottom,
+            Minimum = 0,
+            Maximum = 100,
+            Style = info.Size > 0 ? ProgressBarStyle.Continuous : ProgressBarStyle.Marquee,
+        };
         progressForm.Controls.Add(label);
         progressForm.Controls.Add(bar);
+        progressForm.FormClosing += (_, _) => _updateCts?.Cancel();
         progressForm.Show(this);
 
         try
@@ -360,8 +536,14 @@ internal sealed class MainForm : Form
                     {
                         progressForm.BeginInvoke(new Action(() =>
                         {
-                            label.Text = $"正在下载 v{info.Version} …  {read / 1048576} MB / {(total > 0 ? total / 1048576 : 0)} MB";
-                            bar.Value = total > 0 ? (int)(100L * read / total) : 0;
+                            label.Text = total > 0
+                                ? $"正在下载 v{info.Version} …  {read / 1048576} MB / {total / 1048576} MB"
+                                : $"正在下载 v{info.Version} …  已下载 {read / 1048576} MB";
+                            if (total > 0)
+                            {
+                                bar.Style = ProgressBarStyle.Continuous;
+                                bar.Value = Math.Clamp((int)(100L * read / total), bar.Minimum, bar.Maximum);
+                            }
                         }));
                     }
                 },

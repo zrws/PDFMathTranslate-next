@@ -15,6 +15,8 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import csv
+from concurrent.futures import ThreadPoolExecutor
 import json
 import logging
 import os
@@ -54,6 +56,37 @@ UPLOAD_DIR = WORK_DIR / "uploads"
 OUTPUT_DIR = WORK_DIR / "outputs"
 TASKS_FILE = WORK_DIR / "tasks.json"
 MAX_HISTORY = 50
+try:
+    TASK_WORKERS = max(1, int(os.environ.get("PDF2ZH_TASK_WORKERS", "2")))
+except (TypeError, ValueError):
+    # A malformed environment value should not prevent the API module from
+    # importing; fall back to the conservative default used by the launcher.
+    TASK_WORKERS = 2
+TASK_EXECUTOR = ThreadPoolExecutor(max_workers=TASK_WORKERS, thread_name_prefix="pdf2zh-task")
+MAX_UPLOAD_BYTES = 100 * 1024 * 1024
+_UPLOAD_FILE_ID_PATTERN = re.compile(r"[0-9a-f]{8}__[^\\/\x00]+\.pdf", re.IGNORECASE)
+
+
+def _safe_upload_filename(filename: str | None) -> str:
+    """Return a filename safe to place directly inside ``UPLOAD_DIR``."""
+    # Browsers normally provide a base name, but clients can submit either slash
+    # style. Normalize both before extracting the final path component.
+    safe_name = Path((filename or "document.pdf").replace("\\", "/")).name
+    if not safe_name or safe_name in (".", "..") or not safe_name.lower().endswith(".pdf"):
+        raise HTTPException(status_code=400, detail="仅支持有效的 PDF 文件名")
+    return safe_name
+
+
+def _resolve_uploaded_file(file_id: str) -> Path:
+    """Resolve a server-issued upload id without allowing directory traversal."""
+    if not _UPLOAD_FILE_ID_PATTERN.fullmatch(file_id):
+        raise HTTPException(status_code=404, detail="文件不存在，请重新上传")
+
+    upload_dir = UPLOAD_DIR.resolve()
+    candidate = (upload_dir / file_id).resolve()
+    if candidate.parent != upload_dir:
+        raise HTTPException(status_code=404, detail="文件不存在，请重新上传")
+    return candidate
 
 
 def _pdf_page_count(path: Path) -> int | None:
@@ -140,12 +173,18 @@ class Task:
     finished_at: float | None = None
     duration: float | None = None
     outputs: dict[str, str] = dataclass_field(default_factory=dict)
+    options: dict[str, Any] = dataclass_field(default_factory=dict)
     cancel_requested: bool = False
 
     def to_dict(self) -> dict[str, Any]:
         data = asdict(self)
         data.pop("cancel_requested", None)
         data.pop("file_path", None)
+        return data
+
+    def to_persisted_dict(self) -> dict[str, Any]:
+        data = asdict(self)
+        data.pop("cancel_requested", None)
         return data
 
 
@@ -180,6 +219,7 @@ class TaskRegistry:
                         finished_at=item.get("finished_at"),
                         duration=item.get("duration"),
                         outputs=item.get("outputs", {}),
+                        options=item.get("options", {}),
                     )
                     # 上次退出时仍在进行的任务标记为中断
                     if task.status in ("queued", "running"):
@@ -192,7 +232,7 @@ class TaskRegistry:
     def _save(self) -> None:
         try:
             TASKS_FILE.parent.mkdir(parents=True, exist_ok=True)
-            items = [t.to_dict() for t in self._ordered()[:MAX_HISTORY]]
+            items = [t.to_persisted_dict() for t in self._ordered()[:MAX_HISTORY]]
             TASKS_FILE.write_text(
                 json.dumps({"tasks": items}, ensure_ascii=False, indent=2),
                 encoding="utf-8",
@@ -227,6 +267,35 @@ class TaskRegistry:
                 setattr(task, key, value)
             if persist:
                 self._save()
+            return task
+
+    def start(self, task_id: str) -> Task | None:
+        """Atomically move a pending task to running unless it was cancelled."""
+        with self._lock:
+            task = self._tasks.get(task_id)
+            if task is None or task.cancel_requested or task.status != "queued":
+                return None
+            task.status = "running"
+            task.progress = 0.0
+            task.stage = "准备翻译服务"
+            task.message = "正在连接翻译服务并检查配置；首次连接可能需要一些时间…"
+            self._save()
+            return task
+
+    def cancel(self, task_id: str) -> Task | None:
+        """Cancel queued work immediately, or request cooperative running cancellation."""
+        with self._lock:
+            task = self._tasks.get(task_id)
+            if task is None:
+                return None
+            if task.status == "queued":
+                task.status = "cancelled"
+                task.message = "已取消"
+                task.finished_at = time.time()
+            elif task.status == "running":
+                task.cancel_requested = True
+                task.message = "正在取消…"
+            self._save()
             return task
 
 
@@ -328,7 +397,10 @@ def settings_payload() -> dict[str, Any]:
         "primary_font_family": settings.translation.primary_font_family or "",
         "ui_lang": settings.gui_settings.ui_lang,
         "lang_in": settings.translation.lang_in,
-        "lang_out": settings.translation.lang_out,
+        # 工作台使用 BCP 47 代码；引擎内部的 zh 等价于简体中文。
+        "lang_out": "zh-CN"
+        if settings.translation.lang_out == "zh"
+        else settings.translation.lang_out,
         "pages": settings.pdf.pages or "",
         "no_dual": settings.pdf.no_dual,
         "no_mono": settings.pdf.no_mono,
@@ -428,6 +500,7 @@ class SettingsUpdate(BaseModel):
     no_dual: bool | None = None
     no_mono: bool | None = None
     auto_term_extraction: bool | None = None
+    watermark_output_mode: str | None = None
 
 
 def apply_settings(update: SettingsUpdate) -> dict[str, Any]:
@@ -449,7 +522,7 @@ def apply_settings(update: SettingsUpdate) -> dict[str, Any]:
             ("base_url", update.base_url),
             ("model", update.model),
         ):
-            if value:
+            if keyword in update.model_fields_set:
                 target = _pick_field(detail, keyword)
                 if target:
                     setattr(detail, target, value)
@@ -479,6 +552,10 @@ def apply_settings(update: SettingsUpdate) -> dict[str, Any]:
         settings.pdf.no_mono = update.no_mono
     if update.auto_term_extraction is not None:
         settings.translation.no_auto_extract_glossary = not update.auto_term_extraction
+    if update.watermark_output_mode is not None:
+        if update.watermark_output_mode not in {"watermarked", "no_watermark", "both"}:
+            raise HTTPException(status_code=400, detail="无效的水印模式")
+        settings.pdf.watermark_output_mode = update.watermark_output_mode
 
     try:
         settings.validate_settings()
@@ -499,21 +576,34 @@ def apply_settings(update: SettingsUpdate) -> dict[str, Any]:
 # ---------------------------------------------------------------------------
 # 翻译任务执行
 # ---------------------------------------------------------------------------
+def _friendly_task_error(error: Any, details: Any = "") -> str:
+    """将常见服务启动故障转换为用户可操作的提示。"""
+    raw = str(error or "")
+    trace = str(details or "")
+    combined = f"{raw}\n{trace}"
+    status_match = re.search(r"\b([45]\d\d)\b", combined)
+    if status_match:
+        status = int(status_match.group(1))
+        if status in (401, 403):
+            return f"翻译服务拒绝了请求（HTTP {status}）。请检查 API Key、模型及服务配置后重试。"
+        if status == 429:
+            return "免费翻译服务当前请求过多（HTTP 429）。请稍后重试，或在设置中更换翻译服务。"
+        if status >= 500:
+            return f"翻译服务暂时不可用（HTTP {status}）。请稍后重试；如果持续发生，请在设置中更换翻译服务。"
+        return f"翻译服务请求失败（HTTP {status}）。请检查设置后重试。"
+    if "RetryError" in combined:
+        return "翻译服务多次重试后仍未响应。请检查网络或服务状态，稍后重试；也可在设置中更换翻译服务。"
+    if raw:
+        return raw
+    return "翻译启动失败，请检查服务设置和日志后重试。"
+
+
 def _run_task(task_id: str, base_settings: Any, file_path: Path) -> None:
     from pdf2zh_next.high_level import do_translate_async_stream
 
-    task = REGISTRY.get(task_id)
+    task = REGISTRY.start(task_id)
     if task is None:
         return
-
-    REGISTRY.update(
-        task_id,
-        status="running",
-        progress=0.0,
-        stage="启动翻译引擎",
-        message="正在启动翻译引擎…",
-        persist=True,
-    )
     started = time.time()
 
     async def consume(stream) -> None:
@@ -564,11 +654,15 @@ def _run_task(task_id: str, base_settings: Any, file_path: Path) -> None:
                 )
                 break
             elif kind == "error":
+                friendly_error = _friendly_task_error(
+                    event.get("error"), event.get("details")
+                )
                 REGISTRY.update(
                     task_id,
                     status="failed",
-                    error=str(event.get("error") or "未知错误"),
-                    message="翻译失败",
+                    stage="翻译失败",
+                    error=friendly_error,
+                    message=friendly_error,
                     finished_at=time.time(),
                     duration=time.time() - started,
                     persist=True,
@@ -604,11 +698,13 @@ def _run_task(task_id: str, base_settings: Any, file_path: Path) -> None:
         asyncio.run(run())
     except Exception as exc:  # pragma: no cover - 兜底
         logger.exception("任务执行异常：%s", exc)
+        friendly_error = _friendly_task_error(exc)
         REGISTRY.update(
             task_id,
             status="failed",
-            error=str(exc),
-            message="翻译失败",
+            stage="翻译失败",
+            error=friendly_error,
+            message=friendly_error,
             finished_at=time.time(),
             duration=time.time() - started,
             persist=True,
@@ -625,11 +721,13 @@ def _run_task(task_id: str, base_settings: Any, file_path: Path) -> None:
                     persist=True,
                 )
             else:
+                friendly_error = _friendly_task_error(current.error)
                 REGISTRY.update(
                     task_id,
                     status="failed",
-                    error=current.error or "翻译未正常结束",
-                    message="翻译失败",
+                    stage="翻译失败",
+                    error=friendly_error if current.error else "翻译未正常结束",
+                    message=friendly_error if current.error else "翻译未正常结束",
                     finished_at=time.time(),
                     persist=True,
                 )
@@ -643,10 +741,11 @@ class TaskCreate(BaseModel):
     no_dual: bool | None = None
     no_mono: bool | None = None
     auto_term_extraction: bool | None = None
+    watermark_output_mode: str | None = None
 
 
 def create_task(payload: TaskCreate) -> Task:
-    upload = UPLOAD_DIR / payload.file_id
+    upload = _resolve_uploaded_file(payload.file_id)
     if not upload.is_file():
         raise HTTPException(status_code=404, detail="文件不存在，请重新上传")
 
@@ -677,6 +776,10 @@ def create_task(payload: TaskCreate) -> Task:
         settings.pdf.no_mono = payload.no_mono
     if payload.auto_term_extraction is not None:
         settings.translation.no_auto_extract_glossary = not payload.auto_term_extraction
+    if payload.watermark_output_mode is not None:
+        if payload.watermark_output_mode not in {"watermarked", "no_watermark", "both"}:
+            raise HTTPException(status_code=400, detail="无效的水印模式")
+        settings.pdf.watermark_output_mode = payload.watermark_output_mode
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     settings.translation.output = str(OUTPUT_DIR)
@@ -694,14 +797,18 @@ def create_task(payload: TaskCreate) -> Task:
         page_count=_pdf_page_count(upload),
         status="queued",
         message="排队中",
+        options={
+            "lang_in": translate_settings.translation.lang_in,
+            "lang_out": translate_settings.translation.lang_out,
+            "pages": payload.pages,
+            "no_dual": translate_settings.pdf.no_dual,
+            "no_mono": translate_settings.pdf.no_mono,
+            "auto_term_extraction": not translate_settings.translation.no_auto_extract_glossary,
+            "watermark_output_mode": translate_settings.pdf.watermark_output_mode,
+        },
     )
     REGISTRY.add(task)
-    threading.Thread(
-        target=_run_task,
-        args=(task.id, translate_settings, upload),
-        name=f"translate-{task.id}",
-        daemon=True,
-    ).start()
+    TASK_EXECUTOR.submit(_run_task, task.id, translate_settings, upload)
     return task
 
 
@@ -710,7 +817,7 @@ def create_task(payload: TaskCreate) -> Task:
 # ---------------------------------------------------------------------------
 def _glossary_files(settings: Any) -> list[Path]:
     raw = settings.translation.glossaries or ""
-    return [Path(p) for p in raw.split(";") if p.strip()]
+    return [Path(p.strip()) for p in re.split(r"[;,]", raw) if p.strip()]
 
 
 def _read_glossary_rows(path: Path) -> list[dict[str, str]]:
@@ -719,14 +826,11 @@ def _read_glossary_rows(path: Path) -> list[dict[str, str]]:
         text = path.read_text(encoding="utf-8-sig", errors="replace")
     except Exception:
         return rows
-    for line in text.splitlines():
-        line = line.strip()
-        if not line or line.startswith("#"):
+    import io
+    for parts in csv.reader(io.StringIO(text)):
+        if len(parts) < 2 or not parts[0].strip() or parts[0].lstrip().startswith("#"):
             continue
-        parts = [p.strip() for p in line.replace("\t", ",").split(",")]
-        if len(parts) < 2:
-            continue
-        rows.append({"source": parts[0], "target": parts[1], "file": path.name})
+        rows.append({"source": parts[0].strip(), "target": parts[1].strip(), "file": path.name})
     return rows
 
 
@@ -765,16 +869,30 @@ async def api_upload_file(file: UploadFile = File(...)) -> dict[str, Any]:
     if not (file.filename or "").lower().endswith(".pdf"):
         raise HTTPException(status_code=400, detail="仅支持 PDF 文件")
     UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
-    safe_name = Path(file.filename or "document.pdf").name
+    safe_name = _safe_upload_filename(file.filename)
     file_id = f"{uuid.uuid4().hex[:8]}__{safe_name}"
-    target = UPLOAD_DIR / file_id
+    target = _resolve_uploaded_file(file_id)
     size = 0
-    with target.open("wb") as handle:
-        while chunk := await file.read(1024 * 1024):
-            handle.write(chunk)
-            size += len(chunk)
+    try:
+        with target.open("wb") as handle:
+            while chunk := await file.read(1024 * 1024):
+                size += len(chunk)
+                if size > MAX_UPLOAD_BYTES:
+                    raise HTTPException(
+                        status_code=413,
+                        detail="PDF 文件不能超过 100 MB",
+                    )
+                handle.write(chunk)
 
-    pages = _pdf_page_count(target)
+        pages = _pdf_page_count(target)
+        if pages is None:
+            raise HTTPException(status_code=400, detail="上传的文件不是可读取的 PDF")
+    except HTTPException:
+        target.unlink(missing_ok=True)
+        raise
+    except OSError as exc:
+        target.unlink(missing_ok=True)
+        raise HTTPException(status_code=500, detail=f"保存上传文件失败：{exc}") from exc
 
     return {
         "file_id": file_id,
@@ -787,7 +905,7 @@ async def api_upload_file(file: UploadFile = File(...)) -> dict[str, Any]:
 @app.get("/api/files/{file_id}/preview")
 def api_file_preview(file_id: str, page: int = 1, width: int = 900) -> Response:
     """上传 PDF 的指定页预览。"""
-    path = UPLOAD_DIR / file_id
+    path = _resolve_uploaded_file(file_id)
     if not path.is_file():
         raise HTTPException(status_code=404, detail="文件不存在，请重新上传")
     return _render_page_png(path, page, width)
@@ -825,7 +943,7 @@ def api_get_task(task_id: str) -> dict[str, Any]:
 
 @app.post("/api/tasks/{task_id}/cancel")
 def api_cancel_task(task_id: str) -> dict[str, Any]:
-    task = REGISTRY.update(task_id, cancel_requested=True, message="正在取消…")
+    task = REGISTRY.cancel(task_id)
     if task is None:
         raise HTTPException(status_code=404, detail="任务不存在")
     return task.to_dict()
@@ -837,7 +955,10 @@ def api_retry_task(task_id: str) -> dict[str, Any]:
     task = REGISTRY.get(task_id)
     if task is None:
         raise HTTPException(status_code=404, detail="任务不存在")
-    source = Path(task.file_path)
+    source = Path(task.file_path).resolve()
+    upload_dir = UPLOAD_DIR.resolve()
+    if source.parent != upload_dir:
+        raise HTTPException(status_code=404, detail="源文件已被删除，请重新上传")
     if not source.is_file():
         raise HTTPException(status_code=404, detail="源文件已被删除，请重新上传")
     payload = TaskCreate(
@@ -845,6 +966,10 @@ def api_retry_task(task_id: str) -> dict[str, Any]:
         lang_in=task.lang_in,
         lang_out=task.lang_out,
         pages=task.pages,
+        no_dual=task.options.get("no_dual"),
+        no_mono=task.options.get("no_mono"),
+        auto_term_extraction=task.options.get("auto_term_extraction"),
+        watermark_output_mode=task.options.get("watermark_output_mode"),
     )
     return create_task(payload).to_dict()
 
@@ -921,6 +1046,7 @@ class PrefsUpdate(BaseModel):
     theme: str | None = None
     auto_update: bool | None = None
     open_output_dir: bool | None = None
+    download_directory: str | None = None
 
 
 @app.get("/api/prefs")
@@ -968,13 +1094,12 @@ def api_delete_glossary(source: str, file: str | None = None) -> list[dict[str, 
             continue
         if not path.is_file():
             continue
-        lines = path.read_text(encoding="utf-8-sig", errors="replace").splitlines()
-        kept = [
-            line
-            for line in lines
-            if not line.strip() or line.split(",")[0].strip() != source
-        ]
-        path.write_text("\n".join(kept) + "\n", encoding="utf-8")
+        text = path.read_text(encoding="utf-8-sig", errors="replace")
+        import io
+        rows = list(csv.reader(io.StringIO(text)))
+        kept = [row for row in rows if not row or not row[0].strip() or row[0].strip() != source]
+        with path.open("w", encoding="utf-8", newline="") as handle:
+            csv.writer(handle).writerows(kept)
     return list_glossary()
 
 

@@ -175,9 +175,24 @@ class SiliconFlowFreeTranslator(BaseTranslator):
 
     def do_translate(self, text, rate_limit_params: dict = None) -> str:
         return self.do_llm_translate(
-            f"You are a professional,authentic machine translation engine.\n\n;; Treat next line as plain text input and translate it into {self.lang_out}, output translation ONLY. If translation is unnecessary (e.g. proper nouns, codes, {'{{1}}, etc. '}), return the original text. NO explanations. NO notes. Input:\n\n{text}",
+            self._translation_prompt(text),
             rate_limit_params,
         )
+
+    def _translation_prompt(self, text: str) -> str:
+        return (
+            "You are a professional,authentic machine translation engine.\n\n"
+            f";; Treat next line as plain text input and translate it into {self.lang_out}, "
+            "output translation ONLY. If translation is unnecessary (e.g. proper nouns, "
+            "codes, {{1}}, etc. ), return the original text. NO explanations. NO notes. "
+            f"Input:\n\n{text}"
+        )
+
+    def health_check(self):
+        """通过服务专用探活接口快速验证可用性。"""
+        if not self.check_server_status(self.url):
+            raise ServerNotAvailableError("免费翻译服务当前不可用")
+        return True
 
     @retry(
         retry=retry_if_exception_type(httpx.HTTPError),

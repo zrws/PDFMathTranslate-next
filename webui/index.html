@@ -45,7 +45,7 @@
       <div class="brand-name">PDFMathTranslate Next</div>
     </div>
     <div class="topbar-actions">
-      <button class="btn sm btn-outline" id="topbar-lang">
+      <button class="btn sm btn-outline" id="topbar-lang" disabled title="界面文案本地化尚未启用">
         <svg class="icon"><use href="#i-globe"/></svg><span id="topbar-lang-text">简体中文</span><svg class="icon"><use href="#i-chevron-down"/></svg>
       </button>
       <button class="btn sm btn-secondary" id="topbar-save">保存设置</button>
@@ -69,7 +69,7 @@
       <div class="promo">
         <div class="promo-title">SiliconFlow 免费翻译</div>
         <div class="promo-desc">内置免费引擎，无需 API Key 即可体验</div>
-        <button class="btn sm btn-outline block"><svg class="icon"><use href="#i-sparkles"/></svg>立即使用</button>
+        <button class="btn sm btn-outline block" id="promo-use"><svg class="icon"><use href="#i-sparkles"/></svg>立即使用</button>
       </div>
     </nav>
 
@@ -230,7 +230,7 @@
                 <div class="preview-area" id="preview-area">PDF 预览</div>
                 <div class="preview-nav">
                   <button class="icon-btn outline" id="preview-prev" title="上一页"><svg class="icon"><use href="#i-chevron-left"/></svg></button>
-                  <span class="hint">3 / 24 · 双语对照</span>
+                  <span class="hint" id="preview-nav-status">未选择文件</span>
                   <button class="icon-btn outline" id="preview-next" title="下一页"><svg class="icon"><use href="#i-chevron-right"/></svg></button>
                 </div>
               </div>
@@ -294,10 +294,7 @@
                 </div>
               </div>
               <div class="card-content wrap" id="terms-list">
-                <span class="chip chip-solid">Transformer → 变换器</span>
-                <span class="chip chip-solid">Attention → 注意力</span>
-                <span class="chip chip-solid">Token → 词元</span>
-                <span class="chip chip-solid">Embedding → 向量表示</span>
+                <p class="hint">还没有常用术语。</p>
               </div>
             </div>
           </div>
@@ -381,7 +378,7 @@
               </select>
             </div>
 
-            <p class="hint">使用 SiliconFlow 免费引擎无需 API Key，切换服务后点击「保存设置」即可生效</p>
+            <p class="hint">使用 SiliconFlow 免费引擎无需 API Key，切换服务后点击「保存设置」即可生效。界面文案目前仅提供简体中文。</p>
           </div>
         </div>
 
@@ -396,10 +393,8 @@
             <div class="row">
               <div class="field">
                 <label class="label" for="uilang">界面语言</label>
-                <select class="select" id="uilang">
-                  <option>简体中文</option>
-                  <option>English</option>
-                  <option>日本語</option>
+                <select class="select" id="uilang" disabled>
+                  <option>简体中文（当前）</option>
                 </select>
               </div>
               <div class="field">
@@ -410,6 +405,15 @@
                   <option>深色</option>
                 </select>
               </div>
+            </div>
+
+            <div class="field">
+              <label class="label" for="download-directory">默认下载目录</label>
+              <div class="directory-picker">
+                <input class="input" id="download-directory" readonly placeholder="首次下载前请选择保存目录">
+                <button class="btn btn-outline" id="choose-download-directory" type="button"><svg class="icon"><use href="#i-folder-open"/></svg>选择目录</button>
+              </div>
+              <p class="hint">文件会保存到“PDF名_日期”文件夹；同名结果会自动保留为不同版本。</p>
             </div>
 
             <label class="switch-row">

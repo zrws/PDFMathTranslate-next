@@ -15,6 +15,9 @@
 #ifndef PayloadRoot
   #define PayloadRoot "..\dist\payload"
 #endif
+#ifndef InstallerOutputDir
+  #define InstallerOutputDir "..\dist"
+#endif
 
 #define AppGuid "{{7C1F9A3E-52B4-4D6E-9F0A-1B2C3D4E5F60}"
 
@@ -33,8 +36,10 @@ UninstallDisplayName=PDFMathTranslate {#AppVersion}
 UninstallDisplayIcon={app}\PDFMathTranslate.exe
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
+; 始终显示安装目录页，让用户可以确认或更改安装路径。
+DisableDirPage=no
 DisableProgramGroupPage=yes
-OutputDir=..\dist
+OutputDir={#InstallerOutputDir}
 OutputBaseFilename=PDFMathTranslate-Setup-{#AppVersion}
 SetupIconFile=..\launcher\Assets\app.ico
 Compression=lzma2/normal
@@ -44,14 +49,10 @@ ArchitecturesInstallIn64BitMode=x64compatible
 CloseApplications=no
 
 [Languages]
-; 若放置了官方中文语言包（build\languages\ChineseSimplified.isl）则启用完整中文向导
-#if FileExists(AddBackslash(SourcePath) + "languages\ChineseSimplified.isl")
 Name: "chinesesimplified"; MessagesFile: "languages\ChineseSimplified.isl"
-#endif
-Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Messages]
-; 基础语言为英文，这里覆盖向导主要文案，使界面为中文（无需外部语言包）
+; 覆盖产品专用文案；通用安装、错误和卸载提示由官方简体中文语言包提供。
 SetupAppTitle=安装 - %1
 SetupWindowTitle=安装 - %1
 UninstallAppTitle=卸载 - %1
@@ -96,7 +97,7 @@ UninstalledAll=%1 已成功卸载。
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-; 完整便携运行环境（exe、start-gui-direct.py、bin、uv-python、uv-tools、version.json 等）
+; 精简便携运行环境（新界面、单套 Python、运行依赖和 version.json）
 Source: "{#PayloadRoot}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]

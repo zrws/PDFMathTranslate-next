@@ -31,7 +31,7 @@
 ## 桌面观感（不让使用者看出是网页）
 
 - 前端：禁止选中界面文字（输入框除外）、禁用图片拖拽、自定义细窄滚动条、去掉点击高亮与焦点虚线、禁用 overscroll 橡皮筋
-- 桌面壳（`launcher/MainForm.cs`）：关闭 WebView2 默认右键菜单、开发者工具、状态栏、缩放控制、浏览器快捷键（F5/Ctrl+P 等）、自动填充；下载静默保存到「下载」目录（无浏览器式下载提示）
+- 桌面壳（`launcher/MainForm.cs`）：关闭 WebView2 默认右键菜单、开发者工具、状态栏、缩放控制、浏览器快捷键（F5/Ctrl+P 等）、自动填充；首次下载前选择并保存默认目录，结果按 `PDF名_yyyy-MM-dd` 文件夹归档，同名文件自动保留为不同版本
 
 ## 后端 API（`pdf2zh_next/http_api.py`，FastAPI）
 
@@ -52,7 +52,7 @@
 | GET | `/api/files/{id}/preview?page=N` | 上传 PDF 的指定页预览（PNG，含 `X-Page-Count` 头） |
 | GET | `/api/tasks/{id}/preview?kind=dual\|mono&page=N` | 译文指定页预览（PNG） |
 | POST | `/api/tasks/{id}/retry` | 用原文件重新提交翻译 |
-| GET / PUT | `/api/prefs` | 界面偏好（`theme` / `auto_update` / `open_output_dir`） |
+| GET / PUT | `/api/prefs` | 界面偏好（`theme` / `auto_update` / `open_output_dir` / `download_directory`） |
 | GET | `/` | 静态托管本目录 |
 
 任务记录保存在 `pdf2zh_files/tasks.json`（最近 50 条）。
@@ -61,7 +61,7 @@
 
 ```powershell
 .\PDFMathTranslate.exe                  # 新界面（桌面壳默认）
-.\PDFMathTranslate.exe --legacy-gui     # Gradio 旧界面（兼容保留）
+.\PDFMathTranslate.exe --legacy-gui     # 仅 -IncludeLegacyGui 构建支持；精简安装包回退到新界面
 python start-webui.py --server-port 7860  # 直接跑后端（开发用）
 ```
 

@@ -28,6 +28,12 @@ CODELY.md
 .tmp-*/
 .tmp-*.md
 
+# 本机审计缓存、配置和辅助工具产物（保留本地，不纳入代码基线）
+/.audit-home/
+/.audit-home4/
+/.audit-home6/
+/.workbuddy/
+
 # Worker 本地调试变量（含真实 Key，绝不入库）
 .dev.vars
 .wrangler/

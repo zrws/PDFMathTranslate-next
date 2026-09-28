@@ -24,7 +24,6 @@ from pdf2zh_next.config.translate_engine_model import TRANSLATION_ENGINE_METADAT
 from pdf2zh_next.const import DEFAULT_CONFIG_DIR
 from pdf2zh_next.const import DEFAULT_CONFIG_FILE
 from pdf2zh_next.const import VERSION_DEFAULT_CONFIG_FILE
-from pdf2zh_next.const import WRITE_TEMP_CONFIG_FILE
 
 # The following is magic code,
 # if you need to modify it,
@@ -555,6 +554,10 @@ class ConfigManager:
             return False
 
     def initialize_cli_config(self) -> CLIEnvSettingsModel:
+        # Reset the write target on every initialization.  A ConfigManager is a
+        # process singleton, so retaining a previous invocation's explicit
+        # config path would make a later initialization write to the wrong file.
+        self._active_config_file_path = Path(self._default_config_file_path)
         parser, _ = build_args_parser()
         args = parser.parse_args()
         cli_args: dict[str, Any] = {
@@ -585,10 +588,12 @@ class ConfigManager:
         )
         config_from_file_dicts = []
         if "config_file" in merged_args:
-            user_config = self._read_toml_file(Path(merged_args["config_file"]))
+            active_config_file = Path(merged_args["config_file"]).expanduser()
+            self._active_config_file_path = active_config_file
+            user_config = self._read_toml_file(active_config_file)
             if not self.test_config(user_config):
                 log.error(
-                    f"Error in test_config: {merged_args['config_file']}, skip it"
+                    f"Error in test_config: {active_config_file}, skip it"
                 )
                 user_config = {}
 
@@ -617,15 +622,22 @@ class ConfigManager:
         settings.basic.input_files = set()
 
         content = settings.model_dump(mode="json")
-        if self._is_file_content_identical(DEFAULT_CONFIG_FILE, content):
+        target = Path(
+            getattr(self, "_active_config_file_path", self._default_config_file_path)
+        ).expanduser()
+        target.parent.mkdir(parents=True, exist_ok=True)
+        if self._is_file_content_identical(target, content):
             log.info(
-                f"Config file {DEFAULT_CONFIG_FILE} is identical to the settings, skip it"
+                f"Config file {target} is identical to the settings, skip it"
             )
             return
 
-        self._write_toml_file(WRITE_TEMP_CONFIG_FILE, content)
-        WRITE_TEMP_CONFIG_FILE.replace(DEFAULT_CONFIG_FILE)
-        log.info(f"Written user default config file to {DEFAULT_CONFIG_FILE}")
+        # Keep the temporary file beside the target so os.replace remains an
+        # atomic operation even when PDF2ZH_CONFIG_FILE points elsewhere.
+        temp_path = target.with_name(f".{target.name}.tmp")
+        self._write_toml_file(temp_path, content)
+        temp_path.replace(target)
+        log.info(f"Written user default config file to {target}")
 
     def _build_model_from_args(
         self, model_class: type[BaseModel], args_dict: dict
