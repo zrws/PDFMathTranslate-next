@@ -13,6 +13,9 @@ if (Test-Path -LiteralPath $EvidenceRoot) { throw 'acceptance root exists; refus
 New-Item -ItemType Directory -Path (Join-Path $EvidenceRoot 'runs/checker-prior-pass'),(Join-Path $EvidenceRoot 'reports') -Force | Out-Null
 Copy-Item (Join-Path $RepoRoot 'docs/specifications/native-desktop/p0-reference/CASE_MANIFEST.json') $EvidenceRoot
 $manifest = Get-Content (Join-Path $EvidenceRoot 'CASE_MANIFEST.json') -Raw|ConvertFrom-Json
+$manifest|Add-Member -NotePropertyName historical_specification_run_id -NotePropertyValue $manifest.runId
+$manifest.runId = Split-Path $EvidenceRoot -Leaf
+$manifest|ConvertTo-Json -Depth 8|Set-Content (Join-Path $EvidenceRoot 'CASE_MANIFEST.json') -Encoding UTF8
 $impact = @($manifest.cases)+@($manifest.new_cases_this_round)|ForEach-Object { @{ case=$_.id; expected_exit=$_.expected_exit; expected_reason=$_.expected_reason; status='unverified-before-execution'; historical_evidence='unavailable, never inherited'; mode='new-run' } }
 @{ round=(Split-Path $EvidenceRoot -Leaf); baseline=(& git -C $RepoRoot rev-parse HEAD); runtime=$InstallRoot; python=$PythonExe; cases=$impact; driver_sha256=(Get-FileHash $PSCommandPath -Algorithm SHA256).Hash }|ConvertTo-Json -Depth 6|Set-Content (Join-Path $EvidenceRoot 'CHANGE_IMPACT.json') -Encoding UTF8
 'Frozen 24+4 cases unchanged. Pure-local preflights, then recorder-owned backend smoke/import/recovery/pytest, then full negative matrix; no translation/download/user cache access. Two checker passes: M01/M02 explicit N/A in first pass, final requires that pass, its actual exit, identity and report hash. All failures preserved; root reuse refused.'|Set-Content (Join-Path $EvidenceRoot 'PLAN.md') -Encoding UTF8
@@ -23,9 +26,15 @@ function Driver([string]$Name,[string]$Entry,[string[]]$Args_) {
     $prefix=Join-Path $EvidenceRoot ('reports/'+$Name)
     $p=Start-P0PowerShell -ArgumentList (($argv|ForEach-Object{ConvertTo-P0Argument $_}) -join ' ') -RedirectStandardOutput ($prefix+'.stdout.txt') -RedirectStandardError ($prefix+'.stderr.txt')
     $started=$p.StartTime.ToString('o'); $pid_=$p.Id
-    if (-not $p.WaitForExit(1800000)) { $p.Kill(); throw ('driver timed out: '+$Name) }
+    $timeoutHit = -not $p.WaitForExit(1800000)
+    if ($timeoutHit) {
+        # This process handle belongs to this launch. Never kill by name.
+        if (-not $p.HasExited) { & taskkill.exe /PID $pid_ /T /F 2>$null | Out-Null }
+        [void]$p.WaitForExit(10000)
+    }
     $p.Refresh()
-    @{ entry=(Join-Path $PSScriptRoot $Entry); argument_vector=$argv; child_pid=$pid_; started_at=$started; actual_exit=$p.ExitCode; timeout_hit=$false }|ConvertTo-Json -Depth 4|Set-Content ($prefix+'.observed.json') -Encoding UTF8
+    @{ entry=(Join-Path $PSScriptRoot $Entry); argument_vector=$argv; child_pid=$pid_; started_at=$started; actual_exit=$(if($timeoutHit){'timeout'}else{$p.ExitCode}); timeout_hit=$timeoutHit; cleanup=$(if($p.HasExited){'owned process exited'}else{'unverified cleanup'}) }|ConvertTo-Json -Depth 4|Set-Content ($prefix+'.observed.json') -Encoding UTF8
+    if ($timeoutHit) { throw ('driver timed out; observation preserved: '+$Name) }
     Write-Host ($Name+': actual exit '+$p.ExitCode)
     if ($p.ExitCode -ne 0) { throw ('acceptance driver failed; preserve root: '+$Name) }
 }
