@@ -5,6 +5,7 @@ No paid API, fake translator implementation, user home, or formal update feed.
 import argparse
 import hashlib
 import http.client
+import io
 import json
 import os
 import secrets
@@ -54,8 +55,18 @@ def main():
     if not all(Path(row["path"]).resolve().is_relative_to(expected) for row in provenance["modules"]):raise RuntimeError("实际模块导入路径与验收模式不一致")
     (evidence/"provenance.json").write_text(json.dumps(provenance,ensure_ascii=False,indent=2),encoding="utf-8")
     sample = home/"科学论文验收.pdf"
-    generator = "import pymupdf,sys;d=pymupdf.open();p=d.new_page();p.insert_textbox(pymupdf.Rect(60,80,530,230),'Scientific document translation\\n\\nThis local acceptance document checks paragraph translation, page layout and scientific notation. The original engine must preserve the page structure.',fontsize=13,fontname='helv');p.insert_text((70,280),'E = m c^2',fontsize=16,fontname='tiit');d.save(sys.argv[1]);d.close()"
+    generator = """import pymupdf,sys
+d=pymupdf.open()
+for number in range(2):
+    p=d.new_page()
+    p.insert_textbox(pymupdf.Rect(60,80,530,230),'Scientific document translation page '+str(number+1)+'\\n\\nThis local acceptance document checks paragraph translation, page layout and scientific notation. The original engine must preserve the page structure.',fontsize=13,fontname='helv')
+    p.insert_text((70,280),'E = m c^2',fontsize=16,fontname='tiit')
+d.save(sys.argv[1]);d.close()
+"""
     subprocess.run([str(python), "-c", generator, str(sample)], env=env, cwd=home/"work", check=True, capture_output=True)
+    shutil.copy2(sample,evidence/'input.pdf')
+    provenance.update(sample_pages=2,sample_sha256=hashlib.sha256(sample.read_bytes()).hexdigest())
+    (evidence/'provenance.json').write_text(json.dumps(provenance,ensure_ascii=False,indent=2),encoding='utf-8')
     calls = []
     class Provider(BaseHTTPRequestHandler):
         def log_message(self, *args): pass
@@ -143,8 +154,11 @@ def main():
         check("settings actual capped policy",status==200 and setting["effective_policy"]["api_qps_cap"]==4 and setting["effective_policy"]["document_concurrency"]==1)
         check("invalid settings rejected",request("PUT","/api/settings",{"qps":-1})[0]==400)
         check("settings failure preserves value",request("GET","/api/settings")[1]["requested_qps"]==100)
-        status,file,_=upload(sample);check("real PDF upload",status==200 and file["page_count"]==1,file)
-        status,png,_=request("GET",f'/api/files/{file["file_id"]}/preview?page=1&width=50000');check("bounded preview PNG",status==200 and png[:8]==b"\x89PNG\r\n\x1a\n")
+        status,file,_=upload(sample);check("real two-page PDF upload",status==200 and file["page_count"]==2,file)
+        status,png,_=request("GET",f'/api/files/{file["file_id"]}/preview?page=1&width=50000')
+        from PIL import Image
+        with Image.open(io.BytesIO(png)) as image:preview_size=image.size;image.load()
+        check("bounded preview PNG",status==200 and png[:8]==b"\x89PNG\r\n\x1a\n" and preview_size[0]<=1600 and preview_size[1]<=2400,preview_size)
         (evidence/"source-preview.png").write_bytes(png)
         payload={"file_id":file["file_id"],"lang_in":"en","lang_out":"zh-CN","no_dual":False,"no_mono":False,"auto_term_extraction":False,"export_dir":str(home/"exports")}
         key=str(uuid.uuid4());status,task,_=request("POST","/api/tasks",payload,{"Idempotency-Key":key});check("real task accepted",status==200,task)
@@ -157,7 +171,8 @@ def main():
         (evidence/"task-final.json").write_text(json.dumps(final_task,ensure_ascii=False,indent=2),encoding="utf-8")
         check("genuine BabelDOC produced both outputs",final_task["status"]=="done" and set(final_task["outputs"])>={"dual","mono"},final_task.get("error"))
         check("real loopback provider used",len(calls)>=2,len(calls))
-        status,preview,_=request("GET",f'/api/tasks/{task["id"]}/preview?kind=dual&page=2');check("translated output preview",status==200 and preview[:8]==b"\x89PNG\r\n\x1a\n")
+        status,preview,headers=request("GET",f'/api/tasks/{task["id"]}/preview?kind=dual&page=2');headers={key.lower():value for key,value in headers.items()}
+        check("translated output preview page two",status==200 and preview[:8]==b"\x89PNG\r\n\x1a\n" and int(headers.get('x-page-count',0))>=2 and headers.get('x-page-index')=='2',headers)
         (evidence/"translated-preview.png").write_bytes(preview)
         export_id=str(uuid.uuid4());body={"directory":str(home/"exports"),"export_id":export_id}
         status,saved,_=request("POST",f'/api/tasks/{task["id"]}/export',body);check("actual export saved",status==200 and len(saved["saved_paths"])==2,saved)
