@@ -197,6 +197,9 @@ if ($missing -gt 0 -or $bad -gt 0) {
 Pass 'cache-integrity' ("{0} files verified byte-identical" -f $srcList.Count)
 
 # ---------- sample PDFs (self-made, inside root) ----------------------------------
+# These owned directories may be absent after the long asset precheck. Ensure
+# them at the point of use; do not infer why an earlier empty directory vanished.
+foreach ($ownedDir in @($workDir, $logDir)) { New-Item -ItemType Directory -Path $ownedDir -Force | Out-Null }
 $genPy = @'
 import sys
 import pymupdf
