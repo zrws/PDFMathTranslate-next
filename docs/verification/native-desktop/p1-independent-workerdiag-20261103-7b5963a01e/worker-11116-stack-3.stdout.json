@@ -1,0 +1,12 @@
+[
+  {
+    "pid": 11116,
+    "thread_id": 20440,
+    "thread_name": null,
+    "os_thread_id": 20440,
+    "active": true,
+    "owns_gil": true,
+    "frames": [],
+    "process_info": null
+  }
+]

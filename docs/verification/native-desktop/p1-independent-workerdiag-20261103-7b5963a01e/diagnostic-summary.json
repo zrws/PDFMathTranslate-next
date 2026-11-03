@@ -1,0 +1,405 @@
+{
+  "scope": "one independent authorized API acceptance; no UI; py-spy only owned worker; no locals",
+  "acceptance_exit": 0,
+  "control_exit": 0,
+  "passed": true,
+  "check_count": 30,
+  "elapsed_seconds": 117.3237771987915,
+  "task_id": "379cdc4f1b9d458a",
+  "stages": [
+    {
+      "ts": 1793719008.2156022,
+      "since_task_created": 0.07805442810058594,
+      "stage": "等待资源与工作线程",
+      "status": "queued",
+      "phase": "preparing"
+    },
+    {
+      "ts": 1793719008.2456386,
+      "since_task_created": 0.10809087753295898,
+      "stage": "准备翻译引擎",
+      "status": "running",
+      "phase": "preparing"
+    },
+    {
+      "ts": 1793719008.6780045,
+      "since_task_created": 0.5404567718505859,
+      "stage": "建立任务进程边界",
+      "status": "running",
+      "phase": "preparing"
+    },
+    {
+      "ts": 1793719008.7811067,
+      "since_task_created": 0.6435589790344238,
+      "stage": "加载图像处理模块",
+      "status": "running",
+      "phase": "preparing"
+    },
+    {
+      "ts": 1793719009.699437,
+      "since_task_created": 1.5618891716003418,
+      "stage": "加载翻译与排版模块",
+      "status": "running",
+      "phase": "preparing"
+    },
+    {
+      "ts": 1793719023.8913434,
+      "since_task_created": 15.753795623779297,
+      "stage": "准备排版模型与服务",
+      "status": "running",
+      "phase": "preparing"
+    },
+    {
+      "ts": 1793719050.5267532,
+      "since_task_created": 42.38920545578003,
+      "stage": "解析 PDF",
+      "status": "running",
+      "phase": "running"
+    },
+    {
+      "ts": 1793719052.5432117,
+      "since_task_created": 44.40566396713257,
+      "stage": "检查扫描页",
+      "status": "running",
+      "phase": "running"
+    },
+    {
+      "ts": 1793719054.9382188,
+      "since_task_created": 46.800671100616455,
+      "stage": "分析页面布局",
+      "status": "running",
+      "phase": "running"
+    },
+    {
+      "ts": 1793719056.7284522,
+      "since_task_created": 48.59090447425842,
+      "stage": "整理段落",
+      "status": "running",
+      "phase": "running"
+    },
+    {
+      "ts": 1793719058.5856173,
+      "since_task_created": 50.44806957244873,
+      "stage": "识别公式与样式",
+      "status": "running",
+      "phase": "running"
+    },
+    {
+      "ts": 1793719064.9338531,
+      "since_task_created": 56.796305418014526,
+      "stage": "排版译文",
+      "status": "running",
+      "phase": "finalizing"
+    },
+    {
+      "ts": 1793719066.975511,
+      "since_task_created": 58.837963342666626,
+      "stage": "整理字体",
+      "status": "running",
+      "phase": "finalizing"
+    },
+    {
+      "ts": 1793719070.6245282,
+      "since_task_created": 62.48698043823242,
+      "stage": "生成 PDF",
+      "status": "running",
+      "phase": "finalizing"
+    },
+    {
+      "ts": 1793719072.610959,
+      "since_task_created": 64.47341132164001,
+      "stage": "翻译完成 · 待保存",
+      "status": "done",
+      "phase": "finalizing"
+    },
+    {
+      "ts": 1793719073.4490452,
+      "since_task_created": 65.31149744987488,
+      "stage": "已有结果保存记录",
+      "status": "done",
+      "phase": "finalizing"
+    }
+  ],
+  "spy": [
+    {
+      "file": "worker-11116-stack-1.observed.json",
+      "pid": 11116,
+      "created": 1793719008.2481468,
+      "age_seconds": 20.927361488342285,
+      "actual_exit": 0,
+      "duration_seconds": 0.9942541122436523,
+      "threads": [
+        {
+          "thread_name": "Thread-1 (drain)",
+          "active": false,
+          "owns_gil": false,
+          "frames": [
+            {
+              "name": "wait",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+              "line": 355
+            },
+            {
+              "name": "get",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\queue.py",
+              "line": 171
+            },
+            {
+              "name": "drain",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\worker.py",
+              "line": 71
+            },
+            {
+              "name": "run",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+              "line": 1012
+            },
+            {
+              "name": "_bootstrap_inner",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+              "line": 1075
+            }
+          ]
+        },
+        {
+          "thread_name": "MainThread",
+          "active": false,
+          "owns_gil": false,
+          "frames": [
+            {
+              "name": "_create_inference_session",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\onnxruntime\\capi\\onnxruntime_inference_collection.py",
+              "line": 780
+            },
+            {
+              "name": "__init__",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\onnxruntime\\capi\\onnxruntime_inference_collection.py",
+              "line": 683
+            },
+            {
+              "name": "__init__",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\babeldoc\\docvision\\doclayout.py",
+              "line": 79
+            },
+            {
+              "name": "from_pretrained",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\babeldoc\\docvision\\doclayout.py",
+              "line": 107
+            },
+            {
+              "name": "load_onnx",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\babeldoc\\docvision\\base_doclayout.py",
+              "line": 46
+            }
+          ]
+        }
+      ],
+      "live_sse_phase_at_dump": "preparing",
+      "live_sse_stage_at_dump": "准备排版模型与服务"
+    },
+    {
+      "file": "worker-11116-stack-2.observed.json",
+      "pid": 11116,
+      "created": 1793719008.2481468,
+      "age_seconds": 43.00819158554077,
+      "actual_exit": 0,
+      "duration_seconds": 0.11258244514465332,
+      "threads": [
+        {
+          "thread_name": "Thread-4 (_monitor_memory_usage)",
+          "active": false,
+          "owns_gil": false,
+          "frames": [
+            {
+              "name": "_monitor_memory_usage",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\babeldoc\\format\\pdf\\high_level.py",
+              "line": 374
+            },
+            {
+              "name": "run",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+              "line": 1012
+            },
+            {
+              "name": "_bootstrap_inner",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+              "line": 1075
+            },
+            {
+              "name": "_bootstrap",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+              "line": 1032
+            }
+          ]
+        },
+        {
+          "thread_name": "asyncio_0",
+          "active": true,
+          "owns_gil": true,
+          "frames": [
+            {
+              "name": "fz_new_font_from_file",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pymupdf\\mupdf.py",
+              "line": 45531
+            },
+            {
+              "name": "JM_get_font",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pymupdf\\__init__.py",
+              "line": 15571
+            },
+            {
+              "name": "__init__",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pymupdf\\__init__.py",
+              "line": 6249
+            },
+            {
+              "name": "__init__",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\babeldoc\\format\\pdf\\document_il\\utils\\fontmap.py",
+              "line": 66
+            },
+            {
+              "name": "__init__",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\babeldoc\\format\\pdf\\document_il\\backend\\pdf_creater.py",
+              "line": 592
+            }
+          ]
+        },
+        {
+          "thread_name": "Thread-3 (cancel_recv_thread)",
+          "active": false,
+          "owns_gil": false,
+          "frames": [
+            {
+              "name": "recv",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\worker.py",
+              "line": 33
+            },
+            {
+              "name": "cancel_recv_thread",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\source\\pdf2zh_next\\high_level.py",
+              "line": 161
+            },
+            {
+              "name": "run",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+              "line": 1012
+            },
+            {
+              "name": "_bootstrap_inner",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+              "line": 1075
+            },
+            {
+              "name": "_bootstrap",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+              "line": 1032
+            }
+          ]
+        },
+        {
+          "thread_name": "Thread-1 (drain)",
+          "active": false,
+          "owns_gil": false,
+          "frames": [
+            {
+              "name": "wait",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+              "line": 355
+            },
+            {
+              "name": "get",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\queue.py",
+              "line": 171
+            },
+            {
+              "name": "drain",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\worker.py",
+              "line": 71
+            },
+            {
+              "name": "run",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+              "line": 1012
+            },
+            {
+              "name": "_bootstrap_inner",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+              "line": 1075
+            }
+          ]
+        },
+        {
+          "thread_name": "MainThread",
+          "active": false,
+          "owns_gil": false,
+          "frames": [
+            {
+              "name": "_poll",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\asyncio\\windows_events.py",
+              "line": 774
+            },
+            {
+              "name": "select",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\asyncio\\windows_events.py",
+              "line": 445
+            },
+            {
+              "name": "_run_once",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\asyncio\\base_events.py",
+              "line": 1961
+            },
+            {
+              "name": "run_forever",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\asyncio\\base_events.py",
+              "line": 645
+            },
+            {
+              "name": "run_forever",
+              "file": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\asyncio\\windows_events.py",
+              "line": 322
+            }
+          ]
+        }
+      ],
+      "live_sse_phase_at_dump": "running",
+      "live_sse_stage_at_dump": "解析 PDF"
+    },
+    {
+      "file": "worker-11116-stack-3.observed.json",
+      "pid": 11116,
+      "created": 1793719008.2481468,
+      "age_seconds": 63.83636450767517,
+      "actual_exit": 0,
+      "duration_seconds": 0.1214139461517334,
+      "threads": [
+        {
+          "thread_name": null,
+          "active": true,
+          "owns_gil": true,
+          "frames": []
+        }
+      ],
+      "live_sse_phase_at_dump": "finalizing",
+      "live_sse_stage_at_dump": "生成 PDF"
+    }
+  ],
+  "nonnull_local_fields": 0,
+  "source_drift_after_run": [],
+  "old_failure_comparison": {
+    "same_interpreter": true,
+    "same_acceptance_sha256": true,
+    "same_recorded_source_paths_and_hashes": true,
+    "recorded_source_count": 10
+  },
+  "load": {
+    "samples": 110,
+    "system_cpu_min": 1.8,
+    "system_cpu_max": 52.1,
+    "available_memory_min_bytes": 2225561600,
+    "available_memory_max_bytes": 4457304064
+  },
+  "remaining_owned": [],
+  "note": "Nonblocking py-spy and process memory queries add observer cost. No controlled reproduction of original concurrent build/pytest load; original timeout not erased.",
+  "trigger_limitation": "Trigger used persisted task state; non-persisted progress means only first dump was preparing. Dumps 2/3 aligned to live SSE as running/finalizing; do not infer 63s continuous startup.",
+  "provider_call_count": 5
+}

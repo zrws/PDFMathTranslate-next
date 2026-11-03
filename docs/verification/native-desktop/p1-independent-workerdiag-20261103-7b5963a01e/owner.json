@@ -1,0 +1,17 @@
+{
+  "pid": 15820,
+  "created": 1793718984.5485387,
+  "ppid": 10708,
+  "exe": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\python.exe",
+  "argv": [
+    "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\python.exe",
+    "-u",
+    "D:\\student\\翻译\\PDFMathTranslate-next\\tests\\native\\acceptance.py",
+    "--runtime-root",
+    "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime",
+    "--asset-root",
+    "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\runtime\\home\\.cache\\babeldoc",
+    "--evidence-root",
+    "D:\\student\\翻译\\PDFMathTranslate-next\\docs\\verification\\native-desktop\\p1-independent-workerdiag-20261103-7b5963a01e\\acceptance"
+  ]
+}

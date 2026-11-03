@@ -1,0 +1,22 @@
+[
+  {
+    "uninstall_exit": 0,
+    "bom": false,
+    "remaining": [
+      "中文程序文件.txt"
+    ],
+    "installed": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\中文清单-PDFMathTranslate-Codex-Test-ae51099aa59049f898ee1d15c37a9f8b",
+    "registry_removed": true,
+    "install_exit": 0
+  },
+  {
+    "uninstall_exit": 0,
+    "bom": true,
+    "remaining": [
+      "中文程序文件.txt"
+    ],
+    "installed": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\中文清单-PDFMathTranslate-Codex-Test-609839ad55804c238c55dbee7cba60ef",
+    "registry_removed": true,
+    "install_exit": 0
+  }
+]

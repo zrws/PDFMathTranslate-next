@@ -1,0 +1,32 @@
+﻿[
+    {
+        "run":  1,
+        "rootPid":  9576,
+        "backend":  "repo",
+        "logReadyObservedMs":  null,
+        "startupCompleteObservedMs":  null,
+        "apiReadyMs":  9373,
+        "root200Ms":  9455,
+        "exitedEarly":  false
+    },
+    {
+        "run":  2,
+        "rootPid":  25952,
+        "backend":  "repo",
+        "logReadyObservedMs":  9940,
+        "startupCompleteObservedMs":  9941,
+        "apiReadyMs":  9943,
+        "root200Ms":  9875,
+        "exitedEarly":  false
+    },
+    {
+        "run":  3,
+        "rootPid":  21596,
+        "backend":  "repo",
+        "logReadyObservedMs":  9473,
+        "startupCompleteObservedMs":  9475,
+        "apiReadyMs":  9479,
+        "root200Ms":  9395,
+        "exitedEarly":  false
+    }
+]

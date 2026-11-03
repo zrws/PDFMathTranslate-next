@@ -1,0 +1,2 @@
+﻿sys:1: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
+

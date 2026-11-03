@@ -1,0 +1,135 @@
+{
+  "passed": false,
+  "checks": [
+    {
+      "case": "health authenticated",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "health rejects missing bearer",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "host rejects spoof",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "origin rejects cross-site",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "initial SSE snapshot",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "settings actual capped policy",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "invalid settings rejected",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "settings failure preserves value",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "real PDF upload",
+      "passed": true,
+      "detail": {
+        "file_id": "062a2028__sample.pdf",
+        "filename": "sample.pdf",
+        "page_count": 1,
+        "size_bytes": 1204,
+        "sha256": "f84571c43f69fe5fa49b6ac2935a8a3626a418304a409799d076661cf0a98c56"
+      }
+    },
+    {
+      "case": "bounded preview PNG",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "real task accepted",
+      "passed": true,
+      "detail": {
+        "id": "538dabb6eb664ffe",
+        "filename": "sample.pdf",
+        "file_sha256": "f84571c43f69fe5fa49b6ac2935a8a3626a418304a409799d076661cf0a98c56",
+        "page_count": 1,
+        "lang_in": "en",
+        "lang_out": "zh-CN",
+        "options": {
+          "lang_in": "en",
+          "lang_out": "zh-CN",
+          "pages": "",
+          "no_dual": false,
+          "no_mono": false,
+          "auto_term_extraction": false,
+          "watermark_output_mode": "watermarked",
+          "export_dir": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-acceptance-4f5441466d7547e1b1f1738e430353f4\\exports",
+          "resource_policy": {
+            "tier": "balanced",
+            "document_concurrency": 1,
+            "local_compute_threads": 4,
+            "api_qps_cap": 4,
+            "api_inflight_limit": 8,
+            "preview_concurrency": 1,
+            "gpu": false
+          },
+          "engine": {
+            "service": "OpenAI",
+            "base_url": "http://127.0.0.1:62624/v1",
+            "model": "local-test-model"
+          },
+          "term_credential_provider": null,
+          "glossary_fingerprints": [],
+          "settings_fingerprint": "e74821dac8e7b8305775b48e823232c17764599f1bad1e34638541a086373a87"
+        },
+        "status": "queued",
+        "phase": "preparing",
+        "stage": "等待资源与工作线程",
+        "message": "排队中",
+        "error": "",
+        "progress": 0,
+        "revision": 1,
+        "created_at": 1793718217.8604317,
+        "finished_at": null,
+        "outputs": {},
+        "saved_paths": [],
+        "parent_task_id": null,
+        "output_identities": {}
+      }
+    },
+    {
+      "case": "create replay one task",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "same key different language conflict",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "genuine BabelDOC produced both outputs",
+      "passed": false,
+      "detail": "引擎启动或响应超时，请检查服务设置后重试。"
+    }
+  ],
+  "home": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-acceptance-4f5441466d7547e1b1f1738e430353f4",
+  "control_pid": 15124,
+  "control_actual_exit": 0,
+  "provider_calls": [],
+  "source_mode": "repository overlay",
+  "provenance_sha256": "7b1e3a0aeabd124097b56bd6e462103c527269269c0f79a8b28e45c86d756e40",
+  "mode": "real BabelDOC + loopback LLM fixture; commercial translation quality unverified"
+}

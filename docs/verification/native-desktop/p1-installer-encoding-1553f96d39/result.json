@@ -1,0 +1,22 @@
+[
+  {
+    "registry_removed": true,
+    "registry_key": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\PDFMathTranslate-Codex-Test-bc913401ea18_is1",
+    "remaining": [],
+    "install_exit": 0,
+    "uninstall_exit": 0,
+    "installed": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\中文清单-PDFMathTranslate-Codex-Test-bc913401ea18",
+    "registration_before": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\中文清单-PDFMathTranslate-Codex-Test-bc913401ea18\\",
+    "bom": false
+  },
+  {
+    "registry_removed": true,
+    "registry_key": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\PDFMathTranslate-Codex-Test-f6dfe97ba336_is1",
+    "remaining": [],
+    "install_exit": 0,
+    "uninstall_exit": 0,
+    "installed": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\中文清单-PDFMathTranslate-Codex-Test-f6dfe97ba336",
+    "registration_before": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\中文清单-PDFMathTranslate-Codex-Test-f6dfe97ba336\\",
+    "bom": true
+  }
+]

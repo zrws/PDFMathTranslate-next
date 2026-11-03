@@ -1,155 +1,69 @@
-# 原生桌面迁移主交接报告（审核入口）
+# 原生桌面本机复审交接
 
-> **2026-11-03 本机进行中（最高优先级）**：交接提交 `ab5d684df52aa1ec760eb25bc777932003b984b7`；当前功能分支 `codex/native-desktop-implementation-2026-11-03`。本机 P0 局部修复已通过独立 R2 复审；整体 P0 仍 BLOCKED，P1 未放行。实际新证据根为 `docs/verification/native-desktop/local-20261103-185155-62b09e4302734fcb96a99f734ef6003b`，不是下方历史根；诊断失败根保留，最终完整验收将用新根。用户已授权本地建立 SDK/Python/依赖/资产，正在准备，不再把缺本机运行环境当成停止实现的理由。
->
-> 本轮已改：路径发现/显式透传、recorder 中文空格参数与 WinPS 实际退出码、M1 精确绑定及缺项失败、M2 排除自测、M4 空目录也拒绝、M5 真实 hash 子进程失败与双流排水、seal 两遍自包含修复。局部 9/9 包括恢复8断言4日志、资产7项、路径8项、两遍digest、checker clean+24变异；不完整 gate 实际 exit1。独立审核/复审报告为 `LOCAL-PLAN-REVIEW-2026-11-03.md`、`LOCAL-P0-CODE-REVIEW-2026-11-03.md`、`LOCAL-P0-CODE-REVIEW-R2-2026-11-03.md`。无 WPF/性能/安装通过声明。未改 main/tag/Release/线上清单。
+本机Windows重新生成运行证据，不继承旧电脑缺失证据。分支 `codex/native-desktop-implementation-2026-11-03`，交接基点 `ab5d684df52aa1ec760eb25bc777932003b984b7`。精确最终构建与交付索引见末尾；历史工单/审核保持原样。
 
-以下为原电脑历史记录；其中“当前”“已完成”字样只适用于当时环境。
+## 安全门与环境
 
-> **当前状态快照（2026-11-03，优先于下方历史记录）**：P0 仍未放行 P1。最新 Codex 审核为 `docs/reviews/native-desktop/P0-CODEX-r2-review-2026-10-03.md`；随后独立安全门 `docs/reviews/native-desktop/P0-r2-integrated-safety-review-20261003-01.md` 的裁决为 **BLOCKED**，指出 B1、B2、M1–M5。先完成该报告 §4 的放行条件并取得独立复审，再开始 WPF 产品迁移。
->
-> 本次 GitHub 交接不会提交 `docs/verification/native-desktop/**` 下本机生成的运行记录、字体/ONNX 缓存或其他大体积测试缓存；相关报告路径在另一台电脑上可能不存在。不要把历史报告里的通过数量当作该电脑已经复核的证据。
+先修复P0路径可移植性、recovery8/4、OutDir大小写覆盖、entry-run封存扫描、矩阵选择、唯一输出根、attribution拒绝复用、资产负向与checker自测。独立克隆完整执行冻结24+4，最终checker实际0，并获未参与实现的代理复审，然后才实施产品。详见[状态文件](NATIVE_DESKTOP_IMPLEMENTATION_STATUS.md)和reviews/native-desktop/LOCAL-P0-*。
 
-> 本报告交独立审核 AI 使用。按固定结构维护，随实现推进逐节填充。
-> 实施规格：`docs/NATIVE_DESKTOP_OPTIMIZATION_PLAN_2026-09-28.md`
-> 进度状态：`docs/NATIVE_DESKTOP_IMPLEMENTATION_STATUS.md`
-> 报告只覆盖已实际发生的实现与验证；未发生的事项目标值不写入本报告。
+便携工具在 `D:\student\翻译\toolchains`：SDK10.0.403 / 私有运行时10.0.14、uv0.13.7、Inno6.7.1；CPython3.12.13和134项哈希锁依赖在忽略的.local。未改全局PATH/代理/系统SDK；只有测试安装器写自己的独立HKCU AppId并核清理。资源182项352451566字节，模型/字体不提交Git、不进安装包。下载准备与离线P0测试分开。
 
-## 1. 审核入口
+## 实现与验收映射
 
-- 项目路径：`D:\paper\PDFMathTranslate-next`
-- 分支：`codex/native-desktop-2026-09-28`（自 main@`b504906769f15a3b048e2336755a2d563b0cb1ae` 创建）
-- 迁移前基线提交：`b504906769f15a3b048e2336755a2d563b0cb1ae`（= 远程备份分支 `origin/codex/baseline-before-native-2026-09-28`）
-- 本次实现对应的提交号或提交范围：**尚无提交**（HEAD=b504906；整改产物全部未跟踪，创建本地提交待用户授权）
-- 尚未提交的修改：**用 `git status -u` 查看**（本机全局配置 `status.showUntrackedFiles=no` 会隐藏未跟踪文件，直接 `git status` 会误显"干净"）
-- 报告覆盖到哪个实现提交：尚无
-- 报告之后是否仍有改动：是（报告随实现持续更新，以"最后更新"为准）
+| 需求 | 当前行为与验证 |
+| --- | --- |
+| 原生产品 | desktop/PDFMathTranslate.Desktop默认替代WebView入口；实际Debug/Release构建、窗口运行。复用锁定WPF UI/Toolkit官方包与许可证。 |
+| 工作台/语言 | 原生导入/拖放处理、显式语言对、预览、有效引擎/输出/目录和提交。27项.NET含空路径回退、不常见语言/空选项；真实WPF设置API读回fa/更新opt-out。 |
+| 同步 | 共享行、增量/快照序号和实例识别、revision/终态保护；隐藏页面不清选择。outbox保留丢响应/重启的原key，旧响应不能清新操作。Python/.NET/实际WPF流程覆盖。 |
+| 保存 | 默认目录持久化、任务覆盖；PDF名_日期目录/版本；durable计划、排他建名、SHA回执、待验证和重试。真实UI丢响应恢复仍2文件，显式二次保存4文件。 |
+| 真实引擎 | 原BabelDOC0.6.2+回环LLM夹具（只替代远程文本服务，未模拟排版算法）；真实PDF/PNG/回执SHA。包级provenance证明确从payload导入，不混repo overlay。未做商业服务质量验收。 |
+| 取消恢复 | 有界启动/停滞超时、Job进程树回收、观察Future、读到EOF/finish；阻塞stdin取消与下一任务、实际接口取消重试有测试。偶发准备超时仍在风险表。 |
+| 资源 | 空闲不载入ONNX/布局，资源准备单独进度/取消；并发1，线程/QPS分开，最终值入快照；CPU provider默认，预览分页/边界/取消/缓存有界。 |
+| 数据 | 127项pytest包括全部GUI password字段脱敏、事务回滚、单写者、导出TTL/清理、SSE ticket/Origin/Host/token；零外联、独立home/用户哨兵不变。 |
+| 兼容 | Python CLI/Gradio源码、显式LegacyWebView仍留；旧入口共享home/单写者、随机token stdin和精确源注入。旧.NET编译0、真实HTTP6项0，旧WebView GUI未测试。 |
+| 更新 | fork Releases/latest.json、版本比较、SHA、旧opt-out迁移；错/缺hash和越界重定向拒绝；关闭文件后校验，启动前复验；启动失败保持后端；预览正式源请求0。原项目没有发布者签名验证。 |
+| 安装 | 中文EXE/路径/可选快捷方式/标准卸载元数据；拥有清单+SHA+祖先reparse检查；未知/修改文件和home/输出保留。中文分隔符实际缺陷已修，失败与两编码修复测试均保留；最终全矩阵见索引。 |
 
-## 2. 完成情况
+## 当前证据入口
 
-### P0 系统性测试与证据整治（当前轮，2026-10-02 完成）
+以下相对 `docs/verification/native-desktop`，不同批次不能替代另一个版本的全部验证。
 
-> **唯一当前验收证据根（P0 安全/证据体系）**：
-> `docs/verification/native-desktop/systematic-acceptance-20260930-01/`
-> ——S1–S6 全部关闭；24 冻结 mandatory + 4 新增（N01–N04）逐项映射（REQUIREMENTS.json）；机器派生覆盖矩阵 `runs/coverage-derive/matrix.csv`；全量负向矩阵 20/20（`runs/matrix-20261002-231058-111384/`）；guard 三模式 3/3；entry-gate 负向 5/5（含拒绝原因断言）；env 恢复 9/9；wrapper 变异 4/4 被拒；校验器 13 变异自测全拒；pytest 100 passed（net-guard 下零外联）；最终绑定校验 **360/360、0 失败、exit 0**（`EVIDENCE_CHECK.json` 由校验器自生成；实际退出与 stdout/stderr 独立记录于 `runs/checker-final-std/`）。
-> 审核链：安全门 A 首轮 BLOCKED（`P0-systematic-acceptance-safety-review-20260930-01.md`）→ 修复 → 复审 PASS（`...-r2.md`）；实施记录 `P0-systematic-acceptance-implementation-20260930.md`；独立最终复审 `P0-systematic-acceptance-final-review-20260930.md`。
-> 旧证据根（systematic-closure-20260929-01 等）整体为历史快照，不复用、不回填。
+| 批次 | 结果和范围 |
+| --- | --- |
+| p0-delivery-20261103-c72fd7361c | P0字节镜像；28覆盖/23负向/26变异；实际0。绝对路径checker用原克隆。 |
+| p1-pytest-8e3a98cddf | 最终Python功能字节127 passed/74 warnings/258.60s；实际0、零外联、哨兵不变。 |
+| p1-api-ui-fc01d7d9e0 + p1-ui-flow-4f51ca0917 | 31项API+WPF全流程；真实翻译/分页/丢响应/多版本。此后文案和更新偏好有修订，旧图底部长notice是修复前状态。 |
+| p1-ui-controls-e8b13908eb | fa/opt-out读回、缺安装器仍保持真实health；实际0。部分图截在导航动画中，不作最终可读图。 |
+| p1-final-package-e2e19a08a4 | R9包级API30项0，packaged=true/实际模块路径及10SHA，结果绑定provenanceSHA。其后Python未变，C#路径/安装清单修复另测。 |
+| p1-legacy-f804de3c05 | 认证200/无token401/设置200/错Origin403/单写者拒绝/正常退出，6项0。 |
+| p1-perf-8eadc0a4be | 3次进程冷启、约300s实际WPF+控制面空闲；CPU/private/thread/disk/load原始样本。OS缓存未清。 |
+| perf-before-20261103-929f769531 | 同机旧后端300.3s离线基线；不是旧完整桌面，旧翻译无成功吞吐。 |
+| p1-independent-workerdiag-20261103-7b5963a01e | 独立真实30项0；20.9s ONNX初始化、43s字体加载栈；不证明120s失败根因已修。 |
 
-### P0 基线与契约
+## 性能口径
 
-> **唯一当前基线入口（口径 A：当前仓库后端，正式测量）**：
-> `docs/verification/native-desktop/run-v2-20260928-120431/` + `P0-baseline-report.md` v2 §4.1
-> ——启动 apiReady 4.24/3.57/3.56s（n=3）、空闲 303.2s CPU 增量 0.45s（归一化 0.0074%）、private 末值 1488.5MB、预览 n=12 median 20ms/p95 35ms、manifest 齐备。
-> **v2 测量条件边界**：该 run 在无 net-guard、无权威资产预检、无 PIL PNG 解码的 harness v2 下采集——后续轮次增加的安全验证层不追溯保护该测量。后续受控性能对比可用此数据但须注明此限制。
-> **后续任何性能对比只允许与口径 A 同口径进行**；下方"历史"块与其余安装版数据整体作废为探索样本，禁止作为对比基线。
-> 本轮（acceptance-20260930-01）的短 smoke/归因/perprocess 为**功能与隔离验证运行**（`runs/baseline/run-v3-20260930-223345` 等），不替代口径 A 性能基线。
+旧后端private末值986.2MiB；新WPF Debug空闲private均值133.1MiB（峰155.1），控制面均值48.3MiB（峰48.5），另有约1.3MiB conhost。旧GUI未测，不能称整个应用减少95%。UI的300s CPU增量3.890625s（单核1.30%）、控制面0.515625s（单核0.172%）；12核归一化约0.108%/0.0144%。旧后端同机归一化0.0133%，**没有控制面空闲CPU改善的结论**。
 
-- 已实现且已验证（当前状态）：
-  - 方案 §1 现状逐条核实（P0-baseline-report.md §1，20 条，含 `__init__.py:27-30` 导入链与 WORK_DIR 漂移实证）
-  - BabelDOC 0.6.2 补丁归档 + 双向核验 + 洁净下载哈希（patch-verify-20260928-114134.txt）
-  - 测试隔离：`source/tests/conftest.py`；隔离 pytest **100 passed 且真实用户目录前后快照零变更**（run-v2-20260928-122042-pytest）
-  - 测量 harness v3：失败统一累计+单一退出点、stdout 仅观测、root200 必需、PNG 严格校验、缓存逐文件完整性校验、子进程 socket 出站防护（F2/F3/F4）
-  - 契约 v1.2（F1 导出内容身份/清理校验最终文件/5 验收案例；F5 唯一事件信封+四条生命周期+幂等 tombstone）
-  - 证据封存：两个合成样本 PDF（哈希与终审一致）+ 7 份脱敏日志（含 F3 下载尝试证据，原始+脱敏双哈希）
-- 已实现但未验证：
-  - 契约中的 P1 功能（SSE/回执/幂等/ticket）——本轮仅规范，标为"规范审核通过"，产品功能未实现未运行
-  - 真实翻译基线、完整桌面进程树（口径 C）、WPF 指标、GPU、长文档——延期清单见基线报告 §5
-- 未实现：P1 及以后全部工作包
-- 阻塞：无（.NET 10 SDK 未安装，P1 前需解决，见 STATUS 风险节）
+三次窗口1659.6/859.0/866.9ms、API4287.3/2953.4/3011.9ms、资源5767.2/4298.7/4436.1ms；分别观察，不以stdout替代API ready。新旧方式不同，不报告启动改善百分比。
 
-#### 历史（安装版 v2.9.0 探索样本，2026-09-28 上午测量；禁止用作对比基线）
+包级翻译样本记录整个进程树CPU/private/thread/disk，活动峰值仍达数GiB；按需加载把占用从空闲移到翻译期，不等于翻译零模型占用。GPU未采样、系统冷/热缓存未控制、长文档/商业吞吐未测，均不报推测值。压缩包/解压安装/资源/缓存分别记，Gradio是旧slim已有排除，不算新增优化。
 
-- 测量对象为安装版后端（与仓库 source 文件哈希不同）；启动 6.43/3.74/3.73s、空闲 0.005%、预览 mean 23.4ms/p95 57.6ms、翻译 1 单 40.98s（产物已清理、质量未验证）。原始数据：run-20260928-104200/；旧命令与口径细节见该轮 HANDOFF 历史记录，不在此重复。
+## 图像与人工边界
 
-### P1 原生端完整最小流程
+PNG是实际运行WPF visual tree/生产ViewModel和API/真实HWND的RenderTargetBitmap，非外部设计图。980DIP和150%/200%栅格图仅检查渲染，不能证明系统DPI。详见 `reviews/native-desktop/LOCAL-UI-AUDIT-2026-11-03.md`。
 
-- 未开始
+computer-use两入口均在初始化报 `failed to write kernel assets: 系统找不到指定的路径 (os error 3)`。未用shell输入注入绕过。**未验证**：原生文件/目录对话框点击键盘、OS拖放、跨屏DPI、读屏/高对比、Geek GUI、安装向导逐页点击。标准注册表发现与静默EXE生命周期另用实际测试，不能由读脚本推断。
 
-### P2 资源治理
+## 失败与风险
 
-- 未开始
+1. `p1-ui-current-121182c049` 首任务120s准备超时，未进入UI流程。同10模块/解释器/夹具的独立30项成功，诊断见ONNX和字体加载；未受控复现同负载，根因仍未知。有界错误/重试存在，不称故障消失。
+2. `p1-install-fde31af299` 前6项通过，Release未启后端；已证明null环境清理留下空字符串，旧回退误用空目录。现RuntimePaths忽略空白，明确app-relative私有.NET；最终包必须另测。
+3. 中文owned卸载残留的BOM-only尝试失败。日志显示Pos字节索引与Copy字符索引混用；UnicodePos统一字符单位，保留路径防护。失败与修复前后真实测试保留。
+4. 安装检查/删除不是抵抗恶意并发替换的原子操作，不宣称防管理员TOCTOU；未知/修改文件主动保留。
+5. SHA256不是发布者签名；更新假feed不执行假安装器，真实EXE生命周期由独立测试安装器覆盖。线上Release/tag/latest.json未改。
 
-### P3 功能齐备与本地发布验证
+多轮独立审核找到并关闭快照、导出锁、worker收尾/子进程导入、更新偏好/失败恢复、源码集合/安装预检阻断，见 `LOCAL-P1-*`。最终总审仍须读最新diff、包provenance、完整安装矩阵、可读图像和测量边界。供复审分支不意味着可合并/发布。
 
-- 未开始
+## 最终交付索引
 
-## 3. 改动清单
-
-P0 阶段（全部为新增文件，无源码行为修改；提交前以 `git status` 为准）：
-
-| 文件/模块 | 目的 | 行为变化 | 兼容方式 | 风险 |
-|---|---|---|---|---|
-| docs/NATIVE_DESKTOP_IMPLEMENTATION_STATUS.md | 进度/上下文恢复入口 | 无 | — | — |
-| docs/NATIVE_DESKTOP_REVIEW_HANDOFF.md | 本报告 | 无 | — | — |
-| docs/DESKTOP_API_CONTRACT.md | P1+ 接口契约 | 无（规范文档） | — | — |
-| docs/verification/native-desktop/* | 基线测量证据（脱敏） | 无 | — | 证据目录含运行日志，不含密钥/用户文档内容 |
-| tests/performance/p0_baseline.ps1 | 基线测量 harness | 无 | PS 5.1 兼容（ASCII） | 运行会启动后端进程（隔离 PDF2ZH_HOME） |
-| tests/performance/p0_probe_perprocess.ps1 | 按进程内存分解探针 | 无 | 同上 | 同上 |
-| build/patches/babeldoc/0001-assets-upstream-env.patch | 把安装环境的 BabelDOC 手改固化为可复现补丁 | 无（归档） | 受控构建时应用并校验哈希 | 若上游更换版本需重新核对 |
-
-## 4. 需求验收表
-
-（随实现提交填充；特别覆盖：进度同步、语言选择、保存目录、多版本输出、安装、卸载、更新隔离）
-
-## 5. 构建与测试记录
-
-### 5.1 现有测试套件（P0 测试条件核实）
-
-- 日期：2026-09-28；工作目录：`D:\paper\PDFMathTranslate-next\source`
-- 命令：`$env:PYTHONPATH='D:\paper\PDFMathTranslate-next\source;D:\paper\pdf2zh-install-test\uv-tools\pdf2zh-next\Lib\site-packages'; $env:PDF2ZH_HOME="$env:TEMP\pdf2zh-p0-testhome"; & D:\paper\pdf2zh-test-venv\Scripts\python.exe -m pytest tests -q --no-header`
-- 工具版本：pytest 9.1.1（隔离 venv `D:\paper\pdf2zh-test-venv`，由产品 python 3.12.13 `--system-site-packages` 创建，未改动产品 site-packages）；Python 3.12.13
-- 退出码：0；关键输出：`100 passed, 74 warnings in 18.44s`（警告为 gui.py:856 Pydantic V2.11 deprecation）；`pdf2zh_next` 实际从仓库 source 导入（已验证 `__file__`）
-
-### 5.2 BabelDOC 补丁核查（P0）
-
-- 日期：2026-09-28；方法：dist-info/RECORD 逐文件 SHA256（352 个）+ 对比 PyPI 官方 wheel
-- 结论：唯一失配文件 `babeldoc/assets/assets.py`（BABELDOC_ASSETS_UPSTREAM 支持）；官方 wheel SHA256 `FA7252AA2B4B57C833334A0AB3F3466A1DE8300953AAFF86B53CD5DF4B30DB1E`
-- 证据：`build/patches/babeldoc/0001-assets-upstream-env.patch`
-
-### 5.3 基线测量（P0）——【历史记录，已被收尾轮取代；当前基线以 §2 顶部口径 A 入口为准】
-
-- 历史（安装版探索样本，2026-09-28 上午；harness v1；隔离与失败判定弱于 v3，数据仅探索参考）：Windows 11、20 逻辑核；隔离 PDF2ZH_HOME=%TEMP%\pdf2zh-p0-baseline（缓存 336.2 MiB 从安装 home 复制）；样本 PDF 为本地生成非用户文档；原始证据 run-20260928-104200/。
-- 历史 h1 备注：harness v1 开发过程失败 3 次（PS 5.1 流事件冲突、缺 System.Net.Http 程序集、漏设 PYTHONPATH）；当时失败运行证据目录现**已删除**（收尾轮如实登记为缺失，不重造）。
-- 当前（口径 A，正式）：见 §2 顶部唯一基线入口。**该基线在 harness v2 下采集**（无 net-guard/权威资产预检/PIL 解码——见 §2 顶部测量条件边界）；当前 harness 为 v4（含失败注入、net-guard、权威资产预检、PIL 解码），仅用于后续安全验证，不追溯改变 v2 测量条件。
-
-## 6. 性能对比
-
-- 未测对比：P0 仅采集**修改前基线**；任何修改后数据必须与 §5.3 同口径（进程树、归一化 CPU、隔离 home、相同样本与档位）采集后方可比较。
-- 基线快照：`docs/verification/native-desktop/run-v2-20260928-120431/`（口径 A 正式，已封存）。
-
-## 7. UI 与安装验证
-
-- 未开始（P1 起）
-
-## 8. 自动更新安全核对
-
-- push / tag / Release：**未执行**（无授权）
-- 生产 latest.json / 线上安装包：**未触碰**
-- 更新源：未变化
-- 开发预览与正式更新隔离：P1 设计时落实，尚未实施
-
-## 9. 独立审核与整改
-
-### 第一轮 P0 审核（GLM 子代理，2026-09-28 上午）
-
-- 审核者：独立审核代理（未参与实现，general-purpose 子代理）
-- 实际审核范围：本报告、STATUS、契约、基线报告、run-20260928-104200 全部证据、两个 harness 脚本、补丁归档；实核方案 §1 断言 19 条（含行号）；复跑 pytest（100 passed）；独立复验 BabelDOC 补丁（RECORD 全 352 条重算 + 代理下载官方 wheel 逐文件对比 350 个 + RECORD 差异归因）
-- 审核报告：`docs/reviews/native-desktop/P0-review.md`
-- 结论：**阻断 0 / 一般 2 / 建议 8，建议放行 P0**
-- 其后 CODEX 独立审核（`P0-CODEX-review-2026-09-28.md`，R1–R6）认定 P0 需整改、暂不放行；**两份审核均保留不覆盖，以 CODEX 结论为准进入整改轮**。
-
-### 整改轮（2026-09-28 下午，依据 P0-remediation-prompt-2026-09-28.md）
-
-- WP1 测量入口安全：三个 harness 脚本 + `source/tests/conftest.py` 重写；独立安全审核 `P0-harness-safety-review.md`（阻断 0/一般 3/建议 7，"允许试运行"）；3 项一般问题（G1 归因探针失败路径不回收、G2 翻译 skip 恒致 exit 2、G3 探针遗留复查缺失）已修复后运行。
-- WP2 离线证据：基线报告重写为 v2（`docs/verification/native-desktop/P0-baseline-report.md`）——测量对象三分口径（仓库后端基线/安装版探索样本/完整桌面基线延期）；口径 A 正式测量（run-v2-20260928-120431：apiReady 4.24/3.57/3.56s、空闲 303.2s CPU 增量 0.45s 归一化 0.0074%、private 末值 1488.5MB、预览 n=12 median 20ms p95 35ms）+ manifest（babeldoc 0.6.2/pymupdf 1.25.2/onnxruntime 1.27.0）；归因 v2（导入握手+全环境隔离：http_api 导入 1416.7MB，与 `__init__.py:27-30` 导入链吻合）；隔离 pytest **100 passed 且真实用户目录前后快照零变更**（run-v2-20260928-122042-pytest）；统计修正（58 样本、private 最大 1490.2=首值、线程 42–51、预览中位 20.3ms）；撤销 v1 三项错误结论（stdout≈API 等价、"5 分钟证明非泄漏"、"12 次=UI P95"）。
-- WP3 契约 v1.1：R4 导出身份改为内容校验（允许另存为改名/冲突后缀、同 export_id 异载荷 409、暂存清理前置、外置盘离线=待验证）；R5 retry 幂等、SSE wire 格式/水位/重放/溢出/竞态测试清单、鉴权传递格式（Bearer/WebView2 头注入/一次性短时效 ticket）、目录所有权与单写者、环境变量边界、P1/P2 归属标注。
-- WP4 补丁核验：反向应用=官方 wheel 文件哈希（208B394D…）、正向重放=安装文件哈希（3261EFFF…）、py_compile 通过、洁净下载 wheel 哈希核验通过（FA7252AA…，与 uv.lock 一致）；证据 `patch-verify-20260928-114134.txt`；全程临时副本，site-packages 未动。
-- R1 整改落实：测量写入真实安装目录问题根除（v2 数据全落隔离根）；真实 home 污染查明并清理（config.fake.pdf 删除；cache WAL/SHM 触碰如实记录，用户缓存 db 本体未动）；全部运行带快照对照。
-- 整改轮独立复审：见 `docs/reviews/native-desktop/P0-remediation-review.md`（复审代理写入）。
-- 本轮约束：未 commit/push/tag（未获新授权）；未调用真实翻译；未修改产品源码与安装环境；conftest.py 属用户授权的"测试隔离辅助文件"。
-
-## 10. 后续审核重点与回退
-
-- 回退参考提交：`b504906769f15a3b048e2336755a2d563b0cb1ae`（迁移前基线）
-- 回退注意事项：不得自动执行；用户数据目录与导出文件不在 Git 内，回退代码不影响用户数据
-- 后续审核重点：随阶段填充
+最终构建/安装/图像批次和独立总审完成后填入；该段空缺期间不作为最终完成凭据。

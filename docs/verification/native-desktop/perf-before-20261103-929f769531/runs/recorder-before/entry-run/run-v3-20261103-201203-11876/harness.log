@@ -1,0 +1,15 @@
+﻿[20:12:03.498] staging babeldoc cache into isolated home (read-only borrow)...
+[20:12:09.642] verifying required assets against LOCKED babeldoc metadata (SHA3-256)...
+[20:12:33.455] verifying cache copy consistency (per-file SHA256, source vs staged copy)...
+[20:12:40.811] run 1 started (rootPid 9576) inject=none
+[20:12:51.128] startup run 1: {"run":1,"rootPid":9576,"backend":"repo","logReadyObservedMs":null,"startupCompleteObservedMs":null,"apiReadyMs":9373,"root200Ms":9455,"exitedEarly":false}
+[20:17:51.486] idle: wall=300.3s cpuDelta=0.48s norm=0.0133% privEnd=986.2MB wsEnd=315.2MB
+[20:17:55.380] translation: never submitted (offline requirement, note only)
+[20:17:58.996] run 2 started (rootPid 25952) inject=none
+[20:18:09.313] startup run 2: {"run":2,"rootPid":25952,"backend":"repo","logReadyObservedMs":9940,"startupCompleteObservedMs":9941,"apiReadyMs":9943,"root200Ms":9875,"exitedEarly":false}
+[20:18:09.317] translation: never submitted (offline requirement, note only)
+[20:18:12.818] run 3 started (rootPid 21596) inject=none
+[20:18:22.765] startup run 3: {"run":3,"rootPid":21596,"backend":"repo","logReadyObservedMs":9473,"startupCompleteObservedMs":9475,"apiReadyMs":9479,"root200Ms":9395,"exitedEarly":false}
+[20:18:22.769] translation: never submitted (offline requirement, note only)
+[20:18:26.556] DONE failures=0 evidence=D:\student\翻译\PDFMathTranslate-next\docs\verification\native-desktop\perf-before-20261103-929f769531\runs\recorder-before\entry-run\run-v3-20261103-201203-11876
+[20:18:26.562] temp root preserved (not auto-deleted): D:\student\翻译\PDFMathTranslate-next\.local\p0-temp\pdf2zh-p0-20261103-201203-11876

@@ -1,0 +1,43 @@
+{
+  "argv": [
+    "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\python.exe",
+    "-u",
+    "D:\\student\\翻译\\PDFMathTranslate-next\\tests\\native\\acceptance.py",
+    "--runtime-root",
+    "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime",
+    "--asset-root",
+    "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\runtime\\home\\.cache\\babeldoc",
+    "--evidence-root",
+    "D:\\student\\翻译\\PDFMathTranslate-next\\docs\\verification\\native-desktop\\p1-independent-workerdiag-20261103-7b5963a01e\\acceptance"
+  ],
+  "script_hashes": {
+    "D:\\student\\翻译\\PDFMathTranslate-next\\tests\\native\\acceptance.py": "77177250b78ee6a855fb99104486f18934c916c84a860ac7bd14c382f3d8531f",
+    "D:\\student\\翻译\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\engine.py": "63836dad302ddaeb8916b8dde48d530b5bd83d0e580ef82990b1fb74159e1c88",
+    "D:\\student\\翻译\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\worker.py": "6105d82a5f87df356214df43a44237e0bcd25e2e3436fd539bac2ac35b5012ea",
+    "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\debug-tools\\bin\\py-spy.exe": "ae893db8c26730a8158cfefde9a65833c137eee8fe72b56aee061b318aa8effe",
+    "D:\\student\\翻译\\PDFMathTranslate-next\\docs\\verification\\native-desktop\\p1-independent-workerdiag-20261103-7b5963a01e\\driver.py": "d1bf25461fb342fbd4213c7a22181c7b09796b14ec3bd389bbffbbf3c2cd2ed1"
+  },
+  "started": 1793718983.8311825,
+  "timeout_seconds": 360,
+  "stack_condition": "owned desktop.worker preparing/loading at age >=20s; repeat every 20s, max 5 per worker",
+  "spy_options": [
+    "dump",
+    "--json",
+    "--full-filenames",
+    "--nonblocking"
+  ],
+  "scope": "one existing loopback LLM acceptance; no UI; no locals/native/other-process dump",
+  "parent_reported_load": "r9 clean full installer build and test installer compilation; concurrent pytest in failed original run",
+  "background_logs": [
+    {
+      "name": "native-build-r9.txt",
+      "size": 2882927,
+      "mtime": 1793718732.2451622
+    },
+    {
+      "name": "prepare-installers-r1.txt",
+      "size": 75,
+      "mtime": 1793718933.647342
+    }
+  ]
+}

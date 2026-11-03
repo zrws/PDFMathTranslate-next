@@ -1,0 +1,61 @@
+{
+  "startup": {
+    "ui_pid": 16712,
+    "control_pid": 28232,
+    "window_ready_ms": 1659.5787,
+    "api_ready_ms": 4287.3045,
+    "resources_ready_ms": 5767.1592,
+    "idle_started_utc": 1793715875.684
+  },
+  "rows": [
+    {
+      "monotonic": 400961.359,
+      "utc": 1793715875.9301353,
+      "system_cpu_percent": 21.5,
+      "available_memory": 4022382592,
+      "ui": {
+        "pid": 16712,
+        "created": 1793715869.9176748,
+        "private_bytes": 167714816,
+        "working_set_bytes": 266870784,
+        "cpu_seconds": 4.15625,
+        "threads": 37,
+        "read_bytes": 24250098,
+        "write_bytes": 307498,
+        "children": [
+          {
+            "pid": 28232,
+            "name": "python.exe",
+            "exe": "D:\\student\\\u7ffb\u8bd1\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\python.exe",
+            "private_bytes": 52219904
+          },
+          {
+            "pid": 24264,
+            "name": "conhost.exe",
+            "exe": "C:\\Windows\\System32\\conhost.exe",
+            "private_bytes": 1323008
+          }
+        ]
+      },
+      "control": {
+        "pid": 28232,
+        "created": 1793715871.600806,
+        "private_bytes": 52219904,
+        "working_set_bytes": 68321280,
+        "cpu_seconds": 2.875,
+        "threads": 11,
+        "read_bytes": 361506195,
+        "write_bytes": 27955,
+        "children": [
+          {
+            "pid": 24264,
+            "name": "conhost.exe",
+            "exe": "C:\\Windows\\System32\\conhost.exe",
+            "private_bytes": 1323008
+          }
+        ]
+      }
+    }
+  ],
+  "actual_exit": 0
+}

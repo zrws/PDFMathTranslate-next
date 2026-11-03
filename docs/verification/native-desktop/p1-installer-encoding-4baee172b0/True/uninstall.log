@@ -1,0 +1,38 @@
+﻿2026-11-03 23:37:30.338   Log opened. (Time zone: UTC+08:00)
+2026-11-03 23:37:30.338   Setup version: Inno Setup version 6.7.1
+2026-11-03 23:37:30.338   Original Uninstall EXE: D:\student\翻译\PDFMathTranslate-next\.local\中文清单-PDFMathTranslate-Codex-Test-609839ad55804c238c55dbee7cba60ef\unins000.exe
+2026-11-03 23:37:30.338   Uninstall DAT: D:\student\翻译\PDFMathTranslate-next\.local\中文清单-PDFMathTranslate-Codex-Test-609839ad55804c238c55dbee7cba60ef\unins000.dat
+2026-11-03 23:37:30.338   Current Uninstall EXE: C:\Users\ADMINI~1\AppData\Local\Temp\is-V18ES8ZR30-uninstall.tmp\_unins.tmp
+2026-11-03 23:37:30.338   Uninstall command line: /SECONDPHASE="D:\student\翻译\PDFMathTranslate-next\.local\中文清单-PDFMathTranslate-Codex-Test-609839ad55804c238c55dbee7cba60ef\unins000.exe" /FIRSTPHASEWND=$1C0A66 /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /LOG="D:\student\翻译\PDFMathTranslate-next\docs\verification\native-desktop\p1-installer-encoding-4baee172b0\True\uninstall.log"
+2026-11-03 23:37:30.339   Windows version: 10.0.26200
+2026-11-03 23:37:30.339   Windows architecture: x64 (64-bit)
+2026-11-03 23:37:30.339   Machine types supported by system: x86 x64
+2026-11-03 23:37:30.339   User privileges: Administrative
+2026-11-03 23:37:30.339   Administrative install mode: No
+2026-11-03 23:37:30.339   Install mode root key: HKEY_CURRENT_USER
+2026-11-03 23:37:30.339   RedirectionGuard status for current process: Enabled in enforcing mode
+2026-11-03 23:37:30.339   Cleaning up any residual temporary files from previous Uninstall runs.
+2026-11-03 23:37:30.341   Deleted file: C:\Users\ADMINI~1\AppData\Local\Temp\is-XX9PVGPZOX-uninstall.tmp\_unins.tmp
+2026-11-03 23:37:30.341   Cleanup finished (2 directories found, 2 directories checked, 1 files deleted).
+2026-11-03 23:37:30.343   Created protected temporary directory: C:\Users\ADMINI~1\AppData\Local\Temp\is-7Y3D95NTPY.tmp
+2026-11-03 23:37:30.345   -- DLL function import --
+2026-11-03 23:37:30.345   Function and DLL name: GetFileAttributesW@kernel32.dll
+2026-11-03 23:37:30.345   Importing the DLL function. Dest DLL name: kernel32.dll
+2026-11-03 23:37:30.345   Successfully imported the DLL function. Delay loaded? No
+2026-11-03 23:37:30.345   -- DLL function import --
+2026-11-03 23:37:30.345   Function and DLL name: GetLastError@kernel32.dll
+2026-11-03 23:37:30.345   Importing the DLL function. Dest DLL name: kernel32.dll
+2026-11-03 23:37:30.345   Successfully imported the DLL function. Delay loaded? No
+2026-11-03 23:37:30.369   保留路径不受许可的程序文件：中文程序文件.txt|03A2F
+2026-11-03 23:37:30.370   Starting the uninstallation process.
+2026-11-03 23:37:30.371   Deleting registry key: HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Uninstall\PDFMathTranslate-Codex-Test-609839ad55804c238c55~A2D1BB1F_is1
+2026-11-03 23:37:30.371   Deleting directory: D:\student\翻译\PDFMathTranslate-next\.local\中文清单-PDFMathTranslate-Codex-Test-609839ad55804c238c55dbee7cba60ef
+2026-11-03 23:37:30.371   Failed to delete directory (145). Will retry later.
+2026-11-03 23:37:30.376   Deleting Uninstall data files.
+2026-11-03 23:37:30.376   Creating "_unins-done.tmp" file.
+2026-11-03 23:37:30.930   Deleting directory: D:\student\翻译\PDFMathTranslate-next\.local\中文清单-PDFMathTranslate-Codex-Test-609839ad55804c238c55dbee7cba60ef
+2026-11-03 23:37:30.930   Failed to delete directory (145).
+2026-11-03 23:37:30.930   Uninstallation process succeeded.
+2026-11-03 23:37:30.930   Removed all? Yes
+2026-11-03 23:37:30.930   Need to restart Windows? No
+2026-11-03 23:37:30.932   Log closed.

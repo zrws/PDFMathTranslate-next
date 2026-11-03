@@ -1,0 +1,57 @@
+{
+  "retention": "unknown/modified files retained, empty directories only; test sentinels deliberately retained",
+  "install_root": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\安装 验证-7c38cfe228",
+  "app_id": "PDFMathTranslate-Codex-Test-14355f0771cf",
+  "first_installer": "D:\\student\\翻译\\PDFMathTranslate-next\\dist\\install-tests-14355f0771cf\\PDFMathTranslate-Setup-2.9.0.exe",
+  "checks": [
+    {
+      "case": "中文路径安装实际退出0",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "标准卸载发现信息完整",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "开始菜单快捷方式",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "桌面快捷方式",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "初版拥有待淘汰文件",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "中文相对路径的程序文件已安装",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "安装版 Release 实际启动并建立隔离后端状态",
+      "passed": false,
+      "detail": {
+        "pid": 22464,
+        "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\安装 验证-7c38cfe228\\PDFMathTranslate.exe",
+        "home": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\install-profile-fd4f745bce",
+        "started": "2026-11-03T23:20:27.5535498+08:00"
+      }
+    }
+  ],
+  "cleanup": {
+    "attempted": true,
+    "registry_removed": true,
+    "actual_exit": 0
+  },
+  "scope": "real silent EXE install/upgrade/uninstall and standard registry discovery; Geek GUI and installer mouse input not tested",
+  "passed": false,
+  "group": "PDFMathTranslate-Codex-Test-14355f0771cf",
+  "upgrade_installer": "D:\\student\\翻译\\PDFMathTranslate-next\\dist\\install-tests-14355f0771cf\\PDFMathTranslate-Setup-2.9.1.exe"
+}

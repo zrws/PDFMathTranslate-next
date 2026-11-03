@@ -1,0 +1,55 @@
+{
+  "worker": {
+    "pid": 11116,
+    "created": 1793719008.2481468,
+    "ppid": 12272,
+    "exe": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\python.exe",
+    "argv": [
+      "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\python.exe",
+      "-u",
+      "-m",
+      "pdf2zh_next.desktop.worker",
+      "--translate"
+    ],
+    "private_bytes": 736563200,
+    "cpu_seconds": 4.5625,
+    "tasks": [
+      {
+        "id": "379cdc4f1b9d458a",
+        "status": "running",
+        "phase": "preparing",
+        "stage": "准备排版模型与服务",
+        "revision": 6,
+        "created_at": 1793719008.1375477,
+        "finished_at": null
+      }
+    ]
+  },
+  "task_states": [
+    {
+      "id": "379cdc4f1b9d458a",
+      "status": "running",
+      "phase": "preparing",
+      "stage": "准备排版模型与服务",
+      "revision": 6,
+      "created_at": 1793719008.1375477,
+      "finished_at": null
+    }
+  ],
+  "argv": [
+    "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\debug-tools\\bin\\py-spy.exe",
+    "dump",
+    "--pid",
+    "11116",
+    "--json",
+    "--full-filenames",
+    "--nonblocking"
+  ],
+  "started": 1793719029.1755083,
+  "no_locals": true,
+  "actual_exit": 0,
+  "stdout_sha256": "8e6ac69066560ed080cde53e23eb7f6116938e85487a533cc68080a5f535f256",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "ended": 1793719030.1697624,
+  "worker_exit_code_after_dump": 259
+}

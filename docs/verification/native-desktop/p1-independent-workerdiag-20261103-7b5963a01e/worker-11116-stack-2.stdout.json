@@ -1,0 +1,467 @@
+[
+  {
+    "pid": 11116,
+    "thread_id": 12368,
+    "thread_name": "Thread-4 (_monitor_memory_usage)",
+    "os_thread_id": 12368,
+    "active": false,
+    "owns_gil": false,
+    "frames": [
+      {
+        "name": "_monitor_memory_usage",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\babeldoc\\format\\pdf\\high_level.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\babeldoc\\format\\pdf\\high_level.py",
+        "line": 374,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": true
+      },
+      {
+        "name": "run",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+        "line": 1012,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "_bootstrap_inner",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+        "line": 1075,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "_bootstrap",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+        "line": 1032,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": true
+      }
+    ],
+    "process_info": null
+  },
+  {
+    "pid": 11116,
+    "thread_id": 17584,
+    "thread_name": "asyncio_0",
+    "os_thread_id": 17584,
+    "active": true,
+    "owns_gil": true,
+    "frames": [
+      {
+        "name": "fz_new_font_from_file",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pymupdf\\mupdf.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pymupdf\\mupdf.py",
+        "line": 45531,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "JM_get_font",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pymupdf\\__init__.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pymupdf\\__init__.py",
+        "line": 15571,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "__init__",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pymupdf\\__init__.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pymupdf\\__init__.py",
+        "line": 6249,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": true
+      },
+      {
+        "name": "__init__",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\babeldoc\\format\\pdf\\document_il\\utils\\fontmap.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\babeldoc\\format\\pdf\\document_il\\utils\\fontmap.py",
+        "line": 66,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": true
+      },
+      {
+        "name": "__init__",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\babeldoc\\format\\pdf\\document_il\\backend\\pdf_creater.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\babeldoc\\format\\pdf\\document_il\\backend\\pdf_creater.py",
+        "line": 592,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": true
+      },
+      {
+        "name": "process",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\babeldoc\\format\\pdf\\document_il\\midend\\detect_scanned_file.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\babeldoc\\format\\pdf\\document_il\\midend\\detect_scanned_file.py",
+        "line": 91,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "_do_translate_single",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\babeldoc\\format\\pdf\\high_level.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\babeldoc\\format\\pdf\\high_level.py",
+        "line": 883,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "do_translate",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\babeldoc\\format\\pdf\\high_level.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\babeldoc\\format\\pdf\\high_level.py",
+        "line": 488,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "run",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\concurrent\\futures\\thread.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\concurrent\\futures\\thread.py",
+        "line": 59,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "_worker",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\concurrent\\futures\\thread.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\concurrent\\futures\\thread.py",
+        "line": 93,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "run",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+        "line": 1012,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "_bootstrap_inner",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+        "line": 1075,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "_bootstrap",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+        "line": 1032,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": true
+      }
+    ],
+    "process_info": null
+  },
+  {
+    "pid": 11116,
+    "thread_id": 16868,
+    "thread_name": "Thread-3 (cancel_recv_thread)",
+    "os_thread_id": 16868,
+    "active": false,
+    "owns_gil": false,
+    "frames": [
+      {
+        "name": "recv",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\worker.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\worker.py",
+        "line": 33,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "cancel_recv_thread",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\source\\pdf2zh_next\\high_level.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\source\\pdf2zh_next\\high_level.py",
+        "line": 161,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "run",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+        "line": 1012,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "_bootstrap_inner",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+        "line": 1075,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "_bootstrap",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+        "line": 1032,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": true
+      }
+    ],
+    "process_info": null
+  },
+  {
+    "pid": 11116,
+    "thread_id": 24108,
+    "thread_name": "Thread-1 (drain)",
+    "os_thread_id": 24108,
+    "active": false,
+    "owns_gil": false,
+    "frames": [
+      {
+        "name": "wait",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+        "line": 355,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "get",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\queue.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\queue.py",
+        "line": 171,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "drain",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\worker.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\worker.py",
+        "line": 71,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "run",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+        "line": 1012,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "_bootstrap_inner",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+        "line": 1075,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "_bootstrap",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\threading.py",
+        "line": 1032,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": true
+      }
+    ],
+    "process_info": null
+  },
+  {
+    "pid": 11116,
+    "thread_id": 20440,
+    "thread_name": "MainThread",
+    "os_thread_id": 20440,
+    "active": false,
+    "owns_gil": false,
+    "frames": [
+      {
+        "name": "_poll",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\asyncio\\windows_events.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\asyncio\\windows_events.py",
+        "line": 774,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "select",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\asyncio\\windows_events.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\asyncio\\windows_events.py",
+        "line": 445,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "_run_once",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\asyncio\\base_events.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\asyncio\\base_events.py",
+        "line": 1961,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "run_forever",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\asyncio\\base_events.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\asyncio\\base_events.py",
+        "line": 645,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "run_forever",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\asyncio\\windows_events.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\asyncio\\windows_events.py",
+        "line": 322,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "run_until_complete",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\asyncio\\base_events.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\asyncio\\base_events.py",
+        "line": 678,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "run",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\asyncio\\runners.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\asyncio\\runners.py",
+        "line": 118,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "run",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\asyncio\\runners.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\asyncio\\runners.py",
+        "line": 195,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "_translate_wrapper",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\source\\pdf2zh_next\\high_level.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\source\\pdf2zh_next\\high_level.py",
+        "line": 292,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "translate",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\worker.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\worker.py",
+        "line": 76,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "<module>",
+        "filename": "D:\\student\\翻译\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\worker.py",
+        "module": null,
+        "short_filename": "D:\\student\\翻译\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\worker.py",
+        "line": 94,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": true
+      },
+      {
+        "name": "_run_code",
+        "filename": "<frozen runpy>",
+        "module": null,
+        "short_filename": "<frozen runpy>",
+        "line": 88,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": false
+      },
+      {
+        "name": "_run_module_as_main",
+        "filename": "<frozen runpy>",
+        "module": null,
+        "short_filename": "<frozen runpy>",
+        "line": 198,
+        "locals": null,
+        "is_entry": false,
+        "is_shim_entry": true
+      }
+    ],
+    "process_info": null
+  }
+]

@@ -1,0 +1,17 @@
+{
+  "scope": "real native API process tree, 250ms sampling, includes pipeline and previews; GPU counters not measured",
+  "input_sha256": "bf1a5431e4304d20c6faed6323e667ccbef63349c88dde191b29166037d10fcb",
+  "samples": 423,
+  "seconds": 117.05023980140686,
+  "observed_process_identities": 15,
+  "observed_counter_deltas": {
+    "cpu_seconds": 51.5625,
+    "read_bytes": 4714107337,
+    "write_bytes": 16004371
+  },
+  "tree_private_peak_bytes": 2631708672,
+  "tree_working_set_peak_bytes": 2225819648,
+  "tree_threads_peak": 48,
+  "final_observed_processes": [],
+  "limits": "250ms polling can miss short-lived processes and their initial/final counters; deltas are observed lower bounds, not full accounting. Includes API lifecycle and previews, not just translation. GPU unmeasured."
+}

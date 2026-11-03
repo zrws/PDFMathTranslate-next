@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "case": "legacy bootstrap ready marker",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "authenticated legacy static UI",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "browser without token rejected",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "authenticated legacy settings",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "cross-origin request rejected",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "native entry refuses occupied legacy home",
+      "passed": true,
+      "detail": 1
+    }
+  ],
+  "home": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\compatibility-395b927592704f90a09d5fe5e6ae5fb8",
+  "legacy_pid": 20492,
+  "legacy_actual_exit": 0,
+  "native_conflict_actual_exit": 1,
+  "scope": "real legacy HTTP bootstrap and writer lock; WebView2 input and downloads not automated"
+}
