@@ -74,6 +74,8 @@ Set-Content -Path $configFile -Value '' -Encoding ASCII
 $guardSha = (Get-FileHash (Join-Path $guardDir 'sitecustomize.py') -Algorithm SHA256).Hash
 
 $script:rootPid = 0
+$script:recoveryBatches = @()
+$script:activePayload = ''
 $script:hadFailure = 0
 $script:gateBlocks = 0
 function Get-OwnedIdentities([uint32]$rootPid) {
@@ -134,13 +136,25 @@ function Stop-Tree {
         $recovery = Get-RecoveryReport $identities
         $recoveryPath = Join-Path $OutDir 'recovery.json'
         try {
-            [ordered]@{
+            $batch = [pscustomobject][ordered]@{
+                payload = $script:activePayload
                 captured_at = (Get-Date).ToString('o')
                 owned_count = @($identities).Count
                 all_gone = $recovery.all_gone
                 identities = [object[]]($identities | ForEach-Object { @{ pid = $_.pid; created = $_.created; name = $_.name } })
                 rows = [object[]]$recovery.rows
-            } | ConvertTo-Json -Depth 5 | Set-Content -Path $recoveryPath -Encoding UTF8
+            }
+            $batch | ConvertTo-Json -Depth 5 | Set-Content (Join-Path $OutDir ('recovery-' + $script:activePayload + '.json')) -Encoding UTF8
+            $script:recoveryBatches += $batch
+            $allRows = @($script:recoveryBatches | ForEach-Object { $_.rows })
+            [ordered]@{
+                payload_count = $script:recoveryBatches.Count
+                owned_count = $allRows.Count
+                all_gone = (@($script:recoveryBatches | Where-Object { -not $_.all_gone }).Count -eq 0)
+                identities = @($script:recoveryBatches | ForEach-Object { $_.identities })
+                rows = $allRows
+                batches = $script:recoveryBatches
+            } | ConvertTo-Json -Depth 7 | Set-Content -Path $recoveryPath -Encoding UTF8
         } catch {
             Write-Host ("[FAIL] cannot write recovery.json: " + $_.Exception.Message)
             $script:hadFailure = 1
@@ -156,6 +170,7 @@ function Stop-Tree {
 }
 
 function Probe($label, $importExpr) {
+    $script:activePayload = $label
     $logFile = Join-Path $root ($label + '.log')
     # S1: payload is a real .py file launched via entry_wrapper so the entry
     # gate verifies guard+hash BEFORE the import runs.
