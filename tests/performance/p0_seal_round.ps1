@@ -316,7 +316,7 @@ Write-Host ("[COVERAGE] {0} derived case rows" -f $coverage.Count)
 # ---------- 3. canonical script-hashes at the round root ----------------------
 $hashList = [ordered]@{}
 $perfDir = Join-Path $RepoRoot 'tests\performance'
-foreach ($f in @('p0_paths.ps1','p0_runs.ps1','p0_asset_manifest_negtest.ps1','p0_routing_negtest.ps1','p0_env.ps1','p0_c1_guard_test.ps1','p0_probe_perprocess.ps1','p0_probe_attribution.ps1',
+foreach ($f in @('p0_acceptance.ps1','p0_paths.ps1','p0_runs.ps1','p0_asset_manifest_negtest.ps1','p0_routing_negtest.ps1','p0_env.ps1','p0_c1_guard_test.ps1','p0_probe_perprocess.ps1','p0_probe_attribution.ps1',
     'p0_baseline.ps1','p0_negative_tests.ps1','p0_asset_check.ps1','p0_pytest_isolated.ps1',
     'p0_entry_gate_negtest.ps1','p0_env_negtest.ps1','p0_guard_mutations.ps1','p0_evidence_check.ps1',
     'p0_result.ps1','p0_seal_round.ps1','p0_empty_host_case.ps1','p0_loopback_negtest.ps1',
