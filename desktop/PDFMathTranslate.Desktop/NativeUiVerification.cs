@@ -49,7 +49,13 @@ internal static class NativeUiVerification
                 vm.Service="OpenAI";vm.Model="local-test-model";vm.BaseUrl=endpoint.ToString();vm.NewApiKey="local-fixture-only";
                 vm.SaveDirectory=Path.Combine(root,"exports");
                 await vm.SaveSettingsCommand.ExecuteAsync(null);
+                vm.TargetLanguage=LanguageChoices.Resolve(vm.Languages,"fa");vm.AutoCheckUpdates=false;
+                await vm.SaveSettingsCommand.ExecuteAsync(null);
+                checks["uncommon_language_readback"]=vm.TargetLanguage?.Code=="fa";
+                checks["auto_update_opt_out_readback"]=!vm.AutoCheckUpdates;
+                if(vm.TargetLanguage?.Code!="fa"||vm.AutoCheckUpdates)throw new InvalidOperationException("语言或自动更新偏好未能正确读回");
                 vm.SourceLanguage=vm.Languages.First(x=>x.Code=="en");vm.TargetLanguage=vm.Languages.First(x=>x.Code=="zh-CN");
+                vm.AutoCheckUpdates=true;await vm.SaveSettingsCommand.ExecuteAsync(null);
                 window.ShowPage(typeof(WorkbenchPage));await vm.ImportAsync([sample.GetString()!]);
                 await Task.Delay(1000);
                 await Capture(window,root,"04-imported-source.png");
@@ -61,6 +67,9 @@ internal static class NativeUiVerification
                 await Wait(()=>task.Terminal,TimeSpan.FromMinutes(3));
                 checks["task_status"]=task.Status;checks["shared_task_reference"]=ReferenceEquals(task,vm.Store.Tasks.First(x=>x.Id==task.Id));
                 if(task.Status!="done")throw new InvalidOperationException(task.Error);
+                var translated=await vm.PreviewAsync(2,true,CancellationToken.None);
+                checks["translated_preview_page_count"]=translated?.Pages;
+                if(translated is null||translated.Pages<2||translated.Page!=2)throw new InvalidOperationException("译文预览页数或翻页读取错误");
                 vm.LoseNextExportResponse();await vm.ExportCommand.ExecuteAsync(null);
                 checks["lost_export_response_pending"]=vm.PendingOperations==1;
                 if(vm.PendingOperations!=1)throw new InvalidOperationException("丢失响应后未保留原保存标识");

@@ -45,7 +45,7 @@ public partial class WorkbenchViewModel : ObservableObject, IDisposable
     [ObservableProperty] private bool autoCheckUpdates=true;
     public string VersionDescription {get{var version=UpdateService.ReadVersion(Environment.GetEnvironmentVariable("PDF2ZH_APP_ROOT")??AppContext.BaseDirectory);return version.Preview?"开发预览 · 正式更新源已停用":$"版本 {version.Version}";}}
     public bool CanSubmit=>Ready&&AssetsReady&&Files.Count>0&&SourceLanguage!=null&&TargetLanguage!=null;
-    [ObservableProperty] private string updateState="开发预览，正式更新源已停用";
+    [ObservableProperty] private string updateState="尚未检查更新";
     [ObservableProperty] private bool canDownloadUpdate;
     [ObservableProperty] private bool canInstallUpdate;
     private UpdatePackage? availableUpdate;
@@ -76,6 +76,7 @@ public partial class WorkbenchViewModel : ObservableObject, IDisposable
             client=await supervisor.StartAsync(life.Token);
             var health=await client.JsonAsync("api/health",ct:life.Token);
             DataDirectory=health.GetProperty("data_dirs").GetProperty("home").GetString()!;
+            UpdateState=UpdateService.ReadVersion(Environment.GetEnvironmentVariable("PDF2ZH_APP_ROOT")??AppContext.BaseDirectory).Preview?"开发预览，正式更新源已停用":"尚未检查更新";
             outbox=new OperationOutbox(DataDirectory);
             ServiceState="窗口已就绪 · 翻译服务已就绪";
             await ReadSettingsAsync();
