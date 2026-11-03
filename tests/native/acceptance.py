@@ -224,6 +224,21 @@ def main():
             subprocess.run(["taskkill","/PID",str(child.pid),"/T","/F"],capture_output=True);child.wait(10)
         stderr.close();provider.shutdown()
         measurement_stop.set();measurement_thread.join(2)
+        identities={(p['pid'],p['created']):p['exe'] for row in measurements for p in row['processes']}
+        survivors=[]
+        deadline=time.monotonic()+3
+        while True:
+            survivors=[]
+            for (pid,created),exe in identities.items():
+                try:
+                    process=psutil.Process(pid)
+                    if process.create_time()==created and process.is_running():survivors.append({'pid':pid,'created':created,'exe':exe})
+                except (psutil.NoSuchProcess,psutil.AccessDenied):pass
+            if not survivors or time.monotonic()>=deadline:break
+            time.sleep(.05)
+        cleanup_ok=child.returncode==0 and not survivors
+        rows.append({'case':'owned backend process tree reclaimed','passed':cleanup_ok,'detail':{'control_actual_exit':child.returncode,'surviving_identities':survivors}})
+        passed=passed and cleanup_ok
         (evidence/"process-samples.json").write_text(json.dumps({"scope":"real native API process tree, 250ms sampling, includes pipeline and previews; GPU counters not measured","samples":measurements},ensure_ascii=False),encoding="utf-8")
         (evidence/"events.jsonl").write_text("".join(json.dumps(e,ensure_ascii=False)+"\n" for e in events),encoding="utf-8")
         report={"passed":passed,"checks":rows,"home":str(home),"control_pid":child.pid,"control_actual_exit":child.returncode,"provider_calls":calls,"source_mode":provenance["source_mode"],"provenance_sha256":hashlib.sha256((evidence/"provenance.json").read_bytes()).hexdigest(),"mode":"real BabelDOC + loopback LLM fixture; commercial translation quality unverified"}
