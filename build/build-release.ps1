@@ -160,9 +160,9 @@ if ($LASTEXITCODE -ge 8) { throw "robocopy uv-tools failed ($LASTEXITCODE)" }
 Write-Host 'Overlaying current source package into the release payload...'
 robocopy $SourcePackage $PayloadRuntimePackage /MIR /NFL /NDL /NJH /NJS /NP /XF *.pyc /XD __pycache__ .pytest_cache | Out-Null
 if ($LASTEXITCODE -ge 8) { throw "robocopy source package failed ($LASTEXITCODE)" }
-@{ version = $Version } | ConvertTo-Json | Set-Content (Join-Path $Payload 'version.json') -Encoding ascii
+@{ version = $Version; channel = $Channel } | ConvertTo-Json | Set-Content (Join-Path $Payload 'version.json') -Encoding ascii
 # also drop version.json into the repo root so the portable/dev copy can self-update-check
-@{ version = $Version } | ConvertTo-Json | Set-Content (Join-Path $ProjectRoot 'version.json') -Encoding ascii
+@{ version = $Version; channel = $Channel } | ConvertTo-Json | Set-Content (Join-Path $ProjectRoot 'version.json') -Encoding ascii
 
 # ---------------------------------------------------------------------------
 # 3) compile installer

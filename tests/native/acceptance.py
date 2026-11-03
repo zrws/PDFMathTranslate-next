@@ -46,7 +46,7 @@ def main():
     if args.packaged:env["PYTHONPATH"]=str(packages)
     for key, path in {"HOME":home,"USERPROFILE":home,"APPDATA":home/"AppData/Roaming","LOCALAPPDATA":home/"AppData/Local","TEMP":home/"tmp","TMP":home/"tmp","XDG_CACHE_HOME":home/".cache"}.items(): path.mkdir(parents=True,exist_ok=True);env[key]=str(path)
     for key in ("SSL_CERT_DIR", "SSL_CERT_FILE"): env.pop(key, None)
-    provenance_code="import hashlib,json,pathlib,sys,pdf2zh_next,pdf2zh_next.desktop.server;root=pathlib.Path(pdf2zh_next.__file__).parent;names=['__init__.py','desktop/server.py','desktop/engine.py','desktop/worker.py','desktop/storage.py','desktop/runtime.py','desktop/exports.py','desktop/snapshots.py','desktop/policy.py','desktop/pdf_operations.py'];print(json.dumps({'python_executable':sys.executable,'sys_path':sys.path,'modules':[{'path':str(root/name),'sha256':hashlib.sha256((root/name).read_bytes()).hexdigest()} for name in names]},ensure_ascii=False))"
+    provenance_code="import hashlib,json,pathlib,sys,pdf2zh_next,pdf2zh_next.desktop.server;root=pathlib.Path(pdf2zh_next.__file__).parent;names=['__init__.py','desktop/server.py','desktop/engine.py','desktop/worker.py','desktop/storage.py','desktop/runtime.py','desktop/exports.py','desktop/snapshots.py','desktop/policy.py','desktop/pdf_operations.py','desktop/assets.py','desktop/preview_control.py','desktop/preview.py'];print(json.dumps({'python_executable':sys.executable,'sys_path':sys.path,'modules':[{'path':str(root/name),'sha256':hashlib.sha256((root/name).read_bytes()).hexdigest()} for name in names]},ensure_ascii=False))"
     probe=subprocess.run([str(python),"-c",provenance_code],env=env,cwd=home/"work",capture_output=True,text=True,encoding="utf-8",timeout=40,check=True)
     provenance=json.loads(probe.stdout)
     provenance.update(argv=sys.argv,packaged=args.packaged,source_mode="packaged" if args.packaged else "repository overlay",acceptance_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest())
@@ -199,10 +199,21 @@ def main():
             scenario=evidence/"ui-scenario.json"
             ui_root=repo/"docs/verification/native-desktop"/("p1-ui-flow-"+uuid.uuid4().hex[:10])
             scenario.write_text(json.dumps({"output_root":str(ui_root),"sample":str(sample),"mock_base_url":mock_url}),encoding="utf-8")
+            profile=args.ui_exe.parent/'development-run.json'
+            ui_proof={'scope':'actual Debug executable and configured source identity; API provenance separately observes packaged imports',
+                      'ui_exe_sha256':hashlib.sha256(args.ui_exe.read_bytes()).hexdigest(),
+                      'ui_dll_sha256':hashlib.sha256(args.ui_exe.with_suffix('.dll').read_bytes()).hexdigest()}
+            if profile.is_file():
+                config=json.loads(profile.read_text(encoding='utf-8-sig'))
+                ui_proof.update(profile_sha256=hashlib.sha256(profile.read_bytes()).hexdigest(),configured_paths=config)
+                package=Path(config['PDF2ZH_SOURCE_ROOT'])/'pdf2zh_next'
+                ui_proof['configured_source_matches_api'] = all(hashlib.sha256((package/Path(row['path']).relative_to(expected)).read_bytes()).hexdigest()==row['sha256'] for row in provenance['modules'])
+                if not ui_proof['configured_source_matches_api']:raise RuntimeError('UI配置源码与API实际源码字节不同')
+            proof=evidence/'ui-provenance.json';proof.write_text(json.dumps(ui_proof,ensure_ascii=False,indent=2),encoding='utf-8')
             ui=subprocess.Popen([str(args.ui_exe),"--ui-test",str(scenario)],env=env)
             try: code=ui.wait(240)
             except subprocess.TimeoutExpired: ui.kill();code=-1
-            check("native WPF integration flow",code==0,{"actual_exit":code,"evidence_root":str(ui_root)})
+            check("native WPF integration flow",code==0,{"actual_exit":code,"evidence_root":str(ui_root),"ui_provenance_sha256":hashlib.sha256(proof.read_bytes()).hexdigest()})
         passed=True
     finally:
         event_stop.set()
