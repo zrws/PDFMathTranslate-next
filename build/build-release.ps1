@@ -18,6 +18,7 @@ param(
     [string]$UvExe,
     [string]$PythonRoot,
     [string]$IsccExe,
+    [string]$LegacyRuntimeRoot,
     [switch]$Offline,
     [ValidateSet('preview','stable')][string]$Channel='preview'
 )
@@ -35,14 +36,16 @@ $Dist = Join-Path $ProjectRoot 'dist'
 $Payload = Join-Path $Dist ("payload-build-" + $PID)
 $LauncherPublish = Join-Path $ProjectRoot 'launcher\publish'
 $SourcePackage = Join-Path $ProjectRoot 'source\pdf2zh_next'
-$RuntimeRoot = Join-Path $ProjectRoot 'uv-tools\pdf2zh-next'
-$UvPythonRoot = Join-Path $ProjectRoot 'uv-python'
+$LegacyRuntimeRoot = if($LegacyRuntimeRoot){(Resolve-Path -LiteralPath $LegacyRuntimeRoot).Path}else{$ProjectRoot}
+$RuntimeRoot = Join-Path $LegacyRuntimeRoot 'uv-tools\pdf2zh-next'
+$UvPythonRoot = Join-Path $LegacyRuntimeRoot 'uv-python'
 $PayloadRuntimePackage = Join-Path $Payload 'uv-tools\pdf2zh-next\Lib\site-packages\pdf2zh_next'
 
 # ---------------------------------------------------------------------------
 # toolchain resolution
 # ---------------------------------------------------------------------------
 function Resolve-Dotnet {
+    if($DotnetExe){return (Resolve-Path -LiteralPath $DotnetExe).Path}
     $localSdk = Join-Path (Split-Path -Parent $ProjectRoot) '.dotnet-sdk\dotnet.exe'
     if (Test-Path $localSdk) { return $localSdk }
     $cmd = Get-Command dotnet -ErrorAction SilentlyContinue
@@ -51,6 +54,7 @@ function Resolve-Dotnet {
 }
 
 function Resolve-ISCC {
+    if($IsccExe){return (Resolve-Path -LiteralPath $IsccExe).Path}
     $candidates = @(
         "C:\Program Files (x86)\Inno Setup 6\ISCC.exe",
         "C:\Program Files\Inno Setup 6\ISCC.exe",
@@ -77,7 +81,7 @@ Write-Host "Version: $Version"
 # prepare output dirs. Each run uses an isolated payload directory so Windows
 # file scanners or a previous compiler process cannot block a consecutive build.
 # ---------------------------------------------------------------------------
-if ($CleanDist -and (Test-Path $Dist)) { Remove-Item $Dist -Recurse -Force }
+if ($CleanDist) { throw '本构建保留已有 dist；请使用每轮独立输出，不自动递归清理。' }
 if (-not (Test-Path $Dist)) { New-Item -ItemType Directory -Force -Path $Dist | Out-Null }
 New-Item -ItemType Directory -Force -Path $Payload | Out-Null
 
@@ -122,7 +126,7 @@ if (Test-Path $pyvenvConfig) {
         $runtimeName = Split-Path -Leaf $Matches[1].Trim()
     }
 }
-$pythonRuntime = if ($runtimeName) { Join-Path $UvPythonRoot $runtimeName } else { $null }
+$pythonRuntime = if($PythonRoot){(Resolve-Path -LiteralPath $PythonRoot).Path}elseif ($runtimeName) { Join-Path $UvPythonRoot $runtimeName } else { $null }
 if (-not $pythonRuntime -or -not (Test-Path -LiteralPath $pythonRuntime)) {
     $pythonRuntime = Get-ChildItem -LiteralPath $UvPythonRoot -Directory |
         Where-Object { $_.Name -match '^cpython-\d+\.\d+\.\d+-windows-x86_64-none$' } |
@@ -163,6 +167,8 @@ if ($LASTEXITCODE -ge 8) { throw "robocopy source package failed ($LASTEXITCODE)
 @{ version = $Version; channel = $Channel } | ConvertTo-Json | Set-Content (Join-Path $Payload 'version.json') -Encoding ascii
 # also drop version.json into the repo root so the portable/dev copy can self-update-check
 @{ version = $Version; channel = $Channel } | ConvertTo-Json | Set-Content (Join-Path $ProjectRoot 'version.json') -Encoding ascii
+$owned=Get-ChildItem -LiteralPath $Payload -File -Recurse | Sort-Object FullName | ForEach-Object {$_.FullName.Substring($Payload.Length+1)+'|'+(Get-FileHash -LiteralPath $_.FullName).Hash}
+[IO.File]::WriteAllLines((Join-Path $Payload 'owned-files.tsv'),[string[]]$owned,[Text.UTF8Encoding]::new($true))
 
 # ---------------------------------------------------------------------------
 # 3) compile installer
@@ -185,7 +191,7 @@ if (-not $SkipInstaller) {
 # ---------------------------------------------------------------------------
 # 4) latest.json (auto-update manifest, upload next to the installer)
 # ---------------------------------------------------------------------------
-if ($setupPath) {
+if ($setupPath -and $Channel -eq 'stable') {
     Write-Host 'Generating latest.json...'
     $sha256 = (Get-FileHash $setupPath -Algorithm SHA256).Hash.ToLowerInvariant()
     $size = (Get-Item $setupPath).Length
@@ -197,11 +203,7 @@ if ($setupPath) {
         size    = $size
     } | ConvertTo-Json | Set-Content (Join-Path $Dist 'latest.json') -Encoding ascii
 
-    # The installer already contains the payload. Keep dist from accumulating a
-    # new 600+ MB staging directory after every successful release build.
-    if (Test-Path -LiteralPath $Payload) {
-        Remove-Item -LiteralPath $Payload -Recurse -Force
-    }
+    # Retain this owned payload and build evidence for review.
 }
 
 Write-Host ''
@@ -210,8 +212,7 @@ if ($setupPath) {
     Write-Host "  Installer : $setupPath"
     Write-Host "  Manifest  : $(Join-Path $Dist 'latest.json')"
     Write-Host ''
-    Write-Host 'Publish to GitHub Releases:'
-    Write-Host "  gh release create v$Version dist\PDFMathTranslate-Setup-$Version.exe dist\latest.json --title v$Version --generate-notes"
+    Write-Host 'Local build only; no tag, Release or online latest.json was changed.'
 }
 else {
     Write-Host "  Payload   : $Payload"
