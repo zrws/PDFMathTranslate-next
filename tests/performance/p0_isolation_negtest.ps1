@@ -59,7 +59,9 @@ $realUser = [Environment]::GetEnvironmentVariable('USERPROFILE')
 $isoRoot = Join-Path $OutDir 'iso-home'
 New-Item -ItemType Directory -Force -Path (Join-Path $isoRoot '.config\pdf2zh') | Out-Null
 # keep the PARENT HOME as the real user profile (proves per-child injection)
-$stageCache = Join-Path $OutDir 'staged-cache'
+$stageCache = Join-Path ([IO.Path]::GetTempPath()) ('pdf2zh-isolation-assets-' + [guid]::NewGuid().ToString('N'))
+New-Item -ItemType Directory -Path $stageCache | Out-Null
+@{ owner='p0_isolation_negtest.ps1'; pid=$PID; cache_root=$stageCache; note='Owned offline cache preserved outside evidence/Git' } | ConvertTo-Json | Set-Content (Join-Path $OutDir 'cache-root.json') -Encoding UTF8
 robocopy (Join-Path $InstallRoot 'home\.cache\babeldoc') $stageCache /E /NFL /NDL /NJH /NJS /NP | Out-Null
 if ($LASTEXITCODE -ge 8) { Write-Host '[FAIL] cannot stage test cache copy'; exit 4 }
 $assetOut = Join-Path $OutDir 'asset-standalone.log.txt'

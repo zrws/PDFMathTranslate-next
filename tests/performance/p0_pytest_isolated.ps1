@@ -1,6 +1,6 @@
-﻿# Isolated pytest runner v3 with real-home protection evidence (ASCII only)
+﻿# Isolated pytest runner with an exclusively owned protected sentinel home.
 # F4/F6 remediation: parent PYTHONPATH restored; before/after snapshots of the
-# scoped real dirs are SAVED to disk (sanitized relative paths + size + mtime;
+# scoped sentinel dirs are SAVED to disk (relative paths + size + mtime;
 # large files size-only; read failures recorded, never silently ignored);
 # result.json binds runner/conftest/script hashes.
 # Exit: 0 pytest passed AND real dirs unchanged; 1 pytest failed;
@@ -86,7 +86,8 @@ $bootstrap = Join-Path $runDir 'pytest-bootstrap.py'
 $testPathJson = ConvertTo-Json (Join-Path $RepoRoot 'source\tests') -Compress
 "import pytest`nraise SystemExit(pytest.main([$testPathJson, '-q', '--no-header', '-v']))" | Set-Content $bootstrap -Encoding UTF8
 $pytestLog = Join-Path $runDir 'pytest-full-output.txt'
-$pytestRc = Invoke-P0PythonFile -PythonExe $venvPy -ScriptFile $bootstrap -IsolatedHome (Join-Path $runDir 'pytest-home') -PythonPath ((Join-Path $RepoRoot 'source') + ';' + (Join-Path $InstallRoot 'uv-tools\pdf2zh-next\Lib\site-packages')) -GuardDir $guardDir -GuardLog $guardLog -LogPrefix (Join-Path $runDir 'pytest-child') -TimeoutSeconds 300
+$pytestHome = Join-Path ([IO.Path]::GetTempPath()) ('pdf2zh-pytest-child-' + [guid]::NewGuid().ToString('N'))
+$pytestRc = Invoke-P0PythonFile -PythonExe $venvPy -ScriptFile $bootstrap -IsolatedHome $pytestHome -PythonPath ((Join-Path $RepoRoot 'source') + ';' + (Join-Path $InstallRoot 'uv-tools\pdf2zh-next\Lib\site-packages')) -GuardDir $guardDir -GuardLog $guardLog -LogPrefix (Join-Path $runDir 'pytest-child') -TimeoutSeconds 300
 Copy-Item (Join-Path $runDir 'pytest-child.stdout.txt') $pytestLog
 Write-Host ("pytest exit code: {0}" -f $pytestRc)
 
@@ -140,6 +141,7 @@ $result = [ordered]@{
     changeCount = $changesAll.Count
     snapshotReadErrorCount = $readErrors.Count
     runDir = $runDir
+    temp_root = $pytestHome
     scopeNote = 'Only the explicitly owned protected-sentinel-home is read; real user config/cache/history is not accessed or claimed verified'
     runnerSha256 = Sha $PSCommandPath
     conftestSha256 = Sha (Join-Path $RepoRoot 'source\tests\conftest.py')

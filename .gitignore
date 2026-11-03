@@ -17,6 +17,7 @@ webui/design-export/
 *.pyc
 __pycache__/
 *.log
+!docs/verification/native-desktop/**/*.log
 version.json
 PDFMathTranslate.exe
 source/.git-upstream/
