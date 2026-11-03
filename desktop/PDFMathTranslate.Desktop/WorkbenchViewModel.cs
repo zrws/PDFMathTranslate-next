@@ -150,7 +150,7 @@ public partial class WorkbenchViewModel : ObservableObject, IDisposable
     [RelayCommand(CanExecute=nameof(CanExport))] private async Task ExportAsync()
     {
         if(client==null || SelectedTask?.Status!="done") { Notice="请选择已完成的任务。"; return; }
-        try { Notice="正在保存结果，请稍候…"; var operation=outbox!.Ensure("export",$"api/tasks/{SelectedTask.Id}/export",new { directory=SelectedTask.PlannedDirectory.Length>0?SelectedTask.PlannedDirectory:SaveDirectory });var result=await SendPending(operation); Store.Merge(result); Notice="文件已保存："+string.Join("；",result.GetProperty("saved_paths").EnumerateArray().Select(x=>x.GetString())); }
+        try { Notice="正在保存结果，请稍候…"; var operation=outbox!.Ensure("export",$"api/tasks/{SelectedTask.Id}/export",new { directory=SelectedTask.PlannedDirectory.Length>0?SelectedTask.PlannedDirectory:SaveDirectory });var result=await SendPending(operation); Store.Merge(result); Notice=$"结果已保存，所选任务共有 {result.GetProperty("saved_paths").GetArrayLength()} 个保存路径。可查看任务详情或打开结果目录。"; }
         catch(Exception ex) { Notice="保存状态待同步确认："+Friendly(ex)+" 请重试同步，已产生的文件会沿用原版本路径。"; }
     }
     [RelayCommand] private async Task MoreHistoryAsync()

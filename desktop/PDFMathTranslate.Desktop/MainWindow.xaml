@@ -15,7 +15,7 @@
       </ui:NavigationView.MenuItems>
     </ui:NavigationView>
     <Border Grid.Row="3" Padding="20,10" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="0,1,0,0">
-      <DockPanel><TextBlock DockPanel.Dock="Right" Margin="18,0,0,0" Text="{Binding Store.Summary}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/><TextBlock Text="{Binding Notice}" MaxHeight="64" AutomationProperties.LiveSetting="Polite" /></DockPanel>
+      <DockPanel><TextBlock DockPanel.Dock="Right" Margin="18,0,0,0" Text="{Binding Store.Summary}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/><TextBlock Text="{Binding Notice}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding Notice}" AutomationProperties.LiveSetting="Polite" /></DockPanel>
     </Border>
   </Grid>
 </ui:FluentWindow>

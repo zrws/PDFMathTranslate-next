@@ -1,5 +1,5 @@
 <Page x:Class="PDFMathTranslate.Desktop.SettingsPage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml" Title="资源与设置" Background="Transparent">
-  <ScrollViewer VerticalScrollBarVisibility="Auto"><StackPanel Margin="24,18" MaxWidth="880" HorizontalAlignment="Left">
+  <ScrollViewer x:Name="SettingsScroll" VerticalScrollBarVisibility="Auto"><StackPanel Margin="24,18" MaxWidth="880" HorizontalAlignment="Left">
     <TextBlock Text="资源与设置" FontSize="23" FontWeight="SemiBold" Margin="0,0,0,18"/>
     <TextBlock Text="翻译服务" FontSize="17" FontWeight="SemiBold"/>
     <Grid Margin="0,12,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="150"/><ColumnDefinition Width="*" MinWidth="360"/></Grid.ColumnDefinitions><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>

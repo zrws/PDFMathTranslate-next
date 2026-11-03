@@ -32,6 +32,7 @@ internal static class NativeUiVerification
             checks["render_kind"]="actual running WPF visual tree, RenderTargetBitmap; not OS input automation";
             await Capture(window,root,"01-workbench.png");
             window.ShowPage(typeof(SettingsPage)); await Capture(window,root,"02-settings.png");
+            window.ShowSettingsStorage(true);await Capture(window,root,"02b-save-directory.png");window.ShowSettingsStorage(false);
             window.ShowPage(typeof(TasksPage)); await Capture(window,root,"03-queue.png");
             if(!vm.Ready) throw new InvalidOperationException("后台尚未就绪："+vm.Notice);
             if(scenario.TryGetProperty("idle_seconds",out var idle))
@@ -71,6 +72,7 @@ internal static class NativeUiVerification
                 if((int)checks["saved_versions"]!=4)throw new InvalidOperationException("显式第二次保存未生成预期版本");
                 window.ShowPage(typeof(ResultsPage));await Capture(window,root,"06-results-versions.png");
                 window.ShowPage(typeof(SettingsPage));await Capture(window,root,"07-effective-settings.png");
+                window.ShowSettingsStorage(true);await Capture(window,root,"07b-save-directory.png");window.ShowSettingsStorage(false);
             }
             window.Width=980;window.Height=680;window.ShowPage(typeof(WorkbenchPage));await Capture(window,root,"08-compact-980.png");
             await Capture(window,root,"09-render-150-percent.png",1.5);

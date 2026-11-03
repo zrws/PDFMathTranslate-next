@@ -9,6 +9,7 @@ namespace PDFMathTranslate.Desktop;
 public partial class MainWindow : FluentWindow
 {
     public WorkbenchViewModel ViewModel { get; } = new();
+    private readonly SettingsPage settingsPage;
     internal double WindowReadyMs {get;private set;}
 #if DEBUG
     internal bool AutomatedClose {get;set;}
@@ -16,7 +17,8 @@ public partial class MainWindow : FluentWindow
     public MainWindow()
     {
         InitializeComponent(); DataContext=ViewModel;
-        var pages=new Dictionary<Type,object> { [typeof(WorkbenchPage)]=new WorkbenchPage(ViewModel),[typeof(TasksPage)]=new TasksPage(ViewModel),[typeof(ResultsPage)]=new ResultsPage(ViewModel),[typeof(SettingsPage)]=new SettingsPage(ViewModel),[typeof(GlossaryPage)]=new GlossaryPage(ViewModel) };
+        settingsPage=new SettingsPage(ViewModel);
+        var pages=new Dictionary<Type,object> { [typeof(WorkbenchPage)]=new WorkbenchPage(ViewModel),[typeof(TasksPage)]=new TasksPage(ViewModel),[typeof(ResultsPage)]=new ResultsPage(ViewModel),[typeof(SettingsPage)]=settingsPage,[typeof(GlossaryPage)]=new GlossaryPage(ViewModel) };
         foreach(var page in pages.Values.Cast<Page>()) page.SetBinding(FrameworkElement.HeightProperty,new Binding(nameof(ActualHeight)){Source=Navigation,Mode=BindingMode.OneWay});
         Navigation.SetServiceProvider(new PageProvider(pages));
         Loaded+=async (_,_)=> {
@@ -30,6 +32,7 @@ public partial class MainWindow : FluentWindow
         Closing+=OnClosing;
     }
     internal void ShowPage(Type page)=>Navigation.Navigate(page);
+    internal void ShowSettingsStorage(bool end)=>settingsPage.ScrollStorage(end);
     private void OnClosing(object? sender,CancelEventArgs e)
     {
 #if DEBUG
