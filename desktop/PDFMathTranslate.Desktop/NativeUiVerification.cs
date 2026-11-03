@@ -121,7 +121,9 @@ internal static class NativeUiVerification
     }
     private static async Task Capture(MainWindow window,string root,string name,double scale=1)
     {
-        window.UpdateLayout();await window.Dispatcher.InvokeAsync(()=>{},DispatcherPriority.Render);await Task.Delay(180);
+        // NavigationView transitions can still be fading at 180 ms. Capture
+        // after transition completion and a fresh layout/render pass.
+        await Task.Delay(750);window.UpdateLayout();await window.Dispatcher.InvokeAsync(()=>{},DispatcherPriority.ApplicationIdle);
         var bitmap=new RenderTargetBitmap((int)Math.Ceiling(window.ActualWidth*scale),(int)Math.Ceiling(window.ActualHeight*scale),96*scale,96*scale,PixelFormats.Pbgra32);
         bitmap.Render(window);var encoder=new PngBitmapEncoder();encoder.Frames.Add(BitmapFrame.Create(bitmap));
         using var output=File.Create(Path.Combine(root,name));encoder.Save(output);

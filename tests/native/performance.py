@@ -1,5 +1,5 @@
 """Measure owned WPF/control PIDs; no input automation or user cache access."""
-import argparse,json,os,subprocess,time,uuid
+import argparse,hashlib,json,os,subprocess,time,uuid
 from pathlib import Path
 import psutil
 
@@ -18,6 +18,8 @@ def sample(pid):
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--ui-exe',type=Path,required=True);parser.add_argument('--evidence-root',type=Path,required=True);args=parser.parse_args()
     root=args.evidence_root.resolve();root.mkdir(parents=True,exist_ok=False)
+    files=[args.ui_exe.resolve(),args.ui_exe.resolve().with_suffix('.dll'),Path(__file__).resolve()]
+    (root/'provenance.json').write_text(json.dumps({'argv':os.sys.argv,'files':[{'path':str(p),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in files]},indent=2),encoding='utf-8')
     runs=[]
     for index in range(3):
         target=root/f"startup-{index+1}";scenario=root/f"scenario-{index+1}.json";duration=300 if index==2 else 1
