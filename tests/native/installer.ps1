@@ -10,6 +10,7 @@ $install=Join-Path $repo ('.local/安装 验证-'+[guid]::NewGuid().ToString('N'
 $key='HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\'+$AppId+'_is1'
 if(Test-Path -LiteralPath $key){throw '测试注册项已存在，拒绝覆盖'}
 $rows=[Collections.Generic.List[object]]::new()
+$inputBinding=@{source_commit=(& git -C $repo rev-parse HEAD);script_sha256=(Get-FileHash -LiteralPath $PSCommandPath).Hash;first_sha256=(Get-FileHash -LiteralPath $FirstInstaller).Hash;upgrade_sha256=(Get-FileHash -LiteralPath $UpgradeInstaller).Hash}
 function Check([string]$Name,[bool]$Passed,$Detail=$null){$rows.Add(@{case=$Name;passed=$Passed;detail=$Detail});if(!$Passed){throw $Name}}
 function Run-Setup([string]$Exe,[string[]]$Arguments){$p=Start-Process -FilePath $Exe -ArgumentList $Arguments -WindowStyle Hidden -PassThru -Wait;return $p.ExitCode}
 $success=$false
@@ -83,6 +84,6 @@ try{
         $cleanup.attempted=$true
         try{$cleanup.actual_exit=Run-Setup (Join-Path $install 'unins000.exe') @('/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART',('/LOG="'+(Join-Path $EvidenceRoot 'failure-cleanup.log')+'"'));$cleanup.registry_removed=!(Test-Path -LiteralPath $key)}catch{$cleanup.error=$_.Exception.Message}
     }
-    @{passed=$success;checks=$rows;cleanup=$cleanup;app_id=$AppId;group=$Group;install_root=$install;first_installer=$FirstInstaller;upgrade_installer=$UpgradeInstaller;scope='real silent EXE install/upgrade/uninstall and standard registry discovery; Geek GUI and installer mouse input not tested';retention='unknown/modified files retained, empty directories only; test sentinels deliberately retained'}|ConvertTo-Json -Depth 8|Set-Content (Join-Path $EvidenceRoot 'result.json') -Encoding utf8
+    @{passed=$success;checks=$rows;cleanup=$cleanup;input_binding=$inputBinding;app_id=$AppId;group=$Group;install_root=$install;first_installer=$FirstInstaller;upgrade_installer=$UpgradeInstaller;scope='real silent EXE install/upgrade/uninstall and standard registry discovery; Geek GUI and installer mouse input not tested';retention='unknown/modified files retained, empty directories only; test sentinels deliberately retained'}|ConvertTo-Json -Depth 8|Set-Content (Join-Path $EvidenceRoot 'result.json') -Encoding utf8
 }
 if(!$success){exit 1}
