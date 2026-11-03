@@ -5,7 +5,7 @@ if(Test-Path -LiteralPath $EvidenceRoot){throw '证据目录必须全新'}
 New-Item -ItemType Directory -Path $EvidenceRoot|Out-Null
 $rows=@()
 foreach($bom in @($false,$true)){
-    $id='PDFMathTranslate-Codex-Test-'+[guid]::NewGuid().ToString('N')
+    $id='PDFMathTranslate-Codex-Test-'+[guid]::NewGuid().ToString('N').Substring(0,12)
     $stage=Join-Path $repo ('.local/manifest-fixture-'+$id)
     $installed=Join-Path $repo ('.local/中文清单-'+$id)
     $output=Join-Path $EvidenceRoot ([string]$bom)
@@ -20,9 +20,12 @@ foreach($bom in @($false,$true)){
     $p=Start-Process -FilePath $installer -ArgumentList @('/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART',('/DIR="'+$installed+'"'),'/TASKS=""',('/LOG="'+(Join-Path $output 'install.log')+'"')) -WindowStyle Hidden -PassThru -Wait
     $installExit=$p.ExitCode
     if($installExit -ne 0){throw 'fixture install failed'}
+    $key='HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\'+$id+'_is1'
+    $registration=Get-ItemProperty -LiteralPath $key
+    if($registration.InstallLocation.TrimEnd('\') -ne $installed.TrimEnd('\')){throw 'fixture registration mismatch'}
     $p=Start-Process -FilePath (Join-Path $installed 'unins000.exe') -ArgumentList @('/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART',('/LOG="'+(Join-Path $output 'uninstall.log')+'"')) -WindowStyle Hidden -PassThru -Wait
-    $row=@{bom=$bom;install_exit=$installExit;uninstall_exit=$p.ExitCode;installed=$installed;remaining=@($files|Where-Object {Test-Path -LiteralPath (Join-Path $installed $_)});registry_removed=!(Test-Path -LiteralPath ('HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\'+$id+'_is1'))}
+    $row=@{bom=$bom;install_exit=$installExit;uninstall_exit=$p.ExitCode;installed=$installed;registration_before=$registration.InstallLocation;registry_key=$key;remaining=@($files|Where-Object {Test-Path -LiteralPath (Join-Path $installed $_)});registry_removed=!(Test-Path -LiteralPath $key)}
     $rows+=$row
     $rows|ConvertTo-Json -Depth 5|Set-Content (Join-Path $EvidenceRoot 'result.json') -Encoding utf8
-    if($bom -and ($row.uninstall_exit -ne 0 -or $row.remaining.Count -ne 0 -or !$row.registry_removed)){throw 'BOM ownership cleanup failed'}
+    if($row.uninstall_exit -ne 0 -or $row.remaining.Count -ne 0 -or !$row.registry_removed){throw 'Unicode ownership cleanup failed'}
 }
