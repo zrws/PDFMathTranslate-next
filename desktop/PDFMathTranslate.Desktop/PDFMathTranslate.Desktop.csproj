@@ -12,6 +12,7 @@
     <NuGetAudit>false</NuGetAudit>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AppHostRelativeDotNet>dotnet</AppHostRelativeDotNet>
+    <AppHostDotNetSearch>AppRelative</AppHostDotNetSearch>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
   </PropertyGroup>
   <ItemGroup>

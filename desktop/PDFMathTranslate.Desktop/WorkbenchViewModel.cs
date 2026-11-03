@@ -43,7 +43,7 @@ public partial class WorkbenchViewModel : ObservableObject, IDisposable
     [ObservableProperty] private bool ready;
     [ObservableProperty] private bool assetsReady;
     [ObservableProperty] private bool autoCheckUpdates=true;
-    public string VersionDescription {get{var version=UpdateService.ReadVersion(Environment.GetEnvironmentVariable("PDF2ZH_APP_ROOT")??AppContext.BaseDirectory);return version.Preview?"开发预览 · 正式更新源已停用":$"版本 {version.Version}";}}
+    public string VersionDescription {get{var version=UpdateService.ReadVersion(RuntimePaths.OptionalEnvironment("PDF2ZH_APP_ROOT")??AppContext.BaseDirectory);return version.Preview?"开发预览 · 正式更新源已停用":$"版本 {version.Version}";}}
     public bool CanSubmit=>Ready&&AssetsReady&&Files.Count>0&&SourceLanguage!=null&&TargetLanguage!=null;
     [ObservableProperty] private string updateState="尚未检查更新";
     [ObservableProperty] private bool canDownloadUpdate;
@@ -76,7 +76,7 @@ public partial class WorkbenchViewModel : ObservableObject, IDisposable
             client=await supervisor.StartAsync(life.Token);
             var health=await client.JsonAsync("api/health",ct:life.Token);
             DataDirectory=health.GetProperty("data_dirs").GetProperty("home").GetString()!;
-            UpdateState=UpdateService.ReadVersion(Environment.GetEnvironmentVariable("PDF2ZH_APP_ROOT")??AppContext.BaseDirectory).Preview?"开发预览，正式更新源已停用":"尚未检查更新";
+            UpdateState=UpdateService.ReadVersion(RuntimePaths.OptionalEnvironment("PDF2ZH_APP_ROOT")??AppContext.BaseDirectory).Preview?"开发预览，正式更新源已停用":"尚未检查更新";
             outbox=new OperationOutbox(DataDirectory);
             ServiceState="窗口已就绪 · 翻译服务已就绪";
             await ReadSettingsAsync();
@@ -210,7 +210,7 @@ public partial class WorkbenchViewModel : ObservableObject, IDisposable
     }
     [RelayCommand] private async Task CheckUpdateAsync()
     {
-        var root=Environment.GetEnvironmentVariable("PDF2ZH_APP_ROOT")??AppContext.BaseDirectory;
+        var root=RuntimePaths.OptionalEnvironment("PDF2ZH_APP_ROOT")??AppContext.BaseDirectory;
         var current=UpdateService.ReadVersion(root);
         if(current.Preview){UpdateState=Notice="当前为开发预览，正式更新检查已停用。";return;}
         try
@@ -224,7 +224,7 @@ public partial class WorkbenchViewModel : ObservableObject, IDisposable
     }
     private async Task AutomaticUpdateAsync(CancellationToken ct)
     {
-        var root=Environment.GetEnvironmentVariable("PDF2ZH_APP_ROOT")??AppContext.BaseDirectory;
+        var root=RuntimePaths.OptionalEnvironment("PDF2ZH_APP_ROOT")??AppContext.BaseDirectory;
         if(!AutoCheckUpdates||UpdateService.ReadVersion(root).Preview)return;
         try{await Task.Delay(8000,ct);if(ct.IsCancellationRequested||!AutoCheckUpdates)return;await CheckUpdateAsync();if(availableUpdate!=null)Notice="发现新版本，可在「资源与设置」中下载更新。";}
         catch(OperationCanceledException){}

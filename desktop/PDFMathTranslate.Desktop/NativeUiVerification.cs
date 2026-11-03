@@ -35,6 +35,21 @@ internal static class NativeUiVerification
             window.ShowSettingsStorage(true);await Capture(window,root,"02b-save-directory.png");window.ShowSettingsStorage(false);
             window.ShowPage(typeof(TasksPage)); await Capture(window,root,"03-queue.png");
             if(!vm.Ready) throw new InvalidOperationException("后台尚未就绪："+vm.Notice);
+            if(scenario.TryGetProperty("controls_only",out var controls)&&controls.GetBoolean())
+            {
+                var originalSource=vm.SourceLanguage;var originalTarget=vm.TargetLanguage;var originalAuto=vm.AutoCheckUpdates;
+                vm.TargetLanguage=LanguageChoices.Resolve(vm.Languages,"fa");vm.AutoCheckUpdates=false;
+                await vm.SaveSettingsCommand.ExecuteAsync(null);
+                checks["uncommon_language_readback"]=vm.TargetLanguage?.Code=="fa";
+                checks["auto_update_opt_out_readback"]=!vm.AutoCheckUpdates;
+                if(vm.TargetLanguage?.Code!="fa"||vm.AutoCheckUpdates)throw new InvalidOperationException("偏好读回错误："+vm.Notice);
+                vm.SourceLanguage=originalSource;vm.TargetLanguage=originalTarget;vm.AutoCheckUpdates=originalAuto;await vm.SaveSettingsCommand.ExecuteAsync(null);
+                checks["missing_update_installer_keeps_service"]=await vm.VerifyMissingInstallerKeepsService();
+                if(!(bool)checks["missing_update_installer_keeps_service"])throw new InvalidOperationException("更新失败未保留后台服务");
+                window.ShowPage(typeof(SettingsPage));window.ShowSettingsStorage(true);await Capture(window,root,"11-update-recovery-and-saving.png");window.ShowSettingsStorage(false);
+                vm.SelectedTask=vm.Store.Tasks.FirstOrDefault(x=>x.Status=="done"&&x.SavedPaths.Length>0);
+                window.ShowPage(typeof(ResultsPage));await Capture(window,root,"12-restored-results.png");
+            }
             if(scenario.TryGetProperty("idle_seconds",out var idle))
             {
                 await Wait(()=>vm.AssetsReady,TimeSpan.FromSeconds(45));

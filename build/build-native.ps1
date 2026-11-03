@@ -103,7 +103,7 @@ Copy-Item -LiteralPath (Join-Path $repo 'build/THIRD_PARTY_NOTICES.md') -Destina
 $owned=Get-ChildItem -LiteralPath $payload -Recurse -File | Sort-Object FullName | ForEach-Object {
     $_.FullName.Substring($payload.Length+1)+'|'+(Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash
 }
-[IO.File]::WriteAllLines((Join-Path $payload 'owned-files.tsv'),$owned,[Text.UTF8Encoding]::new($false))
+[IO.File]::WriteAllLines((Join-Path $payload 'owned-files.tsv'),$owned,[Text.UTF8Encoding]::new($true))
 $installer=$null
 if(!$SkipInstaller){
     if(!$IsccExe){throw '请明确提供项目本地 Inno Setup ISCC 路径'}

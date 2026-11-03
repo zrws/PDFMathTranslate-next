@@ -32,13 +32,13 @@ try{
     $modified=Join-Path $install 'test-owned-modified.txt';[IO.File]::WriteAllText($modified,'user modified owned file',[Text.UTF8Encoding]::new($false))
     # The real installed Release app holds the same mutex checked by Setup and
     # Uninstall. Its home is new and owned; process identity is recorded.
-    $profile=Join-Path $repo ('.local/install-profile-'+[guid]::NewGuid().ToString('N').Substring(0,10))
-    $env:PDF2ZH_HOME=$profile
-    foreach($name in @('PDF2ZH_APP_ROOT','PDF2ZH_RUNTIME_ROOT','PDF2ZH_SOURCE_ROOT')){[Environment]::SetEnvironmentVariable($name,$null,'Process')}
+    $testDataHome=Join-Path $repo ('.local/install-profile-'+[guid]::NewGuid().ToString('N').Substring(0,10))
+    $env:PDF2ZH_HOME=$testDataHome
+    foreach($name in @('PDF2ZH_APP_ROOT','PDF2ZH_RUNTIME_ROOT','PDF2ZH_SOURCE_ROOT')){Remove-Item -LiteralPath ('Env:'+ $name) -ErrorAction SilentlyContinue}
     $app=Start-Process -FilePath (Join-Path $install 'PDFMathTranslate.exe') -WindowStyle Hidden -PassThru
     try{
-        $end=(Get-Date).AddSeconds(50);while(!(Test-Path -LiteralPath (Join-Path $profile 'config/desktop-state.json')) -and !$app.HasExited -and (Get-Date) -lt $end){Start-Sleep -Milliseconds 200}
-        Check '安装版 Release 实际启动并建立隔离后端状态' (!$app.HasExited -and (Test-Path -LiteralPath (Join-Path $profile 'config/desktop-state.json'))) @{pid=$app.Id;started=$app.StartTime.ToString('o');path=$app.Path;home=$profile}
+        $end=(Get-Date).AddSeconds(50);while(!(Test-Path -LiteralPath (Join-Path $testDataHome 'config/desktop-state.json')) -and !$app.HasExited -and (Get-Date) -lt $end){Start-Sleep -Milliseconds 200}
+        Check '安装版 Release 实际启动并建立隔离后端状态' (!$app.HasExited -and (Test-Path -LiteralPath (Join-Path $testDataHome 'config/desktop-state.json'))) @{pid=$app.Id;started=$app.StartTime.ToString('o');path=$app.Path;home=$testDataHome}
         $busy=Run-Setup (Join-Path $install 'unins000.exe') @('/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART',('/LOG="'+(Join-Path $EvidenceRoot 'running-uninstall-negative.log')+'"'))
         Check '运行中卸载被拒且程序保留' ($busy -ne 0 -and (Test-Path -LiteralPath $key) -and (Test-Path -LiteralPath (Join-Path $install 'PDFMathTranslate.exe'))) @{actual_exit=$busy}
     }finally{if(!$app.HasExited -and $app.Path -eq (Join-Path $install 'PDFMathTranslate.exe')){$app.Kill($true);$app.WaitForExit(10000)|Out-Null};$app.Dispose()}
@@ -78,6 +78,11 @@ try{
     Check '快捷方式已清理' (!(Test-Path -LiteralPath (Join-Path $desktop ($Group+'.lnk'))) -and !(Test-Path -LiteralPath (Join-Path $env:APPDATA ('Microsoft/Windows/Start Menu/Programs/'+$Group+'/PDFMathTranslate.lnk'))))
     $success=$true
 }finally{
-    @{passed=$success;checks=$rows;app_id=$AppId;group=$Group;install_root=$install;first_installer=$FirstInstaller;upgrade_installer=$UpgradeInstaller;scope='real silent EXE install/upgrade/uninstall and standard registry discovery; Geek GUI and installer mouse input not tested';retention='unknown/modified files retained, empty directories only; test sentinels deliberately retained'}|ConvertTo-Json -Depth 8|Set-Content (Join-Path $EvidenceRoot 'result.json') -Encoding utf8
+    $cleanup=@{attempted=$false}
+    if(!$success -and (Test-Path -LiteralPath $key) -and (Test-Path -LiteralPath (Join-Path $install 'unins000.exe'))){
+        $cleanup.attempted=$true
+        try{$cleanup.actual_exit=Run-Setup (Join-Path $install 'unins000.exe') @('/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART',('/LOG="'+(Join-Path $EvidenceRoot 'failure-cleanup.log')+'"'));$cleanup.registry_removed=!(Test-Path -LiteralPath $key)}catch{$cleanup.error=$_.Exception.Message}
+    }
+    @{passed=$success;checks=$rows;cleanup=$cleanup;app_id=$AppId;group=$Group;install_root=$install;first_installer=$FirstInstaller;upgrade_installer=$UpgradeInstaller;scope='real silent EXE install/upgrade/uninstall and standard registry discovery; Geek GUI and installer mouse input not tested';retention='unknown/modified files retained, empty directories only; test sentinels deliberately retained'}|ConvertTo-Json -Depth 8|Set-Content (Join-Path $EvidenceRoot 'result.json') -Encoding utf8
 }
 if(!$success){exit 1}

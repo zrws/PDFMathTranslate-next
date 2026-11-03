@@ -4,6 +4,12 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace PDFMathTranslate.Desktop;
 
+public static class RuntimePaths
+{
+    public static string? OptionalEnvironment(string name)
+    {var value=Environment.GetEnvironmentVariable(name);return string.IsNullOrWhiteSpace(value)?null:value;}
+}
+
 public sealed record Choice(string Code, string Label) { public override string ToString() => Label; }
 public static class LanguageChoices
 {

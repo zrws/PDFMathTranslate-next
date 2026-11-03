@@ -12,7 +12,7 @@ if($LASTEXITCODE -lt 0 -or $LASTEXITCODE -ge 8){throw '复制测试安装载荷�
 $appId='PDFMathTranslate-Codex-Test-'+$id
 function Manifest {
     $rows=Get-ChildItem -LiteralPath $stage -File -Recurse|Where-Object Name -ne 'owned-files.tsv'|Sort-Object FullName|ForEach-Object {$_.FullName.Substring($stage.Length+1)+'|'+(Get-FileHash -LiteralPath $_.FullName).Hash}
-    [IO.File]::WriteAllLines((Join-Path $stage 'owned-files.tsv'),[string[]]$rows,[Text.UTF8Encoding]::new($false))
+    [IO.File]::WriteAllLines((Join-Path $stage 'owned-files.tsv'),[string[]]$rows,[Text.UTF8Encoding]::new($true))
 }
 foreach($name in @('test-owned-obsolete.txt','test-owned-modified.txt','中文程序文件.txt')){[IO.File]::WriteAllText((Join-Path $stage $name),'本轮拥有的安装测试文件',[Text.UTF8Encoding]::new($false))}
 @{version='2.9.0';channel='preview'}|ConvertTo-Json|Set-Content (Join-Path $stage 'version.json') -Encoding utf8

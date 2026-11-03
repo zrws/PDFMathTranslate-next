@@ -26,9 +26,9 @@ public sealed class BackendSupervisor : IDisposable
     private async Task<BackendClient> StartCoreAsync(CancellationToken ct)
     {
         Dispose();
-        var root = Environment.GetEnvironmentVariable("PDF2ZH_APP_ROOT") ?? AppContext.BaseDirectory;
-        var runtime = Environment.GetEnvironmentVariable("PDF2ZH_RUNTIME_ROOT") ?? root;
-        Home = Environment.GetEnvironmentVariable("PDF2ZH_HOME") ?? (File.Exists(Path.Combine(root, "portable.marker"))
+        var root = RuntimePaths.OptionalEnvironment("PDF2ZH_APP_ROOT") ?? AppContext.BaseDirectory;
+        var runtime = RuntimePaths.OptionalEnvironment("PDF2ZH_RUNTIME_ROOT") ?? root;
+        Home = RuntimePaths.OptionalEnvironment("PDF2ZH_HOME") ?? (File.Exists(Path.Combine(root, "portable.marker"))
             ? Path.Combine(root, "home") : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PDFMathTranslate"));
         Home = Path.GetFullPath(Home);
         Directory.CreateDirectory(Home);
@@ -40,7 +40,7 @@ public sealed class BackendSupervisor : IDisposable
         var work = Path.Combine(Home, "work"); Directory.CreateDirectory(work);
         var info = new ProcessStartInfo(python) { WorkingDirectory = work, UseShellExecute = false, CreateNoWindow = true, RedirectStandardInput = true, RedirectStandardOutput = true, RedirectStandardError = true, StandardOutputEncoding = Encoding.UTF8, StandardErrorEncoding = Encoding.UTF8 };
         info.ArgumentList.Add("-u"); info.ArgumentList.Add("-m"); info.ArgumentList.Add("pdf2zh_next.desktop.server");
-        var source = Environment.GetEnvironmentVariable("PDF2ZH_SOURCE_ROOT");
+        var source = RuntimePaths.OptionalEnvironment("PDF2ZH_SOURCE_ROOT");
         info.Environment["PYTHONPATH"] = source == null ? packages : source + Path.PathSeparator + packages;
         foreach (var key in info.Environment.Keys.Where(x => x.StartsWith("PDF2ZH_", StringComparison.OrdinalIgnoreCase) || x.StartsWith("BABELDOC_", StringComparison.OrdinalIgnoreCase)).ToArray()) info.Environment.Remove(key);
         info.Environment["PDF2ZH_HOME"] = Home;

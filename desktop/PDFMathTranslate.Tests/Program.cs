@@ -27,6 +27,8 @@ Check("restart snapshot replaces old instance",store.InstanceId=="two"&&store.Ta
 store.Apply("task.updated",Envelope("two",0,TaskData(9,"running")));
 Check("duplicate sequence ignored",store.Tasks.Single().Status=="failed");
 var installer=Encoding.UTF8.GetBytes("local fake installer: never executed");
+var envProbe="PDF2ZH_RUNTIME_TEST_"+Guid.NewGuid().ToString("N");
+try{Environment.SetEnvironmentVariable(envProbe,"");Check("empty runtime override uses packaged default",RuntimePaths.OptionalEnvironment(envProbe)==null);Environment.SetEnvironmentVariable(envProbe,"D:\\路径 有空格");Check("explicit Unicode runtime override is preserved",RuntimePaths.OptionalEnvironment(envProbe)=="D:\\路径 有空格");}finally{Environment.SetEnvironmentVariable(envProbe,null);}
 var languages=new List<Choice>{new("en","英语"),new("zh-CN","简体中文")};
 var custom=LanguageChoices.Resolve(languages,"fa");
 Check("persisted uncommon language is preserved without replacing it with Chinese",custom?.Code=="fa"&&languages.Contains(custom));

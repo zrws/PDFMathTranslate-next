@@ -123,22 +123,32 @@ function GetFileAttributesW(Name: String): LongWord;
 function NativeLastError(): LongWord;
   external 'GetLastError@kernel32.dll stdcall';
 
+// Pascal Script overload resolution can select the ANSI Pos overload for a
+// literal needle. Keep indices in the same Unicode character units as Copy.
+function UnicodePos(const Needle, Value: String): Integer;
+var I: Integer;
+begin
+  Result:=0;
+  for I:=1 to Length(Value)-Length(Needle)+1 do
+    if Copy(Value,I,Length(Needle))=Needle then begin Result:=I;exit;end;
+end;
+
 function SafeOwnedPath(RelativeName: String; AllowMissing: Boolean): Boolean;
 var Candidate, Root, FirstPart, Remaining, Part, Parent, Leaf: String; Attr, ErrorCode: LongWord; Separator: Integer;
 begin
   Result := False;
-  if (RelativeName='') or (Pos('..',RelativeName)>0) or
-     (Pos(':',RelativeName)>0) or (Copy(RelativeName,1,1)='\') or
-     (Pos('/',RelativeName)>0) then exit;
+  if (RelativeName='') or (UnicodePos('..',RelativeName)>0) or
+     (UnicodePos(':',RelativeName)>0) or (Copy(RelativeName,1,1)='\') or
+     (UnicodePos('/',RelativeName)>0) then exit;
   Remaining:=RelativeName;
   while Remaining<>'' do begin
-    Separator:=Pos('\',Remaining);
+    Separator:=UnicodePos('\',Remaining);
     if Separator=0 then begin Part:=Remaining; Remaining:=''; end
     else begin Part:=Copy(Remaining,1,Separator-1);Delete(Remaining,1,Separator);end;
     if (Part='') or (Part='.') or (Trim(Part)<>Part) or
-       (Copy(Part,Length(Part),1)='.') or (Pos('~',Part)>0) then exit;
+       (Copy(Part,Length(Part),1)='.') or (UnicodePos('~',Part)>0) then exit;
   end;
-  Separator:=Pos('\',RelativeName);
+  Separator:=UnicodePos('\',RelativeName);
   if Separator=0 then FirstPart:=Lowercase(RelativeName)
   else FirstPart:=Lowercase(Copy(RelativeName,1,Separator-1));
   if (FirstPart='home') or (FirstPart='outputs') or (FirstPart='pdf2zh_files') or
@@ -178,11 +188,11 @@ begin
   NewNames.Sorted:=True;
   NewNames.Duplicates:=dupIgnore;
   for J:=0 to GetArrayLength(NewLines)-1 do begin
-    P:=Pos('|',NewLines[J]);
+    P:=UnicodePos('|',NewLines[J]);
     if P>1 then NewNames.Add(Copy(NewLines[J],1,P-1));
   end;
   for I := 0 to GetArrayLength(OldLines)-1 do begin
-    P := Pos('|', OldLines[I]);
+    P := UnicodePos('|', OldLines[I]);
     if P > 1 then begin
       RelativeName := Copy(OldLines[I], 1, P-1);
       OldHash := Copy(OldLines[I], P+1, MaxInt);
@@ -206,7 +216,7 @@ begin
   if CurUninstallStep<>usUninstall then exit;
   if not LoadStringsFromFile(ExpandConstant('{app}\owned-files.tsv'),Lines) then exit;
   for I:=0 to GetArrayLength(Lines)-1 do begin
-    P:=Pos('|',Lines[I]);
+    P:=UnicodePos('|',Lines[I]);
     if P>1 then begin
       RelativeName:=Copy(Lines[I],1,P-1);
       if SafeOwnedPath(RelativeName,False) then begin
@@ -219,8 +229,8 @@ begin
               Parent:=ExtractFileDir(Parent);
             end;
           end else Log('保留无法删除的程序文件：'+RelativeName);
-        end;
-      end;
+        end else Log('保留内容已修改或不存在的程序文件：'+RelativeName);
+      end else Log('保留路径不受许可的程序文件：'+RelativeName);
     end;
   end;
   DeleteFile(ExpandConstant('{app}\owned-files.tsv'));
@@ -244,7 +254,7 @@ begin
   end;
   if GetArrayLength(Lines)=0 then begin Result:='安装文件清单为空，已停止安装。';exit;end;
   for I:=0 to GetArrayLength(Lines)-1 do begin
-    P:=Pos('|',Lines[I]);
+    P:=UnicodePos('|',Lines[I]);
     if (P<=1) or not SafeOwnedPath(Copy(Lines[I],1,P-1),True) then begin
       Result:='安装路径含不可确认的目录、链接或不受许可的文件，请更换目录后重试。';exit;
     end;
