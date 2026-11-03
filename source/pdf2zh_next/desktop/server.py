@@ -29,6 +29,7 @@ from .runtime import DataOwner, migrate_config, migrate_history
 from .storage import Store, atomic_json, file_identity, fingerprint
 from .snapshots import freeze, restore
 from . import settings_transaction
+from .preview_control import capture_process, while_connected, PreviewDisconnected
 
 
 def create_app(home, token, port, downloads, *, legacy_root=None):
@@ -60,8 +61,7 @@ def create_app(home, token, port, downloads, *, legacy_root=None):
     expected_host = f"127.0.0.1:{port}"
     settings_lock = threading.RLock()
 
-    @app.middleware("http")
-    async def authenticate(request, call_next):
+    def authentication_error(request):
         if request.headers.get("host", "") != expected_host or request.headers.get("origin") not in (None, "http://"+expected_host):
             return JSONResponse({"detail": "请求来源不受许可。"}, status_code=403)
         auth = request.headers.get("authorization", "")
@@ -72,7 +72,20 @@ def create_app(home, token, port, downloads, *, legacy_root=None):
                 expiry = tickets.pop(ticket, 0)
                 valid = bool(expiry and expiry >= time.monotonic())
         if not valid: return JSONResponse({"detail": "本次应用会话已失效，请重新启动服务。"}, status_code=401)
-        return await call_next(request)
+        return None
+
+    class SessionAuthentication:
+        # Pure ASGI preserves the original receive channel, including the
+        # http.disconnect message used to cancel preview subprocesses.
+        def __init__(self, app):self.app=app
+        async def __call__(self, scope, receive, send):
+            if scope['type']=='http':
+                error=authentication_error(Request(scope))
+                if error is not None:
+                    await error(scope,receive,send)
+                    return
+            await self.app(scope,receive,send)
+    app.add_middleware(SessionAuthentication)
 
     @app.exception_handler(ValueError)
     async def value_error(request, exc):
@@ -193,25 +206,26 @@ def create_app(home, token, port, downloads, *, legacy_root=None):
                     yield ": keepalive\n\n"
         return StreamingResponse(stream(), media_type="text/event-stream", headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
 
-    async def render(path, page, width):
+    async def render(path, page, width, request=None):
+        try:return await while_connected(render_locked(path,page,width),request.is_disconnected if request else None)
+        except PreviewDisconnected:raise HTTPException(499,"预览请求已取消。")
+
+    async def render_locked(path, page, width):
         key = (str(path), path.stat().st_mtime_ns, path.stat().st_size, page, width)
         async with render_lock:
             if key in preview_cache:
                 preview_cache.move_to_end(key)
                 return preview_cache[key]
-            child = subprocess.Popen([sys.executable, "-m", "pdf2zh_next.desktop.preview", str(path), "--page", str(page), "--width", str(width)], stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE, creationflags=0x08000000 if os.name == "nt" else 0)
             try:
-                output, error = await asyncio.to_thread(child.communicate, timeout=20)
-                if child.returncode: raise HTTPException(400, "无法读取 PDF，请确认文件未损坏且未加密。")
+                code, output, error = await capture_process([sys.executable, "-m", "pdf2zh_next.desktop.preview", str(path), "--page", str(page), "--width", str(width)])
+                if code: raise HTTPException(400, "无法读取 PDF，请确认文件未损坏且未加密。")
                 header, png = output.split(b"\n", 1)
                 result = (json.loads(header), png)
                 if width:
                     preview_cache[key] = result
                     while preview_cache and (len(preview_cache)>8 or sum(len(v[1]) for v in preview_cache.values())>32*1024*1024): preview_cache.popitem(last=False)
                 return result
-            except subprocess.TimeoutExpired: raise HTTPException(504, "预览读取超时，请更换页面或继续翻译。")
-            finally:
-                if child.poll() is None: child.kill(); await asyncio.to_thread(child.communicate)
+            except TimeoutError: raise HTTPException(504, "预览读取超时，请更换页面或继续翻译。")
 
     def upload_path(file_id):
         if not re.fullmatch(r"[0-9a-f]{8}__[^\\/\x00]+\.pdf", file_id, re.I): raise HTTPException(404, "文件不存在，请重新导入。")
@@ -220,7 +234,7 @@ def create_app(home, token, port, downloads, *, legacy_root=None):
         return path
 
     @app.post("/api/files")
-    async def upload(file: UploadFile = File(...)):
+    async def upload(request: Request, file: UploadFile = File(...)):
         raw_filename=file.filename or "文档.pdf"
         # .NET MultipartFormDataContent emits MIME encoded words for Unicode
         # filename; python-multipart leaves that fallback undecoded.
@@ -228,22 +242,26 @@ def create_app(home, token, port, downloads, *, legacy_root=None):
         except (ValueError,LookupError,UnicodeError): raise HTTPException(400,"文件名编码无效，请重命名后导入。")
         filename = re.sub(r'[<>:"|?*\x00-\x1f]', "_", Path(raw_filename.replace("\\", "/")).name)
         if not filename.lower().endswith(".pdf"): raise HTTPException(400, "仅支持 PDF 文件。")
-        file_id = uuid.uuid4().hex[:8]+"__"+filename[:180]
+        file_id = uuid.uuid4().hex[:8]+"__"+filename[:-4][:176]+".pdf"
         path = upload_dir/file_id
         size = 0
+        created = False
         try:
             with path.open("xb") as out:
+                created = True
                 while chunk := await file.read(1024*1024):
                     size += len(chunk)
                     if size>100*1024*1024: raise HTTPException(413, "PDF 超过 100 MB，请拆分后导入。")
                     if size == len(chunk) and b"%PDF-" not in chunk[:1024]: raise HTTPException(400, "文件不是有效的 PDF。")
                     out.write(chunk)
-            metadata, _ = await render(path, 1, 0)
+            metadata, _ = await render(path, 1, 0, request)
             row = {"file_id": file_id, "filename": filename, "path": str(path), "page_count": metadata["page_count"], **file_identity(path)}
             atomic_json(path.with_suffix(".meta.json"), row)
             return {k:v for k,v in row.items() if k != "path"}
+        except FileExistsError:
+            raise HTTPException(409,"文件标识冲突，请重新导入；已有文件已保留。") from None
         except BaseException:
-            path.unlink(missing_ok=True)
+            if created:path.unlink(missing_ok=True)
             raise
 
     def png_response(result):
@@ -251,7 +269,7 @@ def create_app(home, token, port, downloads, *, legacy_root=None):
         return Response(png, media_type="image/png", headers={"X-Page-Count": str(meta["page_count"]), "X-Page-Index": str(meta["page_index"]), "Cache-Control": "private, max-age=30"})
 
     @app.get("/api/files/{file_id}/preview")
-    async def file_preview(file_id: str, page: int = 1, width: int = 1200): return png_response(await render(upload_path(file_id), max(1, page), max(200, min(1600, width))))
+    async def file_preview(file_id: str, request: Request, page: int = 1, width: int = 1200): return png_response(await render(upload_path(file_id), max(1, page), max(200, min(1600, width)), request))
 
     def require_task(ident):
         task = store.get(ident)
@@ -267,13 +285,13 @@ def create_app(home, token, port, downloads, *, legacy_root=None):
         return path
 
     @app.get("/api/tasks/{ident}/preview")
-    async def task_preview(ident: str, kind: str = "dual", page: int = 1, width: int = 1200): return png_response(await render(output_path(ident, kind), max(1, page), max(200, min(1600, width))))
+    async def task_preview(ident: str, request: Request, kind: str = "dual", page: int = 1, width: int = 1200): return png_response(await render(output_path(ident, kind), max(1, page), max(200, min(1600, width)), request))
 
     @app.get("/api/tasks/{ident}/source-preview")
-    async def source_preview(ident: str, page: int = 1, width: int = 1200):
+    async def source_preview(ident: str, request: Request, page: int = 1, width: int = 1200):
         path=Path(require_task(ident)["file_path"]).resolve()
         if path.parent!=upload_dir.resolve() or not path.is_file():raise HTTPException(404,"原文不可用，请重新导入。")
-        return png_response(await render(path,max(1,page),max(200,min(1600,width))))
+        return png_response(await render(path,max(1,page),max(200,min(1600,width)),request))
 
     @app.get("/api/tasks/{ident}/download")
     def download(ident: str, kind: str = "dual"): return FileResponse(output_path(ident, kind))

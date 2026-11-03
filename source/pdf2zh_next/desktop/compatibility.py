@@ -7,6 +7,7 @@ import asyncio
 import hmac
 import json
 import os
+import socket
 import sys
 import threading
 from pathlib import Path
@@ -16,6 +17,13 @@ def main():
     boot=json.loads(sys.stdin.readline())
     token=boot["token"];port=int(boot["port"])
     if len(token)!=64 or not 1<=port<=65535:raise ValueError("会话启动参数无效")
+    # Own the port before imports/config migration and before publishing any
+    # ready marker. Never ask the parent to authenticate an unowned listener.
+    listener=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+    if hasattr(socket,'SO_EXCLUSIVEADDRUSE'):
+        listener.setsockopt(socket.SOL_SOCKET,socket.SO_EXCLUSIVEADDRUSE,1)
+    try:listener.bind(('127.0.0.1',port));listener.listen(128)
+    except BaseException:listener.close();raise
     home=Path(os.environ["PDF2ZH_HOME"]).resolve()
     from .runtime import DataOwner,migrate_config
     owner=DataOwner(home)
@@ -42,9 +50,13 @@ def main():
         while os.read(sys.stdin.fileno(),4096):pass
         server.should_exit=True
     threading.Thread(target=parent,daemon=True).start()
-    print(f"WebUI ready: http://{expected}/",flush=True)
-    try:server.run()
-    finally:owner.close()
+    async def serve():
+        running=asyncio.create_task(server.serve(sockets=[listener]))
+        while not server.started and not running.done():await asyncio.sleep(.02)
+        if server.started:print(f"WebUI ready: http://{expected}/ [pid:{os.getpid()}]",flush=True)
+        await running
+    try:asyncio.run(serve())
+    finally:listener.close();owner.close()
 
 
 if __name__=="__main__":main()

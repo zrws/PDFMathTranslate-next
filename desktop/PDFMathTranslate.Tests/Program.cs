@@ -4,6 +4,8 @@ using System.Text;
 using System.Text.Json;
 using PDFMathTranslate.Desktop;
 
+if(args.Length>0&&args[0]=="--legacy-port-probe"){await PDFMathTranslateLauncher.LegacyPortProbe.Run(args[1..]);return;}
+
 var checks=new List<string>();
 void Check(string name,bool condition){if(!condition)throw new Exception(name);checks.Add(name);}
 JsonElement Json(object obj)=>JsonSerializer.SerializeToElement(obj);

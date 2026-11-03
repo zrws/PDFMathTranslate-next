@@ -55,7 +55,9 @@ class Assets:
     def _download(self):
         child = None
         try:
-            self._set(state="downloading", phase="downloading", message="正在下载排版资源，翻译进度单独显示…")
+            with self.lock:
+                if self.cancelled.is_set():return
+                self._set(state="downloading", phase="downloading", message="正在下载排版资源，翻译进度单独显示…")
             child = subprocess.Popen([sys.executable, "-m", "pdf2zh_next.desktop.worker"], stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, creationflags=0x08000000 if os.name == "nt" else 0)
             with self.lock:self.child=child
             while child.poll() is None:
@@ -71,7 +73,9 @@ class Assets:
             if self.cancelled.is_set():self._set(state="missing",phase="cancelled",message="资源准备已取消，可稍后重试。")
             else:self._set(state="failed_retryable", phase="failed_retryable", message="资源准备失败，请检查网络与磁盘空间后重试。")
         finally:
-            with self.lock:self.busy = False;self.child=None
+            with self.lock:
+                if self.cancelled.is_set():self._set(state="missing",phase="cancelled",message="资源准备已取消，可稍后重试。")
+                self.busy = False;self.child=None
 
     def close(self):
         self.cancelled.set()

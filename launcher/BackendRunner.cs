@@ -95,11 +95,15 @@ internal sealed class BackendRunner : IDisposable
 
     private bool WaitForWebUi(Process child)
     {
-        using var client = new HttpClient(new SocketsHttpHandler{UseProxy=false}) { Timeout = TimeSpan.FromSeconds(2) };
+        using var client = new HttpClient(new SocketsHttpHandler{UseProxy=false,AllowAutoRedirect=false}) { Timeout = TimeSpan.FromSeconds(2) };
         client.DefaultRequestHeaders.Authorization=new AuthenticationHeaderValue("Bearer",SessionToken);
         var deadline = DateTime.UtcNow + WebUiTimeout;
         while (DateTime.UtcNow < deadline && !child.HasExited)
         {
+            // Only this child's exact stdout marker proves it owns the port.
+            // No authenticated probe is sent while the port may be occupied.
+            if (!_webUiReady.Wait(100)) continue;
+            if (child.HasExited) break;
             try
             {
                 using var response = client.GetAsync(BaseUrl).GetAwaiter().GetResult();
@@ -161,7 +165,7 @@ internal sealed class BackendRunner : IDisposable
     private void ForwardLog(string? line, bool isError)
     {
         if (string.IsNullOrEmpty(line)) return;
-        if (line.Contains("WebUI ready:", StringComparison.OrdinalIgnoreCase))
+        if (!isError && line == $"WebUI ready: {BaseUrl} [pid:{_child?.Id}]")
         {
             _webUiReady.Set();
         }
