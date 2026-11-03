@@ -28,6 +28,7 @@ def main():
     parser.add_argument("--ui-exe", type=Path)
     parser.add_argument("--ui-after-install-result",type=Path,help="Wait for a successful owned install matrix before starting the window (shared AppMutex)")
     parser.add_argument("--packaged",action="store_true",help="Use payload source only, without repository overlay")
+    parser.add_argument("--observe-worker-errors",action='store_true',help='Diagnostic run only: wrap error observation for the loopback fixture, never a normal acceptance pass')
     args = parser.parse_args()
     args.runtime_root = args.runtime_root.resolve()
     args.asset_root = args.asset_root.resolve()
@@ -46,22 +47,30 @@ def main():
         if key.startswith(("PDF2ZH_", "BABELDOC_")): env.pop(key)
     env.update(PYTHONPATH=str(repo/"source")+os.pathsep+str(packages), PYTHONUTF8="1", PYTHONDONTWRITEBYTECODE="1", PYTHONNOUSERSITE="1", PDF2ZH_HOME=str(home), PDF2ZH_LEGACY_ROOT=str(repo), NO_PROXY="127.0.0.1,localhost,::1", HTTP_PROXY="http://127.0.0.1:9", HTTPS_PROXY="http://127.0.0.1:9", ALL_PROXY="http://127.0.0.1:9")
     if args.packaged:env["PYTHONPATH"]=str(packages)
+    if args.observe_worker_errors:
+        env['PYTHONPATH']=str(repo/'tests/native/diagnostic_hooks')+os.pathsep+env['PYTHONPATH']
+        env['PDF2ZH_TEST_ERROR_OBSERVATION']=str(evidence/'observed-errors')
     for key, path in {"HOME":home,"USERPROFILE":home,"APPDATA":home/"AppData/Roaming","LOCALAPPDATA":home/"AppData/Local","TEMP":home/"tmp","TMP":home/"tmp","XDG_CACHE_HOME":home/".cache"}.items(): path.mkdir(parents=True,exist_ok=True);env[key]=str(path)
     for key in ("SSL_CERT_DIR", "SSL_CERT_FILE"): env.pop(key, None)
     provenance_code="import hashlib,json,pathlib,sys,pdf2zh_next,pdf2zh_next.desktop.server;root=pathlib.Path(pdf2zh_next.__file__).parent;names=['__init__.py','desktop/server.py','desktop/engine.py','desktop/worker.py','desktop/storage.py','desktop/runtime.py','desktop/exports.py','desktop/snapshots.py','desktop/policy.py','desktop/pdf_operations.py','desktop/assets.py','desktop/preview_control.py','desktop/preview.py'];print(json.dumps({'python_executable':sys.executable,'sys_path':sys.path,'modules':[{'path':str(root/name),'sha256':hashlib.sha256((root/name).read_bytes()).hexdigest()} for name in names]},ensure_ascii=False))"
     probe=subprocess.run([str(python),"-c",provenance_code],env=env,cwd=home/"work",capture_output=True,text=True,encoding="utf-8",timeout=40,check=True)
     provenance=json.loads(probe.stdout)
-    provenance.update(argv=sys.argv,packaged=args.packaged,source_mode="packaged" if args.packaged else "repository overlay",acceptance_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest())
+    provenance.update(argv=sys.argv,packaged=args.packaged,source_mode="packaged" if args.packaged else "repository overlay",acceptance_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),diagnostic_observation=args.observe_worker_errors)
+    if args.observe_worker_errors:provenance['diagnostic_hook_sha256']=hashlib.sha256((repo/'tests/native/diagnostic_hooks/sitecustomize.py').read_bytes()).hexdigest()
     expected=(packages/"pdf2zh_next" if args.packaged else repo/"source/pdf2zh_next").resolve()
     if not all(Path(row["path"]).resolve().is_relative_to(expected) for row in provenance["modules"]):raise RuntimeError("实际模块导入路径与验收模式不一致")
     (evidence/"provenance.json").write_text(json.dumps(provenance,ensure_ascii=False,indent=2),encoding="utf-8")
     sample = home/"科学论文验收.pdf"
     generator = """import pymupdf,sys
 d=pymupdf.open()
+paragraph='Scientific experiments compare a baseline method with a bounded resource policy. Every observation records the input, effective configuration and measured result. Repeated trials distinguish startup overhead from steady operation. Mathematical notation and paragraph order must survive translation, while output files retain their identity.'
 for number in range(2):
     p=d.new_page()
-    p.insert_textbox(pymupdf.Rect(60,80,530,230),'Scientific document translation page '+str(number+1)+'\\n\\nThis local acceptance document checks paragraph translation, page layout and scientific notation. The original engine must preserve the page structure.',fontsize=13,fontname='helv')
-    p.insert_text((70,280),'E = m c^2',fontsize=16,fontname='tiit')
+    p.insert_text((52,52),'Scientific document translation - page '+str(number+1),fontsize=16,fontname='helv')
+    body='\\n\\n'.join(str(index+1)+'. '+paragraph for index in range(10))
+    remaining=p.insert_textbox(pymupdf.Rect(52,90,545,745),body,fontsize=10.5,fontname='helv',lineheight=1.15)
+    if remaining<0:raise RuntimeError('two-page scientific fixture text overflow')
+    p.insert_text((52,784),'E = m c^2 ; sigma^2 = E[(X-mu)^2]',fontsize=16,fontname='tiit')
 d.save(sys.argv[1]);d.close()
 """
     subprocess.run([str(python), "-c", generator, str(sample)], env=env, cwd=home/"work", check=True, capture_output=True)
