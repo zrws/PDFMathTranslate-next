@@ -1,0 +1,68 @@
+{
+  "round": "r2-integrated-20261003-01",
+  "created": "2026-10-03T01:10:00+08:00",
+  "note": "Per-authorization: each R1-R5 mapped to code location, actual callers, affected cases, must-rerun-vs-reusable evidence, and the rationale. Old cases never deleted; old results never overwritten.",
+  "items": [
+    {
+      "id": "R1",
+      "severity": "P1",
+      "problem": "guard/fallback both judge loopback on decimal first-octet but pass original string to OS; Windows parses 0127.0.0.1 / 00127.0.0.1 as 87.0.0.1 (proven locally via AI_NUMERICHOST) -> mutual pass-through of a NON-loopback numeric address",
+      "code_locations": ["tests/performance/p0_guard/sitecustomize.py (_is_loopback)", "tests/performance/p0_guard/guard_fallback.py (_is_loopback_strict)"],
+      "actual_callers": "p0_baseline.ps1 (child backend), p0_probe_perprocess.ps1, p0_probe_attribution.ps1 (payloads), p0_c1_guard_test.ps1 / p0_negative_tests.ps1 case-4/14 (direct chain), p0_guard/guard_test.py predicates",
+      "affected_cases": ["G01","G02","G03","G06","G07","G08","G09","G10","G12","G13","N01","N02"],
+      "must_rerun": ["predicate regression 13-vector (NEW test file p0_guard/loopback_vectors.py + driver p0_loopback_negtest.ps1 with bottom stub)", "guard 3 modes (rerun)", "guard mutations (rerun)", "entrygate negatives (rerun, guard SHA changes)", "negative matrix case-4/case-14"],
+      "reusable": ["G11 matrix case-14 rerun (proxy)", "no perprocess/attribution rerun for R1 alone (their guard logs show zero outbound attempts anyway, but they are rerun anyway for R4 recorder work)"],
+      "rationale": "predicate semantics changed -> every test that evaluates the predicate must be re-executed on current code; measurement entries reuse the new sitesame hash via re-run"
+    },
+    {
+      "id": "R2",
+      "severity": "P1/P2",
+      "problem": "metadata/python subprocesses (asset check, PNG decode, sample gen, pytest, manifest) inherit real HOME/USERPROFILE/CWD/[PDF2ZH_CONFIG_FILE]; matrix case-10 log proves cache_folder=C:\\Users\\admin\\.cache\\babeldoc (real home touched); asset manifest failure paths (garbled metadata/empty list/missing category/hash tool fail) can return 0 or total=0->true; PNG/pytest runners lack unified try/finally restore",
+      "code_locations": ["tests/performance/p0_asset_check.ps1 (Invoke-AssetCheck)", "tests/performance/p0_guard/png_check.ps1 (Test-PngStrict decode call)", "tests/performance/p0_baseline.ps1 (sample gen child)", "tests/performance/p0_pytest_isolated.ps1 (env restore path)", "source/tests/conftest.py (PDF2ZH_CONFIG_FILE)", "tests/performance/p0_manifest.ps1 (Git env restore)"],
+      "actual_callers": "baseline case runs 2/3a/3b/5a/6/7/8/10 (asset check + samples), perprocess healthy + N04, matrix cases 4/9/11/12/13 (PNG), pytest runner, manifest entry",
+      "affected_cases": ["P01","P02","G16","I01","I04","case-4","case-9","case-11","case-12","case-13","case-10","pytest-suite"],
+      "must_rerun": ["R2 isolation self-test (NEW p0_isolation_negtest.ps1: standalone helper call + via baseline call, sentinel second temp dir; assert effective cache_folder is isolated, real-home paths absent, existed/value restore proven, CWD restored)", "asset manifest failure negative set (NEW p0_asset_manifest_negtest.ps1: garbled metadata / empty file_list / missing category / hash tool fail / missing item / corrupt item - all non-zero, precise reason)", "full negative matrix (all cases exercise the asset-check path via baseline)", "baseline short smoke", "perprocess healthy + N04", "pytest rerun"],
+      "reusable": ["PNG decode core (p0_guard/png_check.ps1 validation logic) - reused, only its child-env isolation changes"],
+      "rationale": "isolation envelope of child processes is a security invariant, not a performance feature; every entry that spawns python children must show isolated effective paths in the new run logs"
+    },
+    {
+      "id": "R3",
+      "severity": "P2",
+      "problem": "negative-matrix generic Check compares rc==expected and writes caller-provided 'reason' string verbatim into CSV (no observed-reason semantics); negtests New-Item -Force accepts existing run dir (overwrites hashes/logs); attribution deletes old jsonl before checking; zero-match -Only can pass",
+      "code_locations": ["tests/performance/p0_negative_tests.ps1 (Check, run-dir creation, -Only)", "tests/performance/p0_probe_attribution.ps1 (OutDir handling)"],
+      "actual_callers": "full negative matrix (16 local cases), any matrix-driven attribution/env/entrygate invocations, operator-driven manual reruns of negative_tests with explicit -RunId",
+      "affected_cases": ["I04", "G11 proxy case-14", "I03 case-1", "all 16 matrix rows"],
+      "must_rerun": ["full negative matrix (the driver itself changes; all 16 rows must be re-executed under the verdict-based driver with reason assertions)", "matrix self-test (NEW embedded -SelfTest with 3 same-code-wrong-reason stub cases + zero-match -Only case + RunId reuse case)"],
+      "reusable": ["case-4/9/11/12/13 subprocess logic (their case bodies unchanged besides reason capture)"],
+      "rationale": "a driver that can mistake 'same exit code' for 'correct reason' invalidates every negative case verdict; the driver must be re-proven, and its 16 case streams must be re-executed to carry machine-observed reasons"
+    },
+    {
+      "id": "R4",
+      "severity": "P2",
+      "problem": "only planned_exit is recorded for the latest perprocess/attribution runs; coverage derives actualExit from planned (seal reads result.exit_code/planned_exit); per-identity recovery facts not persisted (attribution has none; perprocess has deduped owned set + recovery_details but no unknown state on query failure); port_released substitutes for process death in older runs; started/ended times = result build time, not run window",
+      "code_locations": ["tests/performance/p0_run_recorder.ps1 (NEW outer recorder)", "tests/performance/p0_probe_perprocess.ps1 (recorder hook, window times, unknown recovery state)", "tests/performance/p0_probe_attribution.ps1 (recovery persistence)", "tests/performance/p0_seal_round.ps1 (coverage derives from recorder files, not result exit_code)"],
+      "actual_callers": "perprocess healthy + N04, attribution healthy + import-fail, baseline short smoke (recorder as outer driver for these), matrix driver (records outer exit explicitly, already saves outer exit in its matrix CSV)", 
+      "affected_cases": ["P01","P02","I01","I02","I03","N04"],
+      "must_rerun": ["recovery stub tests (NEW p0_recovery_negtest.ps1: alive-with-closed-port / query failure / pid mismatch - each must FAIL the recovery acceptance)", "perprocess healthy via recorder (NEW run)", "perprocess N04 via recorder (NEW run)", "attribution healthy via recorder (NEW run)", "attribution import-fail via recorder (NEW run)", "baseline short smoke via recorder (NEW run)"],
+      "reusable": ["historical runs stay historical with explicit gaps; no backfilling of observed exits"],
+      "rationale": "acceptance semantics require outer-observed exit codes and process-identity recovery facts; planned exits are inputs to the outer check, never substitutes; query failure in recovery must fail, not vanish into 'gone'"
+    },
+    {
+      "id": "R5",
+      "severity": "P1",
+      "problem": "checker swallowed 416 'Illegal characters in path' errors (placeholder original paths) and reports skipped=0/failed=0 with exit 0; canonical hash table bind check only 'the newest one'; result checks are type-level, not semantic; copy-unavailable-original pairs get a placeholder original path and copy hash re-stamped as original_sha256",
+      "code_locations": ["tests/performance/p0_seal_round.ps1 (LOG_COPY_INDEX model, coverage derivation, canonical hashes)", "tests/performance/p0_evidence_check.ps1 (v5: error-tracking, provenance, semantics, input digest, counts split, self-test binding)"],
+      "actual_callers": "final evidence check runs (the only users of the checker are the sealing+final-check flows)",
+      "affected_cases": ["M01","M02","N03","I04 final binding", "S5"],
+      "must_rerun": ["seal rewritten (honest originals)", "checker self-test rerun incl. existing 13 (renamed/kept) + new mutations (illegal original path / unknown-original-claimed / missing source run / wrong runtime hash / planned-vs-observed mismatch / observed exit missing / same-code-wrong-reason / recovery unknown / selected-run-missing-artifact)", "final check run on the complete tree into a separate output directory with INPUT digest"],
+      "reusable": ["current script-hashes canonical index format", "LOG_COPY copy hash computation"],
+      "rationale": "an acceptance checker that swallows its own errors cannot be trusted with the final binding; inputs, outputs and exit semantics must be machine-definable and recomputable"
+    }
+  ],
+  "global_legacy_sum": {
+    "original_mandatory_cases_24": ["G01","G02","G03","G04","G05","G06","G07","G08","G09","G10","G11","G12","G13","G14","G15","G16","P01","P02","M01","M02","I01","I02","I03","I04"],
+    "new_cases_prior_round_4": ["N01","N02","N03","N04"],
+    "reuse_policy": "historical systematic-acceptance-20260930-01 outcomes remain valid only where unaffected by R1-R5 changes; every affected case is re-executed in this round and the mapping in COVERAGE.json explicitly names new-run vs reuse"
+  }
+}
+

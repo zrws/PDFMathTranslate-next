@@ -1,0 +1,44 @@
+{
+  "frozenAt": "2026-09-30T21:30:00+08:00",
+  "runId": "systematic-acceptance-20260930-01",
+  "description": "Frozen mandatory case list for the P0 systematic acceptance round. Cases G* = guard/network (pure local). Cases P* = perprocess/lifecycle. Cases M* = matrix/evidence. Cases I* = integration (real backend short smoke, after safety gate). The original 24 items keep their frozen semantics from systematic-closure-20260929-01; new tests this round are numbered N01+. No case may be removed after freezing and expectations must not change. exit_code in result.json = the script's own planned exit; the outer runner (matrix/harness) records the actual observed exit separately and both must agree in the mapping.",
+  "cases": [
+    {"id": "G01", "wp": "A", "description": "Normal guard interception: sync connect to non-routable is rejected by guard, with matching BLOCKED log entry for THIS run", "expected_exit": 0, "expected_reason": "guard_blocked_sync", "requires_backend": false},
+    {"id": "G02", "wp": "A", "description": "Guard missing: no PDF2ZH_GUARD_LOG env -> fallback catches all attempts -> test FAILS (guard absent)", "expected_exit": 1, "expected_reason": "guard_missing_detected_by_fallback", "requires_backend": false},
+    {"id": "G03", "wp": "A", "description": "Partial guard failure: guard loaded but one hook (e.g. async) disabled -> fallback catches async attempt -> test FAILS", "expected_exit": 1, "expected_reason": "guard_partial_failure_detected", "requires_backend": false},
+    {"id": "G04", "wp": "A", "description": "Guard log unwritable: guard loads but cannot write GUARD_ACTIVE/append -> startup gate blocks entry", "expected_exit": 1, "expected_reason": "guard_handshake_missing", "requires_backend": false},
+    {"id": "G05", "wp": "A", "description": "Stale handshake: GUARD_ACTIVE from old run (different PID) -> startup gate rejects", "expected_exit": 1, "expected_reason": "stale_handshake_rejected", "requires_backend": false},
+    {"id": "G06", "wp": "A", "description": "Sync connect rejection: guard blocks sync socket.connect", "expected_exit": 0, "expected_reason": "sync_blocked", "requires_backend": false},
+    {"id": "G07", "wp": "A", "description": "Async connect rejection: guard blocks asyncio create_connection (Proactor)", "expected_exit": 0, "expected_reason": "async_blocked", "requires_backend": false},
+    {"id": "G08", "wp": "A", "description": "httpx request rejection: guard blocks httpx AsyncClient request", "expected_exit": 0, "expected_reason": "httpx_blocked", "requires_backend": false},
+    {"id": "G09", "wp": "A", "description": "DNS rejection: guard blocks getaddrinfo for non-loopback", "expected_exit": 0, "expected_reason": "dns_blocked", "requires_backend": false},
+    {"id": "G10", "wp": "A", "description": "Controlled loopback success: real temp loopback listener accepts connection; guard allows loopback", "expected_exit": 0, "expected_reason": "loopback_allowed", "requires_backend": false},
+    {"id": "G11", "wp": "A", "description": "Inherited proxy not used: child env has proxy set but guard still blocks direct (no tunnel)", "expected_exit": 0, "expected_reason": "proxy_stripped_guard_blocks", "requires_backend": false},
+    {"id": "G12", "wp": "A", "description": "Empty hostname NOT treated as loopback (tightened _is_loopback)", "expected_exit": 1, "expected_reason": "empty_host_rejected", "requires_backend": false},
+    {"id": "G13", "wp": "A", "description": "Fallback counter: normal guard run -> fallback hit count = 0 (guard worked, fallback untouched)", "expected_exit": 0, "expected_reason": "fallback_zero_hits", "requires_backend": false},
+    {"id": "G14", "wp": "A", "description": "Startup gate: guard handshake verified BEFORE app import in child bootstrap (not in finally)", "expected_exit": 0, "expected_reason": "startup_gate_active", "requires_backend": false},
+    {"id": "G15", "wp": "A", "description": "Startup gate: guard fails to load -> child bootstrap exits before any app code runs", "expected_exit": 1, "expected_reason": "bootstrap_blocks_on_guard_fail", "requires_backend": false},
+    {"id": "G16", "wp": "A", "description": "Proxy env save/restore: all proxy vars correctly saved and restored (existed/value structure, case-insensitive dedup, try/finally)", "expected_exit": 0, "expected_reason": "env_restored", "requires_backend": false},
+    {"id": "P01", "wp": "B", "description": "Perprocess short run: 2+ valid samples, full exit code, owned PID/creation-time recovery evidence, port release", "expected_exit": 0, "expected_reason": "perprocess_valid", "requires_backend": true},
+    {"id": "P02", "wp": "B", "description": "Perprocess result: structured result.json with exit_code, samples, guard status, process identities, port release, processes_recovered from identity recheck", "expected_exit": 0, "expected_reason": "result_complete", "requires_backend": true},
+    {"id": "M01", "wp": "C", "description": "Evidence check: all mandatory paths exist, hashes match, no gitignore leakage; checker executed for real with recorded exit", "expected_exit": 0, "expected_reason": "evidence_valid", "requires_backend": false},
+    {"id": "M02", "wp": "C", "description": "Index accuracy: INDEX links to actual files, no fabricated paths", "expected_exit": 0, "expected_reason": "index_accurate", "requires_backend": false},
+    {"id": "I01", "wp": "D", "description": "Baseline short smoke: startup, API, root page, preview, idle, recovery (no translation)", "expected_exit": 0, "expected_reason": "baseline_smoke_pass", "requires_backend": true},
+    {"id": "I02", "wp": "D", "description": "Attribution normal import: full handshake, valid measurement, recovery evidence", "expected_exit": 0, "expected_reason": "attribution_valid", "requires_backend": false},
+    {"id": "I03", "wp": "D", "description": "Attribution import-fail: all payloads fail, exit non-zero, processes reaped", "expected_exit": 1, "expected_reason": "attribution_import_fail", "requires_backend": false},
+    {"id": "I04", "wp": "D", "description": "Matrix regression: all mandatory cases on current code version pass with reason assertions", "expected_exit": 0, "expected_reason": "matrix_pass", "requires_backend": true}
+  ],
+  "new_cases_this_round": [
+    {"id": "N01", "wp": "A", "description": "Pseudo-loopback rejected by BOTH layers: 127.audit.invalid / localhost.audit.invalid / empty host / malformed IP never reach real resolution or connect", "expected_exit": 0, "expected_reason": "pseudo_loopback_rejected", "requires_backend": false},
+    {"id": "N02", "wp": "A", "description": "Entry-gate mutation self-tests: corrupted guard_test copies (partial-sync-also-bad, no_guard wrong exit, deleted subitem, fake timeout) are each rejected by the wrapper", "expected_exit": 1, "expected_reason": "mutation_rejected", "requires_backend": false},
+    {"id": "N03", "wp": "C", "description": "Evidence checker mutation self-test: 13 bad-copy variants each rejected with precise reason; clean copy passes", "expected_exit": 0, "expected_reason": "checker_selftest_pass", "requires_backend": false},
+    {"id": "N04", "wp": "B", "description": "Perprocess failure-path result: injected exception still yields a structured result with planned vs outer exit recorded", "expected_exit": 1, "expected_reason": "failure_result_written", "requires_backend": false}
+  ],
+  "notes": {
+    "exit_code_semantics": "result.json exit_code is the entry script's planned exit decided after cleanup. The matrix/outer runner records the actually observed process exit code; the mapping in REQUIREMENTS.json records both. This documents the schema distinction required by the authorization prompt without changing the frozen expectations.",
+    "two_pass_protocol": "M01/M02 are self-referential: their evidence IS the final recorded checker execution, which cannot precede itself. Protocol: a prior green checker execution (runs/checker-final-pass1.json with status PASS and recorded exit) is used to derive the M01/M02 coverage rows; the final binding run then validates the complete tree INCLUDING those rows. While the rows are absent, the checker exempts M01/M02 from in-tree coverage counting (documented exemption, printed in its output).",
+    "historical_evidence": "All prior-round runs remain historical snapshots under their own roots and are NOT counted in this round's mandatory statistics unless re-executed on current code.",
+    "reuse_accepted": "C1 asset check core, C3 PNG PIL decode, case-6 reason assertion, F1/F5 contract v1.2, sealed PDFs+logs are retained cores; retained cores do not exempt their surrounding isolation/recovery from this round's checks."
+  }
+}
+

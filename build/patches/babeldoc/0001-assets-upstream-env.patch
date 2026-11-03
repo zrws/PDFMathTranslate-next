@@ -1,0 +1,38 @@
+# babeldoc 0.6.2 本地补丁：BABELDOC_ASSETS_UPSTREAM 环境变量优先选择资源上游
+# 上游 wheel: babeldoc-0.6.2-py3-none-any.whl
+# SHA256: FA7252AA2B4B57C833334A0AB3F3466A1DE8300953AAFF86B53CD5DF4B30DB1E
+# 仅此一个文件相对官方 wheel 有差异（已对照 dist-info/RECORD 校验其余 351 个文件哈希一致；
+# dist-info/RECORD 本身因 uv 安装器元数据（INSTALLER/REQUESTED/WHEEL 等条目与行序）与官方 wheel 不同，非代码改动）。
+# 应用方式：在受控构建中解包官方 wheel 后按本补丁修改 babeldoc/assets/assets.py（相对 wheel 根目录）。
+diff --git a/babeldoc/assets/assets.py b/babeldoc/assets/assets.py
+index 3f8961d..1adf965 100644
+--- a/babeldoc/assets/assets.py
++++ b/babeldoc/assets/assets.py
+@@ -2,6 +2,7 @@ import asyncio
+ import hashlib
+ import json
+ import logging
++import os
+ import threading
+ import zipfile
+ from pathlib import Path
+@@ -188,6 +189,19 @@ async def get_fastest_upstream_for_font(
+     """
+     global _FASTEST_FONT_UPSTREAM, _FASTEST_FONT_METADATA
+ 
++    preferred_upstream = os.environ.get("BABELDOC_ASSETS_UPSTREAM")
++    if preferred_upstream:
++        if exclude_upstream and preferred_upstream in exclude_upstream:
++            logger.warning(
++                "Preferred asset upstream %s is excluded for this resource",
++                preferred_upstream,
++            )
++        elif preferred_upstream in FONT_METADATA_URL:
++            logger.info("Using preferred asset upstream: %s", preferred_upstream)
++            return await get_font_metadata(client, preferred_upstream)
++        else:
++            logger.warning("Invalid preferred asset upstream: %s", preferred_upstream)
++
+     if exclude_upstream is None and _FASTEST_FONT_UPSTREAM is not None:
+         return _FASTEST_FONT_UPSTREAM, _FASTEST_FONT_METADATA
+ 
