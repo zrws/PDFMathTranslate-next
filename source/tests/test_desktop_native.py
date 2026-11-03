@@ -359,7 +359,8 @@ def test_old_auto_update_opt_out_is_preserved_and_native_preference_wins(tmp_pat
 
 def test_cross_home_migration_keeps_old_update_opt_out(tmp_path):
     old=tmp_path/"old";original=old/"home/.config/pdf2zh/ui-prefs.json";original.parent.mkdir(parents=True);original.write_text('{"auto_update":false}',encoding="utf-8")
-    home=tmp_path/"new";migrate_config(home,old)
+    home=tmp_path/"new";marker=home/"config/migration-v1.json";marker.parent.mkdir(parents=True);marker.write_text('{"version":1}',encoding="utf-8")
+    migrate_config(home,old)
     store=Store(home,tmp_path/"downloads");assert store.prefs()["auto_update"] is False
     assert original.read_text(encoding="utf-8")=='{"auto_update":false}'
     store.prefs({"auto_update":True});migrate_config(home,old)

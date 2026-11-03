@@ -54,7 +54,8 @@ $packages=Join-Path $payload 'uv-tools/pdf2zh-next/Lib/site-packages'
 Copy-Tree (Join-Path $venv 'Lib/site-packages') $packages
 & $python build/apply-engine-patches.py --site-packages $packages
 if($LASTEXITCODE){throw 'BabelDOC 锁定补丁失败'}
-Copy-Tree (Join-Path $repo 'source/pdf2zh_next') (Join-Path $packages 'pdf2zh_next')
+& $python build/copy-product-source.py --target (Join-Path $packages 'pdf2zh_next') --report (Join-Path $output 'product-source.json')
+if($LASTEXITCODE){throw '产品源码集合或哈希核验失败'}
 # The optional Gradio UI is not the shipped native interface. This matches the
 # previous slim distribution; it is not counted as a new size reduction.
 $removed=@()
@@ -113,7 +114,7 @@ if(!$SkipInstaller){
     if($LASTEXITCODE){throw '中文安装器编译失败'}
     $installer=Join-Path $output "PDFMathTranslate-Setup-$Version.exe"
 }
-$report=[ordered]@{schema=1;id=$id;version=$Version;channel=$Channel;source_commit=(& git rev-parse HEAD);source_dirty=[bool](& git status --porcelain);sdk=(& $DotnetExe --version);python=(& $python --version);payload=$payload;payload_files=@(Get-ChildItem -LiteralPath $payload -File -Recurse).Count;payload_bytes=(Get-ChildItem -LiteralPath $payload -File -Recurse | Measure-Object Length -Sum).Sum;removed=$removed;lock_sha256=(Get-FileHash build/dependency-locks/windows-py312.txt).Hash;installer=$installer}
+$report=[ordered]@{schema=2;id=$id;version=$Version;channel=$Channel;source_commit=(& git rev-parse HEAD);source_dirty=[bool](& git diff --name-only HEAD -- source desktop launcher build global.json);sdk=(& $DotnetExe --version);python=(& $python --version);payload=$payload;payload_files=@(Get-ChildItem -LiteralPath $payload -File -Recurse).Count;payload_bytes=(Get-ChildItem -LiteralPath $payload -File -Recurse | Measure-Object Length -Sum).Sum;removed=$removed;lock_sha256=(Get-FileHash build/dependency-locks/windows-py312.txt).Hash;patch_lock_sha256=(Get-FileHash build/patches/babeldoc/patch-lock.json).Hash;nuget_lock_sha256=(Get-FileHash desktop/PDFMathTranslate.Desktop/packages.lock.json).Hash;owned_manifest_sha256=(Get-FileHash (Join-Path $payload 'owned-files.tsv')).Hash;product_source_report_sha256=(Get-FileHash (Join-Path $output 'product-source.json')).Hash;installer=$installer}
 if($installer){$report.installer_bytes=(Get-Item -LiteralPath $installer).Length;$report.installer_sha256=(Get-FileHash -LiteralPath $installer).Hash}
 $report | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $output 'build-report.json') -Encoding utf8
 $report | ConvertTo-Json -Depth 5

@@ -46,6 +46,13 @@ def main():
     if args.packaged:env["PYTHONPATH"]=str(packages)
     for key, path in {"HOME":home,"USERPROFILE":home,"APPDATA":home/"AppData/Roaming","LOCALAPPDATA":home/"AppData/Local","TEMP":home/"tmp","TMP":home/"tmp","XDG_CACHE_HOME":home/".cache"}.items(): path.mkdir(parents=True,exist_ok=True);env[key]=str(path)
     for key in ("SSL_CERT_DIR", "SSL_CERT_FILE"): env.pop(key, None)
+    provenance_code="import hashlib,json,pathlib,sys,pdf2zh_next,pdf2zh_next.desktop.server;root=pathlib.Path(pdf2zh_next.__file__).parent;names=['__init__.py','desktop/server.py','desktop/engine.py','desktop/worker.py','desktop/storage.py','desktop/runtime.py','desktop/exports.py','desktop/snapshots.py','desktop/policy.py','desktop/pdf_operations.py'];print(json.dumps({'python_executable':sys.executable,'sys_path':sys.path,'modules':[{'path':str(root/name),'sha256':hashlib.sha256((root/name).read_bytes()).hexdigest()} for name in names]},ensure_ascii=False))"
+    probe=subprocess.run([str(python),"-c",provenance_code],env=env,cwd=home/"work",capture_output=True,text=True,encoding="utf-8",timeout=40,check=True)
+    provenance=json.loads(probe.stdout)
+    provenance.update(argv=sys.argv,packaged=args.packaged,source_mode="packaged" if args.packaged else "repository overlay",acceptance_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest())
+    expected=(packages/"pdf2zh_next" if args.packaged else repo/"source/pdf2zh_next").resolve()
+    if not all(Path(row["path"]).resolve().is_relative_to(expected) for row in provenance["modules"]):raise RuntimeError("实际模块导入路径与验收模式不一致")
+    (evidence/"provenance.json").write_text(json.dumps(provenance,ensure_ascii=False,indent=2),encoding="utf-8")
     sample = home/"科学论文验收.pdf"
     generator = "import pymupdf,sys;d=pymupdf.open();p=d.new_page();p.insert_textbox(pymupdf.Rect(60,80,530,230),'Scientific document translation\\n\\nThis local acceptance document checks paragraph translation, page layout and scientific notation. The original engine must preserve the page structure.',fontsize=13,fontname='helv');p.insert_text((70,280),'E = m c^2',fontsize=16,fontname='tiit');d.save(sys.argv[1]);d.close()"
     subprocess.run([str(python), "-c", generator, str(sample)], env=env, cwd=home/"work", check=True, capture_output=True)
@@ -208,7 +215,7 @@ def main():
         measurement_stop.set();measurement_thread.join(2)
         (evidence/"process-samples.json").write_text(json.dumps({"scope":"real native API process tree, 250ms sampling, includes pipeline and previews; GPU counters not measured","samples":measurements},ensure_ascii=False),encoding="utf-8")
         (evidence/"events.jsonl").write_text("".join(json.dumps(e,ensure_ascii=False)+"\n" for e in events),encoding="utf-8")
-        report={"passed":passed,"checks":rows,"home":str(home),"control_pid":child.pid,"control_actual_exit":child.returncode,"provider_calls":calls,"mode":"real BabelDOC + loopback LLM fixture; commercial translation quality unverified"}
+        report={"passed":passed,"checks":rows,"home":str(home),"control_pid":child.pid,"control_actual_exit":child.returncode,"provider_calls":calls,"source_mode":provenance["source_mode"],"provenance_sha256":hashlib.sha256((evidence/"provenance.json").read_bytes()).hexdigest(),"mode":"real BabelDOC + loopback LLM fixture; commercial translation quality unverified"}
         (evidence/"result.json").write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8")
     print(json.dumps({"passed":passed,"checks":len(rows),"evidence":str(evidence)},ensure_ascii=False))
     return 0 if passed else 1

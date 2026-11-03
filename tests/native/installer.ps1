@@ -28,6 +28,7 @@ try{
     $invalid=@('home\用户译文.pdf','.\home\用户译文.pdf','home.\用户译文.pdf','home \用户译文.pdf','HOME~1\用户译文.pdf','..\outside.txt')|ForEach-Object {$_+'|'+$userHash}
     [IO.File]::AppendAllLines((Join-Path $install 'owned-files.tsv'),[string[]]($invalid+@('malformed-entry')),[Text.UTF8Encoding]::new($false))
     Check '初版拥有待淘汰文件' (Test-Path -LiteralPath (Join-Path $install 'test-owned-obsolete.txt'))
+    Check '中文相对路径的程序文件已安装' (Test-Path -LiteralPath (Join-Path $install '中文程序文件.txt'))
     $modified=Join-Path $install 'test-owned-modified.txt';[IO.File]::WriteAllText($modified,'user modified owned file',[Text.UTF8Encoding]::new($false))
     # The real installed Release app holds the same mutex checked by Setup and
     # Uninstall. Its home is new and owned; process identity is recorded.
@@ -73,6 +74,7 @@ try{
     Check '卸载注册项已清理' (!(Test-Path -LiteralPath $key))
     Check '卸载保留用户文件与已修改文件' ((Get-FileHash -LiteralPath $user).Hash -eq $userHash -and (Test-Path -LiteralPath $unknown) -and (Test-Path -LiteralPath $modified))
     Check '卸载已删除未修改的主程序' (!(Test-Path -LiteralPath (Join-Path $install 'PDFMathTranslate.exe')))
+    Check '卸载按UTF8清单删除中文程序文件' (!(Test-Path -LiteralPath (Join-Path $install '中文程序文件.txt')))
     Check '快捷方式已清理' (!(Test-Path -LiteralPath (Join-Path $desktop ($Group+'.lnk'))) -and !(Test-Path -LiteralPath (Join-Path $env:APPDATA ('Microsoft/Windows/Start Menu/Programs/'+$Group+'/PDFMathTranslate.lnk'))))
     $success=$true
 }finally{

@@ -23,9 +23,25 @@ class DataOwner:
     def close(self): self.file.close()
 
 
+def migrate_ui_prefs(home,legacy_root):
+    home=Path(home);marker=home/"config/migration-ui-prefs-v1.json"
+    if marker.exists():return
+    source=Path(legacy_root)/"home/.config/pdf2zh/ui-prefs.json";target=home/".config/pdf2zh/ui-prefs.json"
+    migrated=[]
+    if source.is_file() and source.resolve()!=target.resolve() and not target.exists():
+        backup=home/"config/legacy-backup"/uuid.uuid4().hex;backup.mkdir(parents=True)
+        shutil.copy2(source,backup/"ui-prefs.json")
+        if file_identity(source)!=file_identity(backup/"ui-prefs.json"):raise ValueError("旧界面偏好备份校验失败")
+        target.parent.mkdir(parents=True,exist_ok=True);temporary=target.with_name(target.name+".migration.partial")
+        shutil.copy2(backup/"ui-prefs.json",temporary);os.replace(temporary,target)
+        migrated.append({"source":str(source),"backup":str(backup),"target":str(target)})
+    atomic_json(marker,{"version":1,"prefs":migrated,"policy":"existing current preferences retained"})
+
+
 def migrate_config(home, legacy_root):
     """Never replace a current config. Copy/verify first, then atomic switch."""
     home = Path(home)
+    migrate_ui_prefs(home,legacy_root)
     marker = home/"config/migration-v1.json"
     if marker.exists(): return
     source = Path(legacy_root)/"home/.config/pdf2zh/config.v3.toml"
@@ -41,17 +57,6 @@ def migrate_config(home, legacy_root):
         shutil.copy2(backup/"config.v3.toml", temporary)
         os.replace(temporary, target)
         migrated.append({"source": str(source), "backup": str(backup), "target": str(target)})
-    old_prefs=Path(legacy_root)/"home/.config/pdf2zh/ui-prefs.json"
-    new_prefs=home/".config/pdf2zh/ui-prefs.json"
-    if old_prefs.is_file() and old_prefs.resolve()!=new_prefs.resolve() and not new_prefs.exists():
-        backup=home/"config/legacy-backup"/uuid.uuid4().hex
-        backup.mkdir(parents=True)
-        shutil.copy2(old_prefs,backup/"ui-prefs.json")
-        if file_identity(old_prefs)!=file_identity(backup/"ui-prefs.json"):raise ValueError("旧界面偏好备份校验失败")
-        new_prefs.parent.mkdir(parents=True,exist_ok=True)
-        temporary=new_prefs.with_name(new_prefs.name+".migration.partial")
-        shutil.copy2(backup/"ui-prefs.json",temporary);os.replace(temporary,new_prefs)
-        migrated.append({"source":str(old_prefs),"backup":str(backup),"target":str(new_prefs)})
     atomic_json(marker, {"version": 1, "config": migrated, "policy": "originals retained; current config never overwritten; history migration separately reconciled"})
 
 
