@@ -1,0 +1,6 @@
+#DIR D:\student\翻译\PDFMathTranslate-next\docs\verification\native-desktop\p1-pytest-final-5c8bee4c23\runs\pytest-20261103-235628\protected-sentinel-home\.config\pdf2zh :: present
+sentinel.txt|36|639293181888816743|9EC69C3B50C412C067E074BA9521E21785EAE3D65C240A228BD56825DF9C9F7E
+#DIR D:\student\翻译\PDFMathTranslate-next\docs\verification\native-desktop\p1-pytest-final-5c8bee4c23\runs\pytest-20261103-235628\protected-sentinel-home\.cache\pdf2zh_next :: present
+sentinel.txt|36|639293181888847037|9EC69C3B50C412C067E074BA9521E21785EAE3D65C240A228BD56825DF9C9F7E
+#DIR D:\student\翻译\PDFMathTranslate-next\docs\verification\native-desktop\p1-pytest-final-5c8bee4c23\runs\pytest-20261103-235628\protected-sentinel-home\.cache\babeldoc :: present
+sentinel.txt|36|639293181888889138|9EC69C3B50C412C067E074BA9521E21785EAE3D65C240A228BD56825DF9C9F7E

@@ -1,0 +1,3 @@
+未找到 webui 目录，界面将无法加载（可设置 PDF2ZH_WEBUI_DIR）
+No translation engine selected, using SiliconFlow Free
+No translation engine selected, using SiliconFlow Free

@@ -1,0 +1,68 @@
+
+[pdf2zh-test-isolation] root=C:\Users\Administrator\AppData\Local\Temp\pdf2zh-pytest-child-167ce3047b2b4e2c99d7dcf68ebc0d71\tmp\pdf2zh-pytest-yh4i_y15
+[pdf2zh-test-isolation] cwd=C:\Users\Administrator\AppData\Local\Temp\pdf2zh-pytest-child-167ce3047b2b4e2c99d7dcf68ebc0d71\tmp\pdf2zh-pytest-yh4i_y15\work
+[pdf2zh-test-isolation] config=C:\Users\Administrator\AppData\Local\Temp\pdf2zh-pytest-child-167ce3047b2b4e2c99d7dcf68ebc0d71\tmp\pdf2zh-pytest-yh4i_y15\home\.config\pdf2zh\config.v3.toml
+[pdf2zh-test-isolation][ok] HOME/USERPROFILE fully inside the isolated root
+============================= test session starts =============================
+collected 130 items
+
+D:\student\翻译\PDFMathTranslate-next\source\tests\config\test_main.py . [  0%]
+..................................                                       [ 26%]
+D:\student\翻译\PDFMathTranslate-next\source\tests\config\test_model.py . [ 27%]
+........................                                                 [ 46%]
+D:\student\翻译\PDFMathTranslate-next\source\tests\test_config_engine_integrity.py . [ 46%]
+.                                                                        [ 47%]
+D:\student\翻译\PDFMathTranslate-next\source\tests\test_deepseek_thinking_mode.py . [ 48%]
+........                                                                 [ 54%]
+D:\student\翻译\PDFMathTranslate-next\source\tests\test_desktop_cancellation.py . [ 55%]
+..                                                                       [ 56%]
+D:\student\翻译\PDFMathTranslate-next\source\tests\test_desktop_native.py . [ 57%]
+..........................                                               [ 77%]
+D:\student\翻译\PDFMathTranslate-next\source\tests\test_gui_deepseek_thinking_mode.py . [ 78%]
+.................                                                        [ 91%]
+D:\student\翻译\PDFMathTranslate-next\source\tests\test_gui_release_blockers.py . [ 92%]
+...                                                                      [ 94%]
+D:\student\翻译\PDFMathTranslate-next\source\tests\test_http_api_task_errors.py . [ 95%]
+...                                                                      [ 97%]
+D:\student\翻译\PDFMathTranslate-next\source\tests\test_http_api_upload_safety.py . [ 98%]
+..                                                                       [100%]
+
+============================== warnings summary ===============================
+<frozen importlib._bootstrap>:488
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+<frozen importlib._bootstrap>:488
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
+
+D:\student\翻译\PDFMathTranslate-next\.local\native-runtime\uv-tools\pdf2zh-next\Lib\site-packages\starlette\testclient.py:45
+  D:\student\翻译\PDFMathTranslate-next\.local\native-runtime\uv-tools\pdf2zh-next\Lib\site-packages\starlette\testclient.py:45: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]
+
+tests/config/test_main.py::TestBuildArgsParser::test_duplicate_field_detection
+  D:\student\翻译\PDFMathTranslate-next\source\pdf2zh_next\config\main.py:62: DeprecationWarning: Nesting argument groups is deprecated.
+    parser = parser.add_argument_group(
+
+tests/test_gui_deepseek_thinking_mode.py::test_gui_deepseek_reasoning_effort_metadata_controls_visibility
+  D:\student\翻译\PDFMathTranslate-next\source\pdf2zh_next\gui.py:2: DeprecationWarning: 'cgi' is deprecated and slated for removal in Python 3.13
+    import cgi
+
+tests/test_gui_deepseek_thinking_mode.py::test_gui_deepseek_reasoning_effort_metadata_controls_visibility
+  D:\student\翻译\PDFMathTranslate-next\.local\native-runtime\uv-tools\pdf2zh-next\Lib\site-packages\websockets\legacy\__init__.py:6: DeprecationWarning: websockets.legacy is deprecated; see https://websockets.readthedocs.io/en/stable/howto/upgrade.html for upgrade instructions
+    warnings.warn(  # deprecated in 14.0 - 2024-11-09
+
+tests/test_gui_deepseek_thinking_mode.py::test_gui_deepseek_reasoning_effort_metadata_controls_visibility
+  D:\student\翻译\PDFMathTranslate-next\.local\native-runtime\uv-tools\pdf2zh-next\Lib\site-packages\gradio\utils.py:105: DeprecationWarning: There is no current event loop
+    loop = asyncio.get_event_loop()
+
+tests/test_gui_deepseek_thinking_mode.py: 65 warnings
+  D:\student\翻译\PDFMathTranslate-next\source\pdf2zh_next\gui.py:856: PydanticDeprecatedSince211: Accessing the 'model_fields' attribute on the instance is deprecated. Instead, you should access this attribute from the model class. Deprecated in Pydantic V2.11 to be removed in V3.0.
+    type_hint = detail_setting.model_fields[field_name].annotation
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================ 130 passed, 75 warnings in 281.00s (0:04:40) =================
+

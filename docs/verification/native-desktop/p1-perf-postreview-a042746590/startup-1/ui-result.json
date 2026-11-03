@@ -1,0 +1,17 @@
+{
+  "api_ready": true,
+  "real_window_visible": true,
+  "window_handle": 2558776,
+  "window_ready_ms": 1426.4375,
+  "api_ready_ms": 5896.9585,
+  "render_kind": "actual running WPF visual tree, RenderTargetBitmap; not OS input automation",
+  "dpi_scope": "100/150/200 percent raster rendering of the same real WPF layout; system DPI and dialogs require manual verification",
+  "manual_pending": [
+    "native file/folder picker keyboard and mouse input",
+    "OS drag/drop",
+    "cross-monitor DPI"
+  ],
+  "passed": true,
+  "completed_at": "2026-11-03T23:59:21.3969732+08:00",
+  "process_id": 16412
+}

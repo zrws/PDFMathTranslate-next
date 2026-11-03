@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "D:\student\翻译\PDFMathTranslate-next\source\pdf2zh_next\desktop\server.py", line 437, in <module>
+    if __name__ == "__main__": main()
+                               ^^^^^^
+  File "D:\student\翻译\PDFMathTranslate-next\source\pdf2zh_next\desktop\server.py", line 410, in main
+    owner = DataOwner(home)
+            ^^^^^^^^^^^^^^^
+  File "D:\student\翻译\PDFMathTranslate-next\source\pdf2zh_next\desktop\runtime.py", line 18, in __init__
+    msvcrt.locking(self.file.fileno(), msvcrt.LK_NBLCK, 1)
+PermissionError: [Errno 13] Permission denied

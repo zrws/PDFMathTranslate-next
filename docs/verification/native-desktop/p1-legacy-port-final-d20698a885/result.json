@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "port": 7756,
+  "actual_child_exit": 1,
+  "ready": false,
+  "requests_received": 0,
+  "authorization_received": false,
+  "driver_pid": 21380,
+  "home": "D:\\student\\\u7FFB\u8BD1\\PDFMathTranslate-next\\.local\\legacy-port-probe-a696c33630cd4a94a1b744b160021d28",
+  "scope": "real production BackendRunner \u002B real compatibility Python, occupied loopback listener; no token content recorded"
+}

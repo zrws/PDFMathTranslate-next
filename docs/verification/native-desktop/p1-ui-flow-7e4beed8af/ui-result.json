@@ -1,0 +1,12 @@
+{
+  "api_ready": false,
+  "real_window_visible": true,
+  "window_handle": 2820920,
+  "window_ready_ms": 1856.8404,
+  "api_ready_ms": 65127.3829,
+  "render_kind": "actual running WPF visual tree, RenderTargetBitmap; not OS input automation",
+  "error": "\u540E\u53F0\u5C1A\u672A\u5C31\u7EEA\uFF1A\u542F\u52A8\u5931\u8D25\uFF1A\u64CD\u4F5C\u5DF2\u53D6\u6D88\u6216\u670D\u52A1\u8D85\u65F6\uFF0C\u8BF7\u91CD\u8BD5\u3002",
+  "passed": false,
+  "completed_at": "2026-11-04T00:07:48.0527503+08:00",
+  "process_id": 10232
+}

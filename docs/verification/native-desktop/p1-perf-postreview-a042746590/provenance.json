@@ -1,0 +1,95 @@
+{
+  "argv": [
+    "tests/native/performance.py",
+    "--ui-exe",
+    ".local/native-app/PDFMathTranslate.exe",
+    "--evidence-root",
+    "D:\\student\\\u7ffb\u8bd1\\PDFMathTranslate-next\\docs\\verification\\native-desktop\\p1-perf-postreview-a042746590"
+  ],
+  "files": [
+    {
+      "path": "D:\\student\\\u7ffb\u8bd1\\PDFMathTranslate-next\\.local\\native-app\\PDFMathTranslate.exe",
+      "sha256": "84a74e7fa60ac1288492227d6d466f88eab104642d7b127738722a2d2d406905"
+    },
+    {
+      "path": "D:\\student\\\u7ffb\u8bd1\\PDFMathTranslate-next\\.local\\native-app\\PDFMathTranslate.dll",
+      "sha256": "99f29671725d3852773a2f551f5a1b89c43d2c69124a917828c5bbde4b9da499"
+    },
+    {
+      "path": "D:\\student\\\u7ffb\u8bd1\\PDFMathTranslate-next\\tests\\native\\performance.py",
+      "sha256": "9926f984bf909561c11722003846fd671fa96714be341a6b197b8e12ee4926c1"
+    },
+    {
+      "path": "D:\\student\\\u7ffb\u8bd1\\PDFMathTranslate-next\\.local\\native-app\\development-run.json",
+      "sha256": "17e908f213f7616372bad00b36c3ab142a13b7ff10251413688b437fcdaaf720"
+    },
+    {
+      "path": "D:\\student\\\u7ffb\u8bd1\\PDFMathTranslate-next\\source\\pdf2zh_next\\__init__.py",
+      "sha256": "176af7d8815c2c87b1dfd413156d9afb30312b8d44071a4a19da12a72edf78d7"
+    },
+    {
+      "path": "D:\\student\\\u7ffb\u8bd1\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\__init__.py",
+      "sha256": "74c794d0606224fbc9fd10f6c40e8e0007edcc6b7b6106e9f373a73528f4a400"
+    },
+    {
+      "path": "D:\\student\\\u7ffb\u8bd1\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\assets.py",
+      "sha256": "1e218a932494a32d1b33665c58031f0f1756d66218cb79b3253d26d4e30c18c5"
+    },
+    {
+      "path": "D:\\student\\\u7ffb\u8bd1\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\compatibility.py",
+      "sha256": "9c5abdbd9d44b4c8f2e435dae22d47f47c46d8d9a424342d9a8936d17ddcf2aa"
+    },
+    {
+      "path": "D:\\student\\\u7ffb\u8bd1\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\engine.py",
+      "sha256": "63836dad302ddaeb8916b8dde48d530b5bd83d0e580ef82990b1fb74159e1c88"
+    },
+    {
+      "path": "D:\\student\\\u7ffb\u8bd1\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\exports.py",
+      "sha256": "8d1e8287cabf3859c3bcd3a9c9fab5b88aa259385534aef2eef0cdb9c2a0a005"
+    },
+    {
+      "path": "D:\\student\\\u7ffb\u8bd1\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\pdf_operations.py",
+      "sha256": "80ae0f1840d2c24880898b794bc1acfd1472313a8744ccf14f87eafca71feadd"
+    },
+    {
+      "path": "D:\\student\\\u7ffb\u8bd1\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\policy.py",
+      "sha256": "d9261a8a01f2bce66d7f948888eba6f4ae6dcebe126db9c41ee9f764303b5816"
+    },
+    {
+      "path": "D:\\student\\\u7ffb\u8bd1\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\preview.py",
+      "sha256": "98bb87ad9778d6e391ff0ae6144166c571f9a6e31c3a3c672627531387446e34"
+    },
+    {
+      "path": "D:\\student\\\u7ffb\u8bd1\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\preview_control.py",
+      "sha256": "ac9cb840a572ee3aaf1e9b9113454435d02898b808b2d194e7bb30ebe45826bf"
+    },
+    {
+      "path": "D:\\student\\\u7ffb\u8bd1\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\runtime.py",
+      "sha256": "f74c95738aa71701071075967e4770c39796cd4c903a157464e751b3a6b5ce2c"
+    },
+    {
+      "path": "D:\\student\\\u7ffb\u8bd1\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\server.py",
+      "sha256": "6810d5fcdd87db0951b8b4e3611bac773248ad57b5b24e7d8f27498b17f11624"
+    },
+    {
+      "path": "D:\\student\\\u7ffb\u8bd1\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\settings_transaction.py",
+      "sha256": "4fa68dd745873b1c42159dbfb2a956ce4b02c94995d6c9b9c0a4f321197098e4"
+    },
+    {
+      "path": "D:\\student\\\u7ffb\u8bd1\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\snapshots.py",
+      "sha256": "a6896e5e1e6fabffcfa17174d691f9ba737d031a523d4898894b10dd09ab7d3c"
+    },
+    {
+      "path": "D:\\student\\\u7ffb\u8bd1\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\storage.py",
+      "sha256": "687b8da36996eb19942dac8aee3b008351b75fd54d0e9cecab490133e1eabd97"
+    },
+    {
+      "path": "D:\\student\\\u7ffb\u8bd1\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\windows_job.py",
+      "sha256": "fab01027a241c8d8f18ec2b9d83d1012508b2f71744e0305433bb54addf59765"
+    },
+    {
+      "path": "D:\\student\\\u7ffb\u8bd1\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\worker.py",
+      "sha256": "6105d82a5f87df356214df43a44237e0bcd25e2e3436fd539bac2ac35b5012ea"
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-param([Parameter(Mandatory=$true)][string]$FirstInstaller,[Parameter(Mandatory=$true)][string]$UpgradeInstaller,[Parameter(Mandatory=$true)][string]$AppId,[Parameter(Mandatory=$true)][string]$Group,[Parameter(Mandatory=$true)][string]$EvidenceRoot)
+param([Parameter(Mandatory=$true)][string]$FirstInstaller,[Parameter(Mandatory=$true)][string]$UpgradeInstaller,[Parameter(Mandatory=$true)][string]$AppId,[Parameter(Mandatory=$true)][string]$Group,[Parameter(Mandatory=$true)][string]$EvidenceRoot,[string]$InstallParent='')
 $ErrorActionPreference='Stop'
 $repo=Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 if($AppId -notmatch '^PDFMathTranslate-Codex-Test-[a-f0-9]+$' -or $Group -notmatch '^PDFMathTranslate-Codex-Test-[a-f0-9]+$'){throw '只允许独立的测试安装标识和快捷方式名称'}
@@ -6,7 +6,12 @@ $EvidenceRoot=[IO.Path]::GetFullPath($EvidenceRoot)
 if(Test-Path -LiteralPath $EvidenceRoot){throw '证据目录必须全新'}
 if(!$EvidenceRoot.StartsWith((Join-Path $repo 'docs/verification/native-desktop/'),[StringComparison]::OrdinalIgnoreCase)){throw '证据路径越界'}
 New-Item -ItemType Directory -Path $EvidenceRoot | Out-Null
-$install=Join-Path $repo ('.local/安装 验证-'+[guid]::NewGuid().ToString('N').Substring(0,10))
+if($InstallParent){
+    $allowedParent=Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'PDFMathTranslate-Codex-Install-Tests'
+    if([IO.Path]::GetFullPath($InstallParent).TrimEnd('\') -ne [IO.Path]::GetFullPath($allowedParent).TrimEnd('\')){throw '仅允许显式独占的 per-user 测试父目录'}
+}else{$InstallParent=Join-Path $repo '.local'}
+New-Item -ItemType Directory -Path $InstallParent -Force|Out-Null
+$install=Join-Path $InstallParent ('安装 验证-'+[guid]::NewGuid().ToString('N').Substring(0,10))
 $key='HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\'+$AppId+'_is1'
 if(Test-Path -LiteralPath $key){throw '测试注册项已存在，拒绝覆盖'}
 $rows=[Collections.Generic.List[object]]::new()
@@ -37,15 +42,16 @@ try{
     $env:PDF2ZH_HOME=$testDataHome
     foreach($name in @('PDF2ZH_APP_ROOT','PDF2ZH_RUNTIME_ROOT','PDF2ZH_SOURCE_ROOT')){Remove-Item -LiteralPath ('Env:'+ $name) -ErrorAction SilentlyContinue}
     $app=Start-Process -FilePath (Join-Path $install 'PDFMathTranslate.exe') -WindowStyle Hidden -PassThru
+    $startupClock=[Diagnostics.Stopwatch]::StartNew()
     try{
         $end=(Get-Date).AddSeconds(50);while(!(Test-Path -LiteralPath (Join-Path $testDataHome 'config/desktop-state.json')) -and !$app.HasExited -and (Get-Date) -lt $end){Start-Sleep -Milliseconds 200}
-        Check '安装版 Release 实际启动并建立隔离后端状态' (!$app.HasExited -and (Test-Path -LiteralPath (Join-Path $testDataHome 'config/desktop-state.json'))) @{pid=$app.Id;started=$app.StartTime.ToString('o');path=$app.Path;home=$testDataHome}
+        Check '安装版 Release 实际启动并建立隔离后端状态' (!$app.HasExited -and (Test-Path -LiteralPath (Join-Path $testDataHome 'config/desktop-state.json'))) @{pid=$app.Id;started=$app.StartTime.ToString('o');path=$app.Path;home=$testDataHome;state_observed_ms=$startupClock.Elapsed.TotalMilliseconds;scope='observed backend state file and live Release PID, not HWND or authenticated API-ready timestamp'}
         $busy=Run-Setup (Join-Path $install 'unins000.exe') @('/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART',('/LOG="'+(Join-Path $EvidenceRoot 'running-uninstall-negative.log')+'"'))
         Check '运行中卸载被拒且程序保留' ($busy -ne 0 -and (Test-Path -LiteralPath $key) -and (Test-Path -LiteralPath (Join-Path $install 'PDFMathTranslate.exe'))) @{actual_exit=$busy}
     }finally{if(!$app.HasExited -and $app.Path -eq (Join-Path $install 'PDFMathTranslate.exe')){$app.Kill($true);$app.WaitForExit(10000)|Out-Null};$app.Dispose()}
-    $runtime=Join-Path $install 'uv-tools';$backup=Join-Path $repo ('.local/installer-runtime-backup-'+[guid]::NewGuid().ToString('N'))
-    $outside=Join-Path $repo ('.local/installer-junction-sentinel-'+[guid]::NewGuid().ToString('N'))
-    $prefix=[IO.Path]::GetFullPath((Join-Path $repo '.local/'))
+    $runtime=Join-Path $install 'uv-tools';$backup=Join-Path $InstallParent ('installer-runtime-backup-'+[guid]::NewGuid().ToString('N'))
+    $outside=Join-Path $InstallParent ('installer-junction-sentinel-'+[guid]::NewGuid().ToString('N'))
+    $prefix=[IO.Path]::GetFullPath($InstallParent).TrimEnd('\')+'\'
     foreach($path in @($runtime,$backup,$outside)){if(![IO.Path]::GetFullPath($path).StartsWith($prefix,[StringComparison]::OrdinalIgnoreCase)){throw '测试目录移动越界'}}
     New-Item -ItemType Directory -Path $outside|Out-Null;[IO.File]::WriteAllText((Join-Path $outside 'sentinel.txt'),'do not overwrite');$sentinel=(Get-FileHash (Join-Path $outside 'sentinel.txt')).Hash
     Move-Item -LiteralPath $runtime -Destination $backup

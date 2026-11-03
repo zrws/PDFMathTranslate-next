@@ -1,0 +1,13 @@
+{
+  "pytestExitCode": 0,
+  "protectedSentinelChanged": false,
+  "changeCount": 0,
+  "snapshotReadErrorCount": 0,
+  "runDir": "D:\\student\\翻译\\PDFMathTranslate-next\\docs\\verification\\native-desktop\\p1-pytest-final-5c8bee4c23\\runs\\pytest-20261103-235628",
+  "temp_root": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\pdf2zh-pytest-child-167ce3047b2b4e2c99d7dcf68ebc0d71",
+  "scopeNote": "Only the explicitly owned protected-sentinel-home is read; real user config/cache/history is not accessed or claimed verified",
+  "runnerSha256": "51ED68DDE382FC2A9009A74B214EADC9852CE0666375D01BD4F619CBD88A00B5",
+  "conftestSha256": "A9488789B64458AF7607CC2608A7E742F7A7C30465D212424CED179FAF1F1EF2",
+  "baselineSha256": "63C305568D301B10D36242EAC2374615F09782C621D034AB9D6B2F23E6CDADDD",
+  "note": "conftest.py redirects HOME/USERPROFILE/CWD per session; changes here would indicate isolation breach; read failures listed in snapshot-read-errors.txt"
+}
