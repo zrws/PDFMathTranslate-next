@@ -124,8 +124,8 @@ Write-Host ("[root] {0}" -f $root)
 # default targets THIS round's evidence root; the recorder passes a fresh
 # -OutDir (created only by this entry, never pre-built by the recorder).
 $baseEv = if ($OutDir) { $OutDir } else { Join-Path $EvidenceRoot 'runs\baseline' }
-$runDir = Join-Path $baseEv ("run-v3-" + $stamp + $(if ($FailInject) { '-' + $FailInject }))
-if ((Test-Path $runDir) -and (Get-ChildItem $runDir -ErrorAction SilentlyContinue)) {
+$runDir = Join-Path $baseEv ("run-v3-" + $stamp + '-' + $PID + $(if ($FailInject) { '-' + $FailInject }))
+if (Test-Path -LiteralPath $runDir) {
     Write-Host ("[FAIL] run dir already exists and is non-empty (refuse overwrite): " + $runDir)
     exit 2
 }

@@ -133,16 +133,40 @@ function Git-CheckIgnoreBatch([string[]]$relPaths) {
         return @{ ignored = $ignored; error = $true; errorDetail = 'GitFailInject: forced check-ignore command error' }
     }
     try {
-        $input_ = ($relPaths -join "`n")
-        $raw = $input_ | & git -c ("safe.directory=" + ($RepoRoot -replace '\\', '/')) check-ignore --verbose --non-matching --stdin 2>$null
-        $code = $LASTEXITCODE
+        # NUL-delimited stdin/stdout avoids PowerShell's trailing CRLF and
+        # Git's quoting of Chinese names, tabs, and the final path in a batch.
+        $psi = New-Object Diagnostics.ProcessStartInfo
+        $psi.FileName = 'git'
+        $psi.WorkingDirectory = $RepoRoot
+        $psi.Arguments = '-c ' + (ConvertTo-P0Argument ('safe.directory=' + ($RepoRoot -replace '\\','/'))) + ' check-ignore -z --verbose --non-matching --no-index --stdin'
+        $psi.UseShellExecute = $false
+        $psi.CreateNoWindow = $true
+        $psi.RedirectStandardInput = $true
+        $psi.RedirectStandardOutput = $true
+        $psi.RedirectStandardError = $true
+        $utf8 = New-Object Text.UTF8Encoding($false)
+        $psi.StandardOutputEncoding = $utf8
+        $psi.StandardErrorEncoding = $utf8
+        $process = [Diagnostics.Process]::Start($psi)
+        $null = $process.Handle
+        $stdout = $process.StandardOutput.ReadToEndAsync()
+        $stderr = $process.StandardError.ReadToEndAsync()
+        $inputBytes = $utf8.GetBytes(($relPaths -join "`0") + "`0")
+        $process.StandardInput.BaseStream.Write($inputBytes, 0, $inputBytes.Length)
+        $process.StandardInput.Close()
+        $process.WaitForExit()
+        $code = $process.ExitCode
+        $raw = $stdout.GetAwaiter().GetResult()
+        $err = $stderr.GetAwaiter().GetResult()
+        $process.Dispose()
         if ($code -ne 0 -and $code -ne 1) {
-            return @{ ignored = $ignored; error = $true; errorDetail = ("git check-ignore exit " + $code) }
+            return @{ ignored = $ignored; error = $true; errorDetail = ("git check-ignore exit " + $code + ': ' + $err) }
         }
-        foreach ($line in @($raw)) {
-            if ($line -match '^::\t(.+)$') { continue }
-            $lastTab = "$line".LastIndexOf("`t")
-            if ($lastTab -gt 0) { $ignored[$line.Substring($lastTab + 1)] = $true }
+        $fields = $raw.Split([char]0)
+        if (($fields.Length - 1) % 4 -ne 0 -or ($fields.Length - 1) / 4 -ne $relPaths.Count) { throw 'incomplete check-ignore NUL response' }
+        for ($i = 0; $i + 3 -lt $fields.Length; $i += 4) {
+            $pattern = $fields[$i + 2]
+            if ($pattern -and -not $pattern.StartsWith('!')) { $ignored[$fields[$i + 3]] = $true }
         }
         return @{ ignored = $ignored; error = $false; errorDetail = '' }
     } catch {
@@ -616,12 +640,12 @@ function Run-CheckSet {
         $r = Read-JsonGuarded $pf.FullName ("perprocess result {0}" -f $pf.Directory.Name)
         if ($null -eq $r) { continue }
         Check 'perprocess guard_active is bool' ($r.guard_active -is [bool]) 'not boolean' 'bad_field_type'
-        Check 'perprocess guard_blocked_count is int' ($r.guard_blocked_count -is [int]) 'not integer' 'bad_field_type'
+        Check 'perprocess guard_blocked_count is int' (($r.guard_blocked_count -is [int] -or $r.guard_blocked_count -is [long]) -and $r.guard_blocked_count -ge 0) 'not a nonnegative JSON integer' 'bad_field_type'
         Check 'perprocess port_released is bool' ($r.port_released -is [bool]) 'not boolean' 'bad_field_type'
         $pr = $r.PSObject.Properties['processes_recovered']
         Check 'perprocess processes_recovered is bool (identity recheck)' ($pr -and ($r.processes_recovered -is [bool])) 'missing or not boolean' 'bad_field_type'
         $fb = $r.PSObject.Properties['fallback_hits']
-        $fbOk = $fb -and ($r.fallback_hits -eq $null -or $r.fallback_hits -eq 'not_deployed' -or $r.fallback_hits -is [int])
+        $fbOk = $fb -and ($r.fallback_hits -eq $null -or $r.fallback_hits -eq 'not_deployed' -or $r.fallback_hits -is [int] -or $r.fallback_hits -is [long])
         Check 'perprocess fallback_hits is not fabricated zero' $fbOk ("value='{0}'" -f $r.fallback_hits) 'fallback_fabricated'
         $badStatuses = @($r.recovery_details | Where-Object { $_.post_status -eq 'query_failed' }).Count
         Check 'perprocess recovery has no query_failed rows' ($badStatuses -eq 0) ("query_failed rows: " + $badStatuses) 'recovery_query_failed'
@@ -748,6 +772,27 @@ if ($SelfTest) {
     Write-Host ("selftest[clean]: exit={0} ok={1}" -f $clean.exit, $cleanOk)
     $muts = New-Object System.Collections.Generic.List[object]
 
+    # Exercise the real repository's log exception, then a genuinely ignored
+    # bytecode file. A matching ! rule must pass without waiving ignored files.
+    $logScratch = Join-Path $RepoRoot ('docs/verification/native-desktop/git-negation-selftest-' + [guid]::NewGuid().ToString('N'))
+    $gitCleanOk = $false
+    try {
+        New-Item -ItemType Directory -Path $logScratch | Out-Null
+        Copy-Item $st (Join-Path $logScratch 'st') -Recurse
+        $gitCopy = Join-Path $logScratch 'st'
+        $r = Invoke-CheckerChild $gitCopy
+        $gitCleanOk = ($r.exit -eq 0)
+        Write-Host ("selftest[git-log-exception]: exit={0} ok={1}" -f $r.exit, $gitCleanOk)
+        New-Item -ItemType Directory -Path (Join-Path $gitCopy '__pycache__') | Out-Null
+        'synthetic ignored artifact' | Set-Content (Join-Path $gitCopy '__pycache__/example.pyc') -Encoding ASCII
+        $r = Invoke-CheckerChild $gitCopy
+        $reasonMatch = $r.report -and (@($r.report.results | Where-Object { $_.result -eq 'FAIL' -and $_.reason_code -eq 'gitignored_evidence' }).Count -gt 0)
+        $muts.Add([pscustomobject]@{ mutation='genuinely-ignored-evidence'; exit=$r.exit; rejected=($r.exit -ne 0); reason_matched=[bool]$reasonMatch; expected_reason='gitignored_evidence' }) | Out-Null
+    } finally {
+        $safeParent = [IO.Path]::GetFullPath((Join-Path $RepoRoot 'docs/verification/native-desktop')) + [IO.Path]::DirectorySeparatorChar
+        if ([IO.Path]::GetFullPath($logScratch).StartsWith($safeParent, [StringComparison]::OrdinalIgnoreCase)) { Remove-Item -LiteralPath $logScratch -Recurse -Force }
+    }
+
     function Mutate([string]$name, [string]$expectReason, [scriptblock]$corrupt, [string[]]$extraArgs = @()) {
         $copy = Join-Path $base ("mut-" + $name)
         Copy-Item $st $copy -Recurse -Force
@@ -872,6 +917,7 @@ if ($SelfTest) {
         checker_sha256 = $checkerSha
         dependency_hashes = $depShas
         clean_pass = $cleanOk
+        git_log_exception_clean_pass = $gitCleanOk
         mutation_count = $muts.Count
         all_mutations_rejected = $allRejected
         mutations = $muts
@@ -880,7 +926,7 @@ if ($SelfTest) {
     $reportPath = if ($ReportPath) { $ReportPath } else { Join-Path $base 'selftest-report.json' }
     $report | ConvertTo-Json -Depth 6 | Set-Content $reportPath -Encoding UTF8
     Write-Host ("selftest report: {0}" -f $reportPath)
-    if ($allRejected -and $cleanOk) { exit 0 } else { exit 3 }
+    if ($allRejected -and $cleanOk -and $gitCleanOk) { exit 0 } else { exit 3 }
 }
 
 # --- entry -------------------------------------------------------------------

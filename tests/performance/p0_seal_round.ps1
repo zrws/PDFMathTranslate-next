@@ -272,6 +272,12 @@ if ($latestMx) {
     if ($observedByEntryRun.ContainsKey($latestMx.FullName)) { $observedExit = "$($observedByEntryRun[$latestMx.FullName].actual_exit)" }
     $useExit = if ($null -ne $observedExit) { $observedExit } else { 'unverified' }
     AddRow 'I04' $useExit $(if ($mxFail -eq 0 -and $mxRows.Count -ge 19 -and $useExit -eq '0') { 'PASS' } else { 'FAIL' }) ((Rel $latestMx.FullName) + '/cases/matrix.csv') $expectedById['I04'].expected_reason
+    foreach ($row in (Import-Csv -LiteralPath $mxPath)) {
+        if ($row.frozenId -notin @('G01','G11')) { continue }
+        $id = $row.frozenId
+        $ok = ($row.verdict -eq 'PASS' -and "$($row.actualExit)" -eq "$($expectedById[$id].expected_exit)" -and $row.frozenExpectedReason -eq $expectedById[$id].expected_reason)
+        AddRow $id $row.actualExit $(if ($ok) { 'PASS' } else { 'FAIL' }) ((Rel $latestMx.FullName) + '/cases/matrix.csv') $row.frozenExpectedReason
+    }
 }
 
 # 2h. checker selftest -> N03 (+ M01/M02 from prior green pass when present)

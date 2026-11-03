@@ -33,17 +33,22 @@ function Start-P0PowerShell {
     # PS7's module path must not be inherited by Windows PowerShell 5.1.
     # Scope this change to process creation and restore it before any wait.
     $previous = [Environment]::GetEnvironmentVariable('PSModulePath')
+    $previousBytecode = [Environment]::GetEnvironmentVariable('PYTHONDONTWRITEBYTECODE')
     $options = @{ FilePath = (Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe');
         ArgumentList = $ArgumentList; PassThru = $true; NoNewWindow = $true }
     if ($RedirectStandardOutput) { $options.RedirectStandardOutput = $RedirectStandardOutput }
     if ($RedirectStandardError) { $options.RedirectStandardError = $RedirectStandardError }
     try {
         $env:PSModulePath = Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\Modules'
+        $env:PYTHONDONTWRITEBYTECODE = '1'
         $child = Start-Process @options
         # .NET Framework Process must retain a handle BEFORE a short child exits;
         # otherwise WinPS 5.1 can return null ExitCode after WaitForExit.
         $null = $child.Handle
-    } finally { [Environment]::SetEnvironmentVariable('PSModulePath', $previous, 'Process') }
+    } finally {
+        [Environment]::SetEnvironmentVariable('PSModulePath', $previous, 'Process')
+        [Environment]::SetEnvironmentVariable('PYTHONDONTWRITEBYTECODE', $previousBytecode, 'Process')
+    }
     if ($Wait) { $child.WaitForExit(); $child.Refresh() }
     return $child
 }
