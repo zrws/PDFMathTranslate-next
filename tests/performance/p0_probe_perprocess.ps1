@@ -358,6 +358,7 @@ if ($script:exceptionMessage) { $script:finalRc = 1 }
 # C4/T3/S4: structured result with ACTUAL runtime values, written via the
 # shared p0_result.ps1 writer to THIS run's unique directory.
 $result = New-RunResult -RunId ("pp-$stamp-$PID") -Entry 'p0_probe_perprocess'
+$result['started_at'] = $startIso
 $result['input_params'] = "port=$Port sampleSeconds=$SampleSeconds"
 $result['fail_inject'] = $FailInject
 $result['script_hashes'] = [ordered]@{

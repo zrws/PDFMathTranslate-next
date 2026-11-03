@@ -39,7 +39,7 @@ function New-RunResult {
 
 function Write-RunResult {
     param($Result, [string]$Path)
-    $Result['ended_at'] = (Get-Date).ToString('o')
+    if (-not $Result['ended_at']) { $Result['ended_at'] = (Get-Date).ToString('o') }
     $Result | ConvertTo-Json -Depth 5 | Set-Content $Path -Encoding UTF8
 }
 

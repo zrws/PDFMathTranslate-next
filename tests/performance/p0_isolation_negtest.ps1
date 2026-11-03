@@ -95,7 +95,8 @@ $null = Invoke-AssetCheck -CacheDir $emptyCache -InstallRoot $InstallRoot -Isola
     Tee-Object -FilePath $out2 | Out-Null
 Check 'failure: empty cache -> false with asset_missing' ((Get-Content $out2 -Raw) -match 'asset_missing') "see $out2"
 
-$corruptCache = Join-Path $OutDir 'corrupt-cache'
+$corruptCache = Join-Path ([IO.Path]::GetTempPath()) ('pdf2zh-isolation-corrupt-' + [guid]::NewGuid().ToString('N'))
+@{ owner='p0_isolation_negtest.ps1'; pid=$PID; cache_root=$corruptCache; source_cache=$stageCache; note='Owned corruption fixture preserved outside evidence/Git' } | ConvertTo-Json | Set-Content (Join-Path $OutDir 'corrupt-cache-root.json') -Encoding UTF8
 robocopy $stageCache $corruptCache /E /NFL /NDL /NJH /NJS /NP | Out-Null
 $victim = Get-ChildItem (Join-Path $corruptCache 'models') -File | Sort-Object Length | Select-Object -First 1
 [IO.File]::WriteAllBytes($victim.FullName, [byte[]](0, 1, 2, 3))

@@ -10,6 +10,18 @@ param(
 $ErrorActionPreference = 'Stop'
 $EvidenceRoot = Resolve-P0EvidenceRoot $RepoRoot $EvidenceRoot
 if (Test-Path -LiteralPath $EvidenceRoot) { throw 'acceptance root exists; refuse reuse' }
+# Keep recorder writers and downstream readers on the same PS 5.1 UTF-8/BOM
+# convention. The optional PS7 caller only relays; it never writes raw runs.
+if ($PSVersionTable.PSVersion.Major -gt 5) {
+    $argv=@('-NoProfile','-ExecutionPolicy','Bypass','-File',$PSCommandPath,'-RepoRoot',$RepoRoot,'-InstallRoot',$InstallRoot,'-PythonExe',$PythonExe,'-EvidenceRoot',$EvidenceRoot)
+    $child=Start-P0PowerShell -ArgumentList (($argv|ForEach-Object {ConvertTo-P0Argument $_}) -join ' ')
+    $started=$child.StartTime.ToString('o'); $childId=$child.Id
+    $child.WaitForExit(); $child.Refresh()
+    if (Test-Path (Join-Path $EvidenceRoot 'reports')) {
+        @{ child_pid=$childId; started_at=$started; actual_exit=$child.ExitCode; argument_vector=$argv; host_version='Windows PowerShell 5.1'; caller_version=$PSVersionTable.PSVersion.ToString() }|ConvertTo-Json -Depth 4|Set-Content (Join-Path $EvidenceRoot 'reports/host-relay.observed.json') -Encoding UTF8
+    }
+    exit $child.ExitCode
+}
 New-Item -ItemType Directory -Path (Join-Path $EvidenceRoot 'runs/checker-prior-pass'),(Join-Path $EvidenceRoot 'reports') -Force | Out-Null
 Copy-Item (Join-Path $RepoRoot 'docs/specifications/native-desktop/p0-reference/CASE_MANIFEST.json') $EvidenceRoot
 $manifest = Get-Content (Join-Path $EvidenceRoot 'CASE_MANIFEST.json') -Raw|ConvertFrom-Json
