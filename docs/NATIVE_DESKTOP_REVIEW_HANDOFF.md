@@ -19,7 +19,7 @@
 | 真实引擎 | 原BabelDOC0.6.2+回环LLM夹具（只替代远程文本服务，未模拟排版算法）；真实PDF/PNG/回执SHA。包级provenance证明确从payload导入，不混repo overlay。未做商业服务质量验收。 |
 | 取消恢复 | 有界启动/停滞超时、Job进程树回收、观察Future、读到EOF/finish；阻塞stdin取消与下一任务、实际接口取消重试有测试。偶发准备超时仍在风险表。 |
 | 资源 | 空闲不载入ONNX/布局，资源准备单独进度/取消；并发1，线程/QPS分开，最终值入快照；CPU provider默认，预览分页/边界/取消/缓存有界。 |
-| 数据 | 127项pytest包括全部GUI password字段脱敏、事务回滚、单写者、导出TTL/清理、SSE ticket/Origin/Host/token；零外联、独立home/用户哨兵不变。 |
+| 数据 | 此前127项pytest包括全部GUI password字段脱敏、事务回滚、单写者、导出TTL/清理、SSE ticket/Origin/Host/token；零外联、独立home/隔离哨兵不变，不读取真实用户缓存作比较。复审新增回归见最终索引。 |
 | 兼容 | Python CLI/Gradio源码、显式LegacyWebView仍留；旧入口共享home/单写者、随机token stdin和精确源注入。旧.NET编译0、真实HTTP6项0，旧WebView GUI未测试。 |
 | 更新 | fork Releases/latest.json、版本比较、SHA、旧opt-out迁移；错/缺hash和越界重定向拒绝；关闭文件后校验，启动前复验；启动失败保持后端；预览正式源请求0。原项目没有发布者签名验证。 |
 | 安装 | 中文EXE/路径/可选快捷方式/标准卸载元数据；拥有清单+SHA+祖先reparse检查；未知/修改文件和home/输出保留。中文分隔符实际缺陷已修，失败与两编码修复测试均保留；最终全矩阵见索引。 |
@@ -31,8 +31,8 @@
 | 批次 | 结果和范围 |
 | --- | --- |
 | p0-delivery-20261103-c72fd7361c | P0字节镜像；28覆盖/23负向/26变异；实际0。绝对路径checker用原克隆。 |
-| p1-pytest-8e3a98cddf | 最终Python功能字节127 passed/74 warnings/258.60s；实际0、零外联、哨兵不变。 |
-| p1-api-ui-fc01d7d9e0 + p1-ui-flow-4f51ca0917 | 31项API+WPF全流程；真实翻译/分页/丢响应/多版本。此后文案和更新偏好有修订，旧图底部长notice是修复前状态。 |
+| p1-pytest-8e3a98cddf | 复审追加修复前的127 passed/74 warnings/258.60s；实际0、零外联、隔离哨兵不变。不能代替追加修复后的全量运行。 |
+| p1-api-ui-fc01d7d9e0 + p1-ui-flow-4f51ca0917 | 当时31项API+WPF流程；真实翻译/首页预览/丢响应/多版本。旧DEBUG尚无译文第二页断言，不能据此说第二页翻页已测。此后文案和更新偏好有修订，旧图底部长notice是修复前状态。 |
 | p1-ui-controls-e8b13908eb | fa/opt-out读回、缺安装器仍保持真实health；实际0。部分图截在导航动画中，不作最终可读图。 |
 | p1-final-package-e2e19a08a4 | R9包级API30项0，packaged=true/实际模块路径及10SHA，结果绑定provenanceSHA。其后Python未变，C#路径/安装清单修复另测。 |
 | p1-legacy-f804de3c05 | 认证200/无token401/设置200/错Origin403/单写者拒绝/正常退出，6项0。 |
@@ -66,4 +66,25 @@ computer-use两入口均在初始化报 `failed to write kernel assets: 系统�
 
 ## 最终交付索引
 
-最终构建/安装/图像批次和独立总审完成后填入；该段空缺期间不作为最终完成凭据。
+最终交付根：`verification/native-desktop/p1-delivery-20261103-fd15e99f98`；任务跨到2026-11-04继续执行，分支保留原任务日期。
+
+- 最终洁净构建R11：`dist/native-cc12e21d7a4e/build-report.json`在报告完成时记录`a2ddb929d4cc29805db03cd80f6ba49c1b99b411`、source_dirty=false；product-source.json在复制时记录`d6522783446b03e94d6ec90d118e393062a84fa4`。这是两个实际时点，不能称整个构建只在同一commit冻结。Python产品最后修复在9a2a052，55文件经独立复审确认当前repo/包内双侧SHA与精确集合一致；后续改动为legacy构建/回调、DEBUG验收和文档，Release不含DEBUG验收代码。不将Git时刻替代具体文件SHA。
+- 安装包：`dist/native-cc12e21d7a4e/PDFMathTranslate-Setup-2.9.0.exe`；224832521字节；SHA256 `B1F78B5E555AB6F1A6D4E428A1AD71C2D7F43E6BE7FE33093F32A0E0AB3945CB`。预览频道，不生成/发布正式更新源。
+- 解压载荷16417文件、790965794字节。受控旧入口参考（同锁定Python依赖/同Inno压缩，非历史Release复现）：784442956字节解压、256831720字节压缩。新压缩包减少约12.46%；解压占用增加约0.83%。不把Gradio的既有slim排除算成新增节省；新省去FFmpeg视频DLL30876160字节和经依赖图验证的测试包，但私有WPF运行时带来体积成本。
+- 追加修复后的全量Python：`p1-pytest-final-5c8bee4c23`，130 passed、75 warnings、281.00s，实际0、guard零外联、隔离哨兵不变。原127项批次保留为之前字节的证明。
+- 最终.NET27项：交付根`dotnet-final.stdout.txt`/`dotnet-final-run.json`，真实0、程序/程序集/legacy runner SHA记录；本地假feed，无假安装器执行。
+- 旧入口：`p1-legacy-r2-066dcafa78`真实HTTP6项0；`p1-legacy-port-final-d20698a885`为生产C# BackendRunner+真实Python+本地占位listener，child实际1、ready=false、收到请求0/认证头0。修复了绑定前发令牌风险与旧回调污染新进程就绪状态。旧.NET编译r3实际0；r2因framework-dependent与单文件压缩参数不兼容失败，原日志同样保留。
+- 新取消/上传回归：真实TCP断连杀慢renderer、等待锁的过期页不spawn、下一页200；资源取消线程闸门；长文件名保扩展名；强制UUID碰撞409且原文件SHA不变，均在130项中。认证改纯ASGI以原样传递断连，不放宽Host/Origin/token/ticket校验。
+- R11包级批次`p1-package-ui-final-8c77de603a`：前30项API成功，但随后WPF后台就绪超时、UI exit1；整轮为失败，不能写31/31。失败窗口图在`p1-ui-flow-7e4beed8af`，与旧的worker120s准备失败分别登记。后续原样复跑和完整安装矩阵尚待本节补充。
+- 新性能`p1-perf-timing-28e93a6cb9`在截图前计时；第1次进程冷启窗口48605.3/API70833.8/资源70834.4ms，第2次1086.9/2883.4/3963.3ms，第3次1156.1/3420.1/4997.9ms。构建/复制负载并发存在，因果未定，不能删去慢样本或宣称稳定秒开。前述旧resource_ready观测在QA截图后采集，包含截图等待，属于观测上界。
+- 该最终性能轮300秒hold、298.5秒实际采样，真实退出0；UI private均值120544775B/峰131928064B，控制面50163894B/峰50327552B。CPU增量UI0.90625s/控制面0.484375s；线程峰37/11；UI读606B写112B，控制面IO0。空闲只见控制面和conhost，无翻译worker。GPU仍未采样。采样前只停留初始工作台，不能把它与已浏览所有页面后的旧UI缓存值直接当额外优化百分比。
+- 磁盘映射由交付根storage.json记录：D为WD SATA机械盘，C为NVMe SSD。开发/性能在D；完整生命周期使用C盘独占`PDFMathTranslate-Codex-Install-Tests`中文空格目录，属于不同磁盘/观测口径，不能相减作启动改善。测试安装器采用独立AppId；其16415核心项与R11一致，只有version.json及测试文件/manifest不同，不能称正式AppId安装器已经运行。
+- 单页夹具复跑`p1-package-ui-rerun-94088d3c18`（UI `p1-ui-flow-195c364fc2`）的API30项与cleanup均真、control0/残留[]，窗口api_ready=true、真实任务done/sharedref=true，但译文只有1页，DEBUG第二页断言失败，整轮失败。并排双语合法地产生1页，原单页输入不能证明第二页；已保留该失败并改为真正2页PDF夹具，保持页数>=2/index2和原算法。
+
+- 完整安装矩阵：`p1-install-final-68be538f2a`，R11相同核心载荷的独立AppId测试EXE，20/20真、驱动实际0。首装/升级/卸载0；运行中卸载1、junction升级7、锁文件5，原始理由均匹配。标准HKCU发现/版本/快捷方式、淘汰未修改旧文件、保留修改/未知/home用户文件、中文owned删除和注册项清理都有实测。C盘Release进程与后端状态文件观察3832.4ms，范围不是HWND/认证API可用。
+- 最终正常两页：`p1-dense-two-page-final-8e8925b474`，32/32真、驱动0/control0/残留身份[]。真正两页密集科学文本和公式，输入PDF/SHA保留；PNG解码尺寸、译文页数>=2/index2均真；未启用诊断hook。13个实际包模块SHA与UI配置源码身份一致。UI `p1-ui-flow-adf14b7393` 实际0、HWND21432256、task done、共享对象、fa/opt-out读回、缺更新安装器后health保持、丢保存响应恢复无重复和四个版本路径全部真。
+- 稀疏页失败`p1-two-page-final-b5f2bbafb8`与显式诊断`p1-two-page-diagnostic-4c2fd9617b`均保留；诊断确认为原引擎`BabeldocError / Scanned PDF detected`。诊断hook仅观察本地假提供方的异常并原样转发，不进产品载荷；不将诊断轮当正常通过。密集两页轮保留扫描检测与原算法。该已知原因不解释旧120s/45s启动失败。
+- 最终活动树：561样本/153.897秒（含API、预览及等待UI，非纯翻译耗时），private峰2586816512B、线程峰60；观测CPU增量61.03125s、读4862401549B、写17267315B。250ms会漏短进程初末计数，属于下界；采样末尾可能仍有控制面，但关闭后按PID+creation_time另核残留为空，不能仅凭末样本判断回收。
+- 最终运行盘占用：交付根runtime-cache-observation.json，独占home总255个普通文件/360288160B；资源目录185文件/352496622B（锁资源有效内容182项352451566B，其余为运行生成内容）、翻译缓存229376B、work暂存64149B、桌面状态29690B、引擎配置21489B、tmp0。未跟随Windows生成的INetCache兼容junction。资源采用已验证离线拷贝，未计首次HTTP传输的协议/重试开销；work为可重试保留输入/产物，不假称整个work缓存有界。解压比较是payload逻辑字节，不含Inno卸载元数据/文件系统分配开销；标准安装注册口径见registered-uninstall.json。
+
+交付索引SHA与独立总审最终收口随后补充。全部人工OS项、启动稳定性、GPU/旧GUI完整基线及商业/长文档质量仍是待验，不因32/20通过而改成全部P1发布验收通过。

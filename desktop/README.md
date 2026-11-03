@@ -16,6 +16,8 @@
 
 旧 WebView 源码保留在 launcher，必须显式 `-LegacyWebView` 才走原构建流程；需另备 WebView2。其本地 HTTP 同样使用随机会话认证，WebView 仅给精确回环源附加认证头，直接浏览器访问会被拒绝。start-webui.py、Gradio 与 CLI 源码兼容入口仍保留，开发者单独运行时应使用自己的隔离 home；默认安装包不暴露它们。
 
+显式旧入口构建可用 `-LegacyRuntimeRoot '<含 uv-tools/uv-python 的目录>'`、`-PythonRoot '<版本化 CPython>'` 和相同的本地 DotnetExe/IsccExe；preview/stable 元数据保持独立，preview 不生成正式 latest.json。已验证旧 .NET 编译、真实认证引导和占位端口拒绝，未运行旧 WebView GUI/完整旧安装器，不能把它们列为全部通过。
+
 预览更新源关闭。未来稳定频道保留 Releases/latest.json、版本比较与 SHA256 校验；仓库没有既有数字签名验证，不把 SHA256 描述成发布者签名。测试只使用本地假 feed。安装/升级删除旧文件前检查拥有清单、哈希和路径，卸载保留未知/修改过的文件与数据目录；该检查不宣称抵抗恶意并发文件替换。
 
 验收入口：tests/native/acceptance.py（真实 BabelDOC + 本地 LLM 夹具）、tests/native/performance.py、tests/native/installer.ps1、desktop/PDFMathTranslate.Tests。DEBUG 的 --ui-test 在真实运行的 WPF 视图内执行流程并渲染 PNG；它不等同于操作系统输入、文件对话框或跨屏 DPI 验收。当前证据与未验证项见 docs/NATIVE_DESKTOP_REVIEW_HANDOFF.md。
