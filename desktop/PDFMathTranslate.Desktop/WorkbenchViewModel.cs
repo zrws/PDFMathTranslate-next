@@ -13,7 +13,7 @@ public partial class WorkbenchViewModel : ObservableObject, IDisposable
     public ObservableCollection<ImportedFile> Files { get; } = [];
     public ObservableCollection<string> Services { get; } = [];
     public ObservableCollection<GlossaryRow> GlossaryRows {get;}=[];
-    public Choice[] Languages { get; } = [new("auto","自动检测"), new("en","英语"),new("zh-CN","简体中文"),new("zh-TW","繁体中文"),new("ja","日语"),new("ko","韩语"),new("de","德语"),new("fr","法语"),new("es","西班牙语"),new("ru","俄语"),new("pt","葡萄牙语"),new("it","意大利语"),new("ar","阿拉伯语"),new("vi","越南语"),new("id","印度尼西亚语")];
+    public ObservableCollection<Choice> Languages { get; } = [new("auto","自动检测"), new("en","英语"),new("zh-CN","简体中文"),new("zh-TW","繁体中文"),new("ja","日语"),new("ko","韩语"),new("de","德语"),new("fr","法语"),new("es","西班牙语"),new("ru","俄语"),new("pt","葡萄牙语"),new("it","意大利语"),new("ar","阿拉伯语"),new("vi","越南语"),new("id","印度尼西亚语")];
     public IEnumerable<Choice> TargetLanguages => Languages.Where(x=>x.Code!="auto");
     public Choice[] Tiers { get; } = [new("eco","节能"),new("balanced","均衡（默认）"),new("performance","性能")];
     private readonly BackendSupervisor supervisor = new();
@@ -42,6 +42,8 @@ public partial class WorkbenchViewModel : ObservableObject, IDisposable
     [ObservableProperty] private bool autoTerms;
     [ObservableProperty] private bool ready;
     [ObservableProperty] private bool assetsReady;
+    [ObservableProperty] private bool autoCheckUpdates=true;
+    public string VersionDescription {get{var version=UpdateService.ReadVersion(Environment.GetEnvironmentVariable("PDF2ZH_APP_ROOT")??AppContext.BaseDirectory);return version.Preview?"开发预览 · 正式更新源已停用":$"版本 {version.Version}";}}
     public bool CanSubmit=>Ready&&AssetsReady&&Files.Count>0&&SourceLanguage!=null&&TargetLanguage!=null;
     [ObservableProperty] private string updateState="开发预览，正式更新源已停用";
     [ObservableProperty] private bool canDownloadUpdate;
@@ -82,6 +84,7 @@ public partial class WorkbenchViewModel : ObservableObject, IDisposable
             Ready=true;
             _ = ListenAsync(life.Token);
             await ResumePendingAsync();
+            _=AutomaticUpdateAsync(life.Token);
         }
         catch(Exception ex) { ServiceState="服务未就绪 · 可重试启动"; Notice="启动失败："+Friendly(ex); }
     }
@@ -103,12 +106,14 @@ public partial class WorkbenchViewModel : ObservableObject, IDisposable
         Services.Clear(); foreach(var s in settings.GetProperty("services").EnumerateArray()) Services.Add(s.GetString()!);
         Service=settings.GetProperty("service").GetString() ?? ""; Model=settings.GetProperty("model").GetString() ?? ""; BaseUrl=settings.GetProperty("base_url").GetString() ?? "";
         ApiKeyState=settings.GetProperty("api_key_set").GetBoolean() ? "已保存密钥（不回显）" : "尚未设置密钥";
+        AutoCheckUpdates=!settings.TryGetProperty("auto_update",out var auto)||auto.GetBoolean();
         Qps=settings.GetProperty("requested_qps").GetInt32().ToString();
         Tier=Tiers.FirstOrDefault(x=>x.Code==settings.GetProperty("resource_tier").GetString()) ?? Tiers[1];
         var policy=settings.GetProperty("effective_policy");
         EffectivePolicy=$"生效：同时 1 份文档 · 本地 {policy.GetProperty("local_compute_threads").GetInt32()} 线程 · 远程 {policy.GetProperty("api_qps_cap").GetInt32()} QPS / {policy.GetProperty("api_inflight_limit").GetInt32()} 并发 · CPU 模式";
-        SourceLanguage=Languages.FirstOrDefault(x=>x.Code==settings.GetProperty("lang_in").GetString()) ?? Languages[1];
-        TargetLanguage=Languages.FirstOrDefault(x=>x.Code==settings.GetProperty("lang_out").GetString()) ?? Languages[2];
+        SourceLanguage=LanguageChoices.Resolve(Languages,settings.GetProperty("lang_in").GetString());
+        var target=LanguageChoices.Resolve(Languages,settings.GetProperty("lang_out").GetString());
+        OnPropertyChanged(nameof(TargetLanguages));TargetLanguage=target?.Code=="auto"?null:target;
     }
     public async Task ImportAsync(IEnumerable<string> paths)
     {
@@ -168,6 +173,7 @@ public partial class WorkbenchViewModel : ObservableObject, IDisposable
             if(!int.TryParse(Qps,out var qps) || qps<1 || qps>1000) throw new InvalidOperationException("QPS 需为 1–1000 的整数。");
             var fields=new Dictionary<string,object?> { ["service"]=Service,["model"]=Model,["base_url"]=BaseUrl,["qps"]=qps,["resource_tier"]=Tier?.Code??"balanced",["lang_in"]=SourceLanguage?.Code,["lang_out"]=TargetLanguage?.Code,["download_dir"]=SaveDirectory };
             if(NewApiKey.Length>0) fields["api_key"]=NewApiKey;
+            fields["auto_update"]=AutoCheckUpdates;
             await client.JsonAsync("api/settings",HttpMethod.Put,fields); NewApiKey="";
             await ReadSettingsAsync(); Notice="设置已保存，并已读回后端实际生效值。";
         }
@@ -214,6 +220,13 @@ public partial class WorkbenchViewModel : ObservableObject, IDisposable
             UpdateState=availableUpdate==null?"当前已是最新版本。":$"发现 {availableUpdate.Version}，可下载更新。";
         }
         catch(Exception){UpdateState="更新检查失败，请检查网络后重试，当前版本可继续使用。";}
+    }
+    private async Task AutomaticUpdateAsync(CancellationToken ct)
+    {
+        var root=Environment.GetEnvironmentVariable("PDF2ZH_APP_ROOT")??AppContext.BaseDirectory;
+        if(!AutoCheckUpdates||UpdateService.ReadVersion(root).Preview)return;
+        try{await Task.Delay(8000,ct);if(ct.IsCancellationRequested||!AutoCheckUpdates)return;await CheckUpdateAsync();if(availableUpdate!=null)Notice="发现新版本，可在「资源与设置」中下载更新。";}
+        catch(OperationCanceledException){}
     }
     [RelayCommand] private async Task DownloadUpdateAsync()
     {

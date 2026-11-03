@@ -99,6 +99,7 @@ def create_app(home, token, port, downloads, *, legacy_root=None):
         prefs = store.prefs()
         value.update(resource_tier=prefs["resource_tier"], requested_qps=prefs["requested_qps"], effective_policy=effective_policy(prefs["resource_tier"], prefs["requested_qps"]))
         value.pop("api_key_masked", None)
+        value["auto_update"]=prefs.get("auto_update",True)
         return value
 
     def settings():
@@ -118,6 +119,9 @@ def create_app(home, token, port, downloads, *, legacy_root=None):
         if not isinstance(qps, int) or isinstance(qps, bool) or not 1<=qps<=1000: raise HTTPException(400, "QPS 需为 1–1000 的整数。")
         effective_policy(tier, qps)
         changes={"resource_tier":tier,"requested_qps":qps}
+        if "auto_update" in payload:
+            if not isinstance(payload["auto_update"],bool):raise HTTPException(400,"自动更新偏好需为开关值。")
+            changes["auto_update"]=payload["auto_update"]
         if "download_dir" in payload:
             folder=directory(payload["download_dir"])
             if folder.exists() and not folder.is_dir():raise HTTPException(400,"保存位置必须是文件夹。")

@@ -53,6 +53,11 @@ class Store:
         if self.path.exists():
             # Corruption is a visible startup error; never overwrite user history.
             self.state = json.loads(self.path.read_text(encoding="utf-8-sig"))
+        if "auto_update" not in self.state["prefs"]:
+            old=Path(home)/".config/pdf2zh/ui-prefs.json"
+            try:self.state["prefs"]["auto_update"]=json.loads(old.read_text(encoding="utf-8-sig")).get("auto_update",True) is True
+            except FileNotFoundError:self.state["prefs"]["auto_update"]=True
+            except (OSError,ValueError,AttributeError):self.state["prefs"]["auto_update"]=False
         for task in self.state["tasks"].values():
             if task["status"] not in TERMINAL:
                 task.update(status="failed", stage="任务已中断", error="应用上次退出时任务未完成，请重试。", finished_at=time.time(), revision=task.get("revision", 0)+1)

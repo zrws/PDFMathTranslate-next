@@ -94,7 +94,11 @@ public sealed class UpdateService
     }
     public static HttpClient CreateClient()
     {
-        var handler=new HttpClientHandler{Proxy=new WebProxy("http://127.0.0.1:7897",true),UseProxy=true,AllowAutoRedirect=false};
+        var handler=new HttpClientHandler{UseProxy=true,AllowAutoRedirect=false};
+        if(string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("HTTPS_PROXY"))&&string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("HTTP_PROXY")))
+        {
+            try{using var probe=new System.Net.Sockets.TcpClient();if(probe.ConnectAsync(IPAddress.Loopback,7897).Wait(150)&&probe.Connected)handler.Proxy=new WebProxy("http://127.0.0.1:7897",true);}catch(System.Net.Sockets.SocketException){}catch(AggregateException){}
+        }
         var client=new HttpClient(handler){Timeout=TimeSpan.FromMinutes(15)};
         client.DefaultRequestHeaders.UserAgent.ParseAdd("PDFMathTranslate-Desktop/2.9.0");return client;
     }

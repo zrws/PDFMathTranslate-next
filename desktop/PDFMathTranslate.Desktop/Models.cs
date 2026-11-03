@@ -5,6 +5,17 @@ using CommunityToolkit.Mvvm.ComponentModel;
 namespace PDFMathTranslate.Desktop;
 
 public sealed record Choice(string Code, string Label) { public override string ToString() => Label; }
+public static class LanguageChoices
+{
+    public static Choice? Resolve(ICollection<Choice> choices,string? code)
+    {
+        if(string.IsNullOrWhiteSpace(code))return null;
+        var existing=choices.FirstOrDefault(x=>x.Code.Equals(code,StringComparison.OrdinalIgnoreCase));
+        if(existing!=null)return existing;
+        string label;try{label=System.Globalization.CultureInfo.GetCultureInfo(code).DisplayName;}catch(System.Globalization.CultureNotFoundException){label=code;}
+        var value=new Choice(code,label);choices.Add(value);return value;
+    }
+}
 public sealed record ImportedFile(string Id, string Filename, int Pages, long Bytes);
 public sealed record PreviewFrame(byte[] Image,int Pages,int Page);
 public sealed record GlossaryRow(string Source,string Target,string File);

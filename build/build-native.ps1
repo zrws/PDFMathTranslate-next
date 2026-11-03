@@ -86,6 +86,14 @@ foreach($framework in @('Microsoft.NETCore.App','Microsoft.WindowsDesktop.App'))
     Copy-Tree $runtime.FullName (Join-Path $payload ('dotnet/shared/'+$framework+'/'+$runtime.Name))
 }
 Copy-Item -LiteralPath $DotnetExe -Destination (Join-Path $payload 'dotnet/dotnet.exe')
+Copy-Item -LiteralPath (Join-Path $repo 'source/LICENSE') -Destination (Join-Path $payload 'LICENSE')
+$licenses=Join-Path $payload 'licenses';New-Item -ItemType Directory -Path $licenses|Out-Null
+foreach($file in @('LICENSE.txt','ThirdPartyNotices.txt')){Copy-Item -LiteralPath (Join-Path $sdkRoot $file) -Destination (Join-Path $licenses ('dotnet-'+$file))}
+foreach($package in @(@('wpf-ui','4.3.0','LICENSE.md'),@('communitytoolkit.mvvm','8.4.2','License.md'))){
+    $packageRoot=Join-Path $env:NUGET_PACKAGES ($package[0]+'/'+$package[1])
+    Copy-Item -LiteralPath (Join-Path $packageRoot $package[2]) -Destination (Join-Path $licenses ($package[0]+'-LICENSE.md'))
+    Copy-Item -LiteralPath (Join-Path $packageRoot 'ThirdPartyNotices.txt') -Destination (Join-Path $licenses ($package[0]+'-ThirdPartyNotices.txt'))
+}
 foreach($name in @('LICENSE','README.md')){if(Test-Path -LiteralPath (Join-Path $repo $name)){Copy-Item -LiteralPath (Join-Path $repo $name) -Destination $payload}}
 Copy-Item -LiteralPath (Join-Path $repo 'build/THIRD_PARTY_NOTICES.md') -Destination $payload
 @{version=$Version;channel=$Channel} | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $payload 'version.json') -Encoding utf8

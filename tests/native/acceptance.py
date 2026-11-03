@@ -14,6 +14,7 @@ import sys
 import threading
 import time
 import uuid
+import psutil
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
@@ -69,6 +70,21 @@ def main():
     child.stdin.write((json.dumps({"token":token,"downloads":str(home/"exports")})+"\n").encode());child.stdin.flush()
     hello = json.loads(child.stdout.readline())
     port = hello["port"]
+    measurements=[];measurement_stop=threading.Event()
+    def measure():
+        while not measurement_stop.is_set():
+            records=[]
+            try:
+                parent=psutil.Process(child.pid)
+                for process in [parent]+parent.children(recursive=True):
+                    try:
+                        memory=process.memory_info();cpu=process.cpu_times();io=process.io_counters()
+                        records.append({"pid":process.pid,"created":process.create_time(),"exe":process.exe(),"name":process.name(),"private_bytes":memory.private,"working_set_bytes":memory.rss,"threads":process.num_threads(),"cpu_seconds":cpu.user+cpu.system,"read_bytes":io.read_bytes,"write_bytes":io.write_bytes})
+                    except (psutil.NoSuchProcess,psutil.AccessDenied):pass
+            except psutil.NoSuchProcess:pass
+            measurements.append({"ts":time.time(),"processes":records})
+            measurement_stop.wait(.25)
+    measurement_thread=threading.Thread(target=measure,daemon=True);measurement_thread.start()
     rows = []; events = []; event_stop = threading.Event(); connection = None
     def check(name, passed, detail=None):
         rows.append({"case":name,"passed":bool(passed),"detail":detail})
@@ -189,6 +205,8 @@ def main():
         except subprocess.TimeoutExpired:
             subprocess.run(["taskkill","/PID",str(child.pid),"/T","/F"],capture_output=True);child.wait(10)
         stderr.close();provider.shutdown()
+        measurement_stop.set();measurement_thread.join(2)
+        (evidence/"process-samples.json").write_text(json.dumps({"scope":"real native API process tree, 250ms sampling, includes pipeline and previews; GPU counters not measured","samples":measurements},ensure_ascii=False),encoding="utf-8")
         (evidence/"events.jsonl").write_text("".join(json.dumps(e,ensure_ascii=False)+"\n" for e in events),encoding="utf-8")
         report={"passed":passed,"checks":rows,"home":str(home),"control_pid":child.pid,"control_actual_exit":child.returncode,"provider_calls":calls,"mode":"real BabelDOC + loopback LLM fixture; commercial translation quality unverified"}
         (evidence/"result.json").write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8")

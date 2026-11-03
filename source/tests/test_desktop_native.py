@@ -348,3 +348,10 @@ def test_committed_settings_survive_journal_cleanup_failure(store,tmp_path,monke
     assert config.read_bytes()==b"committed" and store.prefs()["resource_tier"]=="eco"
     transaction.recover(home)
     assert config.read_bytes()==b"committed"
+
+
+def test_old_auto_update_opt_out_is_preserved_and_native_preference_wins(tmp_path):
+    home=tmp_path/"home";prefs=home/".config/pdf2zh/ui-prefs.json";prefs.parent.mkdir(parents=True);prefs.write_text('{"auto_update":false}',encoding="utf-8")
+    store=Store(home,tmp_path/"downloads");assert store.prefs()["auto_update"] is False
+    store.prefs({"auto_update":True})
+    assert Store(home,tmp_path/"downloads").prefs()["auto_update"] is True

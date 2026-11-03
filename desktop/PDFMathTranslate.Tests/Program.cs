@@ -27,6 +27,11 @@ Check("restart snapshot replaces old instance",store.InstanceId=="two"&&store.Ta
 store.Apply("task.updated",Envelope("two",0,TaskData(9,"running")));
 Check("duplicate sequence ignored",store.Tasks.Single().Status=="failed");
 var installer=Encoding.UTF8.GetBytes("local fake installer: never executed");
+var languages=new List<Choice>{new("en","英语"),new("zh-CN","简体中文")};
+var custom=LanguageChoices.Resolve(languages,"fa");
+Check("persisted uncommon language is preserved without replacing it with Chinese",custom?.Code=="fa"&&languages.Contains(custom));
+Check("language readback reuses the same choice",ReferenceEquals(custom,LanguageChoices.Resolve(languages,"FA"))&&languages.Count==3);
+Check("missing language remains visibly unselected",LanguageChoices.Resolve(languages,"")==null);
 var sha=Convert.ToHexString(SHA256.HashData(installer));
 var handler=new FixtureHandler(installer,sha);using var http=new HttpClient(handler);
 var disabled=new UpdateService(http,true);

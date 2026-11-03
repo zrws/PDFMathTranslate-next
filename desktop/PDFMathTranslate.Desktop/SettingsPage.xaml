@@ -22,7 +22,8 @@
     <TextBlock Text="应用数据目录" FontWeight="SemiBold"/><TextBlock Text="{Binding DataDirectory}" FontSize="12" Margin="0,6,0,0"/>
     <TextBlock Text="卸载默认保留设置、历史、下载记录和用户导出文件。" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,16"/>
     <WrapPanel><ui:Button Content="保存设置并核对生效值" Appearance="Primary" Command="{Binding SaveSettingsCommand}" Click="SaveClicked"/><Button Content="重试待同步操作" Command="{Binding ResumePendingCommand}"/><Button Content="清除待同步记录…" Command="{Binding DismissPendingCommand}"/><Button Content="检查更新" Command="{Binding CheckUpdateCommand}"/></WrapPanel>
-    <TextBlock Text="开发预览 · .NET 10 / WPF UI · 正式更新源停用" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,16,0,0"/>
+    <TextBlock Text="{Binding VersionDescription}" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,16,0,0"/>
+    <CheckBox Content="启动时自动检查更新（开发预览不会访问正式源）" IsChecked="{Binding AutoCheckUpdates}" Margin="0,12,0,0"/>
     <TextBlock Text="{Binding UpdateState}" Margin="0,8,0,8"/><WrapPanel><Button Content="下载更新" Command="{Binding DownloadUpdateCommand}" IsEnabled="{Binding CanDownloadUpdate}"/><Button Content="安装已校验的更新" Command="{Binding InstallUpdateCommand}" IsEnabled="{Binding CanInstallUpdate}"/></WrapPanel>
   </StackPanel></ScrollViewer>
 </Page>
