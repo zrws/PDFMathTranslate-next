@@ -70,6 +70,8 @@ internal static class NativeUiVerification
                 var translated=await vm.PreviewAsync(2,true,CancellationToken.None);
                 checks["translated_preview_page_count"]=translated?.Pages;
                 if(translated is null||translated.Pages<2||translated.Page!=2)throw new InvalidOperationException("译文预览页数或翻页读取错误");
+                checks["missing_update_installer_keeps_service"]=await vm.VerifyMissingInstallerKeepsService();
+                if(!(bool)checks["missing_update_installer_keeps_service"])throw new InvalidOperationException("更新启动失败后后台未保留");
                 vm.LoseNextExportResponse();await vm.ExportCommand.ExecuteAsync(null);
                 checks["lost_export_response_pending"]=vm.PendingOperations==1;
                 if(vm.PendingOperations!=1)throw new InvalidOperationException("丢失响应后未保留原保存标识");

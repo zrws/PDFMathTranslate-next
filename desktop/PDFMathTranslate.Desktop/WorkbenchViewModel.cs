@@ -237,9 +237,11 @@ public partial class WorkbenchViewModel : ObservableObject, IDisposable
     }
     [RelayCommand] private void InstallUpdate()
     {
-        if(updateFile==null||!CanInstallUpdate)return;
+        if(updateFile==null||availableUpdate==null||!CanInstallUpdate)return;
         if(Store.Tasks.Any(x=>!x.Terminal)){Notice="请先完成或取消当前任务，再安装更新。";return;}
-        Dispose();UpdateService.LaunchInstaller(updateFile);Application.Current.Shutdown();
+        try{UpdateService.LaunchInstaller(updateFile,availableUpdate.Sha256);}
+        catch(Exception){CanInstallUpdate=false;UpdateState="更新安装未启动，请重新下载后重试。";Notice="更新未启动，当前翻译服务继续运行，可重新下载更新。";return;}
+        Dispose();Application.Current.Shutdown();
     }
     public async Task<PreviewFrame?> PreviewAsync(int page, bool output, CancellationToken ct)
     {
@@ -252,6 +254,14 @@ public partial class WorkbenchViewModel : ObservableObject, IDisposable
     public async Task LoadGlossaryAsync() { if(client!=null) ReadGlossary(await client.JsonAsync("api/glossary")); }
     public async Task ImportGlossaryAsync(string path){if(client==null)return;try{ReadGlossary(await client.UploadGlossaryAsync(path));Notice="术语表已导入，后续任务生效。";}catch(Exception ex){Notice="术语表导入失败："+Friendly(ex);}}
 #if DEBUG
+    internal async Task<bool> VerifyMissingInstallerKeepsService()
+    {
+        var previous=availableUpdate;var oldFile=updateFile;var oldInstall=CanInstallUpdate;
+        availableUpdate=new UpdatePackage(new Version(99,0),new Uri("http://127.0.0.1:9/never-requested"),new string('0',64),1,"");
+        updateFile=Path.Combine(DataDirectory,"updates","missing-"+Guid.NewGuid().ToString("N")+".exe");CanInstallUpdate=true;
+        try{InstallUpdate();return (await client!.JsonAsync("api/health",ct:life.Token)).GetProperty("control_ready").GetBoolean();}
+        finally{availableUpdate=previous;updateFile=oldFile;CanInstallUpdate=oldInstall;}
+    }
     internal int BackendProcessId=>supervisor.ProcessId;
     internal void LoseNextExportResponse(){var fired=false;client!.SimulateLostResponse=path=>{if(!fired&&path.EndsWith("/export")){fired=true;return true;}return false;};}
     internal int PendingOperations=>outbox?.Pending.Count??0;

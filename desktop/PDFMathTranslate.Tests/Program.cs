@@ -52,6 +52,8 @@ Check("late old completion cannot erase newer operation",restoredOutbox.Pending.
 restoredOutbox.DismissAll();
 Check("explicit dismiss persists",new OperationOutbox(root).Pending.Count==0);
 Check("closed-file SHA256 verifies on Windows",File.ReadAllBytes(target).SequenceEqual(installer));
+try{UpdateService.LaunchInstaller(target,new string('0',64));throw new Exception("changed installer launched");}catch(InvalidDataException){checks.Add("installer rechecked before execution without executing fixture");}
+try{UpdateService.LaunchInstaller(Path.Combine(root,"missing.exe"),sha);throw new Exception("missing installer launched");}catch(FileNotFoundException){checks.Add("missing installer fails before execution");}
 try{await updates.DownloadAsync(package! with{Sha256=new string('0',64)},root);throw new Exception("wrong hash accepted");}catch(InvalidDataException){checks.Add("wrong installer hash refused");}
 Check("failed download leaves no partial",!Directory.GetFiles(root,"*.partial").Any());
 handler.RedirectOutside=true;var beforeRedirect=handler.Calls;

@@ -41,6 +41,17 @@ def migrate_config(home, legacy_root):
         shutil.copy2(backup/"config.v3.toml", temporary)
         os.replace(temporary, target)
         migrated.append({"source": str(source), "backup": str(backup), "target": str(target)})
+    old_prefs=Path(legacy_root)/"home/.config/pdf2zh/ui-prefs.json"
+    new_prefs=home/".config/pdf2zh/ui-prefs.json"
+    if old_prefs.is_file() and old_prefs.resolve()!=new_prefs.resolve() and not new_prefs.exists():
+        backup=home/"config/legacy-backup"/uuid.uuid4().hex
+        backup.mkdir(parents=True)
+        shutil.copy2(old_prefs,backup/"ui-prefs.json")
+        if file_identity(old_prefs)!=file_identity(backup/"ui-prefs.json"):raise ValueError("旧界面偏好备份校验失败")
+        new_prefs.parent.mkdir(parents=True,exist_ok=True)
+        temporary=new_prefs.with_name(new_prefs.name+".migration.partial")
+        shutil.copy2(backup/"ui-prefs.json",temporary);os.replace(temporary,new_prefs)
+        migrated.append({"source":str(old_prefs),"backup":str(backup),"target":str(new_prefs)})
     atomic_json(marker, {"version": 1, "config": migrated, "policy": "originals retained; current config never overwritten; history migration separately reconciled"})
 
 

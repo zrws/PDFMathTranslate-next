@@ -95,12 +95,16 @@ public sealed class UpdateService
     public static HttpClient CreateClient()
     {
         var handler=new HttpClientHandler{UseProxy=true,AllowAutoRedirect=false};
-        if(string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("HTTPS_PROXY"))&&string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("HTTP_PROXY")))
-        {
-            try{using var probe=new System.Net.Sockets.TcpClient();if(probe.ConnectAsync(IPAddress.Loopback,7897).Wait(150)&&probe.Connected)handler.Proxy=new WebProxy("http://127.0.0.1:7897",true);}catch(System.Net.Sockets.SocketException){}catch(AggregateException){}
-        }
+        // DefaultProxy honors environment (including ALL_PROXY) and Windows
+        // proxy/bypass configuration; a detected local port must not override it.
         var client=new HttpClient(handler){Timeout=TimeSpan.FromMinutes(15)};
         client.DefaultRequestHeaders.UserAgent.ParseAdd("PDFMathTranslate-Desktop/2.9.0");return client;
     }
-    public static void LaunchInstaller(string path)=>Process.Start(new ProcessStartInfo(path){Arguments="/SILENT",UseShellExecute=true});
+    public static void LaunchInstaller(string path,string expectedSha)
+    {
+        if(!Regex.IsMatch(expectedSha,"\\A[0-9a-fA-F]{64}\\z"))throw new InvalidDataException("安装包校验信息无效。");
+        using(var input=File.OpenRead(path))
+            if(!Convert.ToHexString(SHA256.HashData(input)).Equals(expectedSha,StringComparison.OrdinalIgnoreCase))throw new InvalidDataException("已下载的安装包发生变化，请重新下载。");
+        using var process=Process.Start(new ProcessStartInfo(path){Arguments="/SILENT",UseShellExecute=true})??throw new IOException("安装程序未能启动。");
+    }
 }
