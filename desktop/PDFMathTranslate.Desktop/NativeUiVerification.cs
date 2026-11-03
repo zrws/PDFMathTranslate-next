@@ -30,6 +30,15 @@ internal static class NativeUiVerification
             checks["window_ready_ms"]=window.WindowReadyMs;
             checks["api_ready_ms"]=(DateTime.UtcNow-Process.GetCurrentProcess().StartTime.ToUniversalTime()).TotalMilliseconds;
             checks["render_kind"]="actual running WPF visual tree, RenderTargetBitmap; not OS input automation";
+            // Measure readiness and idle before QA screenshots/navigation add
+            // their deliberate animation wait and raster work to the timeline.
+            if(scenario.TryGetProperty("idle_seconds",out var idle))
+            {
+                await Wait(()=>vm.AssetsReady,TimeSpan.FromSeconds(45));
+                File.WriteAllText(Path.Combine(root,"performance-ready.json"),JsonSerializer.Serialize(new{ui_pid=Environment.ProcessId,control_pid=vm.BackendProcessId,window_ready_ms=window.WindowReadyMs,api_ready_ms=checks["api_ready_ms"],resources_ready_ms=(DateTime.UtcNow-Process.GetCurrentProcess().StartTime.ToUniversalTime()).TotalMilliseconds,idle_started_utc=DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()/1000.0}));
+                await Task.Delay(TimeSpan.FromSeconds(Math.Clamp(idle.GetInt32(),1,360)));
+                File.WriteAllText(Path.Combine(root,"performance-idle-finished.json"),JsonSerializer.Serialize(new{idle_finished_utc=DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()/1000.0}));
+            }
             await Capture(window,root,"01-workbench.png");
             window.ShowPage(typeof(SettingsPage)); await Capture(window,root,"02-settings.png");
             window.ShowSettingsStorage(true);await Capture(window,root,"02b-save-directory.png");window.ShowSettingsStorage(false);
@@ -49,13 +58,6 @@ internal static class NativeUiVerification
                 window.ShowPage(typeof(SettingsPage));window.ShowSettingsStorage(true);await Capture(window,root,"11-update-recovery-and-saving.png");window.ShowSettingsStorage(false);
                 vm.SelectedTask=vm.Store.Tasks.FirstOrDefault(x=>x.Status=="done"&&x.SavedPaths.Length>0);
                 window.ShowPage(typeof(ResultsPage));await Capture(window,root,"12-restored-results.png");
-            }
-            if(scenario.TryGetProperty("idle_seconds",out var idle))
-            {
-                await Wait(()=>vm.AssetsReady,TimeSpan.FromSeconds(45));
-                File.WriteAllText(Path.Combine(root,"performance-ready.json"),JsonSerializer.Serialize(new{ui_pid=Environment.ProcessId,control_pid=vm.BackendProcessId,window_ready_ms=window.WindowReadyMs,api_ready_ms=checks["api_ready_ms"],resources_ready_ms=(DateTime.UtcNow-Process.GetCurrentProcess().StartTime.ToUniversalTime()).TotalMilliseconds,idle_started_utc=DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()/1000.0}));
-                await Task.Delay(TimeSpan.FromSeconds(Math.Clamp(idle.GetInt32(),1,360)));
-                File.WriteAllText(Path.Combine(root,"performance-idle-finished.json"),JsonSerializer.Serialize(new{idle_finished_utc=DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()/1000.0}));
             }
             if(scenario.TryGetProperty("sample",out var sample))
             {
