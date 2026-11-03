@@ -24,10 +24,6 @@ from pdf2zh_next.config.model import PDFSettings
 from pdf2zh_next.config.model import SettingsModel
 from pdf2zh_next.config.model import TranslationSettings
 from pdf2zh_next.config.model import WatermarkOutputMode
-from pdf2zh_next.high_level import create_babeldoc_config
-from pdf2zh_next.high_level import do_translate_async_stream
-from pdf2zh_next.high_level import do_translate_file
-from pdf2zh_next.high_level import do_translate_file_async
 
 # from pdf2zh_next.high_level import translate, translate_stream
 
@@ -69,3 +65,13 @@ __all__ = [
     "ConfigManager",
     "ClaudeCodeSettings",
 ]
+
+def __getattr__(name):
+    # Preserve public exports while control/API startup never imports the
+    # translation stack (ONNX/OpenCV/scientific libraries) to show a window.
+    if name in {"create_babeldoc_config", "do_translate_async_stream", "do_translate_file", "do_translate_file_async"}:
+        from importlib import import_module
+        value = getattr(import_module("pdf2zh_next.high_level"), name)
+        globals()[name] = value
+        return value
+    raise AttributeError(name)

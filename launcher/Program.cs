@@ -14,13 +14,14 @@ internal static class Program
 
     public static string Root { get; } =
         AppContext.BaseDirectory.TrimEnd(Path.DirectorySeparatorChar);
+    public static string Home {get;}=Environment.GetEnvironmentVariable("PDF2ZH_HOME")??(File.Exists(Path.Combine(Root,"portable.marker"))?Path.Combine(Root,"home"):Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"PDFMathTranslate"));
 
-    public static string LogPath { get; } = Path.Combine(Root, "logs", "webui-launcher.log");
+    public static string LogPath { get; } = Path.Combine(Home, "logs", "webui-launcher.log");
 
     [STAThread]
     private static int Main(string[] args)
     {
-        Directory.CreateDirectory(Path.Combine(Root, "logs"));
+        Directory.CreateDirectory(Path.Combine(Home, "logs"));
         AppendLog($"启动请求：{DateTime.Now:yyyy-MM-dd HH:mm:ss}");
 
         // 单实例：避免重复启动两个后台 Python 进程。
@@ -63,7 +64,7 @@ internal static class Program
         return 0;
     }
 
-    public static string ConfigDirectory => Path.Combine(Root, "home", ".config", "pdf2zh");
+    public static string ConfigDirectory => Path.Combine(Home, ".config", "pdf2zh");
 
     public static void OpenInExplorer(string directory)
     {

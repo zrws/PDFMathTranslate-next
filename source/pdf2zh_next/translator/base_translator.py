@@ -89,7 +89,9 @@ class BaseTranslator(ABC):
             except Exception as e:
                 logger.debug(f"try get cache failed, ignore it: {e}")
         self.rate_limiter.wait(rate_limit_params)
-        translation = self.do_translate(text, rate_limit_params)
+        from pdf2zh_next.desktop.policy import request_budget
+        with request_budget():
+            translation = self.do_translate(text, rate_limit_params)
         if not (self.ignore_cache or ignore_cache):
             self.cache.set(text, translation)
         return translation
@@ -110,7 +112,9 @@ class BaseTranslator(ABC):
             except Exception as e:
                 logger.debug(f"try get cache failed, ignore it: {e}")
         self.rate_limiter.wait(rate_limit_params)
-        translation = self.do_llm_translate(text, rate_limit_params)
+        from pdf2zh_next.desktop.policy import request_budget
+        with request_budget():
+            translation = self.do_llm_translate(text, rate_limit_params)
         if not (self.ignore_cache or ignore_cache):
             self.cache.set(text, translation)
         return translation

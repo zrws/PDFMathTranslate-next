@@ -544,6 +544,8 @@ def _get_glossaries(settings: SettingsModel) -> list[Glossary] | None:
 def create_babeldoc_config(settings: SettingsModel, file: Path) -> BabelDOCConfig:
     if not isinstance(settings, SettingsModel):
         raise ValueError(f"{type(settings)} is not SettingsModel")
+    from pdf2zh_next.desktop.policy import apply_engine_budget
+    apply_engine_budget(settings)
     translator = get_translator(settings)
     if translator is None:
         raise ValueError("No translator found")
@@ -592,6 +594,9 @@ def create_babeldoc_config(settings: SettingsModel, file: Path) -> BabelDOCConfi
 
         table_model = RapidOCRModel()
 
+    # Service defaults/recommendations may have changed QPS/pools above.
+    # Native worker caps remain authoritative; legacy calls are unchanged.
+    apply_engine_budget(settings)
     babeldoc_config = BabelDOCConfig(
         input_file=file,
         font=None,

@@ -15,7 +15,11 @@ internal sealed record UpdateInfo(Version Version, string Url, string Sha256, st
 internal static class UpdateChecker
 {
     private const string Repo = "zrws/PDFMathTranslate-next";
-    private const int LocalProxyPort = 11178;
+    private const int LocalProxyPort = 7897;
+    public static bool FormalUpdatesEnabled(string root)
+    {
+        try{using var doc=JsonDocument.Parse(File.ReadAllText(Path.Combine(root,"version.json")));return doc.RootElement.TryGetProperty("channel",out var channel)&&channel.GetString()=="stable";}catch{return false;}
+    }
 
     /// <summary>从安装目录读取当前版本（version.json）；缺失返回 null。</summary>
     public static Version? ReadCurrentVersion(string root)

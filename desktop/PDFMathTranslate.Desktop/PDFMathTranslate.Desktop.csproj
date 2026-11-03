@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>PDFMathTranslate</AssemblyName>
+    <RootNamespace>PDFMathTranslate.Desktop</RootNamespace>
+    <ApplicationIcon>../../launcher/Assets/app.ico</ApplicationIcon>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <NuGetAudit>false</NuGetAudit>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AppHostRelativeDotNet>dotnet</AppHostRelativeDotNet>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="WPF-UI" Version="[4.3.0]" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="[8.4.2]" />
+  </ItemGroup>
+</Project>

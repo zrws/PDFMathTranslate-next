@@ -13,6 +13,7 @@ dist/
 launcher/bin/
 launcher/obj/
 launcher/publish/
+desktop/**/obj/
 webui/design-export/
 *.pyc
 __pycache__/

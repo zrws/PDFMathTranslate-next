@@ -1,6 +1,9 @@
 using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
+using System.Security.Cryptography;
+using System.Net.Http.Headers;
 
 namespace PDFMathTranslateLauncher;
 
@@ -10,7 +13,7 @@ namespace PDFMathTranslateLauncher;
 /// </summary>
 internal sealed class BackendRunner : IDisposable
 {
-    private const int ProxyPort = 11178;
+    private const int ProxyPort = 7897;
     private static readonly TimeSpan WebUiTimeout = TimeSpan.FromMinutes(3);
 
     private readonly string _python;
@@ -19,6 +22,7 @@ internal sealed class BackendRunner : IDisposable
     private readonly string _root;
 
     private Process? _child;
+    private Microsoft.Win32.SafeHandles.SafeFileHandle? _job;
     private readonly ManualResetEventSlim _webUiReady = new(false);
     private readonly object _startLock = new();
 
@@ -31,6 +35,7 @@ internal sealed class BackendRunner : IDisposable
     public int ExitCode => _child?.ExitCode ?? 0;
 
     public string BaseUrl => $"http://127.0.0.1:{Port}/";
+    internal string SessionToken { get; private set; } = "";
 
     public BackendRunner(string python, string script, string sitePackages, int port, string root)
     {
@@ -57,13 +62,13 @@ internal sealed class BackendRunner : IDisposable
                 CreateNoWindow = true,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
+                RedirectStandardInput = true,
                 StandardOutputEncoding = Encoding.UTF8,
                 StandardErrorEncoding = Encoding.UTF8,
             };
             startInfo.ArgumentList.Add("-u");
-            startInfo.ArgumentList.Add(_script);
-            startInfo.ArgumentList.Add("--server-port");
-            startInfo.ArgumentList.Add(Port.ToString());
+            startInfo.ArgumentList.Add("-m");
+            startInfo.ArgumentList.Add("pdf2zh_next.desktop.compatibility");
 
             ConfigureNetworkEnvironment(startInfo);
             ConfigurePythonEnvironment(startInfo);
@@ -71,11 +76,16 @@ internal sealed class BackendRunner : IDisposable
             _child = new Process { StartInfo = startInfo, EnableRaisingEvents = true };
             _child.OutputDataReceived += (_, e) => ForwardLog(e.Data, isError: false);
             _child.ErrorDataReceived += (_, e) => ForwardLog(e.Data, isError: true);
+            _job=PDFMathTranslate.Desktop.NativeJob.Create();
             if (!_child.Start())
             {
                 Program.AppendLog("无法启动 PDFMathTranslate 后台进程。");
                 return false;
             }
+            if(!PDFMathTranslate.Desktop.NativeJob.AssignProcessToJobObject(_job,_child.Handle)){_child.Kill(true);throw new InvalidOperationException("无法建立兼容后端进程回收边界。");}
+            SessionToken=Convert.ToHexString(RandomNumberGenerator.GetBytes(32));
+            _child.StandardInput.WriteLine(JsonSerializer.Serialize(new{token=SessionToken,port=Port}));
+            _child.StandardInput.Flush();
             _child.BeginOutputReadLine();
             _child.BeginErrorReadLine();
             Program.AppendLog($"后台已启动，等待 WebUI：{BaseUrl}");
@@ -85,14 +95,15 @@ internal sealed class BackendRunner : IDisposable
 
     private bool WaitForWebUi(Process child)
     {
-        using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(2) };
+        using var client = new HttpClient(new SocketsHttpHandler{UseProxy=false}) { Timeout = TimeSpan.FromSeconds(2) };
+        client.DefaultRequestHeaders.Authorization=new AuthenticationHeaderValue("Bearer",SessionToken);
         var deadline = DateTime.UtcNow + WebUiTimeout;
         while (DateTime.UtcNow < deadline && !child.HasExited)
         {
             try
             {
                 using var response = client.GetAsync(BaseUrl).GetAwaiter().GetResult();
-                if (_webUiReady.IsSet && (int)response.StatusCode is >= 200 and < 500)
+                if (_webUiReady.IsSet && response.IsSuccessStatusCode)
                 {
                     Program.AppendLog($"WebUI 已就绪：{BaseUrl}");
                     return true;
@@ -139,6 +150,12 @@ internal sealed class BackendRunner : IDisposable
         startInfo.Environment["PYTHONPATH"] = _sitePackages;
         startInfo.Environment["PYTHONUTF8"] = "1";
         startInfo.Environment["PYTHONIOENCODING"] = "utf-8";
+        startInfo.Environment["PYTHONDONTWRITEBYTECODE"]="1";
+        startInfo.Environment["PYTHONNOUSERSITE"]="1";
+        startInfo.Environment["PDF2ZH_HOME"]=Program.Home;
+        startInfo.Environment["PDF2ZH_LEGACY_ROOT"]=_root;
+        foreach(var pair in new Dictionary<string,string>{["HOME"]=Program.Home,["USERPROFILE"]=Program.Home,["APPDATA"]=Path.Combine(Program.Home,"AppData","Roaming"),["LOCALAPPDATA"]=Path.Combine(Program.Home,"AppData","Local"),["XDG_CACHE_HOME"]=Path.Combine(Program.Home,".cache"),["TEMP"]=Path.Combine(Program.Home,"tmp"),["TMP"]=Path.Combine(Program.Home,"tmp")}){Directory.CreateDirectory(pair.Value);startInfo.Environment[pair.Key]=pair.Value;}
+        startInfo.WorkingDirectory=Path.Combine(Program.Home,"work");Directory.CreateDirectory(startInfo.WorkingDirectory);
     }
 
     private void ForwardLog(string? line, bool isError)
@@ -155,6 +172,7 @@ internal sealed class BackendRunner : IDisposable
     {
         lock (_startLock)
         {
+            _job?.Dispose();_job=null;
             try
             {
                 if (_child is { HasExited: false })
@@ -176,6 +194,7 @@ internal sealed class BackendRunner : IDisposable
 
     private void Stop()
     {
+        _job?.Dispose();_job=null;
         try
         {
             if (_child is { HasExited: false })

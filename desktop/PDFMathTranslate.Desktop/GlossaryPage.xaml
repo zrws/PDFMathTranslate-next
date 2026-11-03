@@ -1,0 +1,7 @@
+<Page x:Class="PDFMathTranslate.Desktop.GlossaryPage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="术语表" Background="Transparent">
+  <Grid Margin="24,18"><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+    <StackPanel Margin="0,0,0,18"><TextBlock Text="术语表" FontSize="23" FontWeight="SemiBold"/><TextBlock Text="导入 UTF-8 CSV 术语表，沿用 Python 翻译引擎的术语规则。" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0"/></StackPanel>
+    <DataGrid Grid.Row="1" ItemsSource="{Binding GlossaryRows}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" EnableRowVirtualization="True" HeadersVisibility="Column" AutomationProperties.Name="术语表内容"><DataGrid.Columns><DataGridTextColumn Header="原文术语" Binding="{Binding Source,Mode=OneWay}" Width="*"/><DataGridTextColumn Header="译文术语" Binding="{Binding Target,Mode=OneWay}" Width="*"/><DataGridTextColumn Header="来源文件" Binding="{Binding File,Mode=OneWay}" Width="220"/></DataGrid.Columns></DataGrid>
+    <WrapPanel Grid.Row="2" Margin="0,16,0,0"><Button Content="导入术语 CSV…" Click="ImportClicked"/><Button Content="刷新术语表" Click="RefreshClicked"/><TextBlock Text="列表为空时不会附加术语；自动术语提取在工作台单独选择。" VerticalAlignment="Center" FontSize="12"/></WrapPanel>
+  </Grid>
+</Page>

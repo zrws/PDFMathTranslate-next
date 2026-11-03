@@ -33,7 +33,7 @@ internal sealed class MainForm : Form
 
         // 菜单栏：文件 / 帮助
         var fileMenu = new ToolStripMenuItem("文件(&F)");
-        fileMenu.DropDownItems.Add("打开日志目录", null, (_, _) => Program.OpenInExplorer(Path.Combine(Program.Root, "logs")));
+        fileMenu.DropDownItems.Add("打开日志目录", null, (_, _) => Program.OpenInExplorer(Path.Combine(Program.Home, "logs")));
         fileMenu.DropDownItems.Add("打开配置目录", null, (_, _) => Program.OpenInExplorer(Program.ConfigDirectory));
         fileMenu.DropDownItems.Add(new ToolStripSeparator());
         fileMenu.DropDownItems.Add("退出", null, (_, _) => Close());
@@ -94,6 +94,11 @@ internal sealed class MainForm : Form
     {
         var core = _webView.CoreWebView2;
         if (core is null) return;
+        core.AddWebResourceRequestedFilter(_backend.BaseUrl+"*",Microsoft.Web.WebView2.Core.CoreWebView2WebResourceContext.All);
+        core.WebResourceRequested+=(_,e)=>{
+            if(Uri.TryCreate(e.Request.Uri,UriKind.Absolute,out var uri)&&uri.Scheme=="http"&&uri.Host=="127.0.0.1"&&uri.Port==_backend.Port)
+                e.Request.Headers.SetHeader("Authorization","Bearer "+_backend.SessionToken);
+        };
 
         // 桌面应用观感：关闭浏览器痕迹（右键菜单 / 开发者工具 / 缩放 / 浏览器快捷键 / 状态栏）
         var webSettings = core.Settings;
@@ -169,7 +174,7 @@ internal sealed class MainForm : Form
                     _ = RunBackendAsync();
                     break;
                 case "openlogs":
-                    Program.OpenInExplorer(Path.Combine(Program.Root, "logs"));
+                    Program.OpenInExplorer(Path.Combine(Program.Home, "logs"));
                     break;
                 case "openconfig":
                     Program.OpenInExplorer(Program.ConfigDirectory);
@@ -390,7 +395,7 @@ internal sealed class MainForm : Form
             // 便携模式在安装目录下，Program Files 安装时数据落在用户目录
             var candidates = new[]
             {
-                Path.Combine(Program.Root, "home", ".config", "pdf2zh", "ui-prefs.json"),
+                Path.Combine(Program.Home, ".config", "pdf2zh", "ui-prefs.json"),
                 Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                     "PDFMathTranslate", ".config", "pdf2zh", "ui-prefs.json"),
@@ -428,6 +433,8 @@ internal sealed class MainForm : Form
 
     private async Task CheckAndPromptAsync(bool manual)
     {
+        if(!UpdateChecker.FormalUpdatesEnabled(Program.Root))
+        {if(manual)MessageBox.Show("当前为开发预览，正式更新检查已停用。","PDFMathTranslate");return;}
         if (_updateInProgress)
         {
             if (manual) MessageBox.Show("正在检查或下载更新，请稍候。", "PDFMathTranslate",

@@ -21,6 +21,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="../desktop/PDFMathTranslate.Desktop/NativeJob.cs" Link="NativeJob.cs" />
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2792.45" />
   </ItemGroup>
 </Project>

@@ -19,7 +19,12 @@
   #define InstallerOutputDir "..\dist"
 #endif
 
-#define AppGuid "{{7C1F9A3E-52B4-4D6E-9F0A-1B2C3D4E5F60}"
+#ifndef AppGuid
+  #define AppGuid "{{7C1F9A3E-52B4-4D6E-9F0A-1B2C3D4E5F60}"
+#endif
+#ifndef AppGroup
+  #define AppGroup "PDFMathTranslate"
+#endif
 
 [Setup]
 AppId={#AppGuid}
@@ -27,18 +32,19 @@ AppName=PDFMathTranslate
 AppVersion={#AppVersion}
 AppVerName=PDFMathTranslate {#AppVersion}
 AppPublisher=PDFMathTranslate-next
-AppPublisherURL=https://github.com/PDFMathTranslate-next/PDFMathTranslate-next
-AppSupportURL=https://github.com/PDFMathTranslate-next/PDFMathTranslate-next/issues
-AppUpdatesURL=https://github.com/PDFMathTranslate-next/PDFMathTranslate-next/releases/latest
+AppPublisherURL=https://github.com/zrws/PDFMathTranslate-next
+AppSupportURL=https://github.com/zrws/PDFMathTranslate-next/issues
+AppUpdatesURL=https://github.com/zrws/PDFMathTranslate-next/releases/latest
 DefaultDirName={autopf}\PDFMathTranslate
-DefaultGroupName=PDFMathTranslate
+DefaultGroupName={#AppGroup}
 UninstallDisplayName=PDFMathTranslate {#AppVersion}
 UninstallDisplayIcon={app}\PDFMathTranslate.exe
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
 ; 始终显示安装目录页，让用户可以确认或更改安装路径。
 DisableDirPage=no
-DisableProgramGroupPage=yes
+DisableProgramGroupPage=no
+AllowNoIcons=yes
 OutputDir={#InstallerOutputDir}
 OutputBaseFilename=PDFMathTranslate-Setup-{#AppVersion}
 SetupIconFile=..\launcher\Assets\app.ico
@@ -47,6 +53,7 @@ SolidCompression=no
 WizardStyle=modern
 ArchitecturesInstallIn64BitMode=x64compatible
 CloseApplications=no
+AppMutex=Global\PDFMathTranslateNextSingleInstance
 
 [Languages]
 Name: "chinesesimplified"; MessagesFile: "languages\ChineseSimplified.isl"
@@ -95,45 +102,151 @@ UninstalledAll=%1 已成功卸载。
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+Name: "startmenu"; Description: "创建开始菜单快捷方式"; GroupDescription: "快捷方式："
 
 [Files]
 ; 精简便携运行环境（新界面、单套 Python、运行依赖和 version.json）
-Source: "{#PayloadRoot}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#PayloadRoot}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall
+Source: "{#PayloadRoot}\owned-files.tsv"; Flags: dontcopy
 
 [Icons]
-Name: "{group}\PDFMathTranslate"; Filename: "{app}\PDFMathTranslate.exe"
-Name: "{group}\卸载 PDFMathTranslate"; Filename: "{uninstallexe}"
-Name: "{autodesktop}\PDFMathTranslate"; Filename: "{app}\PDFMathTranslate.exe"; Tasks: desktopicon
+Name: "{group}\PDFMathTranslate"; Filename: "{app}\PDFMathTranslate.exe"; Tasks: startmenu
+Name: "{group}\卸载 PDFMathTranslate"; Filename: "{uninstallexe}"; Tasks: startmenu
+Name: "{autodesktop}\{#AppGroup}"; Filename: "{app}\PDFMathTranslate.exe"; Tasks: desktopicon
 
 [Run]
 Filename: "{app}\PDFMathTranslate.exe"; Description: "{cm:LaunchProgram,PDFMathTranslate}"; Flags: nowait postinstall skipifsilent
 
 [Code]
-var
-  UpdateExitCode: Integer;
+function GetFileAttributesW(Name: String): LongWord;
+  external 'GetFileAttributesW@kernel32.dll stdcall';
+function NativeLastError(): LongWord;
+  external 'GetLastError@kernel32.dll stdcall';
 
-// WebView2 Evergreen 运行时（窗口界面依赖）：注册表探测 GUID {F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}
-function WebView2Installed(): Boolean;
+function SafeOwnedPath(RelativeName: String; AllowMissing: Boolean): Boolean;
+var Candidate, Root, FirstPart, Remaining, Part, Parent, Leaf: String; Attr, ErrorCode: LongWord; Separator: Integer;
 begin
-  Result :=
-    RegKeyExists(HKEY_LOCAL_MACHINE, 'SOFTWARE\WOW6432Node\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}') or
-    RegKeyExists(HKEY_LOCAL_MACHINE, 'SOFTWARE\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}') or
-    RegKeyExists(HKEY_CURRENT_USER, 'SOFTWARE\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}');
+  Result := False;
+  if (RelativeName='') or (Pos('..',RelativeName)>0) or
+     (Pos(':',RelativeName)>0) or (Copy(RelativeName,1,1)='\') or
+     (Pos('/',RelativeName)>0) then exit;
+  Remaining:=RelativeName;
+  while Remaining<>'' do begin
+    Separator:=Pos('\',Remaining);
+    if Separator=0 then begin Part:=Remaining; Remaining:=''; end
+    else begin Part:=Copy(Remaining,1,Separator-1);Delete(Remaining,1,Separator);end;
+    if (Part='') or (Part='.') or (Trim(Part)<>Part) or
+       (Copy(Part,Length(Part),1)='.') or (Pos('~',Part)>0) then exit;
+  end;
+  Separator:=Pos('\',RelativeName);
+  if Separator=0 then FirstPart:=Lowercase(RelativeName)
+  else FirstPart:=Lowercase(Copy(RelativeName,1,Separator-1));
+  if (FirstPart='home') or (FirstPart='outputs') or (FirstPart='pdf2zh_files') or
+     (FirstPart='logs') or (FirstPart='config') or (FirstPart='cache') or
+     (FirstPart='.cache') or (FirstPart='.config') or (FirstPart='downloads') then exit;
+  Root := RemoveBackslashUnlessRoot(ExpandConstant('{app}'));
+  Candidate := Root+'\'+RelativeName;Leaf:=Candidate;
+  // Never traverse a junction/symlink installed or changed by another writer.
+  while Candidate<>'' do begin
+    Attr := GetFileAttributesW(Candidate);
+    if Attr=$FFFFFFFF then begin
+      ErrorCode:=NativeLastError();
+      if (not AllowMissing) or ((ErrorCode<>2) and (ErrorCode<>3)) then exit;
+    end else begin
+      if (Attr and $400)<>0 then exit;
+      if (Candidate<>Leaf) and ((Attr and $10)=0) then exit;
+      if (Candidate=Leaf) and ((Attr and $10)<>0) then exit;
+    end;
+    Parent:=ExtractFileDir(Candidate);
+    if Parent=Candidate then break;
+    Candidate:=Parent;
+  end;
+  Result := True;
+end;
+// Only obsolete, hash-matching files in our previous ownership list may be
+// removed on upgrade. Unknown and modified files, home and outputs survive.
+procedure RemoveObsoleteOwnedFiles();
+var OldLines, NewLines: TArrayOfString; I, J, P: Integer;
+    RelativeName, OldHash, Candidate: String; StillOwned: Boolean; NewNames: TStringList;
+begin
+  if not LoadStringsFromFile(ExpandConstant('{app}\owned-files.tsv'), OldLines) then exit;
+  ExtractTemporaryFile('owned-files.tsv');
+  if not LoadStringsFromFile(ExpandConstant('{tmp}\owned-files.tsv'), NewLines) then exit;
+  NewNames:=TStringList.Create;
+  try
+  NewNames.CaseSensitive:=False;
+  NewNames.Sorted:=True;
+  NewNames.Duplicates:=dupIgnore;
+  for J:=0 to GetArrayLength(NewLines)-1 do begin
+    P:=Pos('|',NewLines[J]);
+    if P>1 then NewNames.Add(Copy(NewLines[J],1,P-1));
+  end;
+  for I := 0 to GetArrayLength(OldLines)-1 do begin
+    P := Pos('|', OldLines[I]);
+    if P > 1 then begin
+      RelativeName := Copy(OldLines[I], 1, P-1);
+      OldHash := Copy(OldLines[I], P+1, MaxInt);
+      // Fail closed on paths not produced by the builder.
+      if SafeOwnedPath(RelativeName,False) then begin
+        StillOwned := NewNames.Find(RelativeName,J);
+        Candidate := ExpandConstant('{app}\')+RelativeName;
+        if (not StillOwned) and FileExists(Candidate) and
+           (CompareText(GetSHA256OfFile(Candidate),OldHash)=0) then begin
+          if not DeleteFile(Candidate) then Log('保留无法删除的旧程序文件：'+RelativeName);
+        end;
+      end;
+    end;
+  end;
+  finally NewNames.Free; end;
+end;
+
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+var Lines: TArrayOfString; I, P: Integer; RelativeName, Candidate, Parent: String;
+begin
+  if CurUninstallStep<>usUninstall then exit;
+  if not LoadStringsFromFile(ExpandConstant('{app}\owned-files.tsv'),Lines) then exit;
+  for I:=0 to GetArrayLength(Lines)-1 do begin
+    P:=Pos('|',Lines[I]);
+    if P>1 then begin
+      RelativeName:=Copy(Lines[I],1,P-1);
+      if SafeOwnedPath(RelativeName,False) then begin
+        Candidate:=ExpandConstant('{app}\')+RelativeName;
+        if FileExists(Candidate) and (CompareText(GetSHA256OfFile(Candidate),Copy(Lines[I],P+1,MaxInt))=0) then begin
+          if DeleteFile(Candidate) then begin
+            Parent:=ExtractFileDir(Candidate);
+            while Length(Parent)>Length(ExpandConstant('{app}')) do begin
+              if not RemoveDir(Parent) then break;
+              Parent:=ExtractFileDir(Parent);
+            end;
+          end else Log('保留无法删除的程序文件：'+RelativeName);
+        end;
+      end;
+    end;
+  end;
+  DeleteFile(ExpandConstant('{app}\owned-files.tsv'));
 end;
 
 procedure CurStepChanged(CurStep: TSetupStep);
 begin
-  if CurStep = ssPostInstall then
-  begin
-    if not WebView2Installed() then
-    begin
-      if MsgBox(
-        '未检测到 Microsoft WebView2 运行时，窗口界面需要它才能显示。'#13#10#13#10 +
-        '是否现在打开官方下载页面进行安装？（安装完成后重新启动 PDFMathTranslate 即可）',
-        mbConfirmation, MB_YESNO) = IDYES then
-      begin
-        ShellExec('open', 'https://aka.ms/webview2', '', '', SW_SHOWNORMAL, ewNoWait, UpdateExitCode);
-      end;
+  if CurStep=ssInstall then RemoveObsoleteOwnedFiles();
+end;
+
+function PrepareToInstall(var NeedsRestart: Boolean): String;
+var Lines: TArrayOfString; I, P: Integer;
+begin
+  Result:='';
+  if not SafeOwnedPath('owned-files.tsv',True) or not SafeOwnedPath('unins000.exe',True) or not SafeOwnedPath('unins000.dat',True) then begin
+    Result:='现有安装元数据路径不受许可，请更换目录。';exit;
+  end;
+  ExtractTemporaryFile('owned-files.tsv');
+  if not LoadStringsFromFile(ExpandConstant('{tmp}\owned-files.tsv'),Lines) then begin
+    Result:='无法读取程序文件清单，请重新下载安装包。';exit;
+  end;
+  if GetArrayLength(Lines)=0 then begin Result:='安装文件清单为空，已停止安装。';exit;end;
+  for I:=0 to GetArrayLength(Lines)-1 do begin
+    P:=Pos('|',Lines[I]);
+    if (P<=1) or not SafeOwnedPath(Copy(Lines[I],1,P-1),True) then begin
+      Result:='安装路径含不可确认的目录、链接或不受许可的文件，请更换目录后重试。';exit;
     end;
   end;
 end;

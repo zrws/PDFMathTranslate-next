@@ -1,0 +1,18 @@
+diff --git a/babeldoc/format/pdf/document_il/backend/pdf_creater.py b/babeldoc/format/pdf/document_il/backend/pdf_creater.py
+--- a/babeldoc/format/pdf/document_il/backend/pdf_creater.py
++++ b/babeldoc/format/pdf/document_il/backend/pdf_creater.py
+@@ -568,6 +568,14 @@
+         os._exit(1)
+ 
+ 
++# Native workers keep the original PDF operations in an import-light module;
++# spawned save/subset children do not need the layout/ML dependency graph.
++if os.environ.get("PDF2ZH_NATIVE_POLICY"):
++    from pdf2zh_next.desktop.pdf_operations import (
++        subset_fonts_process as _subset_fonts_process,
++        save_pdf_clean_process as _save_pdf_clean_process,
++    )
++
+ class PDFCreater:
+     stage_name = "Generate drawing instructions"
+ 

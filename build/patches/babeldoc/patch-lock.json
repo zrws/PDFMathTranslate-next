@@ -1,0 +1,34 @@
+{
+  "babeldoc": "0.6.2",
+  "patches": [
+    {
+      "file": "0001-assets-upstream-env.patch",
+      "files": [
+        {
+          "path": "babeldoc/assets/assets.py",
+          "original_sha256": "208B394D48F6EC61AA6777BC384F0D9551CC2AED0A8DE8CBB28A45E770DBACD3",
+          "patched_sha256": "3261EFFF6A27E9845E47A5127EE9FE76EF3A79C78C9F34A140A2ECE5D4C57F57"
+        }
+      ]
+    },
+    {
+      "file": "0002-native-worker-thread-budgets.patch",
+      "files": [
+        {
+          "patched_sha256": "E56941E27BA259CFE13DD60539F5057D31EBE34A9AFF793C56EA18400D25ED9D",
+          "original_sha256": "1D4F19D4038DF4AB19B82636C8581992917CA32E8B4A4237F67540244617A6DE",
+          "path": "babeldoc/docvision/doclayout.py"
+        },
+        {
+          "patched_sha256": "1B3E20A4E71DFB11F4E1AEBBB840E6027CFAF6BA90AA54D2EB2D99E037BADBBA",
+          "original_sha256": "D2B422876DF15161003C10551BEB5C7EF2948A256B44DA3EC8F73F9B912AB228",
+          "path": "babeldoc/format/pdf/document_il/midend/layout_parser.py"
+        }
+      ]
+    }
+    ,{
+      "file":"0003-native-lightweight-pdf-spawn.patch",
+      "files":[{"path":"babeldoc/format/pdf/document_il/backend/pdf_creater.py","original_sha256":"67572926C787A2AF47D51C639EFB965245B08F1B6000BEC5262BAB1B04B4BFB5","patched_sha256":"E478B59421097D58E8D14C95261ECC3FB5774D050668682DF3F5262C3CD1F043"}]
+    }
+  ]
+}

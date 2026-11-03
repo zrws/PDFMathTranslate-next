@@ -1,0 +1,21 @@
+<ui:FluentWindow x:Class="PDFMathTranslate.Desktop.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml" xmlns:local="clr-namespace:PDFMathTranslate.Desktop" Title="PDFMathTranslate · PDF 翻译工作台" Width="1320" Height="850" MinWidth="980" MinHeight="650" WindowStartupLocation="CenterScreen" ExtendsContentIntoTitleBar="True" WindowBackdropType="None" Foreground="{DynamicResource TextFillColorPrimaryBrush}" FontFamily="Microsoft YaHei UI" FontSize="14">
+  <Grid>
+    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+    <ui:TitleBar Title="PDFMathTranslate" />
+    <Border Grid.Row="1" Padding="22,9" BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="0,0,0,1">
+      <DockPanel><TextBlock DockPanel.Dock="Right" Text="{Binding SyncState}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/><TextBlock Text="{Binding ServiceState}"/></DockPanel>
+    </Border>
+    <ui:NavigationView x:Name="Navigation" Grid.Row="2" PaneDisplayMode="Left" IsBackButtonVisible="Collapsed" IsPaneToggleVisible="True" OpenPaneLength="172">
+      <ui:NavigationView.MenuItems>
+        <ui:NavigationViewItem Content="工作台" Icon="{ui:SymbolIcon DocumentPdf24}" TargetPageType="{x:Type local:WorkbenchPage}"/>
+        <ui:NavigationViewItem Content="任务队列" Icon="{ui:SymbolIcon TaskListSquareLtr24}" TargetPageType="{x:Type local:TasksPage}"/>
+        <ui:NavigationViewItem Content="翻译结果" Icon="{ui:SymbolIcon FolderOpen24}" TargetPageType="{x:Type local:ResultsPage}"/>
+        <ui:NavigationViewItem Content="术语表" Icon="{ui:SymbolIcon BookOpen24}" TargetPageType="{x:Type local:GlossaryPage}"/>
+        <ui:NavigationViewItem Content="资源与设置" Icon="{ui:SymbolIcon Settings24}" TargetPageType="{x:Type local:SettingsPage}"/>
+      </ui:NavigationView.MenuItems>
+    </ui:NavigationView>
+    <Border Grid.Row="3" Padding="20,10" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="0,1,0,0">
+      <DockPanel><TextBlock DockPanel.Dock="Right" Margin="18,0,0,0" Text="{Binding Store.Summary}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/><TextBlock Text="{Binding Notice}" MaxHeight="64" AutomationProperties.LiveSetting="Polite" /></DockPanel>
+    </Border>
+  </Grid>
+</ui:FluentWindow>

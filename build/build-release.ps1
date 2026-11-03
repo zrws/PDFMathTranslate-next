@@ -12,10 +12,23 @@ param(
     [string]$Version = "",
     [switch]$SkipInstaller,
     [switch]$CleanDist,
-    [switch]$IncludeLegacyGui
+    [switch]$IncludeLegacyGui,
+    [switch]$LegacyWebView,
+    [string]$DotnetExe,
+    [string]$UvExe,
+    [string]$PythonRoot,
+    [string]$IsccExe,
+    [switch]$Offline,
+    [ValidateSet('preview','stable')][string]$Channel='preview'
 )
 
 $ErrorActionPreference = 'Stop'
+if (!$LegacyWebView) {
+    $native=@{DotnetExe=$DotnetExe;UvExe=$UvExe;PythonRoot=$PythonRoot;IsccExe=$IsccExe;SkipInstaller=$SkipInstaller;Offline=$Offline;Channel=$Channel}
+    if($Version){$native.Version=$Version}
+    & (Join-Path $PSScriptRoot 'build-native.ps1') @native
+    exit $LASTEXITCODE
+}
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path   # ...\build
 $ProjectRoot = Split-Path -Parent $ScriptDir                   # repo root
 $Dist = Join-Path $ProjectRoot 'dist'
