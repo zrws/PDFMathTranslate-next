@@ -16,10 +16,14 @@
 # Exit: 0 ok; 1 derivation failure.
 
 param(
-    [string]$RepoRoot = 'D:\paper\PDFMathTranslate-next',
-    [string]$EvidenceRoot = 'D:\paper\PDFMathTranslate-next\docs\verification\native-desktop\r2-integrated-20261003-01'
+    [string]$RepoRoot = (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent),
+    [string]$EvidenceRoot = ''
 )
 
+. (Join-Path $PSScriptRoot 'p0_paths.ps1')
+$EvidenceRoot = Resolve-P0EvidenceRoot $RepoRoot $EvidenceRoot
+
+. (Join-Path $PSScriptRoot 'p0_runs.ps1')
 $ErrorActionPreference = 'Stop'
 $manifest = Get-Content (Join-Path $EvidenceRoot 'CASE_MANIFEST.json') -Raw | ConvertFrom-Json
 $expectedById = @{}
@@ -164,9 +168,9 @@ foreach ($mode in @('normal','no_guard','partial')) {
     foreach ($sub in $gtMap.Keys) {
         if ($tr.PSObject.Properties[$sub] -and $tr.$sub.passed) {
             $verdict = $(if ("$exit" -eq "$($expectedById[$gtMap[$sub]].expected_exit)") { 'PASS' } else { 'FAIL' })
-            AddRow $gtMap[$sub] $exit $verdict ("guard-test/$mode/$sub") $expectedById[$gtMap[$sub]].expected_reason
+            AddRow $gtMap[$sub] $exit $verdict (Rel $trPath) $expectedById[$gtMap[$sub]].expected_reason
         } else {
-            AddRow $gtMap[$sub] $exit 'FAIL' ("guard-test/$mode/$sub") 'missing_or_failed_subtest'
+            AddRow $gtMap[$sub] $exit 'FAIL' (Rel $trPath) 'missing_or_failed_subtest'
         }
     }
 }
@@ -180,7 +184,7 @@ if ($egDir) {
         $p = $line.Split(',')
         if ($egMap.ContainsKey($p[0]) -and $p[3] -eq 'PASS') {
             $egCaseId = $egMap[$p[0]]
-            AddRow $egCaseId $p[2] 'PASS' ('entrygate/' + $p[0]) $expectedById[$egCaseId].expected_reason
+            AddRow $egCaseId $p[2] 'PASS' ((Rel $egDir.FullName) + '/matrix.csv') $expectedById[$egCaseId].expected_reason
         }
     }
 }
@@ -209,60 +213,56 @@ $envDir = Get-ChildItem (Join-Path $EvidenceRoot 'runs') -Directory -Filter 'env
     Where-Object { Test-Path (Join-Path $_.FullName 'matrix.csv') } | Sort-Object Name | Select-Object -Last 1
 if ($envDir) {
     $envAllPass = -not (Get-Content (Join-Path $envDir.FullName 'matrix.csv') | Where-Object { $_ -match ',FAIL$' })
-    AddRow 'G16' '0' $(if ($envAllPass) { 'PASS' } else { 'FAIL' }) 'env-restore suite' $expectedById['G16'].expected_reason
+    AddRow 'G16' '0' $(if ($envAllPass) { 'PASS' } else { 'FAIL' }) ((Rel $envDir.FullName) + '/matrix.csv') $expectedById['G16'].expected_reason
 }
 
 # 2d. perprocess results -> P01/P02/N04 (observed exit from recorder)
-$ppRuns = Get-ChildItem (Join-Path $EvidenceRoot 'runs') -Directory -Filter 'perprocess-*' |
-    Where-Object { Test-Path (Join-Path $_.FullName 'result.json') } | Sort-Object Name -Descending
+$ppRuns = @(Get-P0RecordedRuns $EvidenceRoot 'p0_probe_perprocess.ps1')
 foreach ($pp in $ppRuns) {
     $rp = Get-Content (Join-Path $pp.FullName 'result.json') -Raw | ConvertFrom-Json
     $injected = ($rp.fail_inject -eq 'midrun-exception')
     $targetId = if ($injected) { 'N04' } else { 'P01' }
     # R4: observed exit comes from the RECORDER, not the planned exit
     $observedExit = $null
-    if ($observedByEntryRun.ContainsKey($pp.FullName)) { $observedExit = "$($observedByEntryRun[$pp.FullName].actual_exit)" }
+    $observedExit = "$($pp.P0Observation.actual_exit)"
     $useExit = if ($null -ne $observedExit) { $observedExit } else { "unverified" }
     $verdict = $(if ($useExit -eq "$($expectedById[$targetId].expected_exit)") { 'PASS' } else { 'FAIL' })
-    AddRow $targetId $useExit $verdict ($pp.Name + '/result.json + recorder') $expectedById[$targetId].expected_reason
+    AddRow $targetId $useExit $verdict ((Rel $pp.FullName) + '/result.json') $expectedById[$targetId].expected_reason
     if (-not $injected) {
         $p2ok = ($rp.PSObject.Properties['processes_recovered'] -and $rp.processes_recovered -is [bool] -and
                  $rp.PSObject.Properties['fallback_hits'] -and $rp.PSObject.Properties['identity_recheck_passed'])
         $p2verdict = $(if (($useExit -eq '0') -and $p2ok) { 'PASS' } else { 'FAIL' })
-        AddRow 'P02' $useExit $p2verdict ($pp.Name + '/result.json') $expectedById['P02'].expected_reason
+        AddRow 'P02' $useExit $p2verdict ((Rel $pp.FullName) + '/result.json') $expectedById['P02'].expected_reason
     }
 }
 
 # 2e. attribution results -> I02 / I03 (observed exit from recorder)
-$attrRuns = Get-ChildItem (Join-Path $EvidenceRoot 'runs') -Directory -Filter 'attribution-*' |
-    Where-Object { Test-Path (Join-Path $_.FullName 'result.json') } | Sort-Object Name -Descending
+$attrRuns = @(Get-P0RecordedRuns $EvidenceRoot 'p0_probe_attribution.ps1')
 foreach ($ar in $attrRuns) {
     $ap = Get-Content (Join-Path $ar.FullName 'result.json') -Raw | ConvertFrom-Json
     $targetId = if ($ap.fail_inject -eq 'import-fail') { 'I03' } else { 'I02' }
     $observedExit = $null
-    if ($observedByEntryRun.ContainsKey($ar.FullName)) { $observedExit = "$($observedByEntryRun[$ar.FullName].actual_exit)" }
+    $observedExit = "$($ar.P0Observation.actual_exit)"
     $useExit = if ($null -ne $observedExit) { $observedExit } else { 'unverified' }
     $verdict = $(if ($useExit -eq "$($expectedById[$targetId].expected_exit)") { 'PASS' } else { 'FAIL' })
-    AddRow $targetId $useExit $verdict ($ar.Name + '/result.json + recorder') $expectedById[$targetId].expected_reason
+    AddRow $targetId $useExit $verdict ((Rel $ar.FullName) + '/result.json') $expectedById[$targetId].expected_reason
 }
 
 # 2f. baseline smoke -> I01 (observed exit from recorder)
-$blRuns = Get-ChildItem (Join-Path $EvidenceRoot 'runs\baseline') -Directory -Filter 'run-v3-*' -ErrorAction SilentlyContinue |
-    Where-Object { Test-Path (Join-Path $_.FullName 'result.json') } | Sort-Object Name -Descending
+$blRuns = @(Get-P0RecordedRuns $EvidenceRoot 'p0_baseline.ps1')
 foreach ($bl in $blRuns) {
     $bp = Get-Content (Join-Path $bl.FullName 'result.json') -Raw | ConvertFrom-Json
     if ($bp.failInject) { continue }
     $observedExit = $null
-    if ($observedByEntryRun.ContainsKey($bl.FullName)) { $observedExit = "$($observedByEntryRun[$bl.FullName].actual_exit)" }
+    $observedExit = "$($bl.P0Observation.actual_exit)"
     $useExit = if ($null -ne $observedExit) { $observedExit } else { 'unverified' }
-    AddRow 'I01' $useExit $(if ($useExit -eq '0') { 'PASS' } else { 'FAIL' }) ($bl.Name + '/result.json + recorder') $expectedById['I01'].expected_reason
+    AddRow 'I01' $useExit $(if ($useExit -eq '0') { 'PASS' } else { 'FAIL' }) ((Rel $bl.FullName) + '/result.json') $expectedById['I01'].expected_reason
 }
 
 # 2g. matrix run exit -> I04 (exclude -SelfTest driver-proof dirs: their ST
 # rows are engine self-proof, not case coverage; ordinal sort would otherwise
 # let 'matrix-selftest-*' hijack the "latest matrix" slot)
-$mxDirs = Get-ChildItem (Join-Path $EvidenceRoot 'runs') -Directory -Filter 'matrix-*' |
-    Where-Object { ($_.Name -notlike 'matrix-selftest-*') -and (Test-Path (Join-Path $_.FullName 'cases\matrix.csv')) } | Sort-Object Name
+$mxDirs = @(Get-P0MatrixRuns $EvidenceRoot)
 $latestMx = $mxDirs | Select-Object -Last 1
 if ($latestMx) {
     $mxPath = Join-Path $latestMx.FullName 'cases\matrix.csv'
@@ -271,7 +271,7 @@ if ($latestMx) {
     $observedExit = $null
     if ($observedByEntryRun.ContainsKey($latestMx.FullName)) { $observedExit = "$($observedByEntryRun[$latestMx.FullName].actual_exit)" }
     $useExit = if ($null -ne $observedExit) { $observedExit } else { 'unverified' }
-    AddRow 'I04' $useExit $(if ($mxFail -eq 0 -and $mxRows.Count -ge 19 -and $useExit -eq '0') { 'PASS' } else { 'FAIL' }) ($latestMx.Name + '/cases/matrix.csv') $expectedById['I04'].expected_reason
+    AddRow 'I04' $useExit $(if ($mxFail -eq 0 -and $mxRows.Count -ge 19 -and $useExit -eq '0') { 'PASS' } else { 'FAIL' }) ((Rel $latestMx.FullName) + '/cases/matrix.csv') $expectedById['I04'].expected_reason
 }
 
 # 2h. checker selftest -> N03 (+ M01/M02 from prior green pass when present)
@@ -284,13 +284,20 @@ if (Test-Path $csPath) {
 $p1Path = Join-Path $EvidenceRoot 'runs\checker-prior-pass\report.json'
 if (Test-Path $p1Path) {
     $p1 = Get-Content $p1Path -Raw | ConvertFrom-Json
-    if ($p1.status -eq 'PASS') {
+    $priorObservedPath = Join-Path $EvidenceRoot 'runs\checker-prior-pass\observed.json'
+    $priorObserved = if (Test-Path $priorObservedPath) { Get-Content $priorObservedPath -Raw | ConvertFrom-Json } else { $null }
+    if ($p1.status -eq 'PASS' -and $priorObserved -and "$($priorObserved.actual_exit)" -eq '0' -and $priorObserved.report_sha256 -eq (Sha $p1Path)) {
         $indexOk = @($p1.results | Where-Object { $_.result -eq 'PASS' -and $_.check -eq 'INDEX.md relative links valid' }).Count -gt 0
         AddRow 'M01' '0' 'PASS' 'runs/checker-prior-pass/report.json (real checker execution, status PASS)' $expectedById['M01'].expected_reason
         AddRow 'M02' '0' $(if ($indexOk) { 'PASS' } else { 'FAIL' }) 'runs/checker-prior-pass/report.json (INDEX links validated)' $expectedById['M02'].expected_reason
     } else {
         Write-Host '[coverage] M01/M02 not derived: prior checker pass status is not PASS (two-pass protocol)'
     }
+}
+
+foreach ($id in $expectedById.Keys) {
+    if ($id -in @('M01','M02') -and -not $seenCaseIds.ContainsKey($id)) { continue } # documented first-pass self reference; final checker requires both
+    if (-not $seenCaseIds.ContainsKey($id)) { AddRow $id 'unverified' 'FAIL' '' 'required_evidence_unavailable' 'unverified' 'No current evidence; historical evidence unavailable' }
 }
 
 # matrix rows for the derived coverage (5-col, machine derived)
@@ -309,7 +316,7 @@ Write-Host ("[COVERAGE] {0} derived case rows" -f $coverage.Count)
 # ---------- 3. canonical script-hashes at the round root ----------------------
 $hashList = [ordered]@{}
 $perfDir = Join-Path $RepoRoot 'tests\performance'
-foreach ($f in @('p0_env.ps1','p0_c1_guard_test.ps1','p0_probe_perprocess.ps1','p0_probe_attribution.ps1',
+foreach ($f in @('p0_paths.ps1','p0_runs.ps1','p0_asset_manifest_negtest.ps1','p0_routing_negtest.ps1','p0_env.ps1','p0_c1_guard_test.ps1','p0_probe_perprocess.ps1','p0_probe_attribution.ps1',
     'p0_baseline.ps1','p0_negative_tests.ps1','p0_asset_check.ps1','p0_pytest_isolated.ps1',
     'p0_entry_gate_negtest.ps1','p0_env_negtest.ps1','p0_guard_mutations.ps1','p0_evidence_check.ps1',
     'p0_result.ps1','p0_seal_round.ps1','p0_empty_host_case.ps1','p0_loopback_negtest.ps1',
@@ -325,7 +332,16 @@ $hashList | ConvertTo-Json | Set-Content (Join-Path $EvidenceRoot 'script-hashes
 Write-Host '[hashes] canonical index written'
 
 # ---------- 4. INPUT_MANIFEST.json (stable order + digest) --------------------
-$excluded = @('EVIDENCE_CHECK.json', 'reports', 'runs\checker-output')
+# Generate the index before hashing inputs, including on the second pass.
+$index = New-Object System.Collections.Generic.List[string]
+$index.Add('# INDEX - P0 ' + (Split-Path $EvidenceRoot -Leaf))
+$index.Add('')
+$index.Add('- Frozen cases: `CASE_MANIFEST.json`; changes: `CHANGE_IMPACT.json`; coverage: `COVERAGE.json`; digest: `INPUT_MANIFEST.json`')
+$index.Add('- Log originals/copies: `LOG_COPY_INDEX.json`; unavailable originals remain unavailable.')
+foreach ($d in (Get-ChildItem (Join-Path $EvidenceRoot 'runs') -Directory | Sort-Object Name)) { $index.Add(('- `runs/' + $d.Name + '/`')) }
+$index.Add('- Historical runs are not current evidence. Current acceptance requires the recorded checker result, not historical counts.')
+$index | Set-Content (Join-Path $EvidenceRoot 'INDEX.md') -Encoding UTF8
+$excluded = @('INPUT_MANIFEST.json', 'EVIDENCE_CHECK.json', 'reports', 'runs\checker-output')
 $inputFiles = @(Get-ChildItem $EvidenceRoot -Recurse -File -ErrorAction SilentlyContinue | ForEach-Object {
     $rel = $_.FullName.Substring($EvidenceRoot.Length + 1).Replace('\', '/')
     if ($excluded -contains $rel) { return }
@@ -346,6 +362,7 @@ $digest = [BitConverter]::ToString($shaProv.ComputeHash($bytes)).Replace('-', ''
     generatedAt = (Get-Date).ToString('o')
     ordering = 'full path ascending (ordinal); digest over UTF-8 of "<relpath><NUL><sha256><LF>" for every entry, concatenated'
     excluded = [ordered]@{
+        INPUT_MANIFEST_json = 'this manifest cannot contain its own hash; all other input files, including INDEX, are hashed after generation'
         EVIDENCE_CHECK_json = 'checker OUTPUT (machine report deliverable), excluded to avoid self-reference'
         reports_dir = 'checker stdout/stderr/exit records and prior-pass reports: outputs, not inputs'
         runs_checker_output = 'checker output directory (self-reference avoidance)'
@@ -356,23 +373,5 @@ $digest = [BitConverter]::ToString($shaProv.ComputeHash($bytes)).Replace('-', ''
 } | ConvertTo-Json -Depth 5 | Set-Content (Join-Path $EvidenceRoot 'INPUT_MANIFEST.json') -Encoding UTF8
 Write-Host ("[INPUT_MANIFEST] {0} files, digest={1}" -f $entries.Count, $digest.Substring(0, 16))
 
-# ---------- 5. INDEX.md --------------------------------------------------------
-$index = New-Object System.Collections.Generic.List[string]
-$index.Add('# INDEX - P0 r2 整包整改轮（r2-integrated-20261003-01，唯一当前入口）')
-$index.Add('')
-$index.Add('- 生成: ' + (Get-Date).ToString('o') + '（p0_seal_round.ps1 v2 自动生成，链接均为真实落盘文件）')
-$index.Add('- 冻结用例表: `CASE_MANIFEST.json`；变更映射: `CHANGE_IMPACT.json`；逐案覆盖: `COVERAGE.json`；输入摘要: `INPUT_MANIFEST.json`')
-$index.Add('- 日志副本索引: `LOG_COPY_INDEX.json`（诚实原件状态: original_present / original_present_at_temp_root / original_unavailable / copy_only_historical；字节一致副本，未做任何脱敏，如实标注）')
-$index.Add('')
-$index.Add('## 本轮 runs')
-foreach ($d in (Get-ChildItem (Join-Path $EvidenceRoot 'runs') -Directory | Sort-Object Name)) {
-    $index.Add(('- `runs/' + $d.Name + '/`'))
-}
-$index.Add('')
-$index.Add('## 历史边界（不并入本轮统计）')
-$index.Add('- systematic-acceptance-20260929-01 与 -20260930-01、closure/targeted/final-closure 等全部为历史快照，不复用、不回填、不删除。')
-$index.Add('- 旧 checker 的 375/360/384 报告仅代表当时的检查集合，不代表本轮完成条件；当前状态以本根 COVERAGE/INPUT_MANIFEST/EVIDENCE_CHECK 为准。')
-$index | Set-Content (Join-Path $EvidenceRoot 'INDEX.md') -Encoding UTF8
-Write-Host '[INDEX] written'
 Write-Host '[PASS] seal-round v2 complete'
 exit 0

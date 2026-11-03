@@ -1,26 +1,30 @@
-# Frozen-case G12 driver (ASCII only, PS 5.1 safe): runs the empty-host probe
+﻿# Frozen-case G12 driver (ASCII only, PS 5.1 safe): runs the empty-host probe
 # under the same guard/fallback activation envs used by the guard tests and
 # records command + exit + output into the round evidence root.
 # Frozen expectation: exit 1 (rejection observed), reason empty_host_rejected.
 # Exit: 0 when the probe produced the frozen exit 1; 1 otherwise.
 
 param(
-    [string]$RepoRoot = 'D:\paper\PDFMathTranslate-next',
-    [string]$InstallRoot = 'D:\paper\pdf2zh-install-test',
+    [string]$PythonExe = '',
+    [string]$EvidenceRoot = '',
+    [string]$RepoRoot = (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent),
+    [string]$InstallRoot = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) '.local\runtime'),
     [string]$OutDir = ''
 )
+
+. (Join-Path $PSScriptRoot 'p0_paths.ps1')
+$EvidenceRoot = Resolve-P0EvidenceRoot $RepoRoot $EvidenceRoot
 
 $ErrorActionPreference = 'Continue'
 . (Join-Path $RepoRoot 'tests\performance\p0_env.ps1')
 
 $guardDir = Join-Path $RepoRoot 'tests\performance\p0_guard'
-$python = Get-ChildItem (Join-Path $InstallRoot 'uv-python') -Recurse -Filter python.exe |
-    Select-Object -First 1 -ExpandProperty FullName
+$python = Resolve-P0Python $InstallRoot $PythonExe
 if (-not $python -or -not (Test-Path (Join-Path $guardDir 'empty_host_probe.py'))) {
     Write-Host '[FAIL] prerequisite missing'; exit 4
 }
 if (-not $OutDir) {
-    $OutDir = Join-Path $RepoRoot ("docs\verification\native-desktop\r2-integrated-20261003-01\runs\empty-host-" +
+    $OutDir = Join-Path $EvidenceRoot ("runs\empty-host-" +
         (Get-Date -Format 'yyyyMMdd-HHmmss') + '-' + $PID)
 }
 New-Item -ItemType Directory -Force -Path $OutDir | Out-Null

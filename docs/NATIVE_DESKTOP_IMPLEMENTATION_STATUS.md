@@ -1,5 +1,11 @@
 # 原生桌面迁移实施状态（进度文件）
 
+> **2026-11-03 本机进行中（优先于下方所有历史快照）**：目录 `D:\student\翻译\PDFMathTranslate-next`；交接 HEAD `ab5d684df52aa1ec760eb25bc777932003b984b7` 已核对，初始工作区为空；分支 `codex/native-desktop-implementation-2026-11-03`。P0 局部整改已通过独立复审（`docs/reviews/native-desktop/LOCAL-P0-CODE-REVIEW-R2-2026-11-03.md`），但整体安全门仍 BLOCKED，尚未实施 P1。新证据：`docs/verification/native-desktop/local-20261103-185155-62b09e4302734fcb96a99f734ef6003b/LOCAL_RESULTS.json`，9/9 是局部测试的预期行为，不是 28 项冻结验收通过；不完整证据树 checker 真实 exit 1。旧运行证据不可用，未继承通过结论。
+>
+> 用户已明确授权自行创建本机环境。正在仓库外准备便携 .NET10 SDK，并在忽略的 `.local/runtime` 中创建 Python3.12.13/锁定依赖/离线资产；不改全局 PATH/系统 SDK/注册表。下载准备阶段与后续离线安全测试分离。访问 GitHub 使用单次 7897 代理（用户更正）。UI 静态盘点与截图计划见 `LOCAL-UI-AUDIT-2026-11-03.md`；WPF 构建、运行截图、性能、安装卸载仍待实施验证。
+
+以下保留交接与原电脑历史，不能视为当前本机结果。
+
 > **当前状态快照（2026-11-03，优先于下方历史记录）**：最新 Codex 审核 `docs/reviews/native-desktop/P0-CODEX-r2-review-2026-10-03.md` 判定 P0 部分通过、暂不放行 P1；后续独立安全门 `docs/reviews/native-desktop/P0-r2-integrated-safety-review-20261003-01.md` 仍为 **BLOCKED**。不要把旧记录中的 384/384 或“P0 完成”当作当前放行结论。该安全门列出 B1、B2、M1–M5，详见报告 §2–4。
 >
 > GitHub 交接分支包含审核、计划、契约和 P0 测试代码；`docs/verification/native-desktop/**` 的本机运行证据与隔离缓存未纳入该分支。另一台电脑不得声称已复核这些历史证据，应在隔离环境中为需要的项目生成新证据。当前分支不含 WPF 产品实现。

@@ -1,4 +1,4 @@
-# BabelDOC patch verification (ASCII only, PS 5.1 safe)
+﻿# BabelDOC patch verification (ASCII only, PS 5.1 safe)
 # Works ONLY on temp copies; never touches site-packages.
 # Layout: temp root contains babeldoc/assets/assets.py; git apply uses the
 # original relative diff header from the archived patch.
@@ -8,13 +8,15 @@
 # Evidence: docs/verification/native-desktop/patch-verify-<stamp>.txt
 
 param(
-    [string]$InstallRoot = 'D:\paper\pdf2zh-install-test',
-    [string]$RepoRoot = 'D:\paper\PDFMathTranslate-next'
+    [string]$PythonExe = '',
+    [string]$InstallRoot = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) '.local\runtime'),
+    [string]$RepoRoot = (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent)
 )
 
+. (Join-Path $PSScriptRoot 'p0_paths.ps1')
+
 $ErrorActionPreference = 'Stop'
-$python = Get-ChildItem (Join-Path $InstallRoot 'uv-python') -Recurse -Filter python.exe |
-    Select-Object -First 1 -ExpandProperty FullName
+$python = Resolve-P0Python $InstallRoot $PythonExe
 $patch = Join-Path $RepoRoot 'build\patches\babeldoc\0001-assets-upstream-env.patch'
 $installed = Join-Path $InstallRoot 'uv-tools\pdf2zh-next\Lib\site-packages\babeldoc\assets\assets.py'
 if (-not (Test-Path $patch) -or -not (Test-Path $installed)) { Write-Host '[FAIL] input missing'; exit 4 }

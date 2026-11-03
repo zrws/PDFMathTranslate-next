@@ -1,4 +1,4 @@
-# Shared structured result writer (ASCII only, PS 5.1 safe)
+﻿# Shared structured result writer (ASCII only, PS 5.1 safe)
 # C1/T3: every entry produces a result.json with the same schema.
 # Usage:
 #   . p0_result.ps1

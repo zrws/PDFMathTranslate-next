@@ -1,4 +1,4 @@
-# Entry-gate negative tests (G04/G05/G15) + positive control (G14), v2.
+﻿# Entry-gate negative tests (G04/G05/G15) + positive control (G14), v2.
 # ASCII only, PS 5.1 safe. Lightweight stubs ONLY - no product code import.
 #
 # Gate-A review fixes (2026-09-30, round r2-integrated-20261003-01):
@@ -22,23 +22,27 @@
 # Exit: 0 all cases pass; 1 any failure; 4 prerequisite missing.
 
 param(
-    [string]$RepoRoot = 'D:\paper\PDFMathTranslate-next',
-    [string]$InstallRoot = 'D:\paper\pdf2zh-install-test',
+    [string]$PythonExe = '',
+    [string]$EvidenceRoot = '',
+    [string]$RepoRoot = (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent),
+    [string]$InstallRoot = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) '.local\runtime'),
     [string]$OutDir = ''
 )
+
+. (Join-Path $PSScriptRoot 'p0_paths.ps1')
+$EvidenceRoot = Resolve-P0EvidenceRoot $RepoRoot $EvidenceRoot
 
 $ErrorActionPreference = 'Continue'
 . (Join-Path $RepoRoot 'tests\performance\p0_env.ps1')
 
 $guardDir = Join-Path $RepoRoot 'tests\performance\p0_guard'
-$python = Get-ChildItem (Join-Path $InstallRoot 'uv-python') -Recurse -Filter python.exe |
-    Select-Object -First 1 -ExpandProperty FullName
+$python = Resolve-P0Python $InstallRoot $PythonExe
 $wrapper = Join-Path $guardDir 'entry_wrapper.py'
-$spPath = 'D:\paper\pdf2zh-install-test\uv-tools\pdf2zh-next\Lib\site-packages'
+$spPath = Join-Path $InstallRoot 'uv-tools\pdf2zh-next\Lib\site-packages'
 if (-not $python -or -not (Test-Path $wrapper)) { Write-Host '[FAIL] prerequisite missing'; exit 4 }
 
 if (-not $OutDir) {
-    $OutDir = Join-Path $RepoRoot ("docs\verification\native-desktop\r2-integrated-20261003-01\runs\entrygate-" +
+    $OutDir = Join-Path $EvidenceRoot ("runs\entrygate-" +
         (Get-Date -Format 'yyyyMMdd-HHmmss') + '-' + $PID)
 }
 New-Item -ItemType Directory -Force -Path $OutDir | Out-Null

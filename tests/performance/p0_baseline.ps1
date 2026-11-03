@@ -1,4 +1,4 @@
-# P0 measurement harness v3 (ASCII only, PS 5.1 safe)
+﻿# P0 measurement harness v3 (ASCII only, PS 5.1 safe)
 # F2/F3/F4 remediation (see docs/reviews/native-desktop/P0-CODEX-remediation-final-review-2026-09-28.md):
 #  F2: failures accumulated; ONE exit decision after finally; result.json carries
 #      the actual exit code and failed stages; stdout markers are optional
@@ -27,20 +27,34 @@
 #             4 missing/corrupt prerequisite
 
 param(
+    [string]$PythonExe = '',
+    [string]$EvidenceRoot = '',
     [ValidateSet('repo', 'installed')]
     [string]$SourceBackend = 'repo',
-    [string]$InstallRoot = 'D:\paper\pdf2zh-install-test',
-    [string]$RepoRoot = 'D:\paper\PDFMathTranslate-next',
+    [string]$InstallRoot = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) '.local\runtime'),
+    [string]$RepoRoot = (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent),
     [int]$Port = 7913,
     [int]$IdleSeconds = 300,
     [int]$StartupRuns = 3,
     [ValidateSet('', 'root404', 'early-exit', 'missing-cache', 'corrupt-cache', 'cleanup-leftover')]
     [string]$FailInject = '',
+    [switch]$PathOnly, # pure local output-routing proof; never starts a backend
     [string]$OutDir = ''
 )
 
+. (Join-Path $PSScriptRoot 'p0_paths.ps1')
+$EvidenceRoot = Resolve-P0EvidenceRoot $RepoRoot $EvidenceRoot
+
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Net.Http
+
+if ($PathOnly) {
+    $baseEv = if ($OutDir) { $OutDir } else { Join-Path $EvidenceRoot 'runs\baseline' }
+    if (Test-Path -LiteralPath $baseEv) { Write-Host '[FAIL] output exists (refuse overwrite)'; exit 2 }
+    New-Item -ItemType Directory -Path $baseEv -Force | Out-Null
+    @{ mode = 'path-only-not-baseline'; requested_out_dir = $OutDir; resolved_base = $baseEv; run_dir = (Join-Path $baseEv ('run-v3-' + (Get-Date -Format 'yyyyMMdd-HHmmss'))); pid = $PID } | ConvertTo-Json | Set-Content (Join-Path $baseEv 'path-proof.json') -Encoding UTF8
+    exit 0
+}
 
 # ---------- parent env save/restore (F4) --------------------------------------
 $savedPy = $env:PYTHONPATH
@@ -71,7 +85,7 @@ $sitePackages = Join-Path $InstallRoot 'uv-tools\pdf2zh-next\Lib\site-packages'
 $cacheSrc = Join-Path $InstallRoot 'home\.cache\babeldoc'
 $guardDir = Join-Path $RepoRoot 'tests\performance\p0_guard'
 
-foreach ($p in @($InstallRoot, $pyBase, $sitePackages, $scriptPy, $webuiDir, $guardDir)) {
+foreach ($p in @($InstallRoot, $sitePackages, $scriptPy, $webuiDir, $guardDir)) {
     if (-not ($p -and ([IO.Path]::IsPathRooted($p)) -and (Test-Path $p))) {
         Write-Host "[FAIL] prerequisite missing: $p"; exit 4
     }
@@ -79,7 +93,7 @@ foreach ($p in @($InstallRoot, $pyBase, $sitePackages, $scriptPy, $webuiDir, $gu
 if ($SourceBackend -eq 'repo' -and -not (Test-Path $sourceDir)) {
     Write-Host "[FAIL] repo source missing: $sourceDir"; exit 4
 }
-$python = Get-ChildItem $pyBase -Recurse -Filter python.exe | Select-Object -First 1 -ExpandProperty FullName
+$python = Resolve-P0Python $InstallRoot $PythonExe
 if (-not $python) { Write-Host '[FAIL] python.exe not found'; exit 4 }
 
 # ---------- isolated root -------------------------------------------------------
@@ -109,7 +123,7 @@ Write-Host ("[root] {0}" -f $root)
 # so the internal variable MUST have a different name than the param). The
 # default targets THIS round's evidence root; the recorder passes a fresh
 # -OutDir (created only by this entry, never pre-built by the recorder).
-$baseEv = if ($OutDir) { $OutDir } else { Join-Path $RepoRoot "docs\verification\native-desktop\r2-integrated-20261003-01\runs\baseline" }
+$baseEv = if ($OutDir) { $OutDir } else { Join-Path $EvidenceRoot 'runs\baseline' }
 $runDir = Join-Path $baseEv ("run-v3-" + $stamp + $(if ($FailInject) { '-' + $FailInject }))
 if ((Test-Path $runDir) -and (Get-ChildItem $runDir -ErrorAction SilentlyContinue)) {
     Write-Host ("[FAIL] run dir already exists and is non-empty (refuse overwrite): " + $runDir)
@@ -153,7 +167,7 @@ if ($FailInject -eq 'corrupt-cache') {
 # C1: authoritative asset verification against locked babeldoc metadata
 . (Join-Path $RepoRoot 'tests\performance\p0_asset_check.ps1')
 Log 'verifying required assets against LOCKED babeldoc metadata (SHA3-256)...'
-$assetOk = Invoke-AssetCheck -CacheDir $dstCache -InstallRoot $InstallRoot -IsolatedHome $home0 
+$assetOk = Invoke-AssetCheck -CacheDir $dstCache -InstallRoot $InstallRoot -IsolatedHome $home0 -PythonExe $python
 if (-not $assetOk) {
     Write-Host '[FAIL] authoritative asset check: missing or corrupt assets; refusing to start backend'
     exit 4
@@ -208,35 +222,11 @@ doc.close()
 print("pdfs-generated")
 '@
 $genFile = Join-Path $logDir 'gen_pdfs.py'
-Set-Content -Path $genFile -Value $genPy -Encoding ASCII
+Set-Content -Path $genFile -Value $genPy -Encoding UTF8
 # R2: sample generation runs in an ISOLATED per-child env block - no parent
 # env mutation, no real-home inheritance; CWD is the isolated work dir
-$pinfoGen = [System.Diagnostics.ProcessStartInfo]::new()
-$pinfoGen.FileName = $python
-$pinfoGen.Arguments = '"' + $genFile + '" "' + $workDir + '"'
-$pinfoGen.WorkingDirectory = $workDir
-$pinfoGen.UseShellExecute = $false
-$pinfoGen.CreateNoWindow = $true
-$pinfoGen.EnvironmentVariables['HOME'] = $home0
-$pinfoGen.EnvironmentVariables['USERPROFILE'] = $home0
-$pinfoGen.EnvironmentVariables['APPDATA'] = (Join-Path $home0 'AppData\Roaming')
-$pinfoGen.EnvironmentVariables['LOCALAPPDATA'] = (Join-Path $home0 'AppData\Local')
-$pinfoGen.EnvironmentVariables['TEMP'] = (Join-Path $home0 'Temp')
-$pinfoGen.EnvironmentVariables['TMP'] = (Join-Path $home0 'Temp')
-$pinfoGen.EnvironmentVariables['XDG_CACHE_HOME'] = (Join-Path $home0 '.cache')
-$pinfoGen.EnvironmentVariables['PDF2ZH_HOME'] = $home0
-$pinfoGen.EnvironmentVariables['PDF2ZH_CONFIG_FILE'] = $configFile
-$pinfoGen.EnvironmentVariables['PYTHONUTF8'] = '1'
-$pinfoGen.EnvironmentVariables['PYTHONPATH'] = $sitePackages
-$procGen = [System.Diagnostics.Process]::Start($pinfoGen)
-[void]$procGen.WaitForExit(120000)
-if (-not $procGen.HasExited) {
-    try { $procGen.Kill() } catch { }
-    Write-Host '[FAIL] sample generation child timed out'; exit 4
-}
-if ($procGen.ExitCode -ne 0) {
-    Write-Host ("[FAIL] sample generation child exit={0}" -f $procGen.ExitCode); exit 4
-}
+$genExit = Invoke-P0PythonFile -PythonExe $python -ScriptFile $genFile -ScriptArgs @($workDir) -IsolatedHome $home0 -PythonPath $sitePackages -GuardDir $guardDir -LogPrefix (Join-Path $logDir 'sample-generator') -TimeoutSeconds 120
+if ($genExit -ne 0) { Write-Host ("[FAIL] sample generation child exit={0}" -f $genExit); exit 4 }
 foreach ($s in @('p0-sample-20p.pdf', 'p0-sample-1p.pdf')) {
     if (-not (Test-Path (Join-Path $workDir $s))) { Write-Host "[FAIL] sample missing: $s"; exit 4 }
 }

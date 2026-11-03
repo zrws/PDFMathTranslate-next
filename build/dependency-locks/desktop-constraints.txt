@@ -1,0 +1,5 @@
+# Stable engine baseline; do not silently replace BabelDOC during UI migration.
+babeldoc==0.6.2
+pymupdf==1.25.2
+# BabelDOC imports BitStream, which was removed in bitstring 5.
+bitstring==4.3.1

@@ -1,4 +1,4 @@
-# BabelDOC authoritative asset integrity pre-check v2 (ASCII only, PS 5.1 safe)
+﻿# BabelDOC authoritative asset integrity pre-check v2 (ASCII only, PS 5.1 safe)
 # R2 fixes over v1:
 #   - the METADATA python child (and the hash child) run in a per-child
 #     ProcessStartInfo environment block: HOME/USERPROFILE/APPDATA/LOCALAPPDATA/
@@ -16,6 +16,7 @@
 #   Invoke-AssetCheck -CacheDir <dir> -InstallRoot <root> -IsolatedHome <isoRoot>
 #     [-PythonExe <path>] [-RequireCategories a,b,c]
 
+. (Join-Path $PSScriptRoot 'p0_paths.ps1')
 function Invoke-AssetCheck {
     param(
         [Parameter(Mandatory)][string]$CacheDir,
@@ -29,8 +30,7 @@ function Invoke-AssetCheck {
         [switch]$TestHashToolFailure
     )
     if (-not $PythonExe) {
-        $PythonExe = Get-ChildItem (Join-Path $InstallRoot 'uv-python') -Recurse -Filter python.exe |
-            Select-Object -First 1 -ExpandProperty FullName
+        $PythonExe = Resolve-P0Python $InstallRoot ''
     }
     $sp = Join-Path $InstallRoot 'uv-tools\pdf2zh-next\Lib\site-packages'
     if (-not (Test-Path $sp) -or -not (Test-Path $CacheDir)) {
@@ -134,6 +134,7 @@ print(json.dumps({
     }
 
     $jsonLine = @($metaOut -split "`n") | Where-Object { $_ -match '^\s*\{' } | Select-Object -First 1
+    if ($TestMetaJsonPath) { $jsonLine = $metaOut }
     if (-not $jsonLine) {
         Write-Host '[FAIL] asset check: could not read babeldoc asset metadata (metadata_unparseable)'
         return $false
@@ -156,23 +157,27 @@ print(json.dumps({
             effective_home = $effHome
             isolated_root = $isoHomeFull
         } | ConvertTo-Json | Set-Content (Join-Path $isoTmp 'assetcheck-meta.json') -Encoding UTF8
-    } catch { Write-Host '[warn] cannot write assetcheck-meta.json artifact' }
+    } catch { Write-Host '[FAIL] cannot write assetcheck-meta.json artifact (artifact_write_failed)'; return $false }
     $realUser = [Environment]::GetEnvironmentVariable('USERPROFILE')
     # R2 isolation assertions apply to REAL metadata children; the test seam
     # (TestMetaJsonPath) injects synthetic manifests whose paths are irrelevant
     if (-not $TestMetaJsonPath) {
-        if ($cacheFolder -notlike ($isoHomeFull + '*')) {
+        $isoPrefix = $isoHomeFull.TrimEnd('\') + '\'
+        $cacheInside = $false; $homeMatches = $false
+        try {
+            $cacheInside = [IO.Path]::GetFullPath($cacheFolder).StartsWith($isoPrefix, [StringComparison]::OrdinalIgnoreCase)
+            $homeMatches = [IO.Path]::GetFullPath($effHome).TrimEnd('\') -eq $isoHomeFull.TrimEnd('\')
+        } catch { }
+        if (-not $cacheInside) {
             Write-Host ("[FAIL] asset check: cache_folder is NOT inside the isolated root (isolation_violation): {0}" -f $cacheFolder)
             return $false
         }
-        if ($effHome -notlike ($isoHomeFull + '*')) {
+        if (-not $homeMatches) {
             Write-Host ("[FAIL] asset check: child HOME is NOT the isolated root (isolation_violation): {0}" -f $effHome)
             return $false
         }
-        if (($cacheFolder -like ($realUser + '*')) -or ($effHome -like ($realUser + '*'))) {
-            Write-Host '[FAIL] asset check: real user directory leaked into child (isolation_violation)'
-            return $false
-        }
+        # An exclusively owned temporary root may itself live below USERPROFILE.
+        # Reject escaping that exact root, not all descendants of the user path.
     }
 
     # --- manifest failure paths (never total=0 -> true) ----------------------
@@ -214,17 +219,13 @@ except Exception as e:
                 Write-Host ("[FAIL] {0}/{1} MISSING (asset_missing)" -f $cat, $item.name)
                 $missing++; $allOk = $false; continue
             }
-            # M5 test seam: simulate a hash-tool failure for the FIRST item only
-            if ($TestHashToolFailure) {
-                Write-Host ("[FAIL] {0}/{1} hash tool failed (hash_tool_failed), test seam" -f $cat, $item.name)
-                $corrupt++; $allOk = $false
-                if ($total -ge 1) { break }
-                continue
-            }
+            # M5 uses a real failing child and enough stderr to test pipe drainage.
+            if ($TestHashToolFailure) { "import sys; sys.stderr.write('x' * 131072); sys.exit(23)" | Set-Content $hashTool -Encoding ASCII }
             $hp = New-AssetChild $hashTool
             $hp.Arguments = '"' + $hashTool + '" "' + $f + '"'
             $hproc = [System.Diagnostics.Process]::Start($hp)
             $hSoTask = $hproc.StandardOutput.ReadToEndAsync()
+            $hSeTask = $hproc.StandardError.ReadToEndAsync()
             [void]$hproc.WaitForExit(60000)
             if (-not $hproc.HasExited) {
                 try { $hproc.Kill() } catch { }
@@ -232,6 +233,8 @@ except Exception as e:
                 $corrupt++; $allOk = $false; continue
             }
             try { $hOut = $hSoTask.Result } catch { $hOut = '' }
+            $hashErr = $hSeTask.Result
+            if ($hashErr) { $hashErr | Set-Content (Join-Path $isoTmp ('hash-stderr-' + $total + '.txt')) -Encoding UTF8 }
             $hLine = @($hOut -split "`n") | Where-Object { $_ -match '^\s*\{' } | Select-Object -First 1
             if ($hproc.ExitCode -ne 0 -or -not $hLine) {
                 Write-Host ("[FAIL] {0}/{1} hash tool failed (hash_tool_failed), exit={2}" -f $cat, $item.name, $hproc.ExitCode)

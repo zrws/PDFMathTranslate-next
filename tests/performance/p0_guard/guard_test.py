@@ -363,23 +363,13 @@ else:
     _run_test("pseudo_loopback_connect_localhostaudit", _try_localhostaudit,
               expect_blocked=True, expect_source="guard")
 
-    # === R1: leading-zero octet addresses must be blocked BY THE GUARD with a
-    # matching BLOCKED entry - they are NOT loopback on Windows (87.0.0.1) ===
-    def _try_leading_zero():
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.settimeout(3)
-        s.connect(("0127.0.0.1", 9))
-
-    _run_test("leading_zero_octet_blocked", _try_leading_zero,
-              expect_blocked=True, expect_source="guard")
-
-    def _try_leading_zero_long():
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.settimeout(3)
-        s.connect(("00127.0.0.1", 9))
-
-    _run_test("leading_zero_long_blocked", _try_leading_zero_long,
-              expect_blocked=True, expect_source="guard")
+    # R1: predicates only. These strings can map to real external addresses;
+    # never hand them to connect, even when both layers are broken.
+    for name, host in [("leading_zero_octet_blocked", "0127.0.0.1"),
+                       ("leading_zero_long_blocked", "00127.0.0.1")]:
+        rejected = (guard_pred is not None and fallback_pred is not None
+                    and not guard_pred(host) and not fallback_pred(host))
+        RESULTS[name] = {"passed": rejected, "reason": "both predicates reject; no connect"}
 
     # === S2/G12: empty/malformed host predicate on BOTH layers ===
     if guard_pred is not None and fallback_pred is not None:

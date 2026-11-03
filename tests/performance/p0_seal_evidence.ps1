@@ -1,4 +1,4 @@
-# Evidence sealing for P0 final closure (ASCII only, PS 5.1 safe)
+﻿# Evidence sealing for P0 final closure (ASCII only, PS 5.1 safe)
 # F6: seal the two synthetic sample PDFs from the v2 formal run's isolated
 #     work dir (supplementary manifest with time/source/boundary notes).
 # F3/F6: archive sanitized copies of key logs (download-attempt evidence,
@@ -6,10 +6,12 @@
 # Output: docs/verification/native-desktop/final-closure-<stamp>/
 
 param(
-    [string]$RepoRoot = 'D:\paper\PDFMathTranslate-next',
+    [string]$RepoRoot = (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent),
     [string]$V2TempRoot = 'C:\Users\admin\AppData\Local\Temp\pdf2zh-p0-20260928-120431-6756',
     [string]$V1ProbeTempRoot = 'C:\Users\admin\AppData\Local\Temp\pdf2zh-probe-pp-20260928-121027-56680'
 )
+
+. (Join-Path $PSScriptRoot 'p0_paths.ps1')
 
 $ErrorActionPreference = 'Stop'
 $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'

@@ -1,4 +1,4 @@
-# Attribution probe v4 (ASCII only, PS 5.1 safe)
+﻿# Attribution probe v4 (ASCII only, PS 5.1 safe)
 # S1 fix: every payload is launched through entry_wrapper.py so the entry
 # gate (guard active + hash binding + PID handshake) runs BEFORE the payload
 # import; per-payload guard.log confirmation, per-payload APP_ENTERED.
@@ -10,24 +10,29 @@
 #             4 prerequisite missing.
 
 param(
-    [string]$InstallRoot = 'D:\paper\pdf2zh-install-test',
-    [string]$RepoRoot = 'D:\paper\PDFMathTranslate-next',
+    [string]$PythonExe = '',
+    [string]$EvidenceRoot = '',
+    [string]$InstallRoot = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) '.local\runtime'),
+    [string]$RepoRoot = (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent),
     [ValidateSet('', 'import-fail')]
     [string]$FailInject = '',
     [string]$OutDir = ''
 )
 
+. (Join-Path $PSScriptRoot 'p0_paths.ps1')
+$EvidenceRoot = Resolve-P0EvidenceRoot $RepoRoot $EvidenceRoot
+
 $ErrorActionPreference = 'Stop'
+if ($OutDir -and (Test-Path -LiteralPath $OutDir)) { Write-Host '[FAIL] OutDir already exists (refuse overwrite)'; exit 2 }
 if (-not $OutDir) {
-    $OutDir = Join-Path $RepoRoot ("docs\verification\native-desktop\r2-integrated-20261003-01\runs\attribution-" +
+    $OutDir = Join-Path $EvidenceRoot ("runs\attribution-" +
         (Get-Date -Format 'yyyyMMdd-HHmmss') + '-' + $PID)
 }
 
 $sitePackages = Join-Path $InstallRoot 'uv-tools\pdf2zh-next\Lib\site-packages'
 $guardDir = Join-Path $RepoRoot 'tests\performance\p0_guard'
 $entryWrapper = Join-Path $guardDir 'entry_wrapper.py'
-$python = Get-ChildItem (Join-Path $InstallRoot 'uv-python') -Recurse -Filter python.exe |
-    Select-Object -First 1 -ExpandProperty FullName
+$python = Resolve-P0Python $InstallRoot $PythonExe
 if (-not $python -or -not (Test-Path $sitePackages) -or -not (Test-Path $guardDir) -or -not (Test-Path $entryWrapper)) {
     Write-Host '[FAIL] prerequisite missing'; exit 4
 }
@@ -172,7 +177,7 @@ function Probe($label, $importExpr) {
     $pinfo.UseShellExecute = $false
     $pinfo.CreateNoWindow = $true
     # isolate every home-ish path for THIS child only (per-child env, not system)
-    $pinfo.EnvironmentVariables['PYTHONPATH'] = $guardDir + ';' + $sitePackages
+    $pinfo.EnvironmentVariables['PYTHONPATH'] = $guardDir + ';' + (Join-Path $RepoRoot 'source') + ';' + $sitePackages
     $pinfo.EnvironmentVariables['HOME'] = $home0
     $pinfo.EnvironmentVariables['USERPROFILE'] = $home0
     $pinfo.EnvironmentVariables['APPDATA'] = (Join-Path $home0 'AppData\Roaming')

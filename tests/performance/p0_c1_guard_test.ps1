@@ -1,4 +1,4 @@
-# C1 comprehensive guard test wrapper v3 (ASCII only, PS 5.1 safe)
+﻿# C1 comprehensive guard test wrapper v3 (ASCII only, PS 5.1 safe)
 # S2/S3 fixes: verdicts driven by the PARSED testResults JSON (not free text);
 # PYTHONPATH is a managed env key (saved with existed/value, restored in
 # finally - never destroyed); per-mode exit codes validated explicitly;
@@ -15,18 +15,22 @@
 # Exit: 0 all modes pass; 1 any failure; 4 prerequisite missing.
 
 param(
-    [string]$RepoRoot = 'D:\paper\PDFMathTranslate-next',
-    [string]$InstallRoot = 'D:\paper\pdf2zh-install-test',
+    [string]$PythonExe = '',
+    [string]$EvidenceRoot = '',
+    [string]$RepoRoot = (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent),
+    [string]$InstallRoot = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) '.local\runtime'),
     [string]$OutDir = '',
     [string]$GuardTestPy = ''   # mutation tests point this at a corrupted copy
 )
+
+. (Join-Path $PSScriptRoot 'p0_paths.ps1')
+$EvidenceRoot = Resolve-P0EvidenceRoot $RepoRoot $EvidenceRoot
 
 $ErrorActionPreference = 'Continue'
 . (Join-Path $RepoRoot 'tests\performance\p0_env.ps1')
 
 $guardDir = Join-Path $RepoRoot 'tests\performance\p0_guard'
-$python = Get-ChildItem (Join-Path $InstallRoot 'uv-python') -Recurse -Filter python.exe |
-    Select-Object -First 1 -ExpandProperty FullName
+$python = Resolve-P0Python $InstallRoot $PythonExe
 $sitePackages = Join-Path $InstallRoot 'uv-tools\pdf2zh-next\Lib\site-packages'
 if (-not $python -or -not (Test-Path $guardDir)) { Write-Host '[FAIL] prerequisite missing'; exit 4 }
 if (-not $GuardTestPy) { $GuardTestPy = Join-Path $guardDir 'guard_test.py' }
@@ -34,7 +38,7 @@ if (-not (Test-Path $GuardTestPy)) { Write-Host ("[FAIL] guard test script missi
 
 # S6: default output goes to THIS round's evidence root (never reuse old roots)
 if (-not $OutDir) {
-    $OutDir = Join-Path $RepoRoot ("docs\verification\native-desktop\r2-integrated-20261003-01\runs\guard-test-" +
+    $OutDir = Join-Path $EvidenceRoot ("runs\guard-test-" +
         (Get-Date -Format 'yyyyMMdd-HHmmss') + '-' + $PID)
 }
 New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
@@ -44,7 +48,7 @@ New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
 # copy hashes go to a separate mutation-run marker file, never into the main index.
 $hashFiles = @(
     'p0_guard\guard_test.py','p0_guard\guard_fallback.py','p0_guard\sitecustomize.py',
-    'p0_guard\entry_gate.py','p0_guard\entry_wrapper.py','p0_env.ps1','p0_result.ps1',
+    'p0_guard\entry_gate.py','p0_guard\entry_wrapper.py','p0_paths.ps1','p0_runs.ps1','p0_env.ps1','p0_result.ps1',
     'p0_evidence_check.ps1','p0_c1_guard_test.ps1'
 )
 $hashes = [ordered]@{}

@@ -1,4 +1,4 @@
-# Per-process memory probe v3 (ASCII only, PS 5.1 safe)
+﻿# Per-process memory probe v3 (ASCII only, PS 5.1 safe)
 # F2/F3/F4 remediation: cache staged AND integrity-verified before start
 # (no silent downloads); net-guard via sitecustomize; PDF2ZH_CONFIG_FILE
 # isolated; env whitelist; no early exit 0 inside try; sample-count enforced;
@@ -6,8 +6,10 @@
 # Exit codes: 0 ok; 1 failure; 3 port conflict; 4 prerequisite missing.
 
 param(
-    [string]$InstallRoot = 'D:\paper\pdf2zh-install-test',
-    [string]$RepoRoot = 'D:\paper\PDFMathTranslate-next',
+    [string]$PythonExe = '',
+    [string]$EvidenceRoot = '',
+    [string]$InstallRoot = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) '.local\runtime'),
+    [string]$RepoRoot = (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent),
     [int]$Port = 7916,
     [int]$SampleSeconds = 30,
     [string]$OutDir = '',
@@ -15,7 +17,11 @@ param(
     [string]$FailInject = ''
 )
 
+. (Join-Path $PSScriptRoot 'p0_paths.ps1')
+$EvidenceRoot = Resolve-P0EvidenceRoot $RepoRoot $EvidenceRoot
+
 $ErrorActionPreference = 'Stop'
+if ($OutDir -and (Test-Path -LiteralPath $OutDir)) { Write-Host '[FAIL] OutDir already exists (refuse overwrite)'; exit 2 }
 Add-Type -AssemblyName System.Net.Http   # C2: required for HttpClientHandler below
 . (Join-Path $RepoRoot 'tests\performance\p0_result.ps1')   # S4: shared result writer
 . (Join-Path $RepoRoot 'tests\performance\p0_env.ps1')      # S3: env save/restore
@@ -31,15 +37,15 @@ $scriptPy = Join-Path $RepoRoot 'start-webui.py'
 $webuiDir = Join-Path $RepoRoot 'webui'
 $guardDir = Join-Path $RepoRoot 'tests\performance\p0_guard'
 $cacheSrc = Join-Path $InstallRoot 'home\.cache\babeldoc'
-foreach ($p in @($InstallRoot, $pyBase, $sitePackages, $sourceDir, $scriptPy, $guardDir)) {
+foreach ($p in @($InstallRoot, $sitePackages, $sourceDir, $scriptPy, $guardDir)) {
     if (-not (Test-Path $p)) { Write-Host "[FAIL] missing: $p"; exit 4 }
 }
-$python = Get-ChildItem $pyBase -Recurse -Filter python.exe | Select-Object -First 1 -ExpandProperty FullName
+$python = Resolve-P0Python $InstallRoot $PythonExe
 if (-not $python) { Write-Host '[FAIL] python.exe not found'; exit 4 }
 
 $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
 if (-not $OutDir) {
-    $OutDir = Join-Path $RepoRoot ("docs\verification\native-desktop\r2-integrated-20261003-01\runs\perprocess-" +
+    $OutDir = Join-Path $EvidenceRoot ("runs\perprocess-" +
         $stamp + '-' + $PID)
 }
 $tempBase = [IO.Path]::GetFullPath($env:TEMP).TrimEnd('\')
@@ -72,7 +78,7 @@ robocopy $cacheSrc $dstCache /E /NFL /NDL /NJH /NJS /NP | Out-Null
 if ($LASTEXITCODE -ge 8) { Write-Host ("[FAIL] robocopy rc=" + $LASTEXITCODE); exit 4 }
 # C1: authoritative asset verification (SHA3-256 from locked babeldoc metadata)
 . (Join-Path $RepoRoot 'tests\performance\p0_asset_check.ps1')
-$assetOk = Invoke-AssetCheck -CacheDir $dstCache -InstallRoot $InstallRoot -IsolatedHome $home0 
+$assetOk = Invoke-AssetCheck -CacheDir $dstCache -InstallRoot $InstallRoot -IsolatedHome $home0 -PythonExe $python
 if (-not $assetOk) { Write-Host '[FAIL] authoritative asset check: missing/corrupt; refusing to start'; exit 4 }
 Write-Host '[PASS] authoritative asset check (locked babeldoc SHA3-256)'
 

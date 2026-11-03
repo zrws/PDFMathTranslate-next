@@ -1,4 +1,4 @@
-# Shared environment save/restore helper (ASCII only, PS 5.1 safe)
+﻿# Shared environment save/restore helper (ASCII only, PS 5.1 safe)
 # T2/S3: case-insensitive dedup, existed+value structure, try/finally guarantee.
 # Every managed key is saved as @{ existed = $true/$false; value = <string or $null> }
 # including keys that did NOT exist before; Restore-ChildEnv then restores the

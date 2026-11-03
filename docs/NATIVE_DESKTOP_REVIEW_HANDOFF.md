@@ -1,5 +1,11 @@
 # 原生桌面迁移主交接报告（审核入口）
 
+> **2026-11-03 本机进行中（最高优先级）**：交接提交 `ab5d684df52aa1ec760eb25bc777932003b984b7`；当前功能分支 `codex/native-desktop-implementation-2026-11-03`。本机 P0 局部修复已通过独立 R2 复审；整体 P0 仍 BLOCKED，P1 未放行。实际新证据根为 `docs/verification/native-desktop/local-20261103-185155-62b09e4302734fcb96a99f734ef6003b`，不是下方历史根；诊断失败根保留，最终完整验收将用新根。用户已授权本地建立 SDK/Python/依赖/资产，正在准备，不再把缺本机运行环境当成停止实现的理由。
+>
+> 本轮已改：路径发现/显式透传、recorder 中文空格参数与 WinPS 实际退出码、M1 精确绑定及缺项失败、M2 排除自测、M4 空目录也拒绝、M5 真实 hash 子进程失败与双流排水、seal 两遍自包含修复。局部 9/9 包括恢复8断言4日志、资产7项、路径8项、两遍digest、checker clean+24变异；不完整 gate 实际 exit1。独立审核/复审报告为 `LOCAL-PLAN-REVIEW-2026-11-03.md`、`LOCAL-P0-CODE-REVIEW-2026-11-03.md`、`LOCAL-P0-CODE-REVIEW-R2-2026-11-03.md`。无 WPF/性能/安装通过声明。未改 main/tag/Release/线上清单。
+
+以下为原电脑历史记录；其中“当前”“已完成”字样只适用于当时环境。
+
 > **当前状态快照（2026-11-03，优先于下方历史记录）**：P0 仍未放行 P1。最新 Codex 审核为 `docs/reviews/native-desktop/P0-CODEX-r2-review-2026-10-03.md`；随后独立安全门 `docs/reviews/native-desktop/P0-r2-integrated-safety-review-20261003-01.md` 的裁决为 **BLOCKED**，指出 B1、B2、M1–M5。先完成该报告 §4 的放行条件并取得独立复审，再开始 WPF 产品迁移。
 >
 > 本次 GitHub 交接不会提交 `docs/verification/native-desktop/**` 下本机生成的运行记录、字体/ONNX 缓存或其他大体积测试缓存；相关报告路径在另一台电脑上可能不存在。不要把历史报告里的通过数量当作该电脑已经复核的证据。

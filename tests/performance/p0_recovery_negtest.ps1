@@ -1,4 +1,4 @@
-# R4 recovery stub tests (ASCII only, PS 5.1 safe).
+﻿# R4 recovery stub tests (ASCII only, PS 5.1 safe).
 # Controlled stubs only - no user processes touched, no fault injection into
 # system components. Proves the recovery VERDICT semantics:
 #   1. process ALIVE but port closed     -> recovery acceptance must FAIL
@@ -16,16 +16,21 @@
 # Exit: 0 all stubs behave as specified; 1 any mismatch.
 
 param(
-    [string]$RepoRoot = 'D:\paper\PDFMathTranslate-next',
-    [string]$InstallRoot = 'D:\paper\pdf2zh-install-test',
+    [string]$PythonExe = '',
+    [string]$EvidenceRoot = '',
+    [string]$RepoRoot = (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent),
+    [string]$InstallRoot = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) '.local\runtime'),
     [string]$OutDir = ''
 )
 
-$ErrorActionPreference = 'Continue'
+. (Join-Path $PSScriptRoot 'p0_paths.ps1')
+$EvidenceRoot = Resolve-P0EvidenceRoot $RepoRoot $EvidenceRoot
+
+$ErrorActionPreference = 'Stop'
 . (Join-Path $RepoRoot 'tests\performance\p0_recovery_funcs.ps1')
 
 if (-not $OutDir) {
-    $OutDir = Join-Path $RepoRoot ("docs\verification\native-desktop\r2-integrated-20261003-01\runs\recovery-stubs-" +
+    $OutDir = Join-Path $EvidenceRoot ("runs\recovery-stubs-" +
         (Get-Date -Format 'yyyyMMdd-HHmmss') + '-' + $PID)
 }
 if ((Test-Path $OutDir) -and (Get-ChildItem $OutDir -ErrorAction SilentlyContinue)) {
@@ -34,12 +39,12 @@ if ((Test-Path $OutDir) -and (Get-ChildItem $OutDir -ErrorAction SilentlyContinu
 New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
 
 @{
+    'p0_paths.ps1' = (Get-FileHash (Join-Path $PSScriptRoot 'p0_paths.ps1') -Algorithm SHA256).Hash
     'p0_recovery_funcs.ps1' = (Get-FileHash (Join-Path $RepoRoot 'tests\performance\p0_recovery_funcs.ps1') -Algorithm SHA256).Hash
     'p0_recovery_negtest.ps1' = (Get-FileHash $PSCommandPath -Algorithm SHA256).Hash
 } | ConvertTo-Json | Set-Content (Join-Path $OutDir 'script-hashes.json') -Encoding UTF8
 
-$python = Get-ChildItem (Join-Path $InstallRoot 'uv-python') -Recurse -Filter python.exe |
-    Select-Object -First 1 -ExpandProperty FullName
+$python = Resolve-P0Python $InstallRoot $PythonExe
 
 $script:fails = 0
 $rows = New-Object System.Collections.Generic.List[string]

@@ -1,4 +1,4 @@
-# Outer run recorder (R4, ASCII only, PS 5.1 safe).
+﻿# Outer run recorder (R4, ASCII only, PS 5.1 safe).
 # Launches an entry script as a child process and records the OBSERVED facts:
 #   - actual Process.ExitCode (never the entry's self-reported planned exit)
 #   - timeout / outer exception states
@@ -16,13 +16,15 @@ param(
     [string[]]$EntryArgs = @(),
     [string]$EntryOutDirArgName = 'OutDir',          # param name the entry uses for its run dir
     [Parameter(Mandatory)][string]$RecorderDir,     # THIS recorder's own dir (must be new)
-    [string]$RepoRoot = 'D:\paper\PDFMathTranslate-next',
+    [string]$RepoRoot = (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent),
     [int]$TimeoutMinutes = 20
 )
 
+. (Join-Path $PSScriptRoot 'p0_paths.ps1')
+
 $ErrorActionPreference = 'Continue'
 
-if ((Test-Path $RecorderDir) -and (Get-ChildItem $RecorderDir -ErrorAction SilentlyContinue)) {
+if (Test-Path -LiteralPath $RecorderDir) {
     Write-Host ("[FAIL] recorder dir already exists and is non-empty: " + $RecorderDir)
     exit 2
 }
@@ -43,7 +45,7 @@ if (Test-Path $entryRunDir) {
 $perfDir = Join-Path $RepoRoot 'tests\performance'
 $depHashes = [ordered]@{}
 foreach ($f in @('p0_baseline.ps1','p0_probe_perprocess.ps1','p0_probe_attribution.ps1',
-                 'p0_asset_check.ps1','p0_env.ps1','p0_result.ps1','p0_run_recorder.ps1')) {
+                 'p0_asset_check.ps1','p0_paths.ps1','p0_runs.ps1','p0_env.ps1','p0_result.ps1','p0_run_recorder.ps1')) {
     $p = Join-Path $perfDir $f
     if (Test-Path $p) { $depHashes[$f] = (Get-FileHash $p -Algorithm SHA256).Hash }
 }
@@ -57,7 +59,7 @@ $stdoutF = Join-Path $RecorderDir 'entry-stdout.txt'
 $stderrF = Join-Path $RecorderDir 'entry-stderr.txt'
 $windowStart = (Get-Date).ToString('o')
 
-$argList = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $EntryScript) + $EntryArgs + @('-' + $EntryOutDirArgName, $entryRunDir)
+$argList = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $EntryScript) + $EntryArgs + @(('-' + $EntryOutDirArgName), $entryRunDir)
 
 $timeoutHit = $false
 $outerException = ''
@@ -65,9 +67,10 @@ $childPid = 0
 $actualExit = $null
 $windowEnd = ''
 try {
-    $p = Start-Process -FilePath 'powershell' -ArgumentList $argList -PassThru -NoNewWindow `
+    $p = Start-P0PowerShell -ArgumentList (($argList | ForEach-Object { ConvertTo-P0Argument $_ }) -join ' ') -PassThru -NoNewWindow `
         -RedirectStandardOutput $stdoutF -RedirectStandardError $stderrF
     $childPid = $p.Id
+    $childIdentity = @{ pid = $p.Id; started_at = $p.StartTime.ToString('o'); executable = 'powershell.exe' }
     if (-not $p.WaitForExit($TimeoutMinutes * 60 * 1000)) {
         $timeoutHit = $true
         try {
@@ -94,6 +97,8 @@ $observed = [ordered]@{
     entry_args = ($EntryArgs -join ' ')
     command = ('powershell ' + ($argList -join ' '))
     child_pid = $childPid
+    child_identity = $childIdentity
+    argument_vector = $argList
     window = @{ started = $windowStart; ended = $windowEnd }
     timeout_minutes = $TimeoutMinutes
     timeout_hit = $timeoutHit

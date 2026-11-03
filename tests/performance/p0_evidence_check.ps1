@@ -1,4 +1,4 @@
-# Evidence integrity checker v5 (ASCII only, PS 5.1 safe) - READ ONLY on inputs.
+﻿# Evidence integrity checker v5 (ASCII only, PS 5.1 safe) - READ ONLY on inputs.
 # R5 fixes over v4:
 #   - EVERY file API call goes through guarded wrappers; illegal paths, read
 #     errors, JSON/CSV parse errors and git command errors are recorded as
@@ -25,7 +25,7 @@
 
 param(
     [string]$EvidenceRoot = '',
-    [string]$RepoRoot = 'D:\paper\PDFMathTranslate-next',
+    [string]$RepoRoot = (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent),
     [string]$ReportPath = '',
     [string]$Only = '',
     [switch]$SelfTest,
@@ -33,6 +33,9 @@ param(
     [switch]$Final,          # Final pass requires EVIDENCE_CHECK.json deliverable
     [switch]$GitFailInject   # test-only hook (mutation: git command error)
 )
+
+. (Join-Path $PSScriptRoot 'p0_paths.ps1')
+. (Join-Path $PSScriptRoot 'p0_runs.ps1')
 
 $ErrorActionPreference = 'Continue'
 $script:fails = 0
@@ -262,6 +265,10 @@ function Run-CheckSet {
         foreach ($caseId in $expectedById.Keys) {
             $exp = $expectedById[$caseId]
             if (-not $covById.ContainsKey($caseId)) {
+                if (-not $Final -and $caseId -in @('M01','M02')) {
+                    CheckNA ('coverage: ' + $caseId + ' first-pass self reference') 'Requires this real execution to finish; final pass must bind its externally observed exit'
+                    continue
+                }
                 Check ("coverage: {0} present" -f $caseId) $false 'case missing from COVERAGE' 'missing_coverage_case'
                 continue
             }
@@ -309,22 +316,43 @@ function Run-CheckSet {
                 }
             }
         }
+        if ($Final) {
+            $prior = Read-JsonGuarded (Join-Path $EvidenceRoot 'runs\checker-prior-pass\report.json') 'prior checker report'
+            $outer = Read-JsonGuarded (Join-Path $EvidenceRoot 'runs\checker-prior-pass\observed.json') 'prior checker observation'
+            Check 'final: prior checker real exit zero' ($null -ne $prior -and $null -ne $outer -and $prior.status -eq 'PASS' -and "$($outer.actual_exit)" -eq '0') 'missing/nonzero first-pass observation' 'missing_outer_observation'
+            Check 'final: prior checker report hash bound' ($null -ne $outer -and $outer.report_sha256 -eq (Get-Sha (Join-Path $EvidenceRoot 'runs\checker-prior-pass\report.json'))) 'first-pass report changed' 'hash_drift'
+            Check 'final: prior checker version current' ($null -ne $prior -and $prior.checker_sha256 -eq (Get-Sha $PSCommandPath)) 'first-pass checker source differs' 'hash_drift'
+            $sameRoot = $false
+            try { $sameRoot = $prior.checked_root -and [IO.Path]::GetFullPath($prior.checked_root) -eq [IO.Path]::GetFullPath($EvidenceRoot) } catch { }
+            Check 'final: prior checker checked this root' $sameRoot 'a first pass from a different evidence root cannot support this round' 'missing_source_run'
+            Check 'final: prior checker process identity' ($outer.child_pid -gt 0 -and $outer.entry -eq $PSCommandPath -and -not $outer.timeout_hit -and $outer.command) 'missing actual checker invocation identity' 'missing_outer_observation'
+        }
+        $resolved = @{}
+        foreach ($entryName in @('p0_probe_perprocess.ps1','p0_probe_attribution.ps1','p0_baseline.ps1')) {
+            try { $resolved[$entryName] = @(Get-P0RecordedRuns $EvidenceRoot $entryName) }
+            catch { Check ('recorded layout: ' + $entryName) $false $_.Exception.Message 'invalid_recorded_layout'; $resolved[$entryName] = @() }
+        }
         # per-case semantic validation (selected current runs only)
         foreach ($row in @($cov.coverage)) {
             if ($row.mode -ne 'new-run') { continue }
+            $matchedSemanticRun = $false
             switch ($row.case) {
-                'P01' {
+                { $_ -in @('P01','P02') } {
                     # find the newest perprocess result + its recorder binding
-                    $ppDirs = @(Get-ChildItem (Join-Path $EvidenceRoot 'runs') -Directory -Filter 'perprocess-*' | Sort-Object Name -Descending)
+                    $ppDirs = @($resolved['p0_probe_perprocess.ps1'])
                     foreach ($pp in $ppDirs) {
                         $rj = Join-Path $pp.FullName 'result.json'
                         if (-not (Try-Path $rj)) { continue }
                         $rp = Read-JsonGuarded $rj ($pp.Name + '/result.json')
                         if ($rp.fail_inject) { continue }
+                        $selectedPath = Join-Path $EvidenceRoot ($row.source -replace '/', '\')
+                        if ([IO.Path]::GetFullPath($selectedPath) -ne [IO.Path]::GetFullPath($rj)) { continue }
+                        $matchedSemanticRun = $true
+                        Check ('semantic ' + $row.case + ': recovery fields complete') ($rp.processes_recovered -eq $true -and $rp.identity_recheck_passed -eq $true -and $null -ne $rp.fallback_hits) 'missing or unsuccessful recovery fields' 'semantic_recovery'
                         Check 'semantic P01: samples >= 2' ($rp.samples -ge 2) ("samples=" + $rp.samples) 'semantic_samples'
                         $badRecovery = @($rp.recovery_details | Where-Object { $_.post_status -ne 'gone' }).Count
                         Check 'semantic P01: recovery all gone' ($badRecovery -eq 0) ("non-gone rows: " + $badRecovery) 'semantic_recovery'
-                        $o = $recorderObserved[$pp.FullName]
+                        $o = $pp.P0Observation
                         Check 'semantic P01: recorder binds this run' ($null -ne $o) 'no recorder observed.json binds the selected P01 run' 'missing_outer_observation'
                         if ($o) {
                             Check 'semantic P01: planned exit == observed exit' ("$($rp.exit_code)" -eq "$($o.actual_exit)") ("planned={0} observed={1}" -f $rp.exit_code, $o.actual_exit) 'planned_observed_mismatch'
@@ -333,14 +361,17 @@ function Run-CheckSet {
                     }
                 }
                 'N04' {
-                    $ppDirs = @(Get-ChildItem (Join-Path $EvidenceRoot 'runs') -Directory -Filter 'perprocess-*' | Sort-Object Name -Descending)
+                    $ppDirs = @($resolved['p0_probe_perprocess.ps1'])
                     foreach ($pp in $ppDirs) {
                         $rj = Join-Path $pp.FullName 'result.json'
                         if (-not (Try-Path $rj)) { continue }
                         $rp = Read-JsonGuarded $rj ($pp.Name + '/result.json')
                         if ($rp.fail_inject -ne 'midrun-exception') { continue }
+                        $selectedPath = Join-Path $EvidenceRoot ($row.source -replace '/', '\')
+                        if ([IO.Path]::GetFullPath($selectedPath) -ne [IO.Path]::GetFullPath($rj)) { continue }
+                        $matchedSemanticRun = $true
                         Check 'semantic N04: injected exception recorded' ($rp.reason_code -eq 'UNHANDLED_EXCEPTION') ("reason_code=" + $rp.reason_code) 'semantic_n04'
-                        $o = $recorderObserved[$pp.FullName]
+                        $o = $pp.P0Observation
                         Check 'semantic N04: recorder binds this run' ($null -ne $o) 'no recorder binding for the selected N04 run' 'missing_outer_observation'
                         if ($o) {
                             Check 'semantic N04: observed exit == 1' ("$($o.actual_exit)" -eq '1') ("observed=" + $o.actual_exit) 'observed_exit_mismatch'
@@ -349,12 +380,15 @@ function Run-CheckSet {
                     }
                 }
                 'I02' {
-                    $attrDirs = @(Get-ChildItem (Join-Path $EvidenceRoot 'runs') -Directory -Filter 'attribution-*' | Sort-Object Name -Descending)
+                    $attrDirs = @($resolved['p0_probe_attribution.ps1'])
                     foreach ($ar in $attrDirs) {
                         $rj = Join-Path $ar.FullName 'result.json'
                         if (-not (Try-Path $rj)) { continue }
                         $ap = Read-JsonGuarded $rj ($ar.Name + '/result.json')
                         if ($ap.fail_inject) { continue }
+                        $selectedPath = Join-Path $EvidenceRoot ($row.source -replace '/', '\')
+                        if ([IO.Path]::GetFullPath($selectedPath) -ne [IO.Path]::GetFullPath($rj)) { continue }
+                        $matchedSemanticRun = $true
                         $jl = Join-Path $ar.FullName 'probe-attribution.jsonl'
                         $lines = @(Get-Content $jl -ErrorAction SilentlyContinue | Where-Object { $_ -match '\S' })
                         $nullCount = @($lines | Where-Object { $_ -match '"privateMB":null' }).Count
@@ -368,19 +402,22 @@ function Run-CheckSet {
                         } else {
                             Check 'semantic I02: recovery.json present' $false 'recovery facts not persisted' 'missing_recovery_facts'
                         }
-                        $o = $recorderObserved[$ar.FullName]
+                        $o = $ar.P0Observation
                         Check 'semantic I02: recorder binds this run' ($null -ne $o) 'no recorder binding for the selected I02 run' 'missing_outer_observation'
                         break
                     }
                 }
                 'I03' {
-                    $attrDirs = @(Get-ChildItem (Join-Path $EvidenceRoot 'runs') -Directory -Filter 'attribution-*' | Sort-Object Name -Descending)
+                    $attrDirs = @($resolved['p0_probe_attribution.ps1'])
                     foreach ($ar in $attrDirs) {
                         $rj = Join-Path $ar.FullName 'result.json'
                         if (-not (Try-Path $rj)) { continue }
                         $ap = Read-JsonGuarded $rj ($ar.Name + '/result.json')
                         if ($ap.fail_inject -ne 'import-fail') { continue }
-                        $o = $recorderObserved[$ar.FullName]
+                        $selectedPath = Join-Path $EvidenceRoot ($row.source -replace '/', '\')
+                        if ([IO.Path]::GetFullPath($selectedPath) -ne [IO.Path]::GetFullPath($rj)) { continue }
+                        $matchedSemanticRun = $true
+                        $o = $ar.P0Observation
                         Check 'semantic I03: recorder binds this run' ($null -ne $o) 'no recorder binding for the selected I03 run' 'missing_outer_observation'
                         if ($o) {
                             Check 'semantic I03: observed exit == 1' ("$($o.actual_exit)" -eq '1') ("observed=" + $o.actual_exit) 'observed_exit_mismatch'
@@ -389,13 +426,16 @@ function Run-CheckSet {
                     }
                 }
                 'I01' {
-                    $blDirs = @(Get-ChildItem (Join-Path $EvidenceRoot 'runs\baseline') -Directory -Filter 'run-v3-*' -ErrorAction SilentlyContinue | Sort-Object Name -Descending)
+                    $blDirs = @($resolved['p0_baseline.ps1'])
                     foreach ($bl in $blDirs) {
                         $rj = Join-Path $bl.FullName 'result.json'
                         if (-not (Try-Path $rj)) { continue }
                         $bp = Read-JsonGuarded $rj ($bl.Name + '/result.json')
                         if ($bp.failInject) { continue }
-                        $o = $recorderObserved[$bl.FullName]
+                        $selectedPath = Join-Path $EvidenceRoot ($row.source -replace '/', '\')
+                        if ([IO.Path]::GetFullPath($selectedPath) -ne [IO.Path]::GetFullPath($rj)) { continue }
+                        $matchedSemanticRun = $true
+                        $o = $bl.P0Observation
                         Check 'semantic I01: recorder binds this run' ($null -ne $o) 'no recorder binding for the selected I01 run' 'missing_outer_observation'
                         if ($o) {
                             Check 'semantic I01: observed exit == 0' ("$($o.actual_exit)" -eq '0') ("observed=" + $o.actual_exit) 'observed_exit_mismatch'
@@ -403,7 +443,24 @@ function Run-CheckSet {
                         break
                     }
                 }
+                'I04' {
+                    try {
+                        $matrices = @(Get-P0MatrixRuns $EvidenceRoot)
+                        foreach ($mx in $matrices) {
+                            $artifact = Join-Path $mx.FullName 'cases\matrix.csv'
+                            $selected = Join-Path $EvidenceRoot ($row.source -replace '/', '\')
+                            if ([IO.Path]::GetFullPath($selected) -ne [IO.Path]::GetFullPath($artifact)) { continue }
+                            $matchedSemanticRun = $true
+                            $observation = $recorderObserved[$mx.FullName]
+                            Check 'semantic I04: actual recorder binding required' ($null -ne $observation) 'no observation for selected acceptance matrix' 'missing_outer_observation'
+                            if ($observation) { Check 'semantic I04: observed exit matches' ("$($observation.actual_exit)" -eq '0' -and "$($row.observed_exit)" -eq '0') 'acceptance matrix did not exit zero' 'observed_exit_mismatch' }
+                            $matrixRows = @(Import-Csv -LiteralPath $artifact)
+                            Check 'semantic I04: complete matrix passes' ($matrixRows.Count -ge 19 -and @($matrixRows | Where-Object { $_.verdict -ne 'PASS' }).Count -eq 0) 'partial or failing acceptance matrix' 'semantic_matrix'
+                        }
+                    } catch { Check 'semantic I04: matrix layout' $false $_.Exception.Message 'invalid_recorded_layout' }
+                }
             }
+            if ($row.case -in @('P01','P02','N04','I01','I02','I03','I04')) { Check ('semantic ' + $row.case + ': selected recorded run exists') $matchedSemanticRun 'no matching recorded artifact for this coverage row' 'missing_semantic_run' }
         }
     }
 
@@ -615,7 +672,7 @@ function Build-SelfTestTemplate([string]$base) {
 {"id":"MB","wp":"A","description":"d","expected_exit":1,"expected_reason":"r-MB","requires_backend":false}],"new_cases_this_round":[]}
 '@ | Set-Content (Join-Path $st 'CASE_MANIFEST.json') -Encoding UTF8
     # recorder observed binding for run a
-    @{ entry_run_dir = (Join-Path $st 'runs\a'); actual_exit = 0; child_pid = 123; timeout_hit = $false } |
+    @{ entry = 'selftest_stub.ps1'; entry_run_dir = (Join-Path $st 'runs\a'); actual_exit = 0; child_pid = 123; timeout_hit = $false } |
         ConvertTo-Json | Set-Content (Join-Path $st 'runs\recorder-x\observed.json') -Encoding UTF8
     '{"run_id":"ra","entry":"x","verdict":"PASS","exit_code":0}' | Set-Content (Join-Path $st 'runs\a\result.json') -Encoding UTF8
     '{"run_id":"rb","entry":"y","verdict":"PASS","exit_code":0}' | Set-Content (Join-Path $st 'runs\b\result.json') -Encoding UTF8
@@ -659,8 +716,8 @@ function Build-SelfTestTemplate([string]$base) {
 function Invoke-CheckerChild([string]$root, [string[]]$extraArgs = @()) {
     $report = Join-Path $base ('report-' + [guid]::NewGuid().ToString('N').Substring(0, 8) + '.json')
     $args_ = @('-NoProfile','-ExecutionPolicy','Bypass','-File', $PSCommandPath, '-EvidenceRoot', $root, '-RepoRoot', $RepoRoot, '-ReportPath', $report) + $extraArgs
-    $null = & powershell.exe @args_ 2>&1
-    $exit = $LASTEXITCODE
+    $child = Start-P0PowerShell -ArgumentList (($args_ | ForEach-Object { ConvertTo-P0Argument $_ }) -join ' ') -Wait -RedirectStandardOutput ($report + '.stdout.txt') -RedirectStandardError ($report + '.stderr.txt')
+    $exit = $child.ExitCode
     $rep = $null
     if (Test-Path $report) { try { $rep = Get-Content $report -Raw | ConvertFrom-Json } catch { } }
     return @{ exit = $exit; report = $rep; reportPath = $report }
@@ -669,14 +726,17 @@ function Invoke-CheckerChild([string]$root, [string[]]$extraArgs = @()) {
 if ($SelfTest) {
     if (-not $SelfTestOut) { $SelfTestOut = Join-Path ([IO.Path]::GetTempPath()) ("p0-ec-selftest-" + [guid]::NewGuid().ToString('N').Substring(0, 8)) }
     $base = $SelfTestOut
-    if (Test-Path $base) { Remove-Item $base -Recurse -Force }
+    # Expand Windows 8.3 temp prefix before deriving relative paths.
+    if (-not (Test-Path $base)) { New-Item -ItemType Directory -Path $base -Force | Out-Null; $createdBase = $true }
+    $base = (Get-ChildItem (Split-Path $base -Parent) -Directory | Where-Object Name -eq (Split-Path $base -Leaf)).FullName
+    if (-not $createdBase) { Write-Host '[FAIL] selftest output exists (refuse overwrite)'; exit 2 }
     New-Item -ItemType Directory -Force -Path $base | Out-Null
     $st = Build-SelfTestTemplate $base
 
     # checker self-identity for the report (R5: bind own hash + deps + real exits)
     $checkerSha = (Get-FileHash $PSCommandPath -Algorithm SHA256).Hash
     $depShas = [ordered]@{}
-    foreach ($f in @('p0_env.ps1','p0_seal_round.ps1','p0_run_recorder.ps1')) {
+    foreach ($f in @('p0_paths.ps1','p0_runs.ps1','p0_env.ps1','p0_seal_round.ps1','p0_run_recorder.ps1')) {
         $p = Join-Path $RepoRoot ('tests\performance\' + $f)
         if (Test-Path $p) { $depShas[$f] = (Get-FileHash $p -Algorithm SHA256).Hash }
     }
@@ -796,6 +856,15 @@ if ($SelfTest) {
             Set-Content (Join-Path $c 'runs\pp\result.json') -Encoding UTF8 }
     Mutate 'selected-run-missing-artifact' 'missing_mandatory_case' { param($c)
         Remove-Item (Join-Path $c 'runs\a\matrix.csv') }
+    Mutate 'p02-without-recorded-run' 'missing_semantic_run' { param($c)
+        $file = Join-Path $c 'COVERAGE.json'; $cov = Get-Content $file -Raw | ConvertFrom-Json
+        $cov.coverage += [pscustomobject]@{ case = 'P02'; mode = 'new-run'; source = 'runs/a/result.json'; observed_exit = '0'; verdict = 'PASS'; expected_reason = 'result_complete' }
+        $cov | ConvertTo-Json -Depth 6 | Set-Content $file -Encoding UTF8 }
+    Mutate 'i04-selftest-pollution' 'missing_semantic_run' { param($c)
+        $file = Join-Path $c 'COVERAGE.json'; $cov = Get-Content $file -Raw | ConvertFrom-Json
+        $cov.coverage += [pscustomobject]@{ case = 'I04'; mode = 'new-run'; source = 'runs/a/matrix.csv'; observed_exit = '0'; verdict = 'PASS'; expected_reason = 'matrix_pass' }
+        $cov | ConvertTo-Json -Depth 6 | Set-Content $file -Encoding UTF8 }
+    Mutate 'final-missing-prior-observation' 'missing_outer_observation' { param($c) } @('-Final')
 
     $allRejected = (($muts | Where-Object { -not $_.rejected }).Count -eq 0) -and (($muts | Where-Object { -not $_.reason_matched }).Count -eq 0)
     $report = [ordered]@{

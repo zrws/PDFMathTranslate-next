@@ -1,4 +1,4 @@
-# P0 r2-integrated negative matrix driver v3 (ASCII only, PS 5.1 safe).
+﻿# P0 r2-integrated negative matrix driver v3 (ASCII only, PS 5.1 safe).
 # R3 fixes over v2:
 #   - verdicts are OBSERVATION-BASED: every case declares expectedExit and an
 #     expectedReason token; the runner extracts the OBSERVED reason from the
@@ -15,37 +15,44 @@
 # Exit: 0 all selected cases pass; 1 any failure; 2 usage/overwrite refusal.
 
 param(
-    [string]$RepoRoot = 'D:\paper\PDFMathTranslate-next',
+    [string]$RepoRoot = (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent),
+    [string]$InstallRoot = (Join-Path $RepoRoot '.local\runtime'),
+    [string]$PythonExe = '',
+    [string]$OutDir = '',
     [string]$Only = '',
     [string]$RunId = '',
     [string]$EvidenceRoot = '',
     [switch]$SelfTest
 )
 
+. (Join-Path $PSScriptRoot 'p0_paths.ps1')
+$EvidenceRoot = Resolve-P0EvidenceRoot $RepoRoot $EvidenceRoot
+
 $ErrorActionPreference = 'Continue'
 Add-Type -AssemblyName System.Net.Http
 
 $perfDir = Join-Path $RepoRoot 'tests\performance'
-$InstallRoot = 'D:\paper\pdf2zh-install-test'
+
 
 if (-not $RunId) { $RunId = (Get-Date -Format 'yyyyMMdd-HHmmss') + '-' + $PID }
 if (-not $EvidenceRoot) {
-    $EvidenceRoot = Join-Path $RepoRoot 'docs\verification\native-desktop\r2-integrated-20261003-01\runs'
+    $EvidenceRoot = Resolve-P0EvidenceRoot $RepoRoot ''
 }
-$evDir = Join-Path $EvidenceRoot ("matrix-" + $RunId)
+$evDir = if ($OutDir) { $OutDir } else { Join-Path $EvidenceRoot ("runs\matrix-" + $RunId) }
 # R3/B2: refuse an explicitly requested non-empty run dir BEFORE any write
 if ((Test-Path $evDir) -and (Get-ChildItem $evDir -ErrorAction SilentlyContinue)) {
     Write-Host ("[FAIL] run dir already exists and is non-empty; refusing to overwrite: " + $evDir)
     exit 2
 }
 New-Item -ItemType Directory -Force -Path $evDir | Out-Null
-$outDir = Join-Path $evDir 'cases'
-New-Item -ItemType Directory -Force -Path $outDir | Out-Null
+@{ kind = $(if ($SelfTest) { 'selftest' } else { 'acceptance' }); only = $Only; run_id = $RunId } | ConvertTo-Json | Set-Content (Join-Path $evDir 'matrix-identity.json') -Encoding UTF8
+$caseDir = Join-Path $evDir 'cases'
+New-Item -ItemType Directory -Force -Path $caseDir | Out-Null
 
 # C2: runtime hash index covers ALL actual dependencies
 $scriptFiles = @('p0_baseline.ps1','p0_probe_perprocess.ps1','p0_probe_attribution.ps1',
     'p0_negative_tests.ps1','p0_asset_check.ps1','p0_c1_guard_test.ps1','p0_pytest_isolated.ps1',
-    'p0_env.ps1','p0_result.ps1','p0_evidence_check.ps1',
+    'p0_paths.ps1','p0_runs.ps1','p0_env.ps1','p0_result.ps1','p0_evidence_check.ps1',
     'p0_entry_gate_negtest.ps1','p0_env_negtest.ps1','p0_guard_mutations.ps1',
     'p0_loopback_negtest.ps1','p0_isolation_negtest.ps1','p0_recovery_negtest.ps1',
     'p0_run_recorder.ps1','p0_empty_host_case.ps1')
@@ -63,8 +70,7 @@ foreach ($sf in @('p0_guard\sitecustomize.py','p0_guard\entry_gate.py','p0_guard
 $hashIndex['source/tests/conftest.py'] = (Get-FileHash (Join-Path $RepoRoot 'source\tests\conftest.py') -Algorithm SHA256).Hash
 $hashIndex | ConvertTo-Json | Set-Content (Join-Path $evDir 'script-hashes.json') -Encoding UTF8
 
-$pyExe = Get-ChildItem (Join-Path $InstallRoot 'uv-python') -Recurse -Filter python.exe |
-    Select-Object -First 1 -ExpandProperty FullName
+$pyExe = Resolve-P0Python $InstallRoot $PythonExe
 
 $failCount = 0
 $total = 0
@@ -87,7 +93,7 @@ function Invoke-Case {
     if ($Only -and $id -notmatch $Only) { return }
     $script:total++
     Write-Host ("=== case {0} (expect exit {1}, reason token: {2}) ===" -f $id, $expectedExit, $expectedReason)
-    $outFile = Join-Path $outDir ("case-" + $id + ".log")
+    $outFile = Join-Path $caseDir ("case-" + $id + ".log")
 
     $res = & $action $outFile
     $actualExit = "$($res.exit)"
@@ -128,7 +134,10 @@ function Invoke-Case {
 }
 
 function Invoke-EntryScript([string]$file, [string[]]$entryArgs, [string]$log) {
-    $p = Start-Process -FilePath 'powershell' -ArgumentList (@('-NoProfile','-ExecutionPolicy','Bypass','-File', $file) + $entryArgs) -Wait -PassThru -NoNewWindow -RedirectStandardOutput $log -RedirectStandardError ($log + '.err')
+    $forward = @('-RepoRoot', $RepoRoot, '-InstallRoot', $InstallRoot, '-EvidenceRoot', $EvidenceRoot, '-PythonExe', $pyExe)
+    if ((Split-Path $file -Leaf) -eq 'p0_env_negtest.ps1') { $forward = @('-RepoRoot', $RepoRoot, '-EvidenceRoot', $EvidenceRoot) }
+    $quoted = (@('-NoProfile','-ExecutionPolicy','Bypass','-File', $file) + $entryArgs + $forward | ForEach-Object { ConvertTo-P0Argument $_ }) -join ' '
+    $p = Start-P0PowerShell -ArgumentList $quoted -Wait -PassThru -NoNewWindow -RedirectStandardOutput $log -RedirectStandardError ($log + '.err')
     return @{ exit = $p.ExitCode }
 }
 
@@ -167,8 +176,8 @@ Invoke-Case '3b-baseline-corrupt-cache' '4' 'asset_corrupt' {
 Invoke-Case '4-netguard-nonloopback' '0' 'BLOCKED-BY-GUARD' {
     param($log)
     $guardDir2 = Join-Path $perfDir 'p0_guard'
-    $guardLog = Join-Path $outDir 'case4-guard.log'
-    $fbLog = Join-Path $outDir 'case4-fallback.log'
+    $guardLog = Join-Path $caseDir 'case4-guard.log'
+    $fbLog = Join-Path $caseDir 'case4-fallback.log'
     Remove-Item $guardLog, $fbLog -ErrorAction SilentlyContinue
     $savedP = $env:PYTHONPATH; $savedGl = $env:PDF2ZH_GUARD_LOG; $savedFl = $env:PDF2ZH_FALLBACK_LOG
     try {
@@ -176,7 +185,7 @@ Invoke-Case '4-netguard-nonloopback' '0' 'BLOCKED-BY-GUARD' {
         $env:PDF2ZH_GUARD_LOG = $guardLog
         $env:PDF2ZH_FALLBACK_LOG = $fbLog
         $env:CASE4_GUARD_DIR = $guardDir2
-        $testPy = Join-Path $outDir 'case4_test.py'
+        $testPy = Join-Path $caseDir 'case4_test.py'
         @'
 import sys, os
 guard_dir = os.environ.get("CASE4_GUARD_DIR", "")
@@ -259,8 +268,6 @@ Invoke-Case '9-png-invalid-inputs' '0' 'png-check failures: 0' {
     . (Join-Path $perfDir 'p0_guard\png_check.ps1')
     if (-not $pngIsoHome) { $pngIsoHome = Join-Path $env:TEMP ('p0-png-iso-' + [guid]::NewGuid().ToString('N').Substring(0,8)); New-Item -ItemType Directory -Force -Path $pngIsoHome | Out-Null }
     Set-PngPythonExe $pyExe (Join-Path $InstallRoot 'uv-tools\pdf2zh-next\Lib\site-packages') -IsolatedHome $pngIsoHome
-    $savedP = $env:PYTHONPATH
-    $env:PYTHONPATH = 'D:\paper\pdf2zh-install-test\uv-tools\pdf2zh-next\Lib\site-packages'
     $genCode = @'
 import pymupdf
 doc = pymupdf.open(); page = doc.new_page()
@@ -269,12 +276,12 @@ pix = page.get_pixmap(matrix=pymupdf.Matrix(640/595, 640/595), alpha=False)
 pix.save(r"__OUT__")
 print("ok")
 '@
-    $genCode = $genCode -replace '__OUT__', (Join-Path $outDir 'case9-real640.png')
-    $genF = Join-Path $outDir 'case9-gen.py'
-    Set-Content -Path $genF -Value $genCode -Encoding ASCII
-    & $pyExe $genF 2>&1 | Out-Null
-    if ($null -ne $savedP) { $env:PYTHONPATH = $savedP } else { Remove-Item Env:PYTHONPATH -ErrorAction SilentlyContinue }
-    $real = [IO.File]::ReadAllBytes((Join-Path $outDir 'case9-real640.png'))
+    $genCode = $genCode -replace '__OUT__', (Join-Path $caseDir 'case9-real640.png')
+    $genF = Join-Path $caseDir 'case9-gen.py'
+    Set-Content -Path $genF -Value $genCode -Encoding UTF8
+    $genExit = Invoke-P0PythonFile -PythonExe $pyExe -ScriptFile $genF -IsolatedHome (Join-Path $caseDir 'case9-generator-home') -PythonPath (Join-Path $InstallRoot 'uv-tools\pdf2zh-next\Lib\site-packages') -GuardDir (Join-Path $perfDir 'p0_guard') -LogPrefix (Join-Path $caseDir 'case9-generator')
+    if ($genExit -ne 0) { 'generator failed' | Set-Content $log; return @{ exit = 1 } }
+    $real = [IO.File]::ReadAllBytes((Join-Path $caseDir 'case9-real640.png'))
 
     $script:pngFails = 0
     function Expect-Reject([string]$name, [byte[]]$b, [int]$expect) {
@@ -325,10 +332,10 @@ Invoke-Case '10-normal-smoke' '0' 'DONE failures=0' {
 Invoke-Case '11-c1-asset-source-corrupt' '4' 'asset_corrupt' {
     param($log)
     $testCode = @'
-param()
+param([string]$RepoRoot, [string]$InstallRoot, [string]$EvidenceRoot, [string]$PythonExe)
 $src = Join-Path $env:TEMP ("pdf2zh-c1-test-" + [guid]::NewGuid().ToString('N').Substring(0,8))
-$repo = 'D:\paper\PDFMathTranslate-next'
-$install = 'D:\paper\pdf2zh-install-test'
+$repo = $RepoRoot
+$install = $InstallRoot
 $iso = Join-Path $src 'iso-home'
 New-Item -ItemType Directory -Force -Path "$src\models", "$iso\.config\pdf2zh" | Out-Null
 $realModel = Get-ChildItem (Join-Path $install 'home\.cache\babeldoc\models') -File | Select-Object -First 1
@@ -337,10 +344,10 @@ $bytes = [IO.File]::ReadAllBytes("$src\models\$($realModel.Name)")
 $bytes[0] = 0x00; $bytes[1] = 0x01; $bytes[2] = 0x02
 [IO.File]::WriteAllBytes("$src\models\$($realModel.Name)", $bytes)
 . (Join-Path $repo 'tests\performance\p0_asset_check.ps1')
-$ok = Invoke-AssetCheck -CacheDir $src -InstallRoot $install -IsolatedHome $iso
+$ok = Invoke-AssetCheck -CacheDir $src -InstallRoot $install -IsolatedHome $iso -PythonExe $PythonExe
 if ($ok) { Write-Host 'UNEXPECTED PASS'; exit 1 } else { Write-Host 'EXPECTED FAIL asset_corrupt'; exit 4 }
 '@
-    $testFile = Join-Path $outDir 'c1-test-source-corrupt.ps1'
+    $testFile = Join-Path $caseDir 'c1-test-source-corrupt.ps1'
     Set-Content -Path $testFile -Value $testCode -Encoding UTF8
     Invoke-EntryScript $testFile @() $log
 } $null
@@ -349,17 +356,17 @@ if ($ok) { Write-Host 'UNEXPECTED PASS'; exit 1 } else { Write-Host 'EXPECTED FA
 Invoke-Case '12-c1-asset-source-missing' '4' 'asset_missing' {
     param($log)
     $testCode = @'
-param()
+param([string]$RepoRoot, [string]$InstallRoot, [string]$EvidenceRoot, [string]$PythonExe)
 $src = Join-Path $env:TEMP ("pdf2zh-c1-test-" + [guid]::NewGuid().ToString('N').Substring(0,8))
-$repo = 'D:\paper\PDFMathTranslate-next'
-$install = 'D:\paper\pdf2zh-install-test'
+$repo = $RepoRoot
+$install = $InstallRoot
 $iso = Join-Path $src 'iso-home'
 New-Item -ItemType Directory -Force -Path $src, "$iso\.config\pdf2zh" | Out-Null
 . (Join-Path $repo 'tests\performance\p0_asset_check.ps1')
-$ok = Invoke-AssetCheck -CacheDir $src -InstallRoot $install -IsolatedHome $iso
+$ok = Invoke-AssetCheck -CacheDir $src -InstallRoot $install -IsolatedHome $iso -PythonExe $PythonExe
 if ($ok) { Write-Host 'UNEXPECTED PASS'; exit 1 } else { Write-Host 'EXPECTED FAIL asset_missing'; exit 4 }
 '@
-    $testFile = Join-Path $outDir 'c1-test-source-missing.ps1'
+    $testFile = Join-Path $caseDir 'c1-test-source-missing.ps1'
     Set-Content -Path $testFile -Value $testCode -Encoding UTF8
     Invoke-EntryScript $testFile @() $log
 } $null
@@ -372,7 +379,7 @@ Invoke-Case '13-c3-png-33byte-ihdr-only' '0' 'not decodable' {
     Set-PngPythonExe $pyExe (Join-Path $InstallRoot 'uv-tools\pdf2zh-next\Lib\site-packages') -IsolatedHome $pngIsoHome
     $realPng = Get-ChildItem (Join-Path $RepoRoot 'docs\verification\native-desktop\final-closure-*\samples') -Filter '*.png' -ErrorAction SilentlyContinue | Select-Object -First 1
     if (-not $realPng) {
-        $tmpPng = Join-Path $outDir 'c3-real640.png'
+        $tmpPng = Join-Path $caseDir 'c3-real640.png'
         $code = @'
 import pymupdf
 doc = pymupdf.open(); page = doc.new_page()
@@ -381,12 +388,10 @@ pix = page.get_pixmap(matrix=pymupdf.Matrix(640/595, 640/595), alpha=False)
 pix.save(r"__OUT__")
 '@
         $code = $code -replace '__OUT__', $tmpPng
-        $tmpPy = Join-Path $outDir 'c3-gen.py'
-        Set-Content -Path $tmpPy -Value $code -Encoding ASCII
-        $savedP = $env:PYTHONPATH
-        $env:PYTHONPATH = Join-Path $InstallRoot 'uv-tools\pdf2zh-next\Lib\site-packages'
-        & $pyExe $tmpPy 2>&1 | Out-Null
-        if ($null -ne $savedP) { $env:PYTHONPATH = $savedP } else { Remove-Item Env:PYTHONPATH -ErrorAction SilentlyContinue }
+        $tmpPy = Join-Path $caseDir 'c3-gen.py'
+        Set-Content -Path $tmpPy -Value $code -Encoding UTF8
+        $genExit = Invoke-P0PythonFile -PythonExe $pyExe -ScriptFile $tmpPy -IsolatedHome (Join-Path $caseDir 'case13-generator-home') -PythonPath (Join-Path $InstallRoot 'uv-tools\pdf2zh-next\Lib\site-packages') -GuardDir (Join-Path $perfDir 'p0_guard') -LogPrefix (Join-Path $caseDir 'case13-generator')
+        if ($genExit -ne 0) { 'generator failed' | Set-Content $log; return @{ exit = 1 } }
         $realPng = Get-Item $tmpPng
     }
     $real = [IO.File]::ReadAllBytes($realPng.FullName)
@@ -405,8 +410,8 @@ pix.save(r"__OUT__")
 Invoke-Case '14-netguard-proxy-no-tunnel' '0' 'BLOCKED-BY-GUARD' {
     param($log)
     $guardDir2 = Join-Path $perfDir 'p0_guard'
-    $guardLog = Join-Path $outDir 'case14-guard.log'
-    $fbLog = Join-Path $outDir 'case14-fallback.log'
+    $guardLog = Join-Path $caseDir 'case14-guard.log'
+    $fbLog = Join-Path $caseDir 'case14-fallback.log'
     Remove-Item $guardLog, $fbLog -ErrorAction SilentlyContinue
     $savedP = $env:PYTHONPATH; $savedGl = $env:PDF2ZH_GUARD_LOG; $savedFl = $env:PDF2ZH_FALLBACK_LOG; $savedHp = $env:HTTP_PROXY
     try {
@@ -415,7 +420,7 @@ Invoke-Case '14-netguard-proxy-no-tunnel' '0' 'BLOCKED-BY-GUARD' {
         $env:PDF2ZH_FALLBACK_LOG = $fbLog
         $env:CASE4_GUARD_DIR = $guardDir2
         $env:HTTP_PROXY = 'http://127.0.0.1:9'
-        $testPy = Join-Path $outDir 'case14_test.py'
+        $testPy = Join-Path $caseDir 'case14_test.py'
         @'
 import sys, os
 guard_dir = os.environ.get("CASE4_GUARD_DIR", "")
@@ -508,12 +513,12 @@ if ($SelfTest) {
 
     Write-Host '=== ST: same-exit-right-reason must PASS ==='
     $stLog = Join-Path $stDir 'st-right.log'
-    $r = @{ exit = (Start-Process -FilePath 'powershell' -ArgumentList @('-NoProfile','-ExecutionPolicy','Bypass','-File',$stubRight) -Wait -PassThru -NoNewWindow -RedirectStandardOutput $stLog).ExitCode }
+    $r = @{ exit = (Start-P0PowerShell -ArgumentList ((@('-NoProfile','-ExecutionPolicy','Bypass','-File',$stubRight) | ForEach-Object { ConvertTo-P0Argument $_ }) -join ' ') -Wait -PassThru -NoNewWindow -RedirectStandardOutput $stLog).ExitCode }
     Invoke-Case 'ST1-same-exit-right-reason' '1' 'R-correct sentinel' { param($log) $r } $stLog
 
     Write-Host '=== ST: same exit code, WRONG reason must FAIL ==='
     $stLog2 = Join-Path $stDir 'st-wrong.log'
-    $r2 = @{ exit = (Start-Process -FilePath 'powershell' -ArgumentList @('-NoProfile','-ExecutionPolicy','Bypass','-File',$stubWrong) -Wait -PassThru -NoNewWindow -RedirectStandardOutput $stLog2).ExitCode }
+    $r2 = @{ exit = (Start-P0PowerShell -ArgumentList ((@('-NoProfile','-ExecutionPolicy','Bypass','-File',$stubWrong) | ForEach-Object { ConvertTo-P0Argument $_ }) -join ' ') -Wait -PassThru -NoNewWindow -RedirectStandardOutput $stLog2).ExitCode }
     Invoke-Case 'ST2-same-exit-wrong-reason' '1' 'R-correct sentinel' { param($log) $r2 } $stLog2
 
     Write-Host '=== ST: missing reason artifact must FAIL ==='
@@ -525,12 +530,12 @@ if ($SelfTest) {
     Invoke-Case 'ST4-exit-mismatch' '1' 'R-correct sentinel' { param($log) $r4 } $stLog
 
     Write-Host '=== ST: RunId reuse must be REFUSED before any write ==='
-    $reuseDir = Join-Path $EvidenceRoot ('matrix-selftest-reuse-probe')
+    $reuseDir = Join-Path $EvidenceRoot ('runs\matrix-selftest-reuse-probe')
     if (-not (Test-Path $reuseDir)) { New-Item -ItemType Directory -Force -Path $reuseDir | Out-Null }
     Set-Content (Join-Path $reuseDir 'sentinel-file.txt') 'do-not-overwrite' -Encoding ASCII
     $preHash = (Get-FileHash (Join-Path $reuseDir 'sentinel-file.txt') -Algorithm SHA256).Hash
     $preCount = (Get-ChildItem $reuseDir | Measure-Object).Count
-    $reuseP = Start-Process -FilePath 'powershell' -ArgumentList @('-NoProfile','-ExecutionPolicy','Bypass','-File', $PSCommandPath, '-RunId', 'selftest-reuse-probe', '-EvidenceRoot', $EvidenceRoot) -Wait -PassThru -NoNewWindow -RedirectStandardOutput (Join-Path $stDir 'reuse-run.log') -RedirectStandardError (Join-Path $stDir 'reuse-run.err')
+    $reuseP = Start-P0PowerShell -ArgumentList ((@('-NoProfile','-ExecutionPolicy','Bypass','-File', $PSCommandPath, '-RunId', 'selftest-reuse-probe', '-EvidenceRoot', $EvidenceRoot) | ForEach-Object { ConvertTo-P0Argument $_ }) -join ' ') -Wait -PassThru -NoNewWindow -RedirectStandardOutput (Join-Path $stDir 'reuse-run.log') -RedirectStandardError (Join-Path $stDir 'reuse-run.err')
     $postCount = (Get-ChildItem $reuseDir | Measure-Object).Count
     $postHash = (Get-FileHash (Join-Path $reuseDir 'sentinel-file.txt') -Algorithm SHA256).Hash
     $reuseRefused = ($reuseP.ExitCode -eq 2) -and ($preCount -eq $postCount) -and ($preHash -eq $postHash)
@@ -574,9 +579,9 @@ if ($SelfTest) {
 
 # --- write matrix + drift check ------------------------------------------------------------
 'case,expectedExit,actualExit,verdict,expected_reason,frozenId,frozenExpectedReason' |
-    Set-Content (Join-Path $outDir 'matrix.csv') -Encoding ASCII
-$matrixRows | ForEach-Object { Add-Content -Path (Join-Path $outDir 'matrix.csv') -Value $_ -Encoding ASCII }
-Get-Content (Join-Path $outDir 'matrix.csv')
+    Set-Content (Join-Path $caseDir 'matrix.csv') -Encoding ASCII
+$matrixRows | ForEach-Object { Add-Content -Path (Join-Path $caseDir 'matrix.csv') -Value $_ -Encoding ASCII }
+Get-Content (Join-Path $caseDir 'matrix.csv')
 
 # -Only filter that matched zero cases must NOT pass (real run)
 if ($Only -and $total -eq 0 -and -not $SelfTest) {

@@ -38,3 +38,4 @@ CODELY.md
 .dev.vars
 .wrangler/
 node_modules/
+/.local/

@@ -1,4 +1,4 @@
-# R2 isolation sentinel tests (ASCII only, PS 5.1 safe).
+﻿# R2 isolation sentinel tests (ASCII only, PS 5.1 safe).
 # Proves, for the REAL asset-check helper and the real PNG decoder:
 #   1. standalone helper call in an isolated temp root -> effective
 #      cache_folder/HOME inside the ISOLATED root; a real user dir in the
@@ -13,21 +13,25 @@
 # Exit: 0 all sentinel checks pass; 1 any failure; 4 prerequisite missing.
 
 param(
-    [string]$RepoRoot = 'D:\paper\PDFMathTranslate-next',
-    [string]$InstallRoot = 'D:\paper\pdf2zh-install-test',
+    [string]$PythonExe = '',
+    [string]$EvidenceRoot = '',
+    [string]$RepoRoot = (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent),
+    [string]$InstallRoot = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) '.local\runtime'),
     [string]$OutDir = ''
 )
+
+. (Join-Path $PSScriptRoot 'p0_paths.ps1')
+$EvidenceRoot = Resolve-P0EvidenceRoot $RepoRoot $EvidenceRoot
 
 $ErrorActionPreference = 'Continue'
 . (Join-Path $RepoRoot 'tests\performance\p0_env.ps1')
 . (Join-Path $RepoRoot 'tests\performance\p0_asset_check.ps1')
 
 $guardDir = Join-Path $RepoRoot 'tests\performance\p0_guard'
-$python = Get-ChildItem (Join-Path $InstallRoot 'uv-python') -Recurse -Filter python.exe |
-    Select-Object -First 1 -ExpandProperty FullName
+$python = Resolve-P0Python $InstallRoot $PythonExe
 if (-not $python) { Write-Host '[FAIL] prerequisite missing'; exit 4 }
 if (-not $OutDir) {
-    $OutDir = Join-Path $RepoRoot ("docs\verification\native-desktop\r2-integrated-20261003-01\runs\isolation-sentinel-" +
+    $OutDir = Join-Path $EvidenceRoot ("runs\isolation-sentinel-" +
         (Get-Date -Format 'yyyyMMdd-HHmmss') + '-' + $PID)
 }
 if ((Test-Path $OutDir) -and (Get-ChildItem $OutDir -ErrorAction SilentlyContinue)) {
@@ -59,7 +63,7 @@ $stageCache = Join-Path $OutDir 'staged-cache'
 robocopy (Join-Path $InstallRoot 'home\.cache\babeldoc') $stageCache /E /NFL /NDL /NJH /NJS /NP | Out-Null
 if ($LASTEXITCODE -ge 8) { Write-Host '[FAIL] cannot stage test cache copy'; exit 4 }
 $assetOut = Join-Path $OutDir 'asset-standalone.log.txt'
-$null = Invoke-AssetCheck -CacheDir $stageCache -InstallRoot $InstallRoot -IsolatedHome $isoRoot *>&1 |
+$null = Invoke-AssetCheck -CacheDir $stageCache -InstallRoot $InstallRoot -IsolatedHome $isoRoot -PythonExe $python *>&1 |
     Tee-Object -FilePath $assetOut
 $assetLogText = Get-Content $assetOut -Raw
 $ok1 = ($assetLogText -match '=> PASS')
@@ -85,7 +89,7 @@ Check 'standalone: no real user dir in child output' (-not ((Get-Content $assetO
 $emptyCache = Join-Path $OutDir 'empty-cache'
 New-Item -ItemType Directory -Force -Path $emptyCache | Out-Null
 $out2 = Join-Path $OutDir 'asset-empty.log.txt'
-$null = Invoke-AssetCheck -CacheDir $emptyCache -InstallRoot $InstallRoot -IsolatedHome $isoRoot *>&1 |
+$null = Invoke-AssetCheck -CacheDir $emptyCache -InstallRoot $InstallRoot -IsolatedHome $isoRoot -PythonExe $python *>&1 |
     Tee-Object -FilePath $out2 | Out-Null
 Check 'failure: empty cache -> false with asset_missing' ((Get-Content $out2 -Raw) -match 'asset_missing') "see $out2"
 
@@ -94,7 +98,7 @@ robocopy $stageCache $corruptCache /E /NFL /NDL /NJH /NJS /NP | Out-Null
 $victim = Get-ChildItem (Join-Path $corruptCache 'models') -File | Sort-Object Length | Select-Object -First 1
 [IO.File]::WriteAllBytes($victim.FullName, [byte[]](0, 1, 2, 3))
 $out3 = Join-Path $OutDir 'asset-corrupt.log.txt'
-$null = Invoke-AssetCheck -CacheDir $corruptCache -InstallRoot $InstallRoot -IsolatedHome $isoRoot *>&1 |
+$null = Invoke-AssetCheck -CacheDir $corruptCache -InstallRoot $InstallRoot -IsolatedHome $isoRoot -PythonExe $python *>&1 |
     Tee-Object -FilePath $out3 | Out-Null
 Check 'failure: corrupted file -> false with asset_corrupt' ((Get-Content $out3 -Raw) -match 'asset_corrupt') "see $out3"
 
@@ -105,7 +109,7 @@ Check 'failure: corrupted file -> false with asset_corrupt' ((Get-Content $out3 
 $garbled = Join-Path $OutDir 'meta-garbled.json'
 'this is not json {{{' | Set-Content $garbled -Encoding ASCII
 $outG = Join-Path $OutDir 'asset-garbled.log.txt'
-$null = Invoke-AssetCheck -CacheDir $stageCache -InstallRoot $InstallRoot -IsolatedHome $isoRoot -TestMetaJsonPath $garbled *>&1 |
+$null = Invoke-AssetCheck -CacheDir $stageCache -InstallRoot $InstallRoot -IsolatedHome $isoRoot -PythonExe $python -TestMetaJsonPath $garbled *>&1 |
     Tee-Object -FilePath $outG | Out-Null
 Check 'failure: garbled metadata -> false with metadata_unparseable' ((Get-Content $outG -Raw) -match 'metadata_unparseable') "see $outG"
 
@@ -114,7 +118,7 @@ $emptyManifest = Join-Path $OutDir 'meta-empty.json'
 '{"file_list": {"fonts": [], "models": [], "cmap": [], "tiktoken": []}, "cache_folder": "unused", "babeldoc_version": "test", "effective_home": "unused"}' |
     Set-Content $emptyManifest -Encoding UTF8
 $outE = Join-Path $OutDir 'asset-empty-manifest.log.txt'
-$null = Invoke-AssetCheck -CacheDir $stageCache -InstallRoot $InstallRoot -IsolatedHome $isoRoot -TestMetaJsonPath $emptyManifest *>&1 |
+$null = Invoke-AssetCheck -CacheDir $stageCache -InstallRoot $InstallRoot -IsolatedHome $isoRoot -PythonExe $python -TestMetaJsonPath $emptyManifest *>&1 |
     Tee-Object -FilePath $outE | Out-Null
 Check 'failure: empty manifest -> false with empty_manifest' ((Get-Content $outE -Raw) -match 'empty_manifest') "see $outE"
 
@@ -122,19 +126,19 @@ $missingCat = Join-Path $OutDir 'meta-missing-cat.json'
 '{"file_list": {"fonts": [{"name": "f.ttf", "sha3_256": "00"}], "models": [{"name": "m.onnx", "sha3_256": "01"}], "cmap": [{"name": "c.txt", "sha3_256": "02"}]}, "cache_folder": "unused", "babeldoc_version": "test", "effective_home": "unused"}' |
     Set-Content $missingCat -Encoding UTF8
 $outM = Join-Path $OutDir 'asset-missing-cat.log.txt'
-$null = Invoke-AssetCheck -CacheDir $stageCache -InstallRoot $InstallRoot -IsolatedHome $isoRoot -TestMetaJsonPath $missingCat *>&1 |
+$null = Invoke-AssetCheck -CacheDir $stageCache -InstallRoot $InstallRoot -IsolatedHome $isoRoot -PythonExe $python -TestMetaJsonPath $missingCat *>&1 |
     Tee-Object -FilePath $outM | Out-Null
 Check 'failure: missing required category -> false with missing_category' ((Get-Content $outM -Raw) -match 'missing_category') "see $outM"
 
 $outH = Join-Path $OutDir 'asset-hashtool-fail.log.txt'
-$null = Invoke-AssetCheck -CacheDir $stageCache -InstallRoot $InstallRoot -IsolatedHome $isoRoot -TestHashToolFailure *>&1 |
+$null = Invoke-AssetCheck -CacheDir $stageCache -InstallRoot $InstallRoot -IsolatedHome $isoRoot -PythonExe $python -TestHashToolFailure *>&1 |
     Tee-Object -FilePath $outH | Out-Null
 Check 'failure: hash tool failure -> false with hash_tool_failed' ((Get-Content $outH -Raw) -match 'hash_tool_failed') "see $outH"
 
 # --- sentinel 3: missing -IsolatedHome must REFUSE (isolation mandatory)
 $out4 = Join-Path $OutDir 'asset-nohome.log.txt'
 $noHome = $false
-try { $noHome = Invoke-AssetCheck -CacheDir $stageCache -InstallRoot $InstallRoot -IsolatedHome (Join-Path $OutDir 'does-not-exist') *>&1 | Tee-Object -FilePath $out4 | Out-Null } catch { }
+try { $noHome = Invoke-AssetCheck -CacheDir $stageCache -InstallRoot $InstallRoot -IsolatedHome (Join-Path $OutDir 'does-not-exist') -PythonExe $python *>&1 | Tee-Object -FilePath $out4 | Out-Null } catch { }
 Check 'failure: nonexistent IsolatedHome -> refused' (-not $noHome) 'helper accepted a nonexistent isolated root'
 
 # --- sentinel 4: PNG decoder child isolation (valid PNG decodes; child never
@@ -151,11 +155,9 @@ pix.save(r"__OUT__")
 '@
 $genPy = Join-Path $OutDir 'gen_png.py'
 $genCode = $genCode -replace '__OUT__', (Join-Path $OutDir 'sentinel.png')
-Set-Content -Path $genPy -Value $genCode -Encoding ASCII
-$savedP = $env:PYTHONPATH
-$env:PYTHONPATH = (Join-Path $InstallRoot 'uv-tools\pdf2zh-next\Lib\site-packages')
-& $python $genPy 2>&1 | Out-Null
-if ($null -ne $savedP) { $env:PYTHONPATH = $savedP } else { Remove-Item Env:PYTHONPATH -ErrorAction SilentlyContinue }
+Set-Content -Path $genPy -Value $genCode -Encoding UTF8
+$genExit = Invoke-P0PythonFile -PythonExe $python -ScriptFile $genPy -IsolatedHome (Join-Path $OutDir 'generator-home') -PythonPath (Join-Path $InstallRoot 'uv-tools\pdf2zh-next\Lib\site-packages') -GuardDir $guardDir -LogPrefix (Join-Path $OutDir 'png-generator')
+if ($genExit -ne 0) { Write-Host '[FAIL] isolated PNG generator failed'; exit 1 }
 $bytes = [IO.File]::ReadAllBytes((Join-Path $OutDir 'sentinel.png'))
 $w = 0; $h = 0; $why = ''
 $pngOk = Test-PngStrict $bytes 640 ([ref]$w) ([ref]$h) ([ref]$why)

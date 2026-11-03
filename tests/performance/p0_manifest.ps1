@@ -1,15 +1,18 @@
-# Identity manifest generator v3 (ASCII only, PS 5.1 safe)
+﻿# Identity manifest generator v3 (ASCII only, PS 5.1 safe)
 # F4: parent PYTHONPATH/Git env saved and restored in finally.
 # F6: -SampleDir hashes actual sample files in place (supplementary seal).
 # Captures: repo identity, code hashes (repo vs installed), interpreter,
 # dependency versions, machine/power context, script/sample hashes.
 
 param(
-    [string]$InstallRoot = 'D:\paper\pdf2zh-install-test',
-    [string]$RepoRoot = 'D:\paper\PDFMathTranslate-next',
+    [string]$PythonExe = '',
+    [string]$InstallRoot = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) '.local\runtime'),
+    [string]$RepoRoot = (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent),
     [string]$RunDir = '',
     [string]$SampleDir = ''
 )
+
+. (Join-Path $PSScriptRoot 'p0_paths.ps1')
 
 $ErrorActionPreference = 'Stop'
 $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
@@ -21,7 +24,7 @@ $savedGc = @($env:GIT_CONFIG_COUNT, $env:GIT_CONFIG_KEY_0, $env:GIT_CONFIG_VALUE
 try {
     $env:GIT_CONFIG_COUNT = '1'
     $env:GIT_CONFIG_KEY_0 = 'safe.directory'
-    $env:GIT_CONFIG_VALUE_0 = "D:/paper/PDFMathTranslate-next"
+    $env:GIT_CONFIG_VALUE_0 = ($RepoRoot -replace '\\','/')
 
     $repoFiles = @(
         'source/pdf2zh_next/__init__.py',
@@ -51,7 +54,7 @@ try {
     $instHashes = [ordered]@{}
     foreach ($f in $installedFiles) { $instHashes[$f] = Sha (Join-Path $sp $f) }
 
-    $python = Get-ChildItem (Join-Path $InstallRoot 'uv-python') -Recurse -Filter python.exe | Select-Object -First 1 -ExpandProperty FullName
+    $python = Resolve-P0Python $InstallRoot $PythonExe
     $pyVer = & $python -c "import sys; print(sys.version)" 2>$null
 
     $pkgCode = @'

@@ -1,4 +1,4 @@
-# Guard wrapper mutation tests (S2/N02): corrupted guard_test.py copies must be
+﻿# Guard wrapper mutation tests (S2/N02): corrupted guard_test.py copies must be
 # REJECTED by p0_c1_guard_test.ps1, and the clean copy must pass.
 # ASCII only, PS 5.1 safe. Stubs only - no product code, no network beyond the
 # guard's own controlled rejects.
@@ -13,17 +13,22 @@
 # Exit: 0 all mutations rejected AND clean copy passes; 1 otherwise.
 
 param(
-    [string]$RepoRoot = 'D:\paper\PDFMathTranslate-next',
-    [string]$InstallRoot = 'D:\paper\pdf2zh-install-test',
+    [string]$PythonExe = '',
+    [string]$EvidenceRoot = '',
+    [string]$RepoRoot = (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent),
+    [string]$InstallRoot = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) '.local\runtime'),
     [string]$OutDir = ''
 )
+
+. (Join-Path $PSScriptRoot 'p0_paths.ps1')
+$EvidenceRoot = Resolve-P0EvidenceRoot $RepoRoot $EvidenceRoot
 
 $ErrorActionPreference = 'Continue'
 $guardTestPy = Join-Path $RepoRoot 'tests\performance\p0_guard\guard_test.py'
 if (-not (Test-Path $guardTestPy)) { Write-Host '[FAIL] guard_test.py missing'; exit 4 }
 
 if (-not $OutDir) {
-    $OutDir = Join-Path $RepoRoot ("docs\verification\native-desktop\r2-integrated-20261003-01\runs\mutations-" +
+    $OutDir = Join-Path $EvidenceRoot ("runs\mutations-" +
         (Get-Date -Format 'yyyyMMdd-HHmmss') + '-' + $PID)
 }
 New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
@@ -42,7 +47,7 @@ $script:fails = 0
 function Invoke-Wrapper([string]$name, [string]$testPy, [string]$expectedExit) {
     $modeOut = Join-Path $OutDir $name
     New-Item -ItemType Directory -Force -Path $modeOut | Out-Null
-    $out = & (Join-Path $RepoRoot 'tests\performance\p0_c1_guard_test.ps1') -RepoRoot $RepoRoot -InstallRoot $InstallRoot -OutDir $modeOut -GuardTestPy $testPy 2>&1
+    $out = & (Join-Path $RepoRoot 'tests\performance\p0_c1_guard_test.ps1') -RepoRoot $RepoRoot -InstallRoot $InstallRoot -PythonExe $PythonExe -EvidenceRoot $EvidenceRoot -OutDir $modeOut -GuardTestPy $testPy 2>&1
     $exit = $LASTEXITCODE
     $verdict = if ("$exit" -eq "$expectedExit") { 'PASS' } else { 'FAIL' }
     if ($verdict -eq 'FAIL') { $script:fails++ }

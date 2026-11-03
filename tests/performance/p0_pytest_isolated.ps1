@@ -1,4 +1,4 @@
-# Isolated pytest runner v3 with real-home protection evidence (ASCII only)
+﻿# Isolated pytest runner v3 with real-home protection evidence (ASCII only)
 # F4/F6 remediation: parent PYTHONPATH restored; before/after snapshots of the
 # scoped real dirs are SAVED to disk (sanitized relative paths + size + mtime;
 # large files size-only; read failures recorded, never silently ignored);
@@ -8,28 +8,37 @@
 #       6 snapshot read failures occurred (evidence incomplete, not "no change")
 
 param(
-    [string]$InstallRoot = 'D:\paper\pdf2zh-install-test',
-    [string]$RepoRoot = 'D:\paper\PDFMathTranslate-next',
+    [string]$PythonExe = '',
+    [string]$ProtectedRoot = '',
+    [string]$EvidenceRoot = '',
+    [string]$InstallRoot = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) '.local\runtime'),
+    [string]$RepoRoot = (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent),
     [string]$OutDir = ''
 )
+
+. (Join-Path $PSScriptRoot 'p0_paths.ps1')
+$EvidenceRoot = Resolve-P0EvidenceRoot $RepoRoot $EvidenceRoot
 
 $ErrorActionPreference = 'Stop'
 $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
 if (-not $OutDir) {
-    $OutDir = Join-Path $RepoRoot ("docs\verification\native-desktop\r2-integrated-20261003-01\runs\pytest-" + $stamp)
+    $OutDir = Join-Path $EvidenceRoot ("runs\pytest-" + $stamp)
 }
 $runDir = $OutDir
 New-Item -ItemType Directory -Force -Path $runDir | Out-Null
 
-$venvPy = 'D:\paper\pdf2zh-test-venv\Scripts\python.exe'
+$venvPy = Resolve-P0Python $InstallRoot $PythonExe
 if (-not (Test-Path $venvPy)) { Write-Host '[FAIL] test venv missing'; exit 4 }
 
-$realDirs = @(
-    (Join-Path $env:USERPROFILE '.config\pdf2zh'),
-    (Join-Path $env:USERPROFILE '.cache\pdf2zh_next'),
-    (Join-Path $env:USERPROFILE '.cache\babeldoc'),
-    (Join-Path $RepoRoot 'source\pdf2zh_files')
-)
+# The current handoff forbids even reading user cache/history. Compare a second,
+# exclusively owned sentinel home instead; never claim this proves a user-home
+# before/after snapshot. conftest isolates the test process before product import.
+if (-not $ProtectedRoot) { $ProtectedRoot = Join-Path $OutDir 'protected-sentinel-home' }
+$protectedFull = [IO.Path]::GetFullPath($ProtectedRoot)
+$roundPrefix = [IO.Path]::GetFullPath($OutDir).TrimEnd('\') + '\'
+if (-not $protectedFull.StartsWith($roundPrefix, [StringComparison]::OrdinalIgnoreCase)) { Write-Host '[FAIL] protected sentinel must be inside this owned run'; exit 4 }
+$realDirs = @((Join-Path $protectedFull '.config\pdf2zh'), (Join-Path $protectedFull '.cache\pdf2zh_next'), (Join-Path $protectedFull '.cache\babeldoc'))
+foreach ($dir in $realDirs) { New-Item -ItemType Directory -Path $dir -Force | Out-Null; 'owned sentinel; never product data' | Set-Content (Join-Path $dir 'sentinel.txt') -Encoding ASCII }
 
 # M5 (gate A): pytest runs the product test-suite; it must run under the net
 # guard like every other entry that imports product code. Loopback is allowed
@@ -72,30 +81,13 @@ function Snapshot([string]$tag) {
 
 $before = Snapshot 'before'
 
-# run pytest with repo-source-first PYTHONPATH + net guard; conftest handles home isolation
-$env:PYTHONPATH = $guardDir + ';' + (Join-Path $RepoRoot 'source') + ';' + (Join-Path $InstallRoot 'uv-tools\pdf2zh-next\Lib\site-packages')
-$env:PDF2ZH_GUARD_LOG = $guardLog
-$env:PDF2ZH_GUARD_DIR = $guardDir
-$env:PDF2ZH_RUN_ID = ("pytest-" + $stamp)
-# R2: strip any inherited PDF2ZH_CONFIG_FILE so conftest's isolated value is
-# the only one the test process can see (saved/restored with existed/value)
-$savedCfg = $env:PDF2ZH_CONFIG_FILE
-Remove-Item Env:PDF2ZH_CONFIG_FILE -ErrorAction SilentlyContinue
+# Isolate before Python/site/pytest startup; conftest adds session isolation.
+$bootstrap = Join-Path $runDir 'pytest-bootstrap.py'
+$testPathJson = ConvertTo-Json (Join-Path $RepoRoot 'source\tests') -Compress
+"import pytest`nraise SystemExit(pytest.main([$testPathJson, '-q', '--no-header', '-v']))" | Set-Content $bootstrap -Encoding UTF8
 $pytestLog = Join-Path $runDir 'pytest-full-output.txt'
-$ErrorActionPreference = 'Continue'   # native stderr records must not terminate (PS 5.1)
-try {
-    Push-Location (Join-Path $RepoRoot 'source')
-    & $venvPy -m pytest tests -q --no-header -v 2>&1 | ForEach-Object { "$_" } | Set-Content -Path $pytestLog -Encoding UTF8
-    $pytestRc = $LASTEXITCODE
-} finally {
-    Pop-Location
-    $ErrorActionPreference = 'Stop'
-    if ($null -ne $savedPy) { $env:PYTHONPATH = $savedPy } else { Remove-Item Env:PYTHONPATH -ErrorAction SilentlyContinue }
-    if ($null -ne $savedGl) { $env:PDF2ZH_GUARD_LOG = $savedGl } else { Remove-Item Env:PDF2ZH_GUARD_LOG -ErrorAction SilentlyContinue }
-    if ($null -ne $savedGd) { $env:PDF2ZH_GUARD_DIR = $savedGd } else { Remove-Item Env:PDF2ZH_GUARD_DIR -ErrorAction SilentlyContinue }
-    if ($null -ne $savedRi) { $env:PDF2ZH_RUN_ID = $savedRi } else { Remove-Item Env:PDF2ZH_RUN_ID -ErrorAction SilentlyContinue }
-    if ($null -ne $savedCfg) { $env:PDF2ZH_CONFIG_FILE = $savedCfg } else { Remove-Item Env:PDF2ZH_CONFIG_FILE -ErrorAction SilentlyContinue }
-}
+$pytestRc = Invoke-P0PythonFile -PythonExe $venvPy -ScriptFile $bootstrap -IsolatedHome (Join-Path $runDir 'pytest-home') -PythonPath ((Join-Path $RepoRoot 'source') + ';' + (Join-Path $InstallRoot 'uv-tools\pdf2zh-next\Lib\site-packages')) -GuardDir $guardDir -GuardLog $guardLog -LogPrefix (Join-Path $runDir 'pytest-child') -TimeoutSeconds 300
+Copy-Item (Join-Path $runDir 'pytest-child.stdout.txt') $pytestLog
 Write-Host ("pytest exit code: {0}" -f $pytestRc)
 
 # B2/S1: guard evidence for the pytest run - GUARD_ACTIVE required, and NO
@@ -134,8 +126,8 @@ foreach ($d in $realDirs) {
         $changesAll.Add(("{0} : {1} : {2}" -f $d, $side, $c.InputObject))
     }
 }
-if ($changesAll.Count -gt 0) { $changesAll | Set-Content (Join-Path $runDir 'real-home-changes.txt') -Encoding UTF8 }
-else { '(no changes - real user dirs identical before/after)' | Set-Content (Join-Path $runDir 'real-home-changes.txt') -Encoding UTF8 }
+if ($changesAll.Count -gt 0) { $changesAll | Set-Content (Join-Path $runDir 'sentinel-changes.txt') -Encoding UTF8 }
+else { '(no changes - owned sentinel dirs identical before/after; real user dirs not accessed)' | Set-Content (Join-Path $runDir 'sentinel-changes.txt') -Encoding UTF8 }
 $readErrors = @($before.readErrors + $after.readErrors)
 if ($readErrors.Count -gt 0) { $readErrors | Set-Content (Join-Path $runDir 'snapshot-read-errors.txt') -Encoding UTF8 }
 else { '(no snapshot read failures)' | Set-Content (Join-Path $runDir 'snapshot-read-errors.txt') -Encoding UTF8 }
@@ -144,11 +136,11 @@ function Sha([string]$p) { if (Test-Path $p) { return (Get-FileHash $p -Algorith
 
 $result = [ordered]@{
     pytestExitCode = $pytestRc
-    realHomeChanged = ($changesAll.Count -gt 0)
+    protectedSentinelChanged = ($changesAll.Count -gt 0)
     changeCount = $changesAll.Count
     snapshotReadErrorCount = $readErrors.Count
     runDir = $runDir
-    scopeNote = 'snapshot scope limited to the four dirs listed in real-home-changes.txt; configs/values not captured, only path|size|mtime|sha256'
+    scopeNote = 'Only the explicitly owned protected-sentinel-home is read; real user config/cache/history is not accessed or claimed verified'
     runnerSha256 = Sha $PSCommandPath
     conftestSha256 = Sha (Join-Path $RepoRoot 'source\tests\conftest.py')
     baselineSha256 = Sha (Join-Path $RepoRoot 'tests\performance\p0_baseline.ps1')
@@ -158,12 +150,12 @@ $result | ConvertTo-Json | Set-Content (Join-Path $runDir 'result.json') -Encodi
 
 if ($readErrors.Count -gt 0) { Write-Host ("[WARN] {0} snapshot read failures - recorded, not treated as no-change" -f $readErrors.Count) }
 if ($changesAll.Count -gt 0) {
-    Write-Host '[FAIL] real home changed during pytest:'
+    Write-Host '[FAIL] protected sentinel changed during pytest:'
     $changesAll | Select-Object -First 10
     Write-Host ("evidence dir: {0}" -f $runDir)
     exit 5
 }
-Write-Host '[PASS] real user dirs unchanged'
+Write-Host '[PASS] owned sentinel dirs unchanged; no real user directory snapshot claimed'
 Write-Host ("evidence dir: {0}" -f $runDir)
 if ($pytestRc -ne 0) { exit 1 }
 if ($readErrors.Count -gt 0) { exit 6 }

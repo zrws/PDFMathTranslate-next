@@ -1,4 +1,4 @@
-# Shared recovery identity functions (R4, ASCII only, PS 5.1 safe).
+﻿# Shared recovery identity functions (R4, ASCII only, PS 5.1 safe).
 # SINGLE SOURCE used by p0_recovery_negtest.ps1 and (conceptually identical to)
 # the inline recovery logic in p0_probe_perprocess.ps1 / p0_probe_attribution.ps1.
 # States: gone / still_alive_same_identity / pid_reused / query_failed.

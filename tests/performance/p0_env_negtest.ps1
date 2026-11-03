@@ -1,4 +1,4 @@
-# Env restore delivery test (G16 / S3): proves p0_env.ps1 existed/value
+﻿# Env restore delivery test (G16 / S3): proves p0_env.ps1 existed/value
 # semantics for all required coverage dimensions. ASCII only, PS 5.1 safe.
 # In-process sentinels; no real credentials; no product import.
 #
@@ -10,15 +10,19 @@
 # Exit: 0 all pass; 1 any failure; 4 prerequisite missing.
 
 param(
-    [string]$RepoRoot = 'D:\paper\PDFMathTranslate-next',
+    [string]$EvidenceRoot = '',
+    [string]$RepoRoot = (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent),
     [string]$OutDir = ''
 )
+
+. (Join-Path $PSScriptRoot 'p0_paths.ps1')
+$EvidenceRoot = Resolve-P0EvidenceRoot $RepoRoot $EvidenceRoot
 
 $ErrorActionPreference = 'Continue'
 if (-not (Test-Path (Join-Path $RepoRoot 'tests\performance\p0_env.ps1'))) { Write-Host '[FAIL] p0_env.ps1 missing'; exit 4 }
 
 if (-not $OutDir) {
-    $OutDir = Join-Path $RepoRoot ("docs\verification\native-desktop\r2-integrated-20261003-01\runs\env-restore-" +
+    $OutDir = Join-Path $EvidenceRoot ("runs\env-restore-" +
         (Get-Date -Format 'yyyyMMdd-HHmmss') + '-' + $PID)
 }
 New-Item -ItemType Directory -Force -Path $OutDir | Out-Null

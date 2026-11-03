@@ -13,6 +13,7 @@ called and the target script is never executed.
 
 import os
 import sys
+import json
 
 guard_dir = os.environ.get("PDF2ZH_GUARD_DIR", "")
 target_script = os.environ.get("PDF2ZH_TARGET_SCRIPT", "")
@@ -33,12 +34,18 @@ sys.path.insert(0, guard_dir)
 import entry_gate  # noqa: F401,E402 - this will sys.exit(1) if guard is not OK
 
 # Run the target script
-sys.argv = [target_script] + target_args.split() if target_args else [target_script]
+if "PDF2ZH_TARGET_ARGS_JSON" in os.environ:
+    args = json.loads(os.environ["PDF2ZH_TARGET_ARGS_JSON"])
+    if not isinstance(args, list) or not all(isinstance(arg, str) for arg in args):
+        raise ValueError("target args must be a JSON string array")
+    sys.argv = [target_script] + args
+else:
+    sys.argv = [target_script] + target_args.split() if target_args else [target_script]
 _target_dir = os.path.dirname(os.path.abspath(target_script))
 if _target_dir not in sys.path:
     sys.path.insert(0, _target_dir)
 
-with open(target_script, "r", encoding="utf-8") as _f:
+with open(target_script, "r", encoding="utf-8-sig") as _f:
     _code = compile(_f.read(), target_script, "exec")
 
 exec(_code)

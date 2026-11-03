@@ -1,4 +1,4 @@
-# Shared strict PNG validator v5 (ASCII only) - single source of truth.
+﻿# Shared strict PNG validator v5 (ASCII only) - single source of truth.
 # C3 heritage: REAL decodeability check via PIL/Pillow.
 # R2 fixes: the PIL decode child runs in an ISOLATED per-child environment
 # (HOME/USERPROFILE/TEMP/CWD under the caller-supplied isolated root); the
@@ -84,6 +84,7 @@ except Exception as e:
         $pinfo.EnvironmentVariables['PYTHONPATH'] = $script:pngPythonPath
         $proc = [System.Diagnostics.Process]::Start($pinfo)
         $pSoTask = $proc.StandardOutput.ReadToEndAsync()
+        $pSeTask = $proc.StandardError.ReadToEndAsync()
         [void]$proc.WaitForExit(60000)
         if (-not $proc.HasExited) {
             try { $proc.Kill() } catch { }
