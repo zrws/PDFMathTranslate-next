@@ -23,7 +23,7 @@ internal sealed class BackendRunner : IDisposable
 
     private Process? _child;
     private Microsoft.Win32.SafeHandles.SafeFileHandle? _job;
-    private readonly ManualResetEventSlim _webUiReady = new(false);
+    private ManualResetEventSlim _webUiReady = new(false);
     private readonly object _startLock = new();
 
     public int Port { get; }
@@ -52,7 +52,10 @@ internal sealed class BackendRunner : IDisposable
         lock (_startLock)
         {
             Stop();
-            _webUiReady.Reset();
+            // Each process owns its own readiness event. Late callbacks from
+            // a previous child can never mark a replacement process ready.
+            var ready = new ManualResetEventSlim(false);
+            _webUiReady = ready;
 
             var startInfo = new ProcessStartInfo
             {
@@ -74,14 +77,15 @@ internal sealed class BackendRunner : IDisposable
             ConfigurePythonEnvironment(startInfo);
 
             _child = new Process { StartInfo = startInfo, EnableRaisingEvents = true };
-            _child.OutputDataReceived += (_, e) => ForwardLog(e.Data, isError: false);
-            _child.ErrorDataReceived += (_, e) => ForwardLog(e.Data, isError: true);
             _job=PDFMathTranslate.Desktop.NativeJob.Create();
             if (!_child.Start())
             {
                 Program.AppendLog("无法启动 PDFMathTranslate 后台进程。");
                 return false;
             }
+            var expectedReady=$"WebUI ready: {BaseUrl} [pid:{_child.Id}]";
+            _child.OutputDataReceived += (_, e) => ForwardLog(e.Data, false, expectedReady, ready);
+            _child.ErrorDataReceived += (_, e) => ForwardLog(e.Data, true, expectedReady, ready);
             if(!PDFMathTranslate.Desktop.NativeJob.AssignProcessToJobObject(_job,_child.Handle)){_child.Kill(true);throw new InvalidOperationException("无法建立兼容后端进程回收边界。");}
             SessionToken=Convert.ToHexString(RandomNumberGenerator.GetBytes(32));
             _child.StandardInput.WriteLine(JsonSerializer.Serialize(new{token=SessionToken,port=Port}));
@@ -89,11 +93,11 @@ internal sealed class BackendRunner : IDisposable
             _child.BeginOutputReadLine();
             _child.BeginErrorReadLine();
             Program.AppendLog($"后台已启动，等待 WebUI：{BaseUrl}");
-            return WaitForWebUi(_child);
+            return WaitForWebUi(_child, ready);
         }
     }
 
-    private bool WaitForWebUi(Process child)
+    private bool WaitForWebUi(Process child, ManualResetEventSlim ready)
     {
         using var client = new HttpClient(new SocketsHttpHandler{UseProxy=false,AllowAutoRedirect=false}) { Timeout = TimeSpan.FromSeconds(2) };
         client.DefaultRequestHeaders.Authorization=new AuthenticationHeaderValue("Bearer",SessionToken);
@@ -102,12 +106,12 @@ internal sealed class BackendRunner : IDisposable
         {
             // Only this child's exact stdout marker proves it owns the port.
             // No authenticated probe is sent while the port may be occupied.
-            if (!_webUiReady.Wait(100)) continue;
+            if (!ready.Wait(100)) continue;
             if (child.HasExited) break;
             try
             {
                 using var response = client.GetAsync(BaseUrl).GetAwaiter().GetResult();
-                if (_webUiReady.IsSet && response.IsSuccessStatusCode)
+                if (ready.IsSet && response.IsSuccessStatusCode)
                 {
                     Program.AppendLog($"WebUI 已就绪：{BaseUrl}");
                     return true;
@@ -162,12 +166,12 @@ internal sealed class BackendRunner : IDisposable
         startInfo.WorkingDirectory=Path.Combine(Program.Home,"work");Directory.CreateDirectory(startInfo.WorkingDirectory);
     }
 
-    private void ForwardLog(string? line, bool isError)
+    private static void ForwardLog(string? line, bool isError, string expectedReady, ManualResetEventSlim ready)
     {
         if (string.IsNullOrEmpty(line)) return;
-        if (!isError && line == $"WebUI ready: {BaseUrl} [pid:{_child?.Id}]")
+        if (!isError && line == expectedReady)
         {
-            _webUiReady.Set();
+            ready.Set();
         }
         Program.AppendLog(line);
     }
