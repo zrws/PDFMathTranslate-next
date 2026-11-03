@@ -19,6 +19,13 @@ def main():
     parser=argparse.ArgumentParser();parser.add_argument('--ui-exe',type=Path,required=True);parser.add_argument('--evidence-root',type=Path,required=True);args=parser.parse_args()
     root=args.evidence_root.resolve();root.mkdir(parents=True,exist_ok=False)
     files=[args.ui_exe.resolve(),args.ui_exe.resolve().with_suffix('.dll'),Path(__file__).resolve()]
+    profile=args.ui_exe.resolve().parent/'development-run.json'
+    if profile.is_file():
+        files.append(profile)
+        source=json.loads(profile.read_text(encoding='utf-8-sig')).get('PDF2ZH_SOURCE_ROOT')
+        if source:
+            package=Path(source)/'pdf2zh_next'
+            files.extend([package/'__init__.py',*sorted((package/'desktop').glob('*.py'))])
     (root/'provenance.json').write_text(json.dumps({'argv':os.sys.argv,'files':[{'path':str(p),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in files]},indent=2),encoding='utf-8')
     runs=[]
     for index in range(3):
