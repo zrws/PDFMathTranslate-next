@@ -1,0 +1,2 @@
+  PDFMathTranslateLauncher -> D:\student\翻译\PDFMathTranslate-next\launcher\bin\Release\net8.0-windows\win-x64\PDFMathTranslate.dll
+D:\student\翻译\toolchains\dotnet10\sdk\10.0.403\Sdks\Microsoft.NET.Sdk\targets\Microsoft.NET.Publish.targets(212,5): error NETSDK1176: 仅在发布独立应用程序时才支持在单个文件捆绑包中进行压缩。 [D:\student\翻译\PDFMathTranslate-next\launcher\PDFMathTranslateLauncher.csproj]

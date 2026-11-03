@@ -1,0 +1,44 @@
+{
+  "home": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-acceptance-7c27000ce7f14538ae1006c648debe1c",
+  "observed_utc": "2026-11-03T16:39:10.661938+00:00",
+  "roles": {
+    "resource_payload": {
+      "files": 185,
+      "bytes": 352496622,
+      "reparse_entries_skipped_without_following": []
+    },
+    "translation_cache": {
+      "files": 1,
+      "bytes": 229376,
+      "reparse_entries_skipped_without_following": []
+    },
+    "work_staging": {
+      "files": 4,
+      "bytes": 64149,
+      "reparse_entries_skipped_without_following": []
+    },
+    "desktop_state_and_preferences": {
+      "files": 4,
+      "bytes": 29690,
+      "reparse_entries_skipped_without_following": []
+    },
+    "engine_configuration": {
+      "files": 2,
+      "bytes": 21489,
+      "reparse_entries_skipped_without_following": []
+    },
+    "temporary_files": {
+      "files": 0,
+      "bytes": 0,
+      "reparse_entries_skipped_without_following": []
+    }
+  },
+  "entire_home": {
+    "files": 255,
+    "bytes": 360288160,
+    "reparse_entries_skipped_without_following": [
+      "AppData\\Local\\Microsoft\\Windows\\INetCache\\Content.IE5"
+    ]
+  },
+  "scope": "post-run files from a generated two-page loopback fixture; resources were copied from a verified offline cache. 352451566 bytes is asset content, not measured HTTP transfer/retry overhead. Work includes retained uploads/results for retry and is not a bounded preview cache."
+}

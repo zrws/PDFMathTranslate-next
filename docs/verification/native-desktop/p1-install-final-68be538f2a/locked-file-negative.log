@@ -1,0 +1,128 @@
+﻿2026-11-04 00:25:53.964   Log opened. (Time zone: UTC+08:00)
+2026-11-04 00:25:53.964   Setup version: Inno Setup version 6.7.1
+2026-11-04 00:25:53.964   Original Setup EXE: D:\student\翻译\PDFMathTranslate-next\dist\install-tests-b1828d388b5f\PDFMathTranslate-Setup-2.9.1.exe
+2026-11-04 00:25:53.964   Setup command line: /SL5="$360B12,222853178,844800,D:\student\翻译\PDFMathTranslate-next\dist\install-tests-b1828d388b5f\PDFMathTranslate-Setup-2.9.1.exe" /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /RESTARTEXITCODE=3010 /DIR="C:\Users\Administrator\AppData\Local\PDFMathTranslate-Codex-Install-Tests\安装 验证-a21e5c20d2" /LOG="D:\student\翻译\PDFMathTranslate-next\docs\verification\native-desktop\p1-install-final-68be538f2a\locked-file-negative.log"
+2026-11-04 00:25:53.965   Windows version: 10.0.26200
+2026-11-04 00:25:53.965   Windows architecture: x64 (64-bit)
+2026-11-04 00:25:53.965   Machine types supported by system: x86 x64
+2026-11-04 00:25:53.965   User privileges: Administrative
+2026-11-04 00:25:54.037   Administrative install mode: No
+2026-11-04 00:25:54.037   Install mode root key: HKEY_CURRENT_USER
+2026-11-04 00:25:54.037   64-bit install mode: Yes
+2026-11-04 00:25:54.037   RedirectionGuard status for current process: Enabled in enforcing mode
+2026-11-04 00:25:54.040   Created protected temporary directory: C:\Users\ADMINI~1\AppData\Local\Temp\is-3XZRDUHT2J.tmp
+2026-11-04 00:25:54.042   -- DLL function import --
+2026-11-04 00:25:54.042   Function and DLL name: GetFileAttributesW@kernel32.dll
+2026-11-04 00:25:54.042   Importing the DLL function. Dest DLL name: kernel32.dll
+2026-11-04 00:25:54.042   Successfully imported the DLL function. Delay loaded? No
+2026-11-04 00:25:54.042   -- DLL function import --
+2026-11-04 00:25:54.042   Function and DLL name: GetLastError@kernel32.dll
+2026-11-04 00:25:54.042   Importing the DLL function. Dest DLL name: kernel32.dll
+2026-11-04 00:25:54.042   Successfully imported the DLL function. Delay loaded? No
+2026-11-04 00:25:54.179   Extracting temporary file: C:\Users\ADMINI~1\AppData\Local\Temp\is-3XZRDUHT2J.tmp\owned-files.tsv
+2026-11-04 00:26:24.462   Extracting temporary file: C:\Users\ADMINI~1\AppData\Local\Temp\is-3XZRDUHT2J.tmp\owned-files.tsv
+2026-11-04 00:26:56.776   Starting the installation process.
+2026-11-04 00:26:56.776   Directory for uninstall files: C:\Users\Administrator\AppData\Local\PDFMathTranslate-Codex-Install-Tests\安装 验证-a21e5c20d2
+2026-11-04 00:26:56.776   Will append to existing uninstall log: C:\Users\Administrator\AppData\Local\PDFMathTranslate-Codex-Install-Tests\安装 验证-a21e5c20d2\unins000.dat
+2026-11-04 00:26:56.792   -- File entry --
+2026-11-04 00:26:56.792   Dest filename: C:\Users\Administrator\AppData\Local\PDFMathTranslate-Codex-Install-Tests\安装 验证-a21e5c20d2\unins000.exe
+2026-11-04 00:26:56.792   Non-default bitness: 32-bit
+2026-11-04 00:26:56.792   Time stamp of our file: 2026-11-04 00:25:53.724
+2026-11-04 00:26:56.792   Dest file exists.
+2026-11-04 00:26:56.792   Time stamp of existing file: 2026-11-04 00:23:18.137
+2026-11-04 00:26:56.792   Version of our file: 51.1054.0.0
+2026-11-04 00:26:56.798   Version of existing file: 51.1054.0.0
+2026-11-04 00:26:56.798   Installing the file.
+2026-11-04 00:26:56.802   Leaving temporary file in place for now.
+2026-11-04 00:26:56.802   -- File entry --
+2026-11-04 00:26:56.802   Dest filename: C:\Users\Administrator\AppData\Local\PDFMathTranslate-Codex-Install-Tests\安装 验证-a21e5c20d2\CommunityToolkit.Mvvm.dll
+2026-11-04 00:26:56.802   Time stamp of our file: 2026-03-25 07:20:02.000
+2026-11-04 00:26:56.802   Dest file exists.
+2026-11-04 00:26:56.802   Time stamp of existing file: 2026-03-25 07:20:02.000
+2026-11-04 00:26:56.802   Installing the file.
+2026-11-04 00:26:56.810   Successfully installed the file.
+2026-11-04 00:26:56.811   -- File entry --
+2026-11-04 00:26:56.811   Dest filename: C:\Users\Administrator\AppData\Local\PDFMathTranslate-Codex-Install-Tests\安装 验证-a21e5c20d2\LICENSE
+2026-11-04 00:26:56.811   Time stamp of our file: 2026-11-03 18:38:00.000
+2026-11-04 00:26:56.811   Dest file exists.
+2026-11-04 00:26:56.811   Time stamp of existing file: 2026-11-03 18:38:00.000
+2026-11-04 00:26:56.812   Installing the file.
+2026-11-04 00:26:56.814   Successfully installed the file.
+2026-11-04 00:26:56.814   -- File entry --
+2026-11-04 00:26:56.814   Dest filename: C:\Users\Administrator\AppData\Local\PDFMathTranslate-Codex-Install-Tests\安装 验证-a21e5c20d2\owned-files.tsv
+2026-11-04 00:26:56.815   Time stamp of our file: 2026-11-04 00:15:14.000
+2026-11-04 00:26:56.815   Dest file exists.
+2026-11-04 00:26:56.815   Time stamp of existing file: 2026-11-04 00:25:39.787
+2026-11-04 00:26:56.815   Installing the file.
+2026-11-04 00:26:56.882   Successfully installed the file.
+2026-11-04 00:26:56.882   -- File entry --
+2026-11-04 00:26:56.883   Dest filename: C:\Users\Administrator\AppData\Local\PDFMathTranslate-Codex-Install-Tests\安装 验证-a21e5c20d2\PDFMathTranslate.deps.json
+2026-11-04 00:26:56.883   Time stamp of our file: 2026-11-03 23:45:44.000
+2026-11-04 00:26:56.883   Dest file exists.
+2026-11-04 00:26:56.883   Time stamp of existing file: 2026-11-03 23:45:44.000
+2026-11-04 00:26:56.883   Installing the file.
+2026-11-04 00:26:56.885   Successfully installed the file.
+2026-11-04 00:26:56.886   -- File entry --
+2026-11-04 00:26:56.886   Dest filename: C:\Users\Administrator\AppData\Local\PDFMathTranslate-Codex-Install-Tests\安装 验证-a21e5c20d2\PDFMathTranslate.dll
+2026-11-04 00:26:56.886   Time stamp of our file: 2026-11-03 23:58:46.000
+2026-11-04 00:26:56.886   Dest file exists.
+2026-11-04 00:26:56.887   Time stamp of existing file: 2026-11-03 23:58:46.000
+2026-11-04 00:26:56.887   Installing the file.
+2026-11-04 00:26:56.892   Successfully installed the file.
+2026-11-04 00:26:56.892   -- File entry --
+2026-11-04 00:26:56.892   Dest filename: C:\Users\Administrator\AppData\Local\PDFMathTranslate-Codex-Install-Tests\安装 验证-a21e5c20d2\PDFMathTranslate.exe
+2026-11-04 00:26:56.892   Time stamp of our file: 2026-11-03 23:58:48.000
+2026-11-04 00:26:56.892   Dest file exists.
+2026-11-04 00:26:56.892   Time stamp of existing file: 2026-11-03 23:58:48.000
+2026-11-04 00:26:56.892   Installing the file.
+2026-11-04 00:26:56.892   Successfully installed the file.
+2026-11-04 00:26:56.892   -- File entry --
+2026-11-04 00:26:56.892   Dest filename: C:\Users\Administrator\AppData\Local\PDFMathTranslate-Codex-Install-Tests\安装 验证-a21e5c20d2\PDFMathTranslate.pdb
+2026-11-04 00:26:56.892   Time stamp of our file: 2026-11-03 23:58:46.000
+2026-11-04 00:26:56.892   Dest file exists.
+2026-11-04 00:26:56.892   Time stamp of existing file: 2026-11-03 23:58:46.000
+2026-11-04 00:26:56.892   Installing the file.
+2026-11-04 00:26:56.912   Successfully installed the file.
+2026-11-04 00:26:56.912   -- File entry --
+2026-11-04 00:26:56.913   Dest filename: C:\Users\Administrator\AppData\Local\PDFMathTranslate-Codex-Install-Tests\安装 验证-a21e5c20d2\PDFMathTranslate.runtimeconfig.json
+2026-11-04 00:26:56.913   Time stamp of our file: 2026-11-03 21:53:04.000
+2026-11-04 00:26:56.913   Dest file exists.
+2026-11-04 00:26:56.913   Time stamp of existing file: 2026-11-03 21:53:04.000
+2026-11-04 00:26:56.913   Installing the file.
+2026-11-04 00:26:56.915   Successfully installed the file.
+2026-11-04 00:26:56.915   -- File entry --
+2026-11-04 00:26:56.915   Dest filename: C:\Users\Administrator\AppData\Local\PDFMathTranslate-Codex-Install-Tests\安装 验证-a21e5c20d2\README.md
+2026-11-04 00:26:56.916   Time stamp of our file: 2026-11-03 18:38:00.000
+2026-11-04 00:26:56.916   Dest file exists.
+2026-11-04 00:26:56.916   Time stamp of existing file: 2026-11-03 18:38:00.000
+2026-11-04 00:26:56.916   Installing the file.
+2026-11-04 00:26:56.918   Successfully installed the file.
+2026-11-04 00:26:56.918   -- File entry --
+2026-11-04 00:26:56.919   Dest filename: C:\Users\Administrator\AppData\Local\PDFMathTranslate-Codex-Install-Tests\安装 验证-a21e5c20d2\THIRD_PARTY_NOTICES.md
+2026-11-04 00:26:56.920   Time stamp of our file: 2026-11-03 21:42:58.000
+2026-11-04 00:26:56.920   Dest file exists.
+2026-11-04 00:26:56.920   Time stamp of existing file: 2026-11-03 21:42:58.000
+2026-11-04 00:26:56.920   Installing the file.
+2026-11-04 00:26:56.922   Successfully installed the file.
+2026-11-04 00:26:56.922   -- File entry --
+2026-11-04 00:26:56.923   Dest filename: C:\Users\Administrator\AppData\Local\PDFMathTranslate-Codex-Install-Tests\安装 验证-a21e5c20d2\version.json
+2026-11-04 00:26:56.923   Time stamp of our file: 2026-11-04 00:15:08.000
+2026-11-04 00:26:56.924   Dest file exists.
+2026-11-04 00:26:56.924   Time stamp of existing file: 2026-11-04 00:08:24.000
+2026-11-04 00:26:56.924   Installing the file.
+2026-11-04 00:26:56.925   DeleteFile: The existing file appears to be in use (32). Retrying.
+2026-11-04 00:26:57.933   DeleteFile: The existing file appears to be in use (32). Retrying.
+2026-11-04 00:26:58.940   DeleteFile: The existing file appears to be in use (32). Retrying.
+2026-11-04 00:26:59.941   DeleteFile: The existing file appears to be in use (32). Retrying.
+2026-11-04 00:27:00.957   Defaulting to Abort for suppressed message box (Abort/Retry/Ignore):
+                          C:\Users\Administrator\AppData\Local\PDFMathTranslate-Codex-Install-Tests\安装 验证-a21e5c20d2\version.json
+                          
+                          尝试替换已存在的文件时出错：
+                          DeleteFile 失败；错误代码 32。
+                          另一个程序正在使用此文件，进程无法访问。.
+2026-11-04 00:27:00.957   User canceled the installation process.
+2026-11-04 00:27:00.957   Rolling back changes.
+2026-11-04 00:27:00.958   Starting the uninstallation process.
+2026-11-04 00:27:00.958   Uninstallation process succeeded.
+2026-11-04 00:27:00.958   Deinitializing Setup.
+2026-11-04 00:27:00.963   Log closed.

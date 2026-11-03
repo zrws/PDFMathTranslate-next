@@ -1,0 +1,4 @@
+pytest exit code: 0
+[PASS] net-guard active for pytest: zero outbound attempts
+[PASS] owned sentinel dirs unchanged; no real user directory snapshot claimed
+evidence dir: D:\student\翻译\PDFMathTranslate-next\docs\verification\native-desktop\p1-pytest-final-5c8bee4c23\runs\pytest-20261103-235628

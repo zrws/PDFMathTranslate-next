@@ -1,0 +1,141 @@
+
+[pdf2zh-test-isolation] root=C:\Users\ADMINI~1\AppData\Local\Temp\pdf2zh-pytest-7psatbhj
+[pdf2zh-test-isolation] cwd=C:\Users\ADMINI~1\AppData\Local\Temp\pdf2zh-pytest-7psatbhj\work
+[pdf2zh-test-isolation] config=C:\Users\ADMINI~1\AppData\Local\Temp\pdf2zh-pytest-7psatbhj\home\.config\pdf2zh\config.v3.toml
+[pdf2zh-test-isolation][ok] HOME/USERPROFILE fully inside the isolated root
+..F                                                                      [100%]
+================================== FAILURES ===================================
+_________ test_http_disconnect_kills_renderer_and_unblocks_next_page __________
+
+tmp_path = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-0/test_http_disconnect_kills_ren0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D41EE2FE30>
+
+    def test_http_disconnect_kills_renderer_and_unblocks_next_page(tmp_path, monkeypatch):
+        import uvicorn
+        monkeypatch.setattr(Assets, 'verify', lambda self: True)
+        listener=socket.socket();listener.bind(('127.0.0.1',0));listener.listen(128);port=listener.getsockname()[1]
+        app=server.create_app(tmp_path,'t'*64,port,tmp_path/'downloads')
+        file=tmp_path/'work/uploads/12345678__source.pdf';file.write_bytes(b'%PDF-fixture')
+        started=threading.Event();children=[]
+        def spawn(*args,**kwargs):
+            child=subprocess.Popen(*args,**kwargs);children.append(child);started.set();return child
+        async def renderer(command):
+            page=command[command.index('--page')+1]
+            script='import time;time.sleep(30)' if page=='1' else 'print(\'{"page_count":2,"page_index":2}\\nPNG\')'
+            return await capture_process([sys.executable,'-c',script],spawn=spawn)
+        monkeypatch.setattr(server,'capture_process',renderer)
+        control=uvicorn.Server(uvicorn.Config(app,host='127.0.0.1',port=port,log_level='error',access_log=False))
+        thread=threading.Thread(target=lambda:control.run(sockets=[listener]),daemon=True);thread.start()
+        conn=http.client.HTTPConnection('127.0.0.1',port,timeout=5)
+        headers={'Authorization':'Bearer '+'t'*64}
+        try:
+            deadline=time.monotonic()+5
+            while not control.started and time.monotonic()<deadline:time.sleep(.01)
+            conn.request('GET','/api/files/12345678__source.pdf/preview?page=1',headers=headers)
+            assert started.wait(5)
+            # A second request waits on the same semaphore before the first socket
+            # closes, so it proves actual queue release rather than cached output.
+            result=[]
+            def next_page():
+                c=http.client.HTTPConnection('127.0.0.1',port,timeout=5)
+                try:c.request('GET','/api/files/12345678__source.pdf/preview?page=2',headers=headers);r=c.getresponse();result.append((r.status,r.read()))
+                finally:c.close()
+            pending=threading.Thread(target=next_page);pending.start();time.sleep(.1);conn.close()
+            pending.join(5)
+>           assert result==[(200,b'PNG\r\n')] or result==[(200,b'PNG\n')]
+E           AssertionError: assert ([] == [(200, b'PNG\r\n')]
+E             
+E             Right contains one more item: (200, b'PNG\r\n')
+E             Use -v to get more diff or [] == [(200, b'PNG\n')]
+E             
+E             Right contains one more item: (200, b'PNG\n')
+E             Use -v to get more diff)
+
+D:\student\翻译\PDFMathTranslate-next\source\tests\test_desktop_cancellation.py:84: AssertionError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-0/test_http_disconnect_kills_ren0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D41EE2FE30>
+
+    def test_http_disconnect_kills_renderer_and_unblocks_next_page(tmp_path, monkeypatch):
+        import uvicorn
+        monkeypatch.setattr(Assets, 'verify', lambda self: True)
+        listener=socket.socket();listener.bind(('127.0.0.1',0));listener.listen(128);port=listener.getsockname()[1]
+        app=server.create_app(tmp_path,'t'*64,port,tmp_path/'downloads')
+        file=tmp_path/'work/uploads/12345678__source.pdf';file.write_bytes(b'%PDF-fixture')
+        started=threading.Event();children=[]
+        def spawn(*args,**kwargs):
+            child=subprocess.Popen(*args,**kwargs);children.append(child);started.set();return child
+        async def renderer(command):
+            page=command[command.index('--page')+1]
+            script='import time;time.sleep(30)' if page=='1' else 'print(\'{"page_count":2,"page_index":2}\\nPNG\')'
+            return await capture_process([sys.executable,'-c',script],spawn=spawn)
+        monkeypatch.setattr(server,'capture_process',renderer)
+        control=uvicorn.Server(uvicorn.Config(app,host='127.0.0.1',port=port,log_level='error',access_log=False))
+        thread=threading.Thread(target=lambda:control.run(sockets=[listener]),daemon=True);thread.start()
+        conn=http.client.HTTPConnection('127.0.0.1',port,timeout=5)
+        headers={'Authorization':'Bearer '+'t'*64}
+        try:
+            deadline=time.monotonic()+5
+            while not control.started and time.monotonic()<deadline:time.sleep(.01)
+            conn.request('GET','/api/files/12345678__source.pdf/preview?page=1',headers=headers)
+            assert started.wait(5)
+            # A second request waits on the same semaphore before the first socket
+            # closes, so it proves actual queue release rather than cached output.
+            result=[]
+            def next_page():
+                c=http.client.HTTPConnection('127.0.0.1',port,timeout=5)
+                try:c.request('GET','/api/files/12345678__source.pdf/preview?page=2',headers=headers);r=c.getresponse();result.append((r.status,r.read()))
+                finally:c.close()
+            pending=threading.Thread(target=next_page);pending.start();time.sleep(.1);conn.close()
+            pending.join(5)
+            assert result==[(200,b'PNG\r\n')] or result==[(200,b'PNG\n')]
+            assert children[0].poll() is not None and len(children)==2
+        finally:
+            conn.close();control.should_exit=True;thread.join(8);listener.close()
+            for child in children:
+                if child.poll() is None:child.kill();child.wait(3)
+>           assert not thread.is_alive()
+E           assert not True
+E            +  where True = is_alive()
+E            +    where is_alive = <Thread(Thread-6 (<lambda>), started daemon 24328)>.is_alive
+
+D:\student\翻译\PDFMathTranslate-next\source\tests\test_desktop_cancellation.py:90: AssertionError
+============================== warnings summary ===============================
+.local\native-runtime\uv-tools\pdf2zh-next\Lib\site-packages\starlette\testclient.py:45
+  D:\student\翻译\PDFMathTranslate-next\.local\native-runtime\uv-tools\pdf2zh-next\Lib\site-packages\starlette\testclient.py:45: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]
+
+tests/test_desktop_cancellation.py::test_http_disconnect_kills_renderer_and_unblocks_next_page
+  D:\student\翻译\PDFMathTranslate-next\.local\native-runtime\uv-tools\pdf2zh-next\Lib\site-packages\_pytest\threadexception.py:58: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-7 (next_page)
+  
+  Traceback (most recent call last):
+    File "D:\student\翻译\PDFMathTranslate-next\.local\native-runtime\uv-python\cpython-3.12.13-windows-x86_64-none\Lib\threading.py", line 1075, in _bootstrap_inner
+      self.run()
+    File "D:\student\翻译\PDFMathTranslate-next\.local\native-runtime\uv-python\cpython-3.12.13-windows-x86_64-none\Lib\threading.py", line 1012, in run
+      self._target(*self._args, **self._kwargs)
+    File "D:\student\翻译\PDFMathTranslate-next\source\tests\test_desktop_cancellation.py", line 80, in next_page
+      try:c.request('GET','/api/files/12345678__source.pdf/preview?page=2',headers=headers);r=c.getresponse();result.append((r.status,r.read()))
+                                                                                              ^^^^^^^^^^^^^^^
+    File "D:\student\翻译\PDFMathTranslate-next\.local\native-runtime\uv-python\cpython-3.12.13-windows-x86_64-none\Lib\http\client.py", line 1450, in getresponse
+      response.begin()
+    File "D:\student\翻译\PDFMathTranslate-next\.local\native-runtime\uv-python\cpython-3.12.13-windows-x86_64-none\Lib\http\client.py", line 336, in begin
+      version, status, reason = self._read_status()
+                                ^^^^^^^^^^^^^^^^^^^
+    File "D:\student\翻译\PDFMathTranslate-next\.local\native-runtime\uv-python\cpython-3.12.13-windows-x86_64-none\Lib\http\client.py", line 297, in _read_status
+      line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "D:\student\翻译\PDFMathTranslate-next\.local\native-runtime\uv-python\cpython-3.12.13-windows-x86_64-none\Lib\socket.py", line 720, in readinto
+      return self._sock.recv_into(b)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  TimeoutError: timed out
+  
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED source\tests\test_desktop_cancellation.py::test_http_disconnect_kills_renderer_and_unblocks_next_page
+1 failed, 2 passed, 2 warnings in 16.80s

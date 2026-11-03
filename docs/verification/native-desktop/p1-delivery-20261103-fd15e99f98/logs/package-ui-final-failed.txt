@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "D:\student\翻译\PDFMathTranslate-next\tests\native\acceptance.py", line 235, in <module>
+    if __name__ == "__main__": raise SystemExit(main())
+                                                ^^^^^^
+  File "D:\student\翻译\PDFMathTranslate-next\tests\native\acceptance.py", line 216, in main
+    check("native WPF integration flow",code==0,{"actual_exit":code,"evidence_root":str(ui_root),"ui_provenance_sha256":hashlib.sha256(proof.read_bytes()).hexdigest()})
+  File "D:\student\翻译\PDFMathTranslate-next\tests\native\acceptance.py", line 98, in check
+    if not passed: raise AssertionError(name+": "+str(detail))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: native WPF integration flow: {'actual_exit': 1, 'evidence_root': 'D:\\student\\翻译\\PDFMathTranslate-next\\docs\\verification\\native-desktop\\p1-ui-flow-7e4beed8af', 'ui_provenance_sha256': 'ff5d3bdd39436811b4c4206d2bce5614f9cf7ac49b6d10d6af1a705aa4076736'}

@@ -1,0 +1,30 @@
+{
+  "recorded": "2026-11-04T00:42:16.2335000+08:00",
+  "observed_runs": [
+    {
+      "source": "tool exec session 12650 completed",
+      "actual_exit": 0,
+      "raw": "logs/dense-two-page-final.txt",
+      "name": "normal dense two-page API and WPF"
+    },
+    {
+      "source": "tool exec session 21965 completed",
+      "actual_exit": 0,
+      "raw": "logs/install-lifecycle-final.txt",
+      "name": "R11 core test installer lifecycle"
+    },
+    {
+      "source": "tool exec session 85562 completed",
+      "actual_exit": 0,
+      "evidence": "p1-pytest-final-5c8bee4c23",
+      "name": "isolated full pytest"
+    },
+    {
+      "source": "tool exec session 17958 completed",
+      "actual_exit": 0,
+      "evidence": "p1-perf-timing-28e93a6cb9",
+      "name": "native readiness and idle timing"
+    }
+  ],
+  "observation_kind": "recorded tool process completion; no missing PID or StartTime reconstructed"
+}

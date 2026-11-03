@@ -1,0 +1,17 @@
+{
+  "api_ready": true,
+  "real_window_visible": true,
+  "window_handle": 47121048,
+  "window_ready_ms": 1478.9856,
+  "api_ready_ms": 12294.6738,
+  "render_kind": "actual running WPF visual tree, RenderTargetBitmap; not OS input automation",
+  "uncommon_language_readback": true,
+  "auto_update_opt_out_readback": true,
+  "task_status": "done",
+  "shared_task_reference": true,
+  "translated_preview_page_count": 1,
+  "error": "\u8BD1\u6587\u9884\u89C8\u9875\u6570\u6216\u7FFB\u9875\u8BFB\u53D6\u9519\u8BEF",
+  "passed": false,
+  "completed_at": "2026-11-04T00:20:13.7921582+08:00",
+  "process_id": 21696
+}

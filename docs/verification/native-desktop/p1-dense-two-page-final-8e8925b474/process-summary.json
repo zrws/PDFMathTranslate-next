@@ -1,0 +1,42 @@
+{
+  "scope": "real native API process tree, 250ms sampling, includes pipeline and previews; GPU counters not measured",
+  "input_sha256": "7a812d4158b59ebc8e853d358d2b7973e949d854d296ac36f7157194fbdb41a5",
+  "samples": 561,
+  "seconds": 153.89725303649902,
+  "observed_process_identities": 15,
+  "observed_counter_deltas": {
+    "cpu_seconds": 61.03125,
+    "read_bytes": 4862401549,
+    "write_bytes": 17267315
+  },
+  "tree_private_peak_bytes": 2586816512,
+  "tree_working_set_peak_bytes": 2166083584,
+  "tree_threads_peak": 60,
+  "final_observed_processes": [
+    {
+      "pid": 22892,
+      "created": 1793723676.1787603,
+      "exe": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cc12e21d7a4e\\payload\\uv-python\\cpython-3.12.13-windows-x86_64-none\\python.exe",
+      "name": "python.exe",
+      "private_bytes": 54116352,
+      "working_set_bytes": 70123520,
+      "threads": 4,
+      "cpu_seconds": 4.671875,
+      "read_bytes": 361954320,
+      "write_bytes": 893643
+    },
+    {
+      "pid": 27124,
+      "created": 1793723676.1859214,
+      "exe": "C:\\Windows\\System32\\conhost.exe",
+      "name": "conhost.exe",
+      "private_bytes": 1265664,
+      "working_set_bytes": 8036352,
+      "threads": 2,
+      "cpu_seconds": 0.0,
+      "read_bytes": 0,
+      "write_bytes": 0
+    }
+  ],
+  "limits": "250ms polling can miss short-lived processes and their initial/final counters; deltas are observed lower bounds, not full accounting. Includes API lifecycle and previews, not just translation. GPU unmeasured."
+}

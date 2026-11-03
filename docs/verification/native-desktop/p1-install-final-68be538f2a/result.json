@@ -1,0 +1,135 @@
+{
+  "first_installer": "D:\\student\\翻译\\PDFMathTranslate-next\\dist\\install-tests-b1828d388b5f\\PDFMathTranslate-Setup-2.9.0.exe",
+  "install_root": "C:\\Users\\Administrator\\AppData\\Local\\PDFMathTranslate-Codex-Install-Tests\\安装 验证-a21e5c20d2",
+  "scope": "real silent EXE install/upgrade/uninstall and standard registry discovery; Geek GUI and installer mouse input not tested",
+  "input_binding": {
+    "upgrade_sha256": "FDF49E7D28B390FD04EA23BB9EBAD0439ED178A56EE23DC18192C90BCDB74C52",
+    "script_sha256": "37B9822DE5A8DF460A804837032DBE67825E22E1CE054E37EF28908B3B4FA7AF",
+    "first_sha256": "735F7ABD8787BAF550DE19ADCA8E472DEA2CFF3EAC1390742CCE2CB5D5D77A43",
+    "source_commit": "9581830241c99cc39cbc3bf4b3353374a99f9f7c"
+  },
+  "cleanup": {
+    "attempted": false
+  },
+  "checks": [
+    {
+      "case": "中文路径安装实际退出0",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "标准卸载发现信息完整",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "开始菜单快捷方式",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "桌面快捷方式",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "初版拥有待淘汰文件",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "中文相对路径的程序文件已安装",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "安装版 Release 实际启动并建立隔离后端状态",
+      "passed": true,
+      "detail": {
+        "started": "2026-11-04T00:25:39.8602776+08:00",
+        "state_observed_ms": 3832.4149,
+        "pid": 23820,
+        "scope": "observed backend state file and live Release PID, not HWND or authenticated API-ready timestamp",
+        "home": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\install-profile-f4e33da195",
+        "path": "C:\\Users\\Administrator\\AppData\\Local\\PDFMathTranslate-Codex-Install-Tests\\安装 验证-a21e5c20d2\\PDFMathTranslate.exe"
+      }
+    },
+    {
+      "case": "运行中卸载被拒且程序保留",
+      "passed": true,
+      "detail": {
+        "actual_exit": 1
+      }
+    },
+    {
+      "case": "升级拒绝重解析目录且不写入外部哨兵",
+      "passed": true,
+      "detail": {
+        "actual_exit": 7
+      }
+    },
+    {
+      "case": "锁定文件拒绝覆盖并保留用户文件",
+      "passed": true,
+      "detail": {
+        "note": "normal upgrade follows after unlock",
+        "actual_exit": 5
+      }
+    },
+    {
+      "case": "升级实际退出0",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "升级版本注册信息",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "只清理哈希匹配的旧拥有文件",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "升级保留用户文件",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "卸载实际退出0",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "卸载注册项已清理",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "卸载保留用户文件与已修改文件",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "卸载已删除未修改的主程序",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "卸载按UTF8清单删除中文程序文件",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "快捷方式已清理",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "passed": true,
+  "upgrade_installer": "D:\\student\\翻译\\PDFMathTranslate-next\\dist\\install-tests-b1828d388b5f\\PDFMathTranslate-Setup-2.9.1.exe",
+  "group": "PDFMathTranslate-Codex-Test-b1828d388b5f",
+  "retention": "unknown/modified files retained, empty directories only; test sentinels deliberately retained",
+  "app_id": "PDFMathTranslate-Codex-Test-b1828d388b5f"
+}

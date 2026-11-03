@@ -1,0 +1,9 @@
+{
+  "DisplayName": "PDFMathTranslate 2.9.0",
+  "DisplayVersion": "2.9.0",
+  "InstallLocation": "C:\\Users\\Administrator\\AppData\\Local\\PDFMathTranslate-Codex-Install-Tests\\安装 验证-a21e5c20d2\\",
+  "UninstallString": "\"C:\\Users\\Administrator\\AppData\\Local\\PDFMathTranslate-Codex-Install-Tests\\安装 验证-a21e5c20d2\\unins000.exe\"",
+  "QuietUninstallString": "\"C:\\Users\\Administrator\\AppData\\Local\\PDFMathTranslate-Codex-Install-Tests\\安装 验证-a21e5c20d2\\unins000.exe\" /SILENT",
+  "Publisher": "PDFMathTranslate-next",
+  "EstimatedSize": 776671
+}

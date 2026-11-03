@@ -1,0 +1,10 @@
+{
+  "script_sha256": "04946E6D747B1C4901F17333537EF22139CD2EE5234974DF36EBC4E7E2446B1F",
+  "args": "dotnet run --project desktop/PDFMathTranslate.Tests -c Release --no-restore",
+  "actual_exit": 0,
+  "scope": "real fake-handler service tests; no installer fixture execution or formal feed",
+  "script": "desktop/PDFMathTranslate.Tests/Program.cs",
+  "source_commit": "e3585d273c341834bea9661ef808f993f4fab72a",
+  "started_by": "owned portable .NET10.0.403",
+  "assembly_sha256": "3FFD998949A1B9C7A0B7C84F19550E576D035197D4DA3F2E492BC3FC60DCF2DF"
+}

@@ -1,0 +1,4 @@
+D:\student\翻译\PDFMathTranslate-next\desktop\PDFMathTranslate.Desktop\NativeUiVerification.cs(88,57): warning CS8601: 可能的 null 引用赋值。 [D:\student\翻译\PDFMathTranslate-next\desktop\PDFMathTranslate.Desktop\PDFMathTranslate.Desktop_h4qitpuk_wpftmp.csproj]
+D:\student\翻译\PDFMathTranslate-next\desktop\PDFMathTranslate.Desktop\NativeUiVerification.cs(88,57): warning CS8601: 可能的 null 引用赋值。 [D:\student\翻译\PDFMathTranslate-next\desktop\PDFMathTranslate.Desktop\PDFMathTranslate.Desktop.csproj]
+  PDFMathTranslate.Desktop -> D:\student\翻译\PDFMathTranslate-next\desktop\PDFMathTranslate.Desktop\bin\Debug\net10.0-windows\win-x64\PDFMathTranslate.dll
+  PDFMathTranslate.Desktop -> D:\student\翻译\PDFMathTranslate-next\.local\native-app-r17\

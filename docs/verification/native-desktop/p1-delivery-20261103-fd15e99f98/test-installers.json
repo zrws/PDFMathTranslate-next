@@ -1,0 +1,11 @@
+{
+  "test_payload": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\install-test-payload-b1828d388b5f",
+  "app_id": "PDFMathTranslate-Codex-Test-b1828d388b5f",
+  "upgrade_sha256": "FDF49E7D28B390FD04EA23BB9EBAD0439ED178A56EE23DC18192C90BCDB74C52",
+  "first_sha256": "735F7ABD8787BAF550DE19ADCA8E472DEA2CFF3EAC1390742CCE2CB5D5D77A43",
+  "source_payload": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cc12e21d7a4e\\payload",
+  "source_commit": "fdfcb2a1620623a71421e38de091323631f64ae9",
+  "upgrade": "D:\\student\\翻译\\PDFMathTranslate-next\\dist\\install-tests-b1828d388b5f\\PDFMathTranslate-Setup-2.9.1.exe",
+  "group": "PDFMathTranslate-Codex-Test-b1828d388b5f",
+  "first": "D:\\student\\翻译\\PDFMathTranslate-next\\dist\\install-tests-b1828d388b5f\\PDFMathTranslate-Setup-2.9.0.exe"
+}

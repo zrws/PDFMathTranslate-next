@@ -1,0 +1,2 @@
+  PDFMathTranslateLauncher -> D:\student\翻译\PDFMathTranslate-next\launcher\bin\Release\net8.0-windows\win-x64\PDFMathTranslate.dll
+  PDFMathTranslateLauncher -> D:\student\翻译\PDFMathTranslate-next\.local\legacy-compile\

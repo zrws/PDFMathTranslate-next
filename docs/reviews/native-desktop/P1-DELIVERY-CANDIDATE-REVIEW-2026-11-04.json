@@ -1,0 +1,19 @@
+{
+  "scope": "independent read-only index and staged Git evidence byte verification; not a rerun",
+  "checked_unix": 1793724385.7697937,
+  "index_sha256": "f8a8d0b3fb7e810aae7d6080aaf246266ee879e9e1b473cf04efd6c600b7f821",
+  "index_source_commit": "99925ce148932517e8c910ccbe032e29d23188ef",
+  "source_rows": 502,
+  "evidence_roots": 31,
+  "evidence_rows": 1511,
+  "duplicate_index_paths": 0,
+  "filesystem_mismatches": [],
+  "evidence_missing_from_git_index": [],
+  "evidence_git_blob_sha_mismatches": [],
+  "candidate_manifest_sha256": "bd8d18462fc2349400278b1741a99b6fa3a841632e42ab7de743f5cfba3a62c3",
+  "candidate_count": 151,
+  "candidate_bytes": 36995553,
+  "candidate_changed_set_matches": true,
+  "candidate_git_identity_mismatches": [],
+  "candidate_forbidden_paths": []
+}

@@ -87,4 +87,6 @@ computer-use两入口均在初始化报 `failed to write kernel assets: 系统�
 - 最终活动树：561样本/153.897秒（含API、预览及等待UI，非纯翻译耗时），private峰2586816512B、线程峰60；观测CPU增量61.03125s、读4862401549B、写17267315B。250ms会漏短进程初末计数，属于下界；采样末尾可能仍有控制面，但关闭后按PID+creation_time另核残留为空，不能仅凭末样本判断回收。
 - 最终运行盘占用：交付根runtime-cache-observation.json，独占home总255个普通文件/360288160B；资源目录185文件/352496622B（锁资源有效内容182项352451566B，其余为运行生成内容）、翻译缓存229376B、work暂存64149B、桌面状态29690B、引擎配置21489B、tmp0。未跟随Windows生成的INetCache兼容junction。资源采用已验证离线拷贝，未计首次HTTP传输的协议/重试开销；work为可重试保留输入/产物，不假称整个work缓存有界。解压比较是payload逻辑字节，不含Inno卸载元数据/文件系统分配开销；标准安装注册口径见registered-uninstall.json。
 
-交付索引SHA与独立总审最终收口随后补充。全部人工OS项、启动稳定性、GPU/旧GUI完整基线及商业/长文档质量仍是待验，不因32/20通过而改成全部P1发布验收通过。
+交付索引为 `verification/native-desktop/p1-delivery-20261103-fd15e99f98/delivery-index.json`，SHA256 `F8A8D0B3FB7E810AAE7D6080AAF246266EE879E9E1B473CF04EFD6C600B7F821`；31个运行/镜像根、1511个非EXE证据文件和502个跟踪源码文件有实际大小/SHA。索引生成基点`99925ce148932517e8c910ccbe032e29d23188ef`，它是文件交付身份，不是新执行或补造历史通过。EXE仅在本机dist保留，Git不含模型/字体缓存或测试安装器。
+
+独立最终裁决见 `reviews/native-desktop/LOCAL-P1-INTEGRATED-REVIEW-2026-11-04.md`，新正常32/20及R11逐文件校验另有独立JSON。全部人工OS项、启动稳定性、GPU/旧GUI完整基线及商业/长文档质量仍是待验，不因32/20通过而改成全部P1发布验收通过。实现和已运行验收供功能分支复审，不合并main/不建tag/不发布Release。

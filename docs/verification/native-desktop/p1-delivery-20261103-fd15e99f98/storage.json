@@ -1,0 +1,18 @@
+{
+  "scope": "storage mapping only; no causal attribution of startup timeout",
+  "drives": [
+    {
+      "model": "Maxsun 512GB SSD",
+      "drive": "C",
+      "disk_number": 2,
+      "bus_type": "NVMe"
+    },
+    {
+      "model": "WDC WD10JPVX-22JC3T0",
+      "drive": "D",
+      "disk_number": 0,
+      "bus_type": "SATA"
+    }
+  ],
+  "observed": "2026-11-04T00:17:20.0627814+08:00"
+}

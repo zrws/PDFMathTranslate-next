@@ -1,0 +1,51 @@
+{
+  "scope": "independent read-only normal dense R11 API and real Debug WPF artifacts; not a rerun",
+  "checked_unix": 1793723911.901417,
+  "result_sha256": "249f21c5aee25de916c2654f113cf2376e90ded28f417128c5e083c06c75aee1",
+  "ui_result_sha256": "46c664cfeae683b861a3442e57701a01cc2dae26678bf5cdcc7c7f0e9fccd8ac",
+  "provenance_sha256": "7556a7b95031ed5913ede9cc7ee3999489f97c76f9229e3309835daa7c574a91",
+  "result_checks": 32,
+  "all_checks_pass": true,
+  "diagnostic_observation": false,
+  "module_hashes_checked": 13,
+  "bad_paths": [],
+  "input_sha_match": true,
+  "acceptance_script_match": true,
+  "process_summary_input_match": true,
+  "raw_sample_count": 561,
+  "raw_span_seconds": 153.89725303649902,
+  "raw_identity_count": 15,
+  "raw_tree_peaks": {
+    "private_bytes": 2586816512,
+    "working_set_bytes": 2166083584,
+    "threads": 60
+  },
+  "raw_observed_counter_deltas": {
+    "cpu_seconds": 61.03125,
+    "read_bytes": 4862401549,
+    "write_bytes": 17267315
+  },
+  "summary_matches_raw": true,
+  "ui_exports": [
+    {
+      "path": "exports\\科学论文验收_2026-11-04\\科学论文验收_单语.pdf",
+      "bytes": 28504,
+      "sha256": "805c66a5f24c9c0b12aab63cf64b75a90554e38996a9845e337d91ff3349fbdb"
+    },
+    {
+      "path": "exports\\科学论文验收_2026-11-04\\科学论文验收_单语_v2.pdf",
+      "bytes": 28504,
+      "sha256": "805c66a5f24c9c0b12aab63cf64b75a90554e38996a9845e337d91ff3349fbdb"
+    },
+    {
+      "path": "exports\\科学论文验收_2026-11-04\\科学论文验收_双语.pdf",
+      "bytes": 31855,
+      "sha256": "71efbd2b9a29b1fd0d2434f938e86b2d24414ae66431d414a336eb7d8b43a810"
+    },
+    {
+      "path": "exports\\科学论文验收_2026-11-04\\科学论文验收_双语_v2.pdf",
+      "bytes": 31855,
+      "sha256": "71efbd2b9a29b1fd0d2434f938e86b2d24414ae66431d414a336eb7d8b43a810"
+    }
+  ]
+}

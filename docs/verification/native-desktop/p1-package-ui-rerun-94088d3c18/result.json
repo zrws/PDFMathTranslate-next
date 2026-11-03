@@ -1,0 +1,335 @@
+{
+  "passed": false,
+  "checks": [
+    {
+      "case": "health authenticated",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "health rejects missing bearer",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "host rejects spoof",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "origin rejects cross-site",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "initial SSE snapshot",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "settings actual capped policy",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "invalid settings rejected",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "settings failure preserves value",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "real PDF upload",
+      "passed": true,
+      "detail": {
+        "file_id": "29c7674b__sample.pdf",
+        "filename": "sample.pdf",
+        "page_count": 1,
+        "size_bytes": 1204,
+        "sha256": "13f9915bdeaddc19c930549d50280edf9ec7e60f5a63625af8bab0422261f7d9"
+      }
+    },
+    {
+      "case": "bounded preview PNG",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "real task accepted",
+      "passed": true,
+      "detail": {
+        "id": "119bb96fde86441e",
+        "filename": "sample.pdf",
+        "file_sha256": "13f9915bdeaddc19c930549d50280edf9ec7e60f5a63625af8bab0422261f7d9",
+        "page_count": 1,
+        "lang_in": "en",
+        "lang_out": "zh-CN",
+        "options": {
+          "lang_in": "en",
+          "lang_out": "zh-CN",
+          "pages": "",
+          "no_dual": false,
+          "no_mono": false,
+          "auto_term_extraction": false,
+          "watermark_output_mode": "watermarked",
+          "export_dir": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-acceptance-9530af620f054196bc758c343c593adb\\exports",
+          "resource_policy": {
+            "tier": "balanced",
+            "document_concurrency": 1,
+            "local_compute_threads": 4,
+            "api_qps_cap": 4,
+            "api_inflight_limit": 8,
+            "preview_concurrency": 1,
+            "gpu": false
+          },
+          "engine": {
+            "service": "OpenAI",
+            "base_url": "http://127.0.0.1:47879/v1",
+            "model": "local-test-model"
+          },
+          "term_credential_provider": null,
+          "glossary_fingerprints": [],
+          "settings_fingerprint": "6bbe1da2ec1dba04b8ec94c589f31a39a6fa085970b5868e56c986c794dba8c8"
+        },
+        "status": "queued",
+        "phase": "preparing",
+        "stage": "等待资源与工作线程",
+        "message": "排队中",
+        "error": "",
+        "progress": 0,
+        "revision": 1,
+        "created_at": 1793722658.7919774,
+        "finished_at": null,
+        "outputs": {},
+        "saved_paths": [],
+        "parent_task_id": null,
+        "output_identities": {}
+      }
+    },
+    {
+      "case": "create replay one task",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "same key different language conflict",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "genuine BabelDOC produced both outputs",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "case": "real loopback provider used",
+      "passed": true,
+      "detail": 5
+    },
+    {
+      "case": "translated output preview",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "actual export saved",
+      "passed": true,
+      "detail": {
+        "id": "119bb96fde86441e",
+        "filename": "sample.pdf",
+        "file_sha256": "13f9915bdeaddc19c930549d50280edf9ec7e60f5a63625af8bab0422261f7d9",
+        "page_count": 1,
+        "lang_in": "en",
+        "lang_out": "zh-CN",
+        "options": {
+          "lang_in": "en",
+          "lang_out": "zh-CN",
+          "pages": "",
+          "no_dual": false,
+          "no_mono": false,
+          "auto_term_extraction": false,
+          "watermark_output_mode": "watermarked",
+          "export_dir": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-acceptance-9530af620f054196bc758c343c593adb\\exports",
+          "resource_policy": {
+            "tier": "balanced",
+            "document_concurrency": 1,
+            "local_compute_threads": 4,
+            "api_qps_cap": 4,
+            "api_inflight_limit": 8,
+            "preview_concurrency": 1,
+            "gpu": false
+          },
+          "engine": {
+            "service": "OpenAI",
+            "base_url": "http://127.0.0.1:47879/v1",
+            "model": "local-test-model"
+          },
+          "term_credential_provider": null,
+          "glossary_fingerprints": [],
+          "settings_fingerprint": "6bbe1da2ec1dba04b8ec94c589f31a39a6fa085970b5868e56c986c794dba8c8"
+        },
+        "status": "done",
+        "phase": "finalizing",
+        "stage": "已有结果保存记录",
+        "message": "文件已保存，可打开结果或目录",
+        "error": "",
+        "progress": 100,
+        "revision": 58,
+        "created_at": 1793722658.7919774,
+        "finished_at": 1793722703.6034446,
+        "outputs": {
+          "dual": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-acceptance-9530af620f054196bc758c343c593adb\\work\\outputs\\119bb96fde86441e\\29c7674b__sample.zh-CN.dual.pdf",
+          "mono": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-acceptance-9530af620f054196bc758c343c593adb\\work\\outputs\\119bb96fde86441e\\29c7674b__sample.zh-CN.mono.pdf"
+        },
+        "saved_paths": [
+          "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-acceptance-9530af620f054196bc758c343c593adb\\exports\\sample_2026-11-04\\sample_双语.pdf",
+          "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-acceptance-9530af620f054196bc758c343c593adb\\exports\\sample_2026-11-04\\sample_单语.pdf"
+        ],
+        "parent_task_id": null,
+        "output_identities": {
+          "dual": {
+            "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-acceptance-9530af620f054196bc758c343c593adb\\work\\outputs\\119bb96fde86441e\\29c7674b__sample.zh-CN.dual.pdf",
+            "output_revision": 1,
+            "size_bytes": 26240,
+            "sha256": "63dd5fe840206705a9c5db6fc30b3ab04dcd2e751ad3d92e1bb09deefe36fdd8"
+          },
+          "mono": {
+            "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-acceptance-9530af620f054196bc758c343c593adb\\work\\outputs\\119bb96fde86441e\\29c7674b__sample.zh-CN.mono.pdf",
+            "output_revision": 1,
+            "size_bytes": 24924,
+            "sha256": "2f7f4104e0780c100e9af2f62dee83f557c3b8211718765ec4c6db31a84f58ba"
+          }
+        }
+      }
+    },
+    {
+      "case": "export replay no duplicate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "second export versions",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "download mono",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "download dual",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "SSE final not dropped",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "no credential in events",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "effective snapshot contains no API key",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "create replay survives changed global settings",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "queued cancellation is terminal",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "retry freezes original full configuration",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "retry lost-response key stable",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "clear history preserves create tombstone",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "clear history preserves retry tombstone",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "native WPF integration flow",
+      "passed": false,
+      "detail": {
+        "actual_exit": 1,
+        "evidence_root": "D:\\student\\翻译\\PDFMathTranslate-next\\docs\\verification\\native-desktop\\p1-ui-flow-195c364fc2",
+        "ui_provenance_sha256": "dd8c7997383bccc877294811addff7fa363af0a3b9cc88d58c2d6984836a8e0b"
+      }
+    },
+    {
+      "case": "owned backend process tree reclaimed",
+      "passed": true,
+      "detail": {
+        "control_actual_exit": 0,
+        "surviving_identities": []
+      }
+    }
+  ],
+  "home": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-acceptance-9530af620f054196bc758c343c593adb",
+  "control_pid": 16356,
+  "control_actual_exit": 0,
+  "provider_calls": [
+    {
+      "ts": 1793722672.439414,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 293
+    },
+    {
+      "ts": 1793722686.7216566,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1947
+    },
+    {
+      "ts": 1793722687.016448,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 749
+    },
+    {
+      "ts": 1793722687.2710533,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 887
+    },
+    {
+      "ts": 1793722687.5189192,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 767
+    },
+    {
+      "ts": 1793722780.106391,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 293
+    }
+  ],
+  "source_mode": "packaged",
+  "provenance_sha256": "e37e7be69f9bd986435889c5db8981452b9df5a142b72f6100f8207f83f4590e",
+  "mode": "real BabelDOC + loopback LLM fixture; commercial translation quality unverified"
+}

@@ -1,0 +1,6 @@
+{
+  "pid": 28372,
+  "type": "BabeldocError",
+  "exception": "Babeldoc translation error: Scanned PDF detected. - Original error: Scanned PDF detected.",
+  "scope": "explicit loopback-fixture observation; unchanged wrapper and pipe payload"
+}

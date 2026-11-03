@@ -1,0 +1,50 @@
+{
+  "id": "3d04b965433b40ad",
+  "filename": "sample.pdf",
+  "file_sha256": "ab49556d5b2464cc75bf6cdbda10f670683ee698b8e94b981b807c0ba523c5fd",
+  "page_count": 2,
+  "lang_in": "en",
+  "lang_out": "zh-CN",
+  "options": {
+    "lang_in": "en",
+    "lang_out": "zh-CN",
+    "pages": "",
+    "no_dual": false,
+    "no_mono": false,
+    "auto_term_extraction": false,
+    "watermark_output_mode": "watermarked",
+    "export_dir": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-acceptance-30d3feb0c6124d8abdd7ea36a69fc490\\exports",
+    "resource_policy": {
+      "tier": "balanced",
+      "document_concurrency": 1,
+      "local_compute_threads": 4,
+      "api_qps_cap": 4,
+      "api_inflight_limit": 8,
+      "preview_concurrency": 1,
+      "gpu": false
+    },
+    "engine": {
+      "service": "OpenAI",
+      "base_url": "http://127.0.0.1:46295/v1",
+      "model": "local-test-model"
+    },
+    "term_credential_provider": null,
+    "glossary_fingerprints": [],
+    "settings_fingerprint": "a6bf76559b658a3571821303e5c0a86fb0d00e580064a67f5243ab2276cf5db0"
+  },
+  "status": "failed",
+  "phase": "running",
+  "stage": "翻译失败",
+  "message": "可按原配置重试",
+  "error": "翻译引擎执行失败，请检查服务设置、资源及输入 PDF 后重试。",
+  "progress": 16.566686662667465,
+  "revision": 17,
+  "created_at": 1793723585.0046666,
+  "finished_at": 1793723604.2517533,
+  "outputs": {},
+  "saved_paths": [],
+  "parent_task_id": null,
+  "worker_exit": 0,
+  "worker_finish_received": false,
+  "output_identities": {}
+}

@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "D:\student\翻译\PDFMathTranslate-next\tests\native\acceptance.py", line 282, in <module>
+    if __name__ == "__main__": raise SystemExit(main())
+                                                ^^^^^^
+  File "D:\student\翻译\PDFMathTranslate-next\tests\native\acceptance.py", line 178, in main
+    check("genuine BabelDOC produced both outputs",final_task["status"]=="done" and set(final_task["outputs"])>={"dual","mono"},final_task.get("error"))
+  File "D:\student\翻译\PDFMathTranslate-next\tests\native\acceptance.py", line 115, in check
+    if not passed: raise AssertionError(name+": "+str(detail))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: genuine BabelDOC produced both outputs: 翻译引擎执行失败，请检查服务设置、资源及输入 PDF 后重试。

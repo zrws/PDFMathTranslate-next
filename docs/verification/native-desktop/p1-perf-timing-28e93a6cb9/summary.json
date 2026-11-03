@@ -1,0 +1,75 @@
+{
+  "passed": true,
+  "scope": "Debug real WPF window plus native control; existing local assets; process-cold starts, OS cache not flushed; no Windows input automation",
+  "logical_cpus": 12,
+  "startup": [
+    {
+      "ui_pid": 28344,
+      "control_pid": 26280,
+      "window_ready_ms": 48605.2695,
+      "api_ready_ms": 70833.811,
+      "resources_ready_ms": 70834.4482,
+      "idle_started_utc": 1793722242.566
+    },
+    {
+      "ui_pid": 20708,
+      "control_pid": 22960,
+      "window_ready_ms": 1086.8516,
+      "api_ready_ms": 2883.425,
+      "resources_ready_ms": 3963.2636,
+      "idle_started_utc": 1793722258.798
+    },
+    {
+      "ui_pid": 2904,
+      "control_pid": 27728,
+      "window_ready_ms": 1156.1392,
+      "api_ready_ms": 3420.0861,
+      "resources_ready_ms": 4997.8859,
+      "idle_started_utc": 1793722271.879
+    }
+  ],
+  "idle_seconds_measured": 298.5,
+  "gpu": "not measured; backend CPU provider policy enforced, GPU default false",
+  "ui": {
+    "private_bytes_mean": 120544775.01369864,
+    "private_bytes_peak": 131928064,
+    "working_set_bytes_peak": 232923136,
+    "threads_max": 37,
+    "cpu_seconds_delta": 0.90625,
+    "cpu_percent_one_core": 0.3036013400335008,
+    "read_bytes_delta": 606,
+    "write_bytes_delta": 112,
+    "idle_children": [
+      {
+        "pid": 27728,
+        "name": "python.exe",
+        "exe": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\python.exe",
+        "private_bytes": 50094080
+      },
+      {
+        "pid": 22672,
+        "name": "conhost.exe",
+        "exe": "C:\\Windows\\System32\\conhost.exe",
+        "private_bytes": 1343488
+      }
+    ]
+  },
+  "control": {
+    "private_bytes_mean": 50163894.35616438,
+    "private_bytes_peak": 50327552,
+    "working_set_bytes_peak": 66301952,
+    "threads_max": 11,
+    "cpu_seconds_delta": 0.484375,
+    "cpu_percent_one_core": 0.16226968174204354,
+    "read_bytes_delta": 0,
+    "write_bytes_delta": 0,
+    "idle_children": [
+      {
+        "pid": 22672,
+        "name": "conhost.exe",
+        "exe": "C:\\Windows\\System32\\conhost.exe",
+        "private_bytes": 1343488
+      }
+    ]
+  }
+}

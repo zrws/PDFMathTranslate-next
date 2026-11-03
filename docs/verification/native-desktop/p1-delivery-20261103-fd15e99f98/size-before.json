@@ -1,0 +1,15 @@
+{
+  "legacy_exe": "D:/student/翻译/PDFMathTranslate-next/.local/baseline-scd/PDFMathTranslate.exe",
+  "payload": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\size-baseline-9502c7bc57c3",
+  "scope": "controlled size-only reference, not a historical release reproduction; old self-contained WinForms/WebView2 launcher and source, same locked local Python dependencies, same Inno compression; never installed or launched",
+  "compression": "lzma2/normal; SolidCompression=no",
+  "installer_bytes": 256831720,
+  "reference_commit": "080262216d6a405519097d30b90f09a1ffdb130a",
+  "runtime": "D:/student/翻译/PDFMathTranslate-next/.local/runtime",
+  "payload_files": 18442,
+  "reference_repo": "D:/student/翻译/p0-frozen-fa97b2e6f9",
+  "installer_sha256": "62EA4364DCB9F1BFD641FA57DA361D4E342003979FED55440CAE9D199378B433",
+  "excluded": "Gradio same as old slim build; tests/test/__pycache__; no user data/models/font cache",
+  "legacy_sha256": "91EF0E2449879141CCFD6B0938277A4656102D7300E6B86632CC5E5101B4FFA2",
+  "payload_bytes": 784442956.0
+}

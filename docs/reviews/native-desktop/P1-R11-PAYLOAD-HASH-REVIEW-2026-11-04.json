@@ -1,0 +1,11 @@
+{
+  "scope": "independent read-only R11 payload/hash verification; not install execution",
+  "checked_unix": 1793722492.7017267,
+  "build_report_sha256": "3910ee78285e7c1c820a4e0cc771892853e7d2a3714492e63f37105e2864bfb1",
+  "manifest_sha256": "695019777011dbec60a3ae085efbddd2d20efe33eb72089900f85e67f9ca0311",
+  "manifest_rows": 16416,
+  "payload_file_count": 16417,
+  "payload_bytes": 790965794,
+  "mismatches": [],
+  "extra_files_except_manifest": []
+}

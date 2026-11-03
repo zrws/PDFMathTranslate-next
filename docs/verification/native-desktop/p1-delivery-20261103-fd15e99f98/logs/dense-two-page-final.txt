@@ -1,0 +1,1 @@
+{"passed": true, "checks": 32, "evidence": "D:\\student\\翻译\\PDFMathTranslate-next\\docs\\verification\\native-desktop\\p1-dense-two-page-final-8e8925b474"}

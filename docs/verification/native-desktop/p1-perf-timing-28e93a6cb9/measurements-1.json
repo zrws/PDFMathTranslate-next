@@ -1,0 +1,67 @@
+{
+  "startup": {
+    "ui_pid": 28344,
+    "control_pid": 26280,
+    "window_ready_ms": 48605.2695,
+    "api_ready_ms": 70833.811,
+    "resources_ready_ms": 70834.4482,
+    "idle_started_utc": 1793722242.566
+  },
+  "rows": [
+    {
+      "monotonic": 407329.234,
+      "utc": 1793722243.8062735,
+      "system_cpu_percent": 17.1,
+      "available_memory": 3703599104,
+      "ui": {
+        "pid": 28344,
+        "created": 1793722171.7066033,
+        "private_bytes": 121622528,
+        "working_set_bytes": 223879168,
+        "cpu_seconds": 3.984375,
+        "threads": 37,
+        "read_bytes": 23893628,
+        "write_bytes": 26111,
+        "children": [
+          {
+            "pid": 26280,
+            "name": "python.exe",
+            "exe": "D:\\student\\\u7ffb\u8bd1\\PDFMathTranslate-next\\.local\\native-runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\python.exe",
+            "private_bytes": 50520064
+          },
+          {
+            "pid": 3980,
+            "name": "SGTool.exe",
+            "exe": "E:\\SogouInput\\16.2.0.3452\\SGTool.exe",
+            "private_bytes": 26566656
+          },
+          {
+            "pid": 20732,
+            "name": "conhost.exe",
+            "exe": "C:\\Windows\\System32\\conhost.exe",
+            "private_bytes": 1306624
+          }
+        ]
+      },
+      "control": {
+        "pid": 26280,
+        "created": 1793722221.2597818,
+        "private_bytes": 50520064,
+        "working_set_bytes": 66584576,
+        "cpu_seconds": 2.703125,
+        "threads": 11,
+        "read_bytes": 361602398,
+        "write_bytes": 27974,
+        "children": [
+          {
+            "pid": 20732,
+            "name": "conhost.exe",
+            "exe": "C:\\Windows\\System32\\conhost.exe",
+            "private_bytes": 1306624
+          }
+        ]
+      }
+    }
+  ],
+  "actual_exit": 0
+}

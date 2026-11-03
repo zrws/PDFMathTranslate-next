@@ -1,0 +1,13 @@
+{
+  "scope": "actual Debug executable and configured source identity; API provenance separately observes packaged imports",
+  "ui_exe_sha256": "2fb9e95f591931b0fa9983a6bd5e9a9050105b8547ca80ba26ac5618e4ca5905",
+  "ui_dll_sha256": "6f646c36e1ad62cdcbf598625914b6e977109177560dadd4eb494d7ee7a0a333",
+  "profile_sha256": "17e908f213f7616372bad00b36c3ab142a13b7ff10251413688b437fcdaaf720",
+  "configured_paths": {
+    "PDF2ZH_APP_ROOT": "D:\\student\\翻译\\PDFMathTranslate-next",
+    "PDF2ZH_RUNTIME_ROOT": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-runtime",
+    "PDF2ZH_SOURCE_ROOT": "D:\\student\\翻译\\PDFMathTranslate-next\\source",
+    "PDF2ZH_HOME": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\ui-native-20261103-a"
+  },
+  "configured_source_matches_api": true
+}
