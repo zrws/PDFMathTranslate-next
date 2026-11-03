@@ -26,6 +26,7 @@ def main():
     parser.add_argument("--asset-root", type=Path, required=True)
     parser.add_argument("--evidence-root", type=Path, required=True)
     parser.add_argument("--ui-exe", type=Path)
+    parser.add_argument("--ui-after-install-result",type=Path,help="Wait for a successful owned install matrix before starting the window (shared AppMutex)")
     parser.add_argument("--packaged",action="store_true",help="Use payload source only, without repository overlay")
     args = parser.parse_args()
     args.runtime_root = args.runtime_root.resolve()
@@ -209,6 +210,16 @@ d.save(sys.argv[1]);d.close()
         replay_retry=request("POST",f'/api/tasks/{second["id"]}/retry',{}, {"Idempotency-Key":retry_key})[1]
         check("clear history preserves retry tombstone",replay_retry["id"]==retried["id"])
         if args.ui_exe:
+            install_proof=None
+            if args.ui_after_install_result:
+                deadline=time.monotonic()+600
+                while True:
+                    try:install_proof=json.loads(args.ui_after_install_result.read_text(encoding='utf-8-sig'))
+                    except (OSError,json.JSONDecodeError):install_proof=None
+                    if install_proof is not None:break
+                    if time.monotonic()>=deadline:raise TimeoutError('等待独占安装验证结束超时，未启动WPF窗口')
+                    time.sleep(.2)
+                if install_proof.get('passed') is not True:raise RuntimeError('安装验证未通过，未并发启动WPF窗口')
             # The app performs tests inside its own real WPF view tree, not
             # Windows input automation. Loopback provider remains alive here.
             scenario=evidence/"ui-scenario.json"
@@ -218,6 +229,7 @@ d.save(sys.argv[1]);d.close()
             ui_proof={'scope':'actual Debug executable and configured source identity; API provenance separately observes packaged imports',
                       'ui_exe_sha256':hashlib.sha256(args.ui_exe.read_bytes()).hexdigest(),
                       'ui_dll_sha256':hashlib.sha256(args.ui_exe.with_suffix('.dll').read_bytes()).hexdigest()}
+            if install_proof is not None:ui_proof['install_result_sha256']=hashlib.sha256(args.ui_after_install_result.read_bytes()).hexdigest()
             if profile.is_file():
                 config=json.loads(profile.read_text(encoding='utf-8-sig'))
                 ui_proof.update(profile_sha256=hashlib.sha256(profile.read_bytes()).hexdigest(),configured_paths=config)
