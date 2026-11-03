@@ -21,7 +21,7 @@ def main():
     for path in files:
         for item in [path,*path.parents]:
             if item.is_symlink() or item.is_junction():raise ValueError('product source has reparse component')
-            if item==source:break
+            if item==repo:break
         if not path.resolve().is_relative_to(source.resolve()) or not path.is_file():raise ValueError('invalid product source')
         relative=path.relative_to(source);destination=target/relative;destination.parent.mkdir(parents=True,exist_ok=True)
         before=sha(path);shutil.copyfile(path,destination)
