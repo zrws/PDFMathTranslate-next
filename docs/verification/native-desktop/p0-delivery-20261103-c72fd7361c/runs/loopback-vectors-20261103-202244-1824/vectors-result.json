@@ -1,0 +1,169 @@
+{
+  "vector_count": 20,
+  "failed": 0,
+  "bottom_stub_calls": 0,
+  "guard_predicate_available": true,
+  "fallback_predicate_available": true,
+  "results": [
+    {
+      "host": "'127.0.0.1'",
+      "expected": true,
+      "guard": true,
+      "fallback": true,
+      "passed": true,
+      "note": "canonical loopback"
+    },
+    {
+      "host": "'::1'",
+      "expected": true,
+      "guard": true,
+      "fallback": true,
+      "passed": true,
+      "note": "ipv6 loopback"
+    },
+    {
+      "host": "'localhost'",
+      "expected": true,
+      "guard": true,
+      "fallback": true,
+      "passed": true,
+      "note": "exact localhost"
+    },
+    {
+      "host": "'LOCALHOST'",
+      "expected": true,
+      "guard": true,
+      "fallback": true,
+      "passed": true,
+      "note": "case-insensitive localhost"
+    },
+    {
+      "host": "'0127.0.0.1'",
+      "expected": false,
+      "guard": false,
+      "fallback": false,
+      "passed": true,
+      "note": "leading-zero octet (Windows->87.0.0.1)"
+    },
+    {
+      "host": "'00127.0.0.1'",
+      "expected": false,
+      "guard": false,
+      "fallback": false,
+      "passed": true,
+      "note": "leading-zero octet (Windows->87.0.0.1)"
+    },
+    {
+      "host": "'127.1'",
+      "expected": false,
+      "guard": false,
+      "fallback": false,
+      "passed": true,
+      "note": "short-form dotted (non-canonical)"
+    },
+    {
+      "host": "'2130706433'",
+      "expected": false,
+      "guard": false,
+      "fallback": false,
+      "passed": true,
+      "note": "integer IPv4"
+    },
+    {
+      "host": "'0x7f.0.0.1'",
+      "expected": false,
+      "guard": false,
+      "fallback": false,
+      "passed": true,
+      "note": "hex IPv4"
+    },
+    {
+      "host": "'127.0.0.0.1'",
+      "expected": false,
+      "guard": false,
+      "fallback": false,
+      "passed": true,
+      "note": "five segments"
+    },
+    {
+      "host": "'127.audit.invalid'",
+      "expected": false,
+      "guard": false,
+      "fallback": false,
+      "passed": true,
+      "note": "pseudo-loopback domain"
+    },
+    {
+      "host": "'localhost.audit.invalid'",
+      "expected": false,
+      "guard": false,
+      "fallback": false,
+      "passed": true,
+      "note": "pseudo-localhost domain"
+    },
+    {
+      "host": "''",
+      "expected": false,
+      "guard": false,
+      "fallback": false,
+      "passed": true,
+      "note": "empty host"
+    },
+    {
+      "host": "None",
+      "expected": false,
+      "guard": false,
+      "fallback": false,
+      "passed": true,
+      "note": "None host"
+    },
+    {
+      "host": "'127.\uff10.0.1'",
+      "expected": false,
+      "guard": false,
+      "fallback": false,
+      "passed": true,
+      "note": "unicode digits"
+    },
+    {
+      "host": "'127.0_0.0.1'",
+      "expected": false,
+      "guard": false,
+      "fallback": false,
+      "passed": true,
+      "note": "PEP-515 underscores"
+    },
+    {
+      "host": "'127.0.0.999'",
+      "expected": false,
+      "guard": false,
+      "fallback": false,
+      "passed": true,
+      "note": "out-of-range octet"
+    },
+    {
+      "host": "'256.1.1.1'",
+      "expected": false,
+      "guard": false,
+      "fallback": false,
+      "passed": true,
+      "note": "out-of-range first octet"
+    },
+    {
+      "host": "'999.0.0.1'",
+      "expected": false,
+      "guard": false,
+      "fallback": false,
+      "passed": true,
+      "note": "out-of-range first octet"
+    },
+    {
+      "host": "'192.0.2.1'",
+      "expected": false,
+      "guard": false,
+      "fallback": false,
+      "passed": true,
+      "note": "documentation non-loopback"
+    }
+  ]
+}

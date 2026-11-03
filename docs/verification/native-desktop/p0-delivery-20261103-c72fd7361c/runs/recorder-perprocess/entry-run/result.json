@@ -1,0 +1,66 @@
+﻿{
+    "run_id":  "pp-20261103-202417-4840",
+    "entry":  "p0_probe_perprocess",
+    "started_at":  "2026-11-03T20:24:17.5581160+08:00",
+    "ended_at":  "2026-11-03T20:26:01.6196884+08:00",
+    "input_params":  "port=7916 sampleSeconds=6",
+    "script_hashes":  {
+                          "self":  "B52264BBC57294BD50C768A1BC2BB9D2E2949F5E9AA963E872781503F18EA242",
+                          "asset_check":  "14A155050A1375235F97DCC156302D38193B710A86D2846570939638018C2085",
+                          "result_writer":  "CE4BB7FF2D5813FD8E8F98FF029FD30E1764BFAEB3B664668E48DD513673C87C",
+                          "env_helper":  "14877DFAC860C11DB524340D57C8393B1390DABC640EDFA6D18D4FAB66DABA38"
+                      },
+    "verdict":  "PASS",
+    "exit_code":  0,
+    "expected_exit":  0,
+    "failure_stage":  "",
+    "reason_code":  "OK",
+    "reason_detail":  "",
+    "samples":  2,
+    "expected_samples":  0,
+    "guard_active":  true,
+    "guard_blocked_count":  0,
+    "fallback_hits":  "not_deployed",
+    "owned_processes":  [
+                            {
+                                "created":  "\/Date(1793708744214)\/",
+                                "pid":  9024,
+                                "name":  "python.exe"
+                            },
+                            {
+                                "created":  "\/Date(1793708744176)\/",
+                                "pid":  18944,
+                                "name":  "cmd.exe"
+                            },
+                            {
+                                "created":  "\/Date(1793708744187)\/",
+                                "pid":  26484,
+                                "name":  "conhost.exe"
+                            }
+                        ],
+    "processes_recovered":  true,
+    "port_released":  true,
+    "evidence_path":  "D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\docs\\verification\\native-desktop\\p0-delivery-20261103-c72fd7361c\\runs\\recorder-perprocess\\entry-run\\probe-pp.jsonl",
+    "notes":  "S4/R4: started_at/ended_at are the real run window; result_built_at is when this JSON was assembled; processes_recovered bound to per-identity recheck (gone/still_alive_same_identity/pid_reused/query_failed; query_failed fails); port_released independent; planned exit recorded here - the OUTER RECORDER records the observed exit",
+    "fail_inject":  "",
+    "identity_recheck_passed":  true,
+    "recovery_details":  [
+                             {
+                                 "created":  "\/Date(1793708744214)\/",
+                                 "pid":  9024,
+                                 "post_status":  "gone"
+                             },
+                             {
+                                 "created":  "\/Date(1793708744176)\/",
+                                 "pid":  18944,
+                                 "post_status":  "gone"
+                             },
+                             {
+                                 "created":  "\/Date(1793708744187)\/",
+                                 "pid":  26484,
+                                 "post_status":  "gone"
+                             }
+                         ],
+    "temp_root":  "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\p0-temp\\pdf2zh-probe-pp-20261103-202417-4840",
+    "result_built_at":  "2026-11-03T20:26:01.6383767+08:00"
+}

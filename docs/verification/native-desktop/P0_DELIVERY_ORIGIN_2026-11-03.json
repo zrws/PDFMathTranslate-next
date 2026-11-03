@@ -1,0 +1,8 @@
+{
+  "mode": "Evidence mirror, not the execution root. Absolute observations retained; original checker is bound to original root.",
+  "source_commit": "080262216d6a405519097d30b90f09a1ffdb130a",
+  "mirror": "D:\\student\\翻译\\PDFMathTranslate-next\\docs\\verification\\native-desktop\\p0-delivery-20261103-c72fd7361c",
+  "file_count": 1103,
+  "byte_identical": true,
+  "original_root": "D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\docs\\verification\\native-desktop\\p0-delivery-20261103-c72fd7361c"
+}

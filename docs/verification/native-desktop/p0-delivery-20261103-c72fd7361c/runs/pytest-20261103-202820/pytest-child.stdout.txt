@@ -1,0 +1,60 @@
+﻿
+[pdf2zh-test-isolation] root=D:\student\翻译\PDFMathTranslate-next\.local\p0-temp\pdf2zh-pytest-child-719bad1048ae4fad8d1242f27070a2f6\tmp\pdf2zh-pytest-g880xc4w
+[pdf2zh-test-isolation] cwd=D:\student\翻译\PDFMathTranslate-next\.local\p0-temp\pdf2zh-pytest-child-719bad1048ae4fad8d1242f27070a2f6\tmp\pdf2zh-pytest-g880xc4w\work
+[pdf2zh-test-isolation] config=D:\student\翻译\PDFMathTranslate-next\.local\p0-temp\pdf2zh-pytest-child-719bad1048ae4fad8d1242f27070a2f6\tmp\pdf2zh-pytest-g880xc4w\home\.config\pdf2zh\config.v3.toml
+[pdf2zh-test-isolation][ok] HOME/USERPROFILE fully inside the isolated root
+============================= test session starts =============================
+collected 100 items
+
+..\..\..\..\..\p0-frozen-fa97b2e6f9\source\tests\config\test_main.py ... [  3%]
+................................                                         [ 35%]
+..\..\..\..\..\p0-frozen-fa97b2e6f9\source\tests\config\test_model.py .. [ 37%]
+.......................                                                  [ 60%]
+..\..\..\..\..\p0-frozen-fa97b2e6f9\source\tests\test_config_engine_integrity.py . [ 61%]
+.                                                                        [ 62%]
+..\..\..\..\..\p0-frozen-fa97b2e6f9\source\tests\test_deepseek_thinking_mode.py . [ 63%]
+........                                                                 [ 71%]
+..\..\..\..\..\p0-frozen-fa97b2e6f9\source\tests\test_gui_deepseek_thinking_mode.py . [ 72%]
+.................                                                        [ 89%]
+..\..\..\..\..\p0-frozen-fa97b2e6f9\source\tests\test_gui_release_blockers.py . [ 90%]
+...                                                                      [ 93%]
+..\..\..\..\..\p0-frozen-fa97b2e6f9\source\tests\test_http_api_task_errors.py . [ 94%]
+...                                                                      [ 97%]
+..\..\..\..\..\p0-frozen-fa97b2e6f9\source\tests\test_http_api_upload_safety.py . [ 98%]
+..                                                                       [100%]
+
+============================== warnings summary ===============================
+<frozen importlib._bootstrap>:488
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+<frozen importlib._bootstrap>:488
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
+
+tests/config/test_main.py::TestBuildArgsParser::test_duplicate_field_detection
+  D:\student\翻译\p0-frozen-fa97b2e6f9\source\pdf2zh_next\config\main.py:62: DeprecationWarning: Nesting argument groups is deprecated.
+    parser = parser.add_argument_group(
+
+tests/test_gui_deepseek_thinking_mode.py::test_gui_deepseek_reasoning_effort_metadata_controls_visibility
+  D:\student\翻译\p0-frozen-fa97b2e6f9\source\pdf2zh_next\gui.py:2: DeprecationWarning: 'cgi' is deprecated and slated for removal in Python 3.13
+    import cgi
+
+tests/test_gui_deepseek_thinking_mode.py::test_gui_deepseek_reasoning_effort_metadata_controls_visibility
+  D:\student\翻译\PDFMathTranslate-next\.local\runtime\uv-tools\pdf2zh-next\Lib\site-packages\websockets\legacy\__init__.py:6: DeprecationWarning: websockets.legacy is deprecated; see https://websockets.readthedocs.io/en/stable/howto/upgrade.html for upgrade instructions
+    warnings.warn(  # deprecated in 14.0 - 2024-11-09
+
+tests/test_gui_deepseek_thinking_mode.py::test_gui_deepseek_reasoning_effort_metadata_controls_visibility
+  D:\student\翻译\PDFMathTranslate-next\.local\runtime\uv-tools\pdf2zh-next\Lib\site-packages\gradio\utils.py:105: DeprecationWarning: There is no current event loop
+    loop = asyncio.get_event_loop()
+
+tests/test_gui_deepseek_thinking_mode.py: 65 warnings
+  D:\student\翻译\p0-frozen-fa97b2e6f9\source\pdf2zh_next\gui.py:856: PydanticDeprecatedSince211: Accessing the 'model_fields' attribute on the instance is deprecated. Instead, you should access this attribute from the model class. Deprecated in Pydantic V2.11 to be removed in V3.0.
+    type_hint = detail_setting.model_fields[field_name].annotation
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+====================== 100 passed, 74 warnings in 14.02s ======================
+

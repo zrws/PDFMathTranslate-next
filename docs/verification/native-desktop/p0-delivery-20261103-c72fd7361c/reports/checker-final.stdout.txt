@@ -1,0 +1,780 @@
+[PASS] deliverable exists: PLAN.md
+[PASS] deliverable exists: CHANGE_IMPACT.json
+[PASS] deliverable exists: CASE_MANIFEST.json
+[PASS] deliverable exists: INDEX.md
+[PASS] deliverable exists: REQUIREMENTS.json
+[PASS] deliverable exists: COVERAGE.json
+[PASS] deliverable exists: LOG_COPY_INDEX.json
+[PASS] deliverable exists: INPUT_MANIFEST.json
+[PASS] deliverable exists: EVIDENCE_CHECK.json (final pass)
+[PASS] hash index non-empty
+[PASS] hash: p0_acceptance.ps1
+[PASS] hash: p0_paths.ps1
+[PASS] hash: p0_runs.ps1
+[PASS] hash: p0_asset_manifest_negtest.ps1
+[PASS] hash: p0_routing_negtest.ps1
+[PASS] hash: p0_env.ps1
+[PASS] hash: p0_c1_guard_test.ps1
+[PASS] hash: p0_probe_perprocess.ps1
+[PASS] hash: p0_probe_attribution.ps1
+[PASS] hash: p0_baseline.ps1
+[PASS] hash: p0_negative_tests.ps1
+[PASS] hash: p0_asset_check.ps1
+[PASS] hash: p0_pytest_isolated.ps1
+[PASS] hash: p0_entry_gate_negtest.ps1
+[PASS] hash: p0_env_negtest.ps1
+[PASS] hash: p0_guard_mutations.ps1
+[PASS] hash: p0_evidence_check.ps1
+[PASS] hash: p0_result.ps1
+[PASS] hash: p0_seal_round.ps1
+[PASS] hash: p0_empty_host_case.ps1
+[PASS] hash: p0_loopback_negtest.ps1
+[PASS] hash: p0_isolation_negtest.ps1
+[PASS] hash: p0_recovery_negtest.ps1
+[PASS] hash: p0_recovery_funcs.ps1
+[PASS] hash: p0_run_recorder.ps1
+[PASS] hash: p0_guard\sitecustomize.py
+[PASS] hash: p0_guard\guard_fallback.py
+[PASS] hash: p0_guard\guard_test.py
+[PASS] hash: p0_guard\entry_gate.py
+[PASS] hash: p0_guard\entry_wrapper.py
+[PASS] hash: p0_guard\png_check.ps1
+[PASS] hash: p0_guard\loopback_vectors.py
+[PASS] hash: p0_guard\empty_host_probe.py
+[PASS] hash: source/tests/conftest.py
+[PASS] INPUT_MANIFEST entries non-empty
+[PASS] input manifest per-file hashes
+[PASS] INPUT_MANIFEST digest matches recomputation
+[PASS] coverage N01: verdict PASS
+[PASS] coverage N01: observed exit == expected
+[PASS] coverage N01: reason observed
+[PASS] coverage N01: source artifacts exist
+[PASS] coverage G02: verdict PASS
+[PASS] coverage G02: observed exit == expected
+[PASS] coverage G02: reason observed
+[PASS] coverage G02: source artifacts exist
+[PASS] coverage G14: verdict PASS
+[PASS] coverage G14: observed exit == expected
+[PASS] coverage G14: reason observed
+[PASS] coverage G14: source artifacts exist
+[PASS] coverage G13: verdict PASS
+[PASS] coverage G13: observed exit == expected
+[PASS] coverage G13: reason observed
+[PASS] coverage G13: source artifacts exist
+[PASS] coverage N02: verdict PASS
+[PASS] coverage N02: observed exit == expected
+[PASS] coverage N02: reason observed
+[PASS] coverage N02: source artifacts exist
+[PASS] coverage N03: verdict PASS
+[PASS] coverage N03: observed exit == expected
+[PASS] coverage N03: reason observed
+[PASS] coverage N03: source artifacts exist
+[PASS] coverage G15: verdict PASS
+[PASS] coverage G15: observed exit == expected
+[PASS] coverage G15: reason observed
+[PASS] coverage G15: source artifacts exist
+[PASS] coverage I04: verdict PASS
+[PASS] coverage I04: observed exit == expected
+[PASS] coverage I04: reason observed
+[PASS] coverage I04: source artifacts exist
+[PASS] coverage G11: verdict PASS
+[PASS] coverage G11: observed exit == expected
+[PASS] coverage G11: reason observed
+[PASS] coverage G11: source artifacts exist
+[PASS] coverage M01: verdict PASS
+[PASS] coverage M01: observed exit == expected
+[PASS] coverage M01: reason observed
+[PASS] coverage M01: source artifacts exist
+[PASS] coverage G06: verdict PASS
+[PASS] coverage G06: observed exit == expected
+[PASS] coverage G06: reason observed
+[PASS] coverage G06: source artifacts exist
+[PASS] coverage P02: verdict PASS
+[PASS] coverage P02: observed exit == expected
+[PASS] coverage P02: reason observed
+[PASS] coverage P02: recorder exit agrees with coverage row
+[PASS] coverage P02: source artifacts exist
+[PASS] coverage G03: verdict PASS
+[PASS] coverage G03: observed exit == expected
+[PASS] coverage G03: reason observed
+[PASS] coverage G03: source artifacts exist
+[PASS] coverage G07: verdict PASS
+[PASS] coverage G07: observed exit == expected
+[PASS] coverage G07: reason observed
+[PASS] coverage G07: source artifacts exist
+[PASS] coverage I02: verdict PASS
+[PASS] coverage I02: observed exit == expected
+[PASS] coverage I02: reason observed
+[PASS] coverage I02: recorder exit agrees with coverage row
+[PASS] coverage I02: source artifacts exist
+[PASS] coverage G08: verdict PASS
+[PASS] coverage G08: observed exit == expected
+[PASS] coverage G08: reason observed
+[PASS] coverage G08: source artifacts exist
+[PASS] coverage P01: verdict PASS
+[PASS] coverage P01: observed exit == expected
+[PASS] coverage P01: reason observed
+[PASS] coverage P01: recorder exit agrees with coverage row
+[PASS] coverage P01: source artifacts exist
+[PASS] coverage G01: verdict PASS
+[PASS] coverage G01: observed exit == expected
+[PASS] coverage G01: reason observed
+[PASS] coverage G01: source artifacts exist
+[PASS] coverage G16: verdict PASS
+[PASS] coverage G16: observed exit == expected
+[PASS] coverage G16: reason observed
+[PASS] coverage G16: source artifacts exist
+[PASS] coverage M02: verdict PASS
+[PASS] coverage M02: observed exit == expected
+[PASS] coverage M02: reason observed
+[PASS] coverage M02: source artifacts exist
+[PASS] coverage G12: verdict PASS
+[PASS] coverage G12: observed exit == expected
+[PASS] coverage G12: reason observed
+[PASS] coverage G12: source artifacts exist
+[PASS] coverage G10: verdict PASS
+[PASS] coverage G10: observed exit == expected
+[PASS] coverage G10: reason observed
+[PASS] coverage G10: source artifacts exist
+[PASS] coverage G04: verdict PASS
+[PASS] coverage G04: observed exit == expected
+[PASS] coverage G04: reason observed
+[PASS] coverage G04: source artifacts exist
+[PASS] coverage I03: verdict PASS
+[PASS] coverage I03: observed exit == expected
+[PASS] coverage I03: reason observed
+[PASS] coverage I03: recorder exit agrees with coverage row
+[PASS] coverage I03: source artifacts exist
+[PASS] coverage N04: verdict PASS
+[PASS] coverage N04: observed exit == expected
+[PASS] coverage N04: reason observed
+[PASS] coverage N04: recorder exit agrees with coverage row
+[PASS] coverage N04: source artifacts exist
+[PASS] coverage G09: verdict PASS
+[PASS] coverage G09: observed exit == expected
+[PASS] coverage G09: reason observed
+[PASS] coverage G09: source artifacts exist
+[PASS] coverage G05: verdict PASS
+[PASS] coverage G05: observed exit == expected
+[PASS] coverage G05: reason observed
+[PASS] coverage G05: source artifacts exist
+[PASS] coverage I01: verdict PASS
+[PASS] coverage I01: observed exit == expected
+[PASS] coverage I01: reason observed
+[PASS] coverage I01: source artifacts exist
+[PASS] final: prior checker real exit zero
+[PASS] final: prior checker report hash bound
+[PASS] final: prior checker version current
+[PASS] final: prior checker checked this root
+[PASS] final: prior checker process identity
+[PASS] semantic N04: injected exception recorded
+[PASS] semantic N04: recorder binds this run
+[PASS] semantic N04: observed exit == 1
+[PASS] semantic N04: selected recorded run exists
+[PASS] semantic P01: recovery fields complete
+[PASS] semantic P01: samples >= 2
+[PASS] semantic P01: recovery all gone
+[PASS] semantic P01: recorder binds this run
+[PASS] semantic P01: planned exit == observed exit
+[PASS] semantic P01: selected recorded run exists
+[PASS] semantic P02: recovery fields complete
+[PASS] semantic P01: samples >= 2
+[PASS] semantic P01: recovery all gone
+[PASS] semantic P01: recorder binds this run
+[PASS] semantic P01: planned exit == observed exit
+[PASS] semantic P02: selected recorded run exists
+[PASS] semantic I03: recorder binds this run
+[PASS] semantic I03: observed exit == 1
+[PASS] semantic I03: selected recorded run exists
+[PASS] semantic I02: 4 payloads measured (no nulls)
+[PASS] semantic I02: recovery all_gone
+[PASS] semantic I02: recovery rows all gone
+[PASS] semantic I02: recorder binds this run
+[PASS] semantic I02: selected recorded run exists
+[PASS] semantic I01: recorder binds this run
+[PASS] semantic I01: observed exit == 0
+[PASS] semantic I01: selected recorded run exists
+[PASS] semantic I04: actual recorder binding required
+[PASS] semantic I04: observed exit matches
+[PASS] semantic I04: complete matrix passes
+[PASS] semantic I04: selected recorded run exists
+[PASS] matrix rows in asset-manifest-8434ba25baa2485fa587d3962505605d
+[PASS] matrix rows in coverage-derive
+[PASS] matrix G06 expected exit
+[PASS] matrix G06 verdict consistent
+[PASS] matrix G06 reason assertion
+[PASS] matrix G13 expected exit
+[PASS] matrix G13 verdict consistent
+[PASS] matrix G13 reason assertion
+[PASS] matrix G09 expected exit
+[PASS] matrix G09 verdict consistent
+[PASS] matrix G09 reason assertion
+[PASS] matrix N01 expected exit
+[PASS] matrix N01 verdict consistent
+[PASS] matrix N01 reason assertion
+[PASS] matrix G07 expected exit
+[PASS] matrix G07 verdict consistent
+[PASS] matrix G07 reason assertion
+[PASS] matrix G10 expected exit
+[PASS] matrix G10 verdict consistent
+[PASS] matrix G10 reason assertion
+[PASS] matrix G08 expected exit
+[PASS] matrix G08 verdict consistent
+[PASS] matrix G08 reason assertion
+[PASS] matrix G02 expected exit
+[PASS] matrix G02 verdict consistent
+[PASS] matrix G02 reason assertion
+[PASS] matrix G03 expected exit
+[PASS] matrix G03 verdict consistent
+[PASS] matrix G03 reason assertion
+[PASS] matrix G14 expected exit
+[PASS] matrix G14 verdict consistent
+[PASS] matrix G14 reason assertion
+[PASS] matrix G04 expected exit
+[PASS] matrix G04 verdict consistent
+[PASS] matrix G04 reason assertion
+[PASS] matrix G05 expected exit
+[PASS] matrix G05 verdict consistent
+[PASS] matrix G05 reason assertion
+[PASS] matrix G15 expected exit
+[PASS] matrix G15 verdict consistent
+[PASS] matrix G15 reason assertion
+[PASS] matrix G12 expected exit
+[PASS] matrix G12 verdict consistent
+[PASS] matrix G12 reason assertion
+[PASS] matrix N02 expected exit
+[PASS] matrix N02 verdict consistent
+[PASS] matrix N02 reason assertion
+[PASS] matrix G16 expected exit
+[PASS] matrix G16 verdict consistent
+[PASS] matrix G16 reason assertion
+[PASS] matrix N04 expected exit
+[PASS] matrix N04 verdict consistent
+[PASS] matrix N04 reason assertion
+[PASS] matrix P01 expected exit
+[PASS] matrix P01 verdict consistent
+[PASS] matrix P01 reason assertion
+[PASS] matrix P02 expected exit
+[PASS] matrix P02 verdict consistent
+[PASS] matrix P02 reason assertion
+[PASS] matrix I03 expected exit
+[PASS] matrix I03 verdict consistent
+[PASS] matrix I03 reason assertion
+[PASS] matrix I02 expected exit
+[PASS] matrix I02 verdict consistent
+[PASS] matrix I02 reason assertion
+[PASS] matrix I01 expected exit
+[PASS] matrix I01 verdict consistent
+[PASS] matrix I01 reason assertion
+[PASS] matrix I04 expected exit
+[PASS] matrix I04 verdict consistent
+[PASS] matrix I04 reason assertion
+[PASS] matrix G01 expected exit
+[PASS] matrix G01 verdict consistent
+[PASS] matrix G01 reason assertion
+[PASS] matrix G11 expected exit
+[PASS] matrix G11 verdict consistent
+[PASS] matrix G11 reason assertion
+[PASS] matrix N03 expected exit
+[PASS] matrix N03 verdict consistent
+[PASS] matrix N03 reason assertion
+[PASS] matrix M01 expected exit
+[PASS] matrix M01 verdict consistent
+[PASS] matrix M01 reason assertion
+[PASS] matrix M02 expected exit
+[PASS] matrix M02 verdict consistent
+[PASS] matrix M02 reason assertion
+[PASS] matrix rows in entrygate-20261103-202228-11088
+[PASS] matrix rows in entrygate-20261103-203420-23068
+[PASS] matrix rows in entrygate-20261103-203422-24708
+[PASS] matrix rows in entrygate-20261103-203424-22792
+[PASS] matrix rows in entrygate-20261103-203427-27292
+[PASS] matrix rows in env-restore-20261103-202413-12116
+[PASS] matrix rows in env-restore-20261103-203429-16224
+[PASS] matrix rows in isolation-sentinel-20261103-202245-4788
+[PASS] matrix rows in isolation-sentinel-20261103-203433-20792
+[PASS] matrix rows in mutations-20261103-202231-12332
+[PASS] matrix rows in cases
+[PASS] matrix G01 suite row consistent
+[PASS] matrix G01 frozen reason
+[PASS] matrix G11 suite row consistent
+[PASS] matrix G11 frozen reason
+[PASS] matrix G14 suite row consistent
+[PASS] matrix G14 frozen reason
+[PASS] matrix G04 suite row consistent
+[PASS] matrix G04 frozen reason
+[PASS] matrix G05 suite row consistent
+[PASS] matrix G05 frozen reason
+[PASS] matrix G15 suite row consistent
+[PASS] matrix G15 frozen reason
+[PASS] matrix G16 suite row consistent
+[PASS] matrix G16 frozen reason
+[PASS] matrix rows in recovery-stubs-20261103-202405-15896
+[PASS] matrix rows in recovery-stubs-20261103-203533-8764
+[PASS] mandatory coverage (all frozen cases present in matrices)
+[PASS] log copy hash: runs/baseline/run-v3-20261103-202846-19060-root404/backend-startup-run1.log.txt
+[PASS] log original hash: runs/baseline/run-v3-20261103-202846-19060-root404/backend-startup-run1.log
+[PASS] log copy hash: runs/baseline/run-v3-20261103-202846-19060-root404/guard.log.txt
+[PASS] log original hash: runs/baseline/run-v3-20261103-202846-19060-root404/guard.log
+[PASS] log copy hash: runs/baseline/run-v3-20261103-202846-19060-root404/harness.log.txt
+[PASS] log original hash: runs/baseline/run-v3-20261103-202846-19060-root404/harness.log
+[PASS] log copy hash: runs/baseline/run-v3-20261103-202944-2228-missing-cache/harness.log.txt
+[PASS] log original hash: runs/baseline/run-v3-20261103-202944-2228-missing-cache/harness.log
+[PASS] log copy hash: runs/baseline/run-v3-20261103-203007-23272-corrupt-cache/harness.log.txt
+[PASS] log original hash: runs/baseline/run-v3-20261103-203007-23272-corrupt-cache/harness.log
+[PASS] log copy hash: runs/baseline/run-v3-20261103-203043-22112-early-exit/guard.log.txt
+[PASS] log original hash: runs/baseline/run-v3-20261103-203043-22112-early-exit/guard.log
+[PASS] log copy hash: runs/baseline/run-v3-20261103-203043-22112-early-exit/harness.log.txt
+[PASS] log original hash: runs/baseline/run-v3-20261103-203043-22112-early-exit/harness.log
+[PASS] log copy hash: runs/baseline/run-v3-20261103-203142-28124-cleanup-leftover/backend-startup-run1.log.txt
+[PASS] log original hash: runs/baseline/run-v3-20261103-203142-28124-cleanup-leftover/backend-startup-run1.log
+[PASS] log copy hash: runs/baseline/run-v3-20261103-203142-28124-cleanup-leftover/guard.log.txt
+[PASS] log original hash: runs/baseline/run-v3-20261103-203142-28124-cleanup-leftover/guard.log
+[PASS] log copy hash: runs/baseline/run-v3-20261103-203142-28124-cleanup-leftover/harness.log.txt
+[PASS] log original hash: runs/baseline/run-v3-20261103-203142-28124-cleanup-leftover/harness.log
+[PASS] log copy hash: runs/baseline/run-v3-20261103-203229-7240/backend-startup-run1.log.txt
+[PASS] log original hash: runs/baseline/run-v3-20261103-203229-7240/backend-startup-run1.log
+[PASS] log copy hash: runs/baseline/run-v3-20261103-203229-7240/guard.log.txt
+[PASS] log original hash: runs/baseline/run-v3-20261103-203229-7240/guard.log
+[PASS] log copy hash: runs/baseline/run-v3-20261103-203229-7240/harness.log.txt
+[PASS] log original hash: runs/baseline/run-v3-20261103-203229-7240/harness.log
+[PASS] log copy hash: runs/baseline/run-v3-20261103-203317-23916/backend-startup-run1.log.txt
+[PASS] log original hash: runs/baseline/run-v3-20261103-203317-23916/backend-startup-run1.log
+[PASS] log copy hash: runs/baseline/run-v3-20261103-203317-23916/guard.log.txt
+[PASS] log original hash: runs/baseline/run-v3-20261103-203317-23916/guard.log
+[PASS] log copy hash: runs/baseline/run-v3-20261103-203317-23916/harness.log.txt
+[PASS] log original hash: runs/baseline/run-v3-20261103-203317-23916/harness.log
+[PASS] log copy hash: runs/empty-host-20261103-202242-17608/fallback.log.txt
+[PASS] log original hash: runs/empty-host-20261103-202242-17608/fallback.log
+[PASS] log copy hash: runs/empty-host-20261103-202242-17608/guard.log.txt
+[PASS] log original hash: runs/empty-host-20261103-202242-17608/guard.log
+[PASS] log copy hash: runs/entrygate-20261103-202228-11088/g04/guard.log.txt
+[PASS] log original hash: runs/entrygate-20261103-202228-11088/g04/guard.log
+[PASS] log copy hash: runs/entrygate-20261103-202228-11088/g05/guard.log.txt
+[PASS] log original hash: runs/entrygate-20261103-202228-11088/g05/guard.log
+[PASS] log copy hash: runs/entrygate-20261103-202228-11088/g15a/guard.log.txt
+[PASS] log original hash: runs/entrygate-20261103-202228-11088/g15a/guard.log
+[PASS] log copy hash: runs/entrygate-20261103-202228-11088/g15b/guard.log.txt
+[PASS] log original hash: runs/entrygate-20261103-202228-11088/g15b/guard.log
+[PASS] log copy hash: runs/entrygate-20261103-202228-11088/pos-healthy/guard.log.txt
+[PASS] log original hash: runs/entrygate-20261103-202228-11088/pos-healthy/guard.log
+[PASS] log copy hash: runs/entrygate-20261103-203420-23068/g04/guard.log.txt
+[PASS] log original hash: runs/entrygate-20261103-203420-23068/g04/guard.log
+[PASS] log copy hash: runs/entrygate-20261103-203420-23068/g05/guard.log.txt
+[PASS] log original hash: runs/entrygate-20261103-203420-23068/g05/guard.log
+[PASS] log copy hash: runs/entrygate-20261103-203420-23068/g15a/guard.log.txt
+[PASS] log original hash: runs/entrygate-20261103-203420-23068/g15a/guard.log
+[PASS] log copy hash: runs/entrygate-20261103-203420-23068/g15b/guard.log.txt
+[PASS] log original hash: runs/entrygate-20261103-203420-23068/g15b/guard.log
+[PASS] log copy hash: runs/entrygate-20261103-203420-23068/pos-healthy/guard.log.txt
+[PASS] log original hash: runs/entrygate-20261103-203420-23068/pos-healthy/guard.log
+[PASS] log copy hash: runs/entrygate-20261103-203422-24708/g04/guard.log.txt
+[PASS] log original hash: runs/entrygate-20261103-203422-24708/g04/guard.log
+[PASS] log copy hash: runs/entrygate-20261103-203422-24708/g05/guard.log.txt
+[PASS] log original hash: runs/entrygate-20261103-203422-24708/g05/guard.log
+[PASS] log copy hash: runs/entrygate-20261103-203422-24708/g15a/guard.log.txt
+[PASS] log original hash: runs/entrygate-20261103-203422-24708/g15a/guard.log
+[PASS] log copy hash: runs/entrygate-20261103-203422-24708/g15b/guard.log.txt
+[PASS] log original hash: runs/entrygate-20261103-203422-24708/g15b/guard.log
+[PASS] log copy hash: runs/entrygate-20261103-203422-24708/pos-healthy/guard.log.txt
+[PASS] log original hash: runs/entrygate-20261103-203422-24708/pos-healthy/guard.log
+[PASS] log copy hash: runs/entrygate-20261103-203424-22792/g04/guard.log.txt
+[PASS] log original hash: runs/entrygate-20261103-203424-22792/g04/guard.log
+[PASS] log copy hash: runs/entrygate-20261103-203424-22792/g05/guard.log.txt
+[PASS] log original hash: runs/entrygate-20261103-203424-22792/g05/guard.log
+[PASS] log copy hash: runs/entrygate-20261103-203424-22792/g15a/guard.log.txt
+[PASS] log original hash: runs/entrygate-20261103-203424-22792/g15a/guard.log
+[PASS] log copy hash: runs/entrygate-20261103-203424-22792/g15b/guard.log.txt
+[PASS] log original hash: runs/entrygate-20261103-203424-22792/g15b/guard.log
+[PASS] log copy hash: runs/entrygate-20261103-203424-22792/pos-healthy/guard.log.txt
+[PASS] log original hash: runs/entrygate-20261103-203424-22792/pos-healthy/guard.log
+[PASS] log copy hash: runs/entrygate-20261103-203427-27292/g04/guard.log.txt
+[PASS] log original hash: runs/entrygate-20261103-203427-27292/g04/guard.log
+[PASS] log copy hash: runs/entrygate-20261103-203427-27292/g05/guard.log.txt
+[PASS] log original hash: runs/entrygate-20261103-203427-27292/g05/guard.log
+[PASS] log copy hash: runs/entrygate-20261103-203427-27292/g15a/guard.log.txt
+[PASS] log original hash: runs/entrygate-20261103-203427-27292/g15a/guard.log
+[PASS] log copy hash: runs/entrygate-20261103-203427-27292/g15b/guard.log.txt
+[PASS] log original hash: runs/entrygate-20261103-203427-27292/g15b/guard.log
+[PASS] log copy hash: runs/entrygate-20261103-203427-27292/pos-healthy/guard.log.txt
+[PASS] log original hash: runs/entrygate-20261103-203427-27292/pos-healthy/guard.log
+[PASS] log copy hash: runs/guard-test-20261103-202224-19772/normal/fallback.log.txt
+[PASS] log original hash: runs/guard-test-20261103-202224-19772/normal/fallback.log
+[PASS] log copy hash: runs/guard-test-20261103-202224-19772/normal/guard.log.txt
+[PASS] log original hash: runs/guard-test-20261103-202224-19772/normal/guard.log
+[PASS] log copy hash: runs/guard-test-20261103-202224-19772/no_guard/fallback.log.txt
+[PASS] log original hash: runs/guard-test-20261103-202224-19772/no_guard/fallback.log
+[PASS] log copy hash: runs/guard-test-20261103-202224-19772/partial/fallback.log.txt
+[PASS] log original hash: runs/guard-test-20261103-202224-19772/partial/fallback.log
+[PASS] log copy hash: runs/guard-test-20261103-202224-19772/partial/guard.log.txt
+[PASS] log original hash: runs/guard-test-20261103-202224-19772/partial/guard.log
+[PASS] log copy hash: runs/isolation-sentinel-20261103-202245-4788/png-generator.guard.log.txt
+[PASS] log original hash: runs/isolation-sentinel-20261103-202245-4788/png-generator.guard.log
+[PASS] log copy hash: runs/isolation-sentinel-20261103-203433-20792/png-generator.guard.log.txt
+[PASS] log original hash: runs/isolation-sentinel-20261103-203433-20792/png-generator.guard.log
+[PASS] log copy hash: runs/loopback-vectors-20261103-202244-1824/fallback.log.txt
+[PASS] log original hash: runs/loopback-vectors-20261103-202244-1824/fallback.log
+[PASS] log copy hash: runs/loopback-vectors-20261103-202244-1824/guard.log.txt
+[PASS] log original hash: runs/loopback-vectors-20261103-202244-1824/guard.log
+[PASS] log copy hash: runs/loopback-vectors-20261103-203432-26148/fallback.log.txt
+[PASS] log original hash: runs/loopback-vectors-20261103-203432-26148/fallback.log
+[PASS] log copy hash: runs/loopback-vectors-20261103-203432-26148/guard.log.txt
+[PASS] log original hash: runs/loopback-vectors-20261103-203432-26148/guard.log
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/clean/normal/fallback.log.txt
+[PASS] log original hash: runs/mutations-20261103-202231-12332/clean/normal/fallback.log
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/clean/normal/guard.log.txt
+[PASS] log original hash: runs/mutations-20261103-202231-12332/clean/normal/guard.log
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/clean/no_guard/fallback.log.txt
+[PASS] log original hash: runs/mutations-20261103-202231-12332/clean/no_guard/fallback.log
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/clean/partial/fallback.log.txt
+[PASS] log original hash: runs/mutations-20261103-202231-12332/clean/partial/fallback.log
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/clean/partial/guard.log.txt
+[PASS] log original hash: runs/mutations-20261103-202231-12332/clean/partial/guard.log
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-a/normal/fallback.log.txt
+[PASS] log original hash: runs/mutations-20261103-202231-12332/M-a/normal/fallback.log
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-a/normal/guard.log.txt
+[PASS] log original hash: runs/mutations-20261103-202231-12332/M-a/normal/guard.log
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-a/no_guard/fallback.log.txt
+[PASS] log original hash: runs/mutations-20261103-202231-12332/M-a/no_guard/fallback.log
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-a/partial/fallback.log.txt
+[PASS] log original hash: runs/mutations-20261103-202231-12332/M-a/partial/fallback.log
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-a/partial/guard.log.txt
+[PASS] log original hash: runs/mutations-20261103-202231-12332/M-a/partial/guard.log
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-b/normal/fallback.log.txt
+[PASS] log original hash: runs/mutations-20261103-202231-12332/M-b/normal/fallback.log
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-b/normal/guard.log.txt
+[PASS] log original hash: runs/mutations-20261103-202231-12332/M-b/normal/guard.log
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-b/no_guard/fallback.log.txt
+[PASS] log original hash: runs/mutations-20261103-202231-12332/M-b/no_guard/fallback.log
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-b/partial/fallback.log.txt
+[PASS] log original hash: runs/mutations-20261103-202231-12332/M-b/partial/fallback.log
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-b/partial/guard.log.txt
+[PASS] log original hash: runs/mutations-20261103-202231-12332/M-b/partial/guard.log
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-c/normal/fallback.log.txt
+[PASS] log original hash: runs/mutations-20261103-202231-12332/M-c/normal/fallback.log
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-c/normal/guard.log.txt
+[PASS] log original hash: runs/mutations-20261103-202231-12332/M-c/normal/guard.log
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-c/no_guard/fallback.log.txt
+[PASS] log original hash: runs/mutations-20261103-202231-12332/M-c/no_guard/fallback.log
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-c/partial/fallback.log.txt
+[PASS] log original hash: runs/mutations-20261103-202231-12332/M-c/partial/fallback.log
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-c/partial/guard.log.txt
+[PASS] log original hash: runs/mutations-20261103-202231-12332/M-c/partial/guard.log
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-d/normal/fallback.log.txt
+[PASS] log original hash: runs/mutations-20261103-202231-12332/M-d/normal/fallback.log
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-d/normal/guard.log.txt
+[PASS] log original hash: runs/mutations-20261103-202231-12332/M-d/normal/guard.log
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-d/no_guard/fallback.log.txt
+[PASS] log original hash: runs/mutations-20261103-202231-12332/M-d/no_guard/fallback.log
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-d/partial/fallback.log.txt
+[PASS] log original hash: runs/mutations-20261103-202231-12332/M-d/partial/fallback.log
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-d/partial/guard.log.txt
+[PASS] log original hash: runs/mutations-20261103-202231-12332/M-d/partial/guard.log
+[PASS] log copy hash: runs/pytest-20261103-202820/guard.log.txt
+[PASS] log original hash: runs/pytest-20261103-202820/guard.log
+[PASS] log copy hash: runs/recorder-baseline/entry-run/run-v3-20261103-202727-27764/backend-startup-run1.log.txt
+[PASS] log original hash: runs/recorder-baseline/entry-run/run-v3-20261103-202727-27764/backend-startup-run1.log
+[PASS] log copy hash: runs/recorder-baseline/entry-run/run-v3-20261103-202727-27764/guard.log.txt
+[PASS] log original hash: runs/recorder-baseline/entry-run/run-v3-20261103-202727-27764/guard.log
+[PASS] log copy hash: runs/recorder-baseline/entry-run/run-v3-20261103-202727-27764/harness.log.txt
+[PASS] log original hash: runs/recorder-baseline/entry-run/run-v3-20261103-202727-27764/harness.log
+[PASS] log copy hash: runs/recorder-matrix/entry-run/cases/case-1-attribution-import-fail.log.txt
+[PASS] log original hash: runs/recorder-matrix/entry-run/cases/case-1-attribution-import-fail.log
+[PASS] log copy hash: runs/recorder-matrix/entry-run/cases/case-10-normal-smoke.log.txt
+[PASS] log original hash: runs/recorder-matrix/entry-run/cases/case-10-normal-smoke.log
+[PASS] log copy hash: runs/recorder-matrix/entry-run/cases/case-11-c1-asset-source-corrupt.log.txt
+[PASS] log original hash: runs/recorder-matrix/entry-run/cases/case-11-c1-asset-source-corrupt.log
+[PASS] log copy hash: runs/recorder-matrix/entry-run/cases/case-12-c1-asset-source-missing.log.txt
+[PASS] log original hash: runs/recorder-matrix/entry-run/cases/case-12-c1-asset-source-missing.log
+[PASS] log copy hash: runs/recorder-matrix/entry-run/cases/case-13-c3-png-33byte-ihdr-only.log.txt
+[PASS] log original hash: runs/recorder-matrix/entry-run/cases/case-13-c3-png-33byte-ihdr-only.log
+[PASS] log copy hash: runs/recorder-matrix/entry-run/cases/case-14-netguard-proxy-no-tunnel.log.txt
+[PASS] log original hash: runs/recorder-matrix/entry-run/cases/case-14-netguard-proxy-no-tunnel.log
+[PASS] log copy hash: runs/recorder-matrix/entry-run/cases/case-15a-entrygate-pos.log.txt
+[PASS] log original hash: runs/recorder-matrix/entry-run/cases/case-15a-entrygate-pos.log
+[PASS] log copy hash: runs/recorder-matrix/entry-run/cases/case-15b-entrygate-g04.log.txt
+[PASS] log original hash: runs/recorder-matrix/entry-run/cases/case-15b-entrygate-g04.log
+[PASS] log copy hash: runs/recorder-matrix/entry-run/cases/case-15c-entrygate-g05.log.txt
+[PASS] log original hash: runs/recorder-matrix/entry-run/cases/case-15c-entrygate-g05.log
+[PASS] log copy hash: runs/recorder-matrix/entry-run/cases/case-15d-entrygate-g15.log.txt
+[PASS] log original hash: runs/recorder-matrix/entry-run/cases/case-15d-entrygate-g15.log
+[PASS] log copy hash: runs/recorder-matrix/entry-run/cases/case-16-env-restore-suite.log.txt
+[PASS] log original hash: runs/recorder-matrix/entry-run/cases/case-16-env-restore-suite.log
+[PASS] log copy hash: runs/recorder-matrix/entry-run/cases/case-17-r1-loopback-vectors.log.txt
+[PASS] log original hash: runs/recorder-matrix/entry-run/cases/case-17-r1-loopback-vectors.log
+[PASS] log copy hash: runs/recorder-matrix/entry-run/cases/case-18-r2-isolation-sentinels.log.txt
+[PASS] log original hash: runs/recorder-matrix/entry-run/cases/case-18-r2-isolation-sentinels.log
+[PASS] log copy hash: runs/recorder-matrix/entry-run/cases/case-19-r4-recovery-stubs.log.txt
+[PASS] log original hash: runs/recorder-matrix/entry-run/cases/case-19-r4-recovery-stubs.log
+[PASS] log copy hash: runs/recorder-matrix/entry-run/cases/case-2-baseline-root404.log.txt
+[PASS] log original hash: runs/recorder-matrix/entry-run/cases/case-2-baseline-root404.log
+[PASS] log copy hash: runs/recorder-matrix/entry-run/cases/case-3a-baseline-missing-cache.log.txt
+[PASS] log original hash: runs/recorder-matrix/entry-run/cases/case-3a-baseline-missing-cache.log
+[PASS] log copy hash: runs/recorder-matrix/entry-run/cases/case-3b-baseline-corrupt-cache.log.txt
+[PASS] log original hash: runs/recorder-matrix/entry-run/cases/case-3b-baseline-corrupt-cache.log
+[PASS] log copy hash: runs/recorder-matrix/entry-run/cases/case-4-netguard-nonloopback.log.txt
+[PASS] log original hash: runs/recorder-matrix/entry-run/cases/case-4-netguard-nonloopback.log
+[PASS] log copy hash: runs/recorder-matrix/entry-run/cases/case-5a-baseline-early-exit.log.txt
+[PASS] log original hash: runs/recorder-matrix/entry-run/cases/case-5a-baseline-early-exit.log
+[PASS] log copy hash: runs/recorder-matrix/entry-run/cases/case-6-baseline-cleanup-leftover.log.txt
+[PASS] log original hash: runs/recorder-matrix/entry-run/cases/case-6-baseline-cleanup-leftover.log
+[PASS] log copy hash: runs/recorder-matrix/entry-run/cases/case-7-port-occupied.log.txt
+[PASS] log original hash: runs/recorder-matrix/entry-run/cases/case-7-port-occupied.log
+[PASS] log copy hash: runs/recorder-matrix/entry-run/cases/case-8-external-config-sentinel.log.txt
+[PASS] log original hash: runs/recorder-matrix/entry-run/cases/case-8-external-config-sentinel.log
+[PASS] log copy hash: runs/recorder-matrix/entry-run/cases/case-9-png-invalid-inputs.log.txt
+[PASS] log original hash: runs/recorder-matrix/entry-run/cases/case-9-png-invalid-inputs.log
+[PASS] log copy hash: runs/recorder-matrix/entry-run/cases/case13-generator.guard.log.txt
+[PASS] log original hash: runs/recorder-matrix/entry-run/cases/case13-generator.guard.log
+[PASS] log copy hash: runs/recorder-matrix/entry-run/cases/case14-fallback.log.txt
+[PASS] log original hash: runs/recorder-matrix/entry-run/cases/case14-fallback.log
+[PASS] log copy hash: runs/recorder-matrix/entry-run/cases/case14-guard.log.txt
+[PASS] log original hash: runs/recorder-matrix/entry-run/cases/case14-guard.log
+[PASS] log copy hash: runs/recorder-matrix/entry-run/cases/case4-fallback.log.txt
+[PASS] log original hash: runs/recorder-matrix/entry-run/cases/case4-fallback.log
+[PASS] log copy hash: runs/recorder-matrix/entry-run/cases/case4-guard.log.txt
+[PASS] log original hash: runs/recorder-matrix/entry-run/cases/case4-guard.log
+[PASS] log copy hash: runs/recorder-matrix/entry-run/cases/case9-generator.guard.log.txt
+[PASS] log original hash: runs/recorder-matrix/entry-run/cases/case9-generator.guard.log
+[PASS] log copy hash: runs/recorder-perprocess/entry-run/guard.log.txt
+[PASS] log original hash: runs/recorder-perprocess/entry-run/guard.log
+[PASS] log copy hash: runs/recorder-perprocess-n04/entry-run/guard.log.txt
+[PASS] log original hash: runs/recorder-perprocess-n04/entry-run/guard.log
+[PASS] log copy hash: runs/attribution-20261103-202839-9272/guard.log.txt
+[PASS] log original (temp root) hash: D:\student\翻译\PDFMathTranslate-next\.local\p0-temp\pdf2zh-attr-attribution-20261103-202839-9272-9272\guard.log
+[PASS] log copy hash: runs/empty-host-20261103-202242-17608/probe-output.log.txt
+[N/A] log copy-only historical: runs/empty-host-20261103-202242-17608/probe-output.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/guard-test-20261103-202224-19772/normal/output.log.txt
+[N/A] log copy-only historical: runs/guard-test-20261103-202224-19772/normal/output.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/guard-test-20261103-202224-19772/no_guard/output.log.txt
+[N/A] log copy-only historical: runs/guard-test-20261103-202224-19772/no_guard/output.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/guard-test-20261103-202224-19772/partial/output.log.txt
+[N/A] log copy-only historical: runs/guard-test-20261103-202224-19772/partial/output.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/isolation-sentinel-20261103-202245-4788/asset-corrupt.log.txt
+[N/A] log copy-only historical: runs/isolation-sentinel-20261103-202245-4788/asset-corrupt.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/isolation-sentinel-20261103-202245-4788/asset-empty-manifest.log.txt
+[N/A] log copy-only historical: runs/isolation-sentinel-20261103-202245-4788/asset-empty-manifest.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/isolation-sentinel-20261103-202245-4788/asset-empty.log.txt
+[N/A] log copy-only historical: runs/isolation-sentinel-20261103-202245-4788/asset-empty.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/isolation-sentinel-20261103-202245-4788/asset-garbled.log.txt
+[N/A] log copy-only historical: runs/isolation-sentinel-20261103-202245-4788/asset-garbled.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/isolation-sentinel-20261103-202245-4788/asset-hashtool-fail.log.txt
+[N/A] log copy-only historical: runs/isolation-sentinel-20261103-202245-4788/asset-hashtool-fail.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/isolation-sentinel-20261103-202245-4788/asset-missing-cat.log.txt
+[N/A] log copy-only historical: runs/isolation-sentinel-20261103-202245-4788/asset-missing-cat.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/isolation-sentinel-20261103-202245-4788/asset-nohome.log.txt
+[N/A] log copy-only historical: runs/isolation-sentinel-20261103-202245-4788/asset-nohome.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/isolation-sentinel-20261103-202245-4788/asset-standalone.log.txt
+[N/A] log copy-only historical: runs/isolation-sentinel-20261103-202245-4788/asset-standalone.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/isolation-sentinel-20261103-203433-20792/asset-corrupt.log.txt
+[N/A] log copy-only historical: runs/isolation-sentinel-20261103-203433-20792/asset-corrupt.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/isolation-sentinel-20261103-203433-20792/asset-empty-manifest.log.txt
+[N/A] log copy-only historical: runs/isolation-sentinel-20261103-203433-20792/asset-empty-manifest.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/isolation-sentinel-20261103-203433-20792/asset-empty.log.txt
+[N/A] log copy-only historical: runs/isolation-sentinel-20261103-203433-20792/asset-empty.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/isolation-sentinel-20261103-203433-20792/asset-garbled.log.txt
+[N/A] log copy-only historical: runs/isolation-sentinel-20261103-203433-20792/asset-garbled.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/isolation-sentinel-20261103-203433-20792/asset-hashtool-fail.log.txt
+[N/A] log copy-only historical: runs/isolation-sentinel-20261103-203433-20792/asset-hashtool-fail.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/isolation-sentinel-20261103-203433-20792/asset-missing-cat.log.txt
+[N/A] log copy-only historical: runs/isolation-sentinel-20261103-203433-20792/asset-missing-cat.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/isolation-sentinel-20261103-203433-20792/asset-nohome.log.txt
+[N/A] log copy-only historical: runs/isolation-sentinel-20261103-203433-20792/asset-nohome.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/isolation-sentinel-20261103-203433-20792/asset-standalone.log.txt
+[N/A] log copy-only historical: runs/isolation-sentinel-20261103-203433-20792/asset-standalone.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/loopback-vectors-20261103-202244-1824/vectors-output.log.txt
+[N/A] log copy-only historical: runs/loopback-vectors-20261103-202244-1824/vectors-output.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/loopback-vectors-20261103-203432-26148/vectors-output.log.txt
+[N/A] log copy-only historical: runs/loopback-vectors-20261103-203432-26148/vectors-output.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/clean/normal/output.log.txt
+[N/A] log copy-only historical: runs/mutations-20261103-202231-12332/clean/normal/output.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/clean/no_guard/output.log.txt
+[N/A] log copy-only historical: runs/mutations-20261103-202231-12332/clean/no_guard/output.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/clean/partial/output.log.txt
+[N/A] log copy-only historical: runs/mutations-20261103-202231-12332/clean/partial/output.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-a/normal/output.log.txt
+[N/A] log copy-only historical: runs/mutations-20261103-202231-12332/M-a/normal/output.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-a/no_guard/output.log.txt
+[N/A] log copy-only historical: runs/mutations-20261103-202231-12332/M-a/no_guard/output.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-a/partial/output.log.txt
+[N/A] log copy-only historical: runs/mutations-20261103-202231-12332/M-a/partial/output.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-b/normal/output.log.txt
+[N/A] log copy-only historical: runs/mutations-20261103-202231-12332/M-b/normal/output.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-b/no_guard/output.log.txt
+[N/A] log copy-only historical: runs/mutations-20261103-202231-12332/M-b/no_guard/output.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-b/partial/output.log.txt
+[N/A] log copy-only historical: runs/mutations-20261103-202231-12332/M-b/partial/output.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-c/normal/output.log.txt
+[N/A] log copy-only historical: runs/mutations-20261103-202231-12332/M-c/normal/output.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-c/no_guard/output.log.txt
+[N/A] log copy-only historical: runs/mutations-20261103-202231-12332/M-c/no_guard/output.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-c/partial/output.log.txt
+[N/A] log copy-only historical: runs/mutations-20261103-202231-12332/M-c/partial/output.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-d/normal/output.log.txt
+[N/A] log copy-only historical: runs/mutations-20261103-202231-12332/M-d/normal/output.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-d/no_guard/output.log.txt
+[N/A] log copy-only historical: runs/mutations-20261103-202231-12332/M-d/no_guard/output.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/mutations-20261103-202231-12332/M-d/partial/output.log.txt
+[N/A] log copy-only historical: runs/mutations-20261103-202231-12332/M-d/partial/output.log.txt : limited conclusion: copy integrity only; no original-relationship claim
+[PASS] log copy hash: runs/recorder-attribution/entry-run/guard.log.txt
+[PASS] log original (temp root) hash: D:\student\翻译\PDFMathTranslate-next\.local\p0-temp\pdf2zh-attr-entry-run-21396\guard.log
+[PASS] log copy hash: runs/recorder-attribution-fail/entry-run/guard.log.txt
+[PASS] log original (temp root) hash: D:\student\翻译\PDFMathTranslate-next\.local\p0-temp\pdf2zh-attr-entry-run-16116\guard.log
+[PASS] log copy hash: runs/recorder-perprocess/entry-run/backend.log.txt
+[PASS] log original (temp root) hash: D:\student\翻译\PDFMathTranslate-next\.local\p0-temp\pdf2zh-probe-pp-20261103-202417-4840\backend.log
+[PASS] log copy hash: runs/recorder-perprocess/entry-run/guard-20261103-202417.log.txt
+[PASS] log original honestly unavailable: runs/recorder-perprocess/entry-run/guard-20261103-202417.log.txt
+[PASS] log copy hash: runs/recorder-perprocess-n04/entry-run/backend.log.txt
+[PASS] log original (temp root) hash: D:\student\翻译\PDFMathTranslate-next\.local\p0-temp\pdf2zh-probe-pp-20261103-202602-3980\backend.log
+[PASS] log copy hash: runs/recorder-perprocess-n04/entry-run/guard-20261103-202602.log.txt
+[PASS] log original honestly unavailable: runs/recorder-perprocess-n04/entry-run/guard-20261103-202602.log.txt
+[PASS] log pair recorded+present: backend-startup-run1.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: harness.log
+[PASS] log pair recorded+present: harness.log
+[PASS] log pair recorded+present: harness.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: harness.log
+[PASS] log pair recorded+present: backend-startup-run1.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: harness.log
+[PASS] log pair recorded+present: backend-startup-run1.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: harness.log
+[PASS] log pair recorded+present: backend-startup-run1.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: harness.log
+[PASS] log pair recorded+present: fallback.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: fallback.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: fallback.log
+[PASS] log pair recorded+present: fallback.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: png-generator.guard.log
+[PASS] log pair recorded+present: png-generator.guard.log
+[PASS] log pair recorded+present: fallback.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: fallback.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: fallback.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: fallback.log
+[PASS] log pair recorded+present: fallback.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: fallback.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: fallback.log
+[PASS] log pair recorded+present: fallback.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: fallback.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: fallback.log
+[PASS] log pair recorded+present: fallback.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: fallback.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: fallback.log
+[PASS] log pair recorded+present: fallback.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: fallback.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: fallback.log
+[PASS] log pair recorded+present: fallback.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: backend-startup-run1.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: harness.log
+[PASS] log pair recorded+present: case-1-attribution-import-fail.log
+[PASS] log pair recorded+present: case-10-normal-smoke.log
+[PASS] log pair recorded+present: case-11-c1-asset-source-corrupt.log
+[PASS] log pair recorded+present: case-12-c1-asset-source-missing.log
+[PASS] log pair recorded+present: case-13-c3-png-33byte-ihdr-only.log
+[PASS] log pair recorded+present: case-14-netguard-proxy-no-tunnel.log
+[PASS] log pair recorded+present: case-15a-entrygate-pos.log
+[PASS] log pair recorded+present: case-15b-entrygate-g04.log
+[PASS] log pair recorded+present: case-15c-entrygate-g05.log
+[PASS] log pair recorded+present: case-15d-entrygate-g15.log
+[PASS] log pair recorded+present: case-16-env-restore-suite.log
+[PASS] log pair recorded+present: case-17-r1-loopback-vectors.log
+[PASS] log pair recorded+present: case-18-r2-isolation-sentinels.log
+[PASS] log pair recorded+present: case-19-r4-recovery-stubs.log
+[PASS] log pair recorded+present: case-2-baseline-root404.log
+[PASS] log pair recorded+present: case-3a-baseline-missing-cache.log
+[PASS] log pair recorded+present: case-3b-baseline-corrupt-cache.log
+[PASS] log pair recorded+present: case-4-netguard-nonloopback.log
+[PASS] log pair recorded+present: case-5a-baseline-early-exit.log
+[PASS] log pair recorded+present: case-6-baseline-cleanup-leftover.log
+[PASS] log pair recorded+present: case-7-port-occupied.log
+[PASS] log pair recorded+present: case-8-external-config-sentinel.log
+[PASS] log pair recorded+present: case-9-png-invalid-inputs.log
+[PASS] log pair recorded+present: case13-generator.guard.log
+[PASS] log pair recorded+present: case14-fallback.log
+[PASS] log pair recorded+present: case14-guard.log
+[PASS] log pair recorded+present: case4-fallback.log
+[PASS] log pair recorded+present: case4-guard.log
+[PASS] log pair recorded+present: case9-generator.guard.log
+[PASS] log pair recorded+present: guard.log
+[PASS] log pair recorded+present: guard.log
+[PASS] INDEX.md relative links valid
+[PASS] result.json parseable: asset_corrupt
+[PASS] result.json parseable: asset_missing
+[PASS] result.json parseable: empty_manifest
+[PASS] result.json parseable: hash_tool_failed
+[PASS] result.json parseable: metadata_unparseable
+[PASS] result.json parseable: missing_category
+[PASS] result.json parseable: valid
+[PASS] result.json parseable: attribution-20261103-202839-9272
+[PASS] result.json parseable: run-v3-20261103-202846-19060-root404
+[PASS] result.json parseable: run-v3-20261103-203043-22112-early-exit
+[PASS] result.json parseable: run-v3-20261103-203142-28124-cleanup-leftover
+[PASS] result.json parseable: run-v3-20261103-203229-7240
+[PASS] result.json parseable: run-v3-20261103-203317-23916
+[PASS] result.json parseable: pytest-20261103-202820
+[PASS] result.json parseable: entry-run
+[PASS] result.json parseable: entry-run
+[PASS] result.json parseable: run-v3-20261103-202727-27764
+[PASS] result.json parseable: entry-run
+[PASS] result.json parseable: entry-run
+[PASS] perprocess guard_active is bool
+[PASS] perprocess guard_blocked_count is int
+[PASS] perprocess port_released is bool
+[PASS] perprocess processes_recovered is bool (identity recheck)
+[PASS] perprocess fallback_hits is not fabricated zero
+[PASS] perprocess recovery has no query_failed rows
+[PASS] perprocess guard_active is bool
+[PASS] perprocess guard_blocked_count is int
+[PASS] perprocess port_released is bool
+[PASS] perprocess processes_recovered is bool (identity recheck)
+[PASS] perprocess fallback_hits is not fabricated zero
+[PASS] perprocess recovery has no query_failed rows
+[PASS] no evidence file is gitignored
+
+=== Evidence check v5: expected=945 checked=706 n/a=37 unverified=0 skipped=0 failed=0 ===
+report written: D:\student\翻译\p0-frozen-fa97b2e6f9\docs\verification\native-desktop\p0-delivery-20261103-c72fd7361c\reports\checker-final.json

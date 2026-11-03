@@ -1,0 +1,12 @@
+
+case                 observed_exit reason_matched status   verdict
+----                 ------------- -------------- ------   -------
+valid                            0           True verified PASS   
+metadata_unparseable             4           True verified PASS   
+empty_manifest                   4           True verified PASS   
+missing_category                 4           True verified PASS   
+hash_tool_failed                 4           True verified PASS   
+asset_missing                    4           True verified PASS   
+asset_corrupt                    4           True verified PASS   
+
+

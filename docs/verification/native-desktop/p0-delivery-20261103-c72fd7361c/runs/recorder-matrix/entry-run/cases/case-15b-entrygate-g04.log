@@ -1,0 +1,17 @@
+=== POS-healthy-handshake ===
+  exit=0 expected=0 sentinelRan=True reasonOk=True verdict=PASS gateStderr=APP_ENTERED present
+=== G04-guard-log-unwritable ===
+  exit=1 expected=1 sentinelRan=False reasonOk=True verdict=PASS gateStderr=ENTRY_GATE: no GUARD_ACTIVE entry with PID 3896 in guard log; guard hooks not installed in this process (stale or missing handshake). Refusing to start. | 
+=== G05-stale-handshake ===
+  exit=1 expected=1 sentinelRan=False reasonOk=True verdict=PASS gateStderr=ENTRY_GATE: no GUARD_ACTIVE entry with PID 23252 in guard log; guard hooks not installed in this process (stale or missing handshake). Refusing to start. | 
+=== G15a-sitecustomize-missing ===
+  exit=1 expected=1 sentinelRan=False reasonOk=True verdict=PASS gateStderr=ENTRY_GATE: sitecustomize module not loaded in this process (Python ignores sitecustomize import errors); guard cannot be verified; refusing to start | 
+=== G15b-sitecustomize-hash-mismatch ===
+  exit=1 expected=1 sentinelRan=False reasonOk=True verdict=PASS gateStderr=ENTRY_GATE: guard hash mismatch: expected D5C2C8774ADCC174200C5B62819A317F7E0DC90EA77322E3D4A43ACE256B70AA, loaded sitecustomize is 2427A00A2216812198FFCC492F1F71CD492179CD2520C003C9ACC9F900320CF7; refusing to start | 
+case,expectedExit,actualExit,verdict,expectedReason
+POS-healthy-handshake,0,0,PASS,
+G04-guard-log-unwritable,1,1,PASS,no GUARD_ACTIVE entry with PID
+G05-stale-handshake,1,1,PASS,no GUARD_ACTIVE entry with PID
+G15a-sitecustomize-missing,1,1,PASS,sitecustomize module not loaded
+G15b-sitecustomize-hash-mismatch,1,1,PASS,guard hash mismatch
+[PASS] entry-gate negative tests pass

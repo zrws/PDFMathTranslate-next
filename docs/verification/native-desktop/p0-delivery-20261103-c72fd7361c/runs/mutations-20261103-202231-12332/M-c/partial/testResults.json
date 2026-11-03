@@ -1,0 +1,36 @@
+{
+  "fallback_confirmed": {
+    "passed": true,
+    "reason": "fallback fully confirmed (active=True log_line=True counter=True writable=True)"
+  },
+  "guard_loaded": {
+    "passed": true,
+    "reason": "GUARD_ACTIVE with PID 2568"
+  },
+  "fallback_active": {
+    "passed": true,
+    "reason": "fallback installed"
+  },
+  "partial_sync_guarded": {
+    "rejected": true,
+    "error": "net-guard: outbound blocked to '192.0.2.1' (measurement runs are offline; assets must be pre-staged and verified)",
+    "new_guard_blocks": 1,
+    "new_fallback_hits": 0,
+    "source": "guard",
+    "passed": true,
+    "reason": "guard blocked with matching log entry"
+  },
+  "partial_async_fallback": {
+    "rejected": true,
+    "error": "FALLBACK: async outbound blocked to '192.0.2.1' (guard failed; fallback active)",
+    "new_guard_blocks": 0,
+    "new_fallback_hits": 1,
+    "source": "fallback",
+    "passed": true,
+    "reason": "fallback correctly caught guard failure"
+  },
+  "overall": {
+    "passed": false,
+    "reason": "async hook was skipped; fallback caught async attempt"
+  }
+}

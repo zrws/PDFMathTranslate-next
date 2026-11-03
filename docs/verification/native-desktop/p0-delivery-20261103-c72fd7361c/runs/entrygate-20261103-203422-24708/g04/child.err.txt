@@ -1,0 +1,1 @@
+ENTRY_GATE: no GUARD_ACTIVE entry with PID 3896 in guard log; guard hooks not installed in this process (stale or missing handshake). Refusing to start.

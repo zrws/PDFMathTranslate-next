@@ -1,0 +1,59 @@
+﻿{
+    "recorder":  "p0_run_recorder.ps1",
+    "recorded_at":  "2026-11-03T20:35:40.2216119+08:00",
+    "entry":  "D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\tests\\performance\\p0_negative_tests.ps1",
+    "entry_args":  "-RepoRoot D:\\student\\翻译\\p0-frozen-fa97b2e6f9 -InstallRoot D:\\student\\翻译\\PDFMathTranslate-next\\.local\\runtime -PythonExe D:\\student\\翻译\\PDFMathTranslate-next\\.local\\runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\python.exe -EvidenceRoot D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\docs\\verification\\native-desktop\\p0-delivery-20261103-c72fd7361c",
+    "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\tests\\performance\\p0_negative_tests.ps1 -RepoRoot D:\\student\\翻译\\p0-frozen-fa97b2e6f9 -InstallRoot D:\\student\\翻译\\PDFMathTranslate-next\\.local\\runtime -PythonExe D:\\student\\翻译\\PDFMathTranslate-next\\.local\\runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\python.exe -EvidenceRoot D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\docs\\verification\\native-desktop\\p0-delivery-20261103-c72fd7361c -OutDir D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\docs\\verification\\native-desktop\\p0-delivery-20261103-c72fd7361c\\runs\\recorder-matrix\\entry-run",
+    "child_pid":  10016,
+    "child_identity":  {
+                           "pid":  10016,
+                           "executable":  "powershell.exe",
+                           "started_at":  "2026-11-03T20:28:38.5537160+08:00"
+                       },
+    "argument_vector":  [
+                            "-NoProfile",
+                            "-ExecutionPolicy",
+                            "Bypass",
+                            "-File",
+                            "D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\tests\\performance\\p0_negative_tests.ps1",
+                            "-RepoRoot",
+                            "D:\\student\\翻译\\p0-frozen-fa97b2e6f9",
+                            "-InstallRoot",
+                            "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\runtime",
+                            "-PythonExe",
+                            "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\python.exe",
+                            "-EvidenceRoot",
+                            "D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\docs\\verification\\native-desktop\\p0-delivery-20261103-c72fd7361c",
+                            "-OutDir",
+                            "D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\docs\\verification\\native-desktop\\p0-delivery-20261103-c72fd7361c\\runs\\recorder-matrix\\entry-run"
+                        ],
+    "window":  {
+                   "ended":  "2026-11-03T20:35:40.2216119+08:00",
+                   "started":  "2026-11-03T20:28:38.5488968+08:00"
+               },
+    "timeout_minutes":  30,
+    "timeout_hit":  false,
+    "outer_exception":  "",
+    "actual_exit":  0,
+    "entry_run_dir":  "D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\docs\\verification\\native-desktop\\p0-delivery-20261103-c72fd7361c\\runs\\recorder-matrix\\entry-run",
+    "entry_run_dir_exists":  true,
+    "runtime_hashes":  {
+                           "p0_baseline.ps1":  "63C305568D301B10D36242EAC2374615F09782C621D034AB9D6B2F23E6CDADDD",
+                           "p0_probe_perprocess.ps1":  "B52264BBC57294BD50C768A1BC2BB9D2E2949F5E9AA963E872781503F18EA242",
+                           "p0_probe_attribution.ps1":  "17E83833AA050B16635C091C2A1F8A5D31AB0B381FB98B92D8F6ADEC78F69F1D",
+                           "p0_asset_check.ps1":  "14A155050A1375235F97DCC156302D38193B710A86D2846570939638018C2085",
+                           "p0_paths.ps1":  "3115C8D9C99129AD514842B8E545D47999B9280F8D561F8C5FACF20CC128B269",
+                           "p0_runs.ps1":  "99EEAEDFDCBB1F8CD8D58B538337E004197A4C4A50B3B45A3EFFA261DE333789",
+                           "p0_env.ps1":  "14877DFAC860C11DB524340D57C8393B1390DABC640EDFA6D18D4FAB66DABA38",
+                           "p0_result.ps1":  "CE4BB7FF2D5813FD8E8F98FF029FD30E1764BFAEB3B664668E48DD513673C87C",
+                           "p0_run_recorder.ps1":  "0A5782FCA1BE98CB8A9771659F2AEB500A8589C358FA423239408686869869B1",
+                           "p0_guard\\sitecustomize.py":  "D5C2C8774ADCC174200C5B62819A317F7E0DC90EA77322E3D4A43ACE256B70AA",
+                           "p0_guard\\entry_gate.py":  "25C7E47110A3C86BE1CFC97B3EFFF79B105293671CEC88FAD4A155E3F69C1A81",
+                           "p0_guard\\entry_wrapper.py":  "E93B996F5710ECB386AC1D317652F9396FAB657C754EE84C6E26FA249B9BA691",
+                           "entry":  "1C534B2043500E34D241F73C9E4D67C60959CF26FA98D08786C4E9F96AAEA1E8"
+                       },
+    "stdout_path":  "D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\docs\\verification\\native-desktop\\p0-delivery-20261103-c72fd7361c\\runs\\recorder-matrix\\entry-stdout.txt",
+    "stderr_path":  "D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\docs\\verification\\native-desktop\\p0-delivery-20261103-c72fd7361c\\runs\\recorder-matrix\\entry-stderr.txt",
+    "stdout_bytes":  8139,
+    "stderr_bytes":  0
+}

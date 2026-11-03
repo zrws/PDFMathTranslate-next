@@ -1,0 +1,9 @@
+[FAIL] import_babeldoc_assets no IMPORT_DONE
+[PASS] owned processes confirmed gone (per-identity recheck)
+[FAIL] import_fastapi_uvicorn_pydantic no IMPORT_DONE
+[PASS] owned processes confirmed gone (per-identity recheck)
+[FAIL] import_pdf2zh_next_http_api no IMPORT_DONE
+[PASS] owned processes confirmed gone (per-identity recheck)
+[FAIL] 3 payload(s) without valid measurement
+[PASS] entry gate: APP_ENTERED present
+[FAIL] attribution run had failures

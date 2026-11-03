@@ -1,0 +1,12 @@
+﻿{
+    "metric":  "preview_render",
+    "backend":  "repo",
+    "n":  12,
+    "meanMs":  46.2,
+    "medianMs":  44.9,
+    "p95Ms":  63.1,
+    "maxMs":  63.1,
+    "widthPx":  900,
+    "pagesCycled":  "1-4",
+    "note":  "nearest-rank p95; median = mean of two middle values; server-side render only, not UI page-turn latency"
+}

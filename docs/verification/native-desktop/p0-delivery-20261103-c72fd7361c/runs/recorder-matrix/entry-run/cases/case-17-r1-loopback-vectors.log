@@ -1,0 +1,5 @@
+'127.0.0.1' -> 127.0.0.1
+'0127.0.0.1' -> 87.0.0.1
+'00127.0.0.1' -> 87.0.0.1
+vectors exit: 0
+[PASS] R1 loopback vectors: both layers strict, bottom stub untouched

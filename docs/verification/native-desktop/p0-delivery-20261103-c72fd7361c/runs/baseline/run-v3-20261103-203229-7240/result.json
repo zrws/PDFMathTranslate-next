@@ -1,0 +1,12 @@
+﻿{
+    "exitCode":  0,
+    "failures":  [
+
+                 ],
+    "unhandledException":  null,
+    "runDir":  "D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\docs\\verification\\native-desktop\\p0-delivery-20261103-c72fd7361c\\runs\\baseline\\run-v3-20261103-203229-7240",
+    "tempRoot":  "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\p0-temp\\pdf2zh-p0-20261103-203229-7240",
+    "backend":  "repo",
+    "failInject":  "",
+    "note":  "single exit decision made here after finally cleanup; translation never submitted (offline)"
+}

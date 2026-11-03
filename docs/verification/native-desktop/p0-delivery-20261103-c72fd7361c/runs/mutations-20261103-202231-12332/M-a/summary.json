@@ -1,0 +1,50 @@
+﻿{
+    "normal":  {
+                   "missingSubitems":  [
+
+                                       ],
+                   "expectedExit":  0,
+                   "exitCode":  1,
+                   "reason":  "exit=1(expected 0) guardActive=True blocked=1 fbHits=6 missingSubitems=[] failedSubitems=[sync_blocked,connect_ex_blocked,async_blocked,httpx_blocked,fallback_zero_hits,pseudo_loopback_connect_127audit,pseudo_loopback_connect_localhostaudit]",
+                   "passed":  false,
+                   "blockedCount":  1,
+                   "failedSubitems":  [
+                                          "sync_blocked",
+                                          "connect_ex_blocked",
+                                          "async_blocked",
+                                          "httpx_blocked",
+                                          "fallback_zero_hits",
+                                          "pseudo_loopback_connect_127audit",
+                                          "pseudo_loopback_connect_localhostaudit"
+                                      ],
+                   "fallbackHits":  6
+               },
+    "no_guard":  {
+                     "missingSubitems":  [
+
+                                         ],
+                     "expectedExit":  1,
+                     "exitCode":  1,
+                     "reason":  "exit=1(expected 1) fbActive=True fbHits=3 guardActive=False perItem=[no_guard_sync=fallback no_guard_async=fallback no_guard_dns=fallback] missing=[] failed=[]",
+                     "passed":  true,
+                     "blockedCount":  0,
+                     "failedSubitems":  [
+
+                                        ],
+                     "fallbackHits":  3
+                 },
+    "partial":  {
+                    "missingSubitems":  [
+
+                                        ],
+                    "expectedExit":  1,
+                    "exitCode":  1,
+                    "reason":  "exit=1(expected 1) sync=fallback async=fallback missing=[] failed=[partial_sync_guarded]",
+                    "passed":  false,
+                    "blockedCount":  0,
+                    "failedSubitems":  [
+                                           "partial_sync_guarded"
+                                       ],
+                    "fallbackHits":  2
+                }
+}

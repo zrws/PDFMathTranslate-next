@@ -1,0 +1,6 @@
+case,expectedExit,actualExit,verdict
+clean,0,0,PASS
+M-a,1,1,PASS
+M-b,1,1,PASS
+M-c,1,1,PASS
+M-d,1,1,PASS

@@ -1,0 +1,3 @@
+probe exit: 1
+output: EMPTY_HOST_REJECTED guard=False fallback=False
+[PASS] G12 empty-host rejection observed (frozen exit 1)

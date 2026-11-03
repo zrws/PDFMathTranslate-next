@@ -1,0 +1,4 @@
+{"label":"bare_sleep","privateMB":13.5,"workingSetMB":22.3,"gate_blocked":false,"note":"measured after IMPORT_DONE handshake; entry gate verified guard+hash before import; isolated HOME/CONFIG; net-guard active"}
+{"label":"import_babeldoc_assets","privateMB":24.3,"workingSetMB":34.5,"gate_blocked":false,"note":"measured after IMPORT_DONE handshake; entry gate verified guard+hash before import; isolated HOME/CONFIG; net-guard active"}
+{"label":"import_fastapi_uvicorn_pydantic","privateMB":35,"workingSetMB":45.6,"gate_blocked":false,"note":"measured after IMPORT_DONE handshake; entry gate verified guard+hash before import; isolated HOME/CONFIG; net-guard active"}
+{"label":"import_pdf2zh_next_http_api","privateMB":915.3,"workingSetMB":242.1,"gate_blocked":false,"note":"measured after IMPORT_DONE handshake; entry gate verified guard+hash before import; isolated HOME/CONFIG; net-guard active"}

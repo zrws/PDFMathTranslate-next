@@ -1,0 +1,286 @@
+﻿{
+    "generatedAt":  "2026-11-03T20:36:51.6951932+08:00",
+    "case_count":  28,
+    "coverage":  [
+                     {
+                         "case":  "G06",
+                         "expected_exit":  0,
+                         "observed_exit":  "0",
+                         "verdict":  "PASS",
+                         "expected_reason":  "sync_blocked",
+                         "source":  "runs/guard-test-20261103-202224-19772/normal/testResults.json",
+                         "mode":  "new-run",
+                         "binding_rationale":  ""
+                     },
+                     {
+                         "case":  "G13",
+                         "expected_exit":  0,
+                         "observed_exit":  "0",
+                         "verdict":  "PASS",
+                         "expected_reason":  "fallback_zero_hits",
+                         "source":  "runs/guard-test-20261103-202224-19772/normal/testResults.json",
+                         "mode":  "new-run",
+                         "binding_rationale":  ""
+                     },
+                     {
+                         "case":  "G09",
+                         "expected_exit":  0,
+                         "observed_exit":  "0",
+                         "verdict":  "PASS",
+                         "expected_reason":  "dns_blocked",
+                         "source":  "runs/guard-test-20261103-202224-19772/normal/testResults.json",
+                         "mode":  "new-run",
+                         "binding_rationale":  ""
+                     },
+                     {
+                         "case":  "N01",
+                         "expected_exit":  0,
+                         "observed_exit":  "0",
+                         "verdict":  "PASS",
+                         "expected_reason":  "pseudo_loopback_rejected",
+                         "source":  "runs/guard-test-20261103-202224-19772/normal/testResults.json",
+                         "mode":  "new-run",
+                         "binding_rationale":  ""
+                     },
+                     {
+                         "case":  "G07",
+                         "expected_exit":  0,
+                         "observed_exit":  "0",
+                         "verdict":  "PASS",
+                         "expected_reason":  "async_blocked",
+                         "source":  "runs/guard-test-20261103-202224-19772/normal/testResults.json",
+                         "mode":  "new-run",
+                         "binding_rationale":  ""
+                     },
+                     {
+                         "case":  "G10",
+                         "expected_exit":  0,
+                         "observed_exit":  "0",
+                         "verdict":  "PASS",
+                         "expected_reason":  "loopback_allowed",
+                         "source":  "runs/guard-test-20261103-202224-19772/normal/testResults.json",
+                         "mode":  "new-run",
+                         "binding_rationale":  ""
+                     },
+                     {
+                         "case":  "G08",
+                         "expected_exit":  0,
+                         "observed_exit":  "0",
+                         "verdict":  "PASS",
+                         "expected_reason":  "httpx_blocked",
+                         "source":  "runs/guard-test-20261103-202224-19772/normal/testResults.json",
+                         "mode":  "new-run",
+                         "binding_rationale":  ""
+                     },
+                     {
+                         "case":  "G02",
+                         "expected_exit":  1,
+                         "observed_exit":  "1",
+                         "verdict":  "PASS",
+                         "expected_reason":  "guard_missing_detected_by_fallback",
+                         "source":  "runs/guard-test-20261103-202224-19772/no_guard",
+                         "mode":  "new-run",
+                         "binding_rationale":  ""
+                     },
+                     {
+                         "case":  "G03",
+                         "expected_exit":  1,
+                         "observed_exit":  "1",
+                         "verdict":  "PASS",
+                         "expected_reason":  "guard_partial_failure_detected",
+                         "source":  "runs/guard-test-20261103-202224-19772/partial",
+                         "mode":  "new-run",
+                         "binding_rationale":  ""
+                     },
+                     {
+                         "case":  "G14",
+                         "expected_exit":  0,
+                         "observed_exit":  "0",
+                         "verdict":  "PASS",
+                         "expected_reason":  "startup_gate_active",
+                         "source":  "runs/entrygate-20261103-203427-27292/matrix.csv",
+                         "mode":  "new-run",
+                         "binding_rationale":  ""
+                     },
+                     {
+                         "case":  "G04",
+                         "expected_exit":  1,
+                         "observed_exit":  "1",
+                         "verdict":  "PASS",
+                         "expected_reason":  "guard_handshake_missing",
+                         "source":  "runs/entrygate-20261103-203427-27292/matrix.csv",
+                         "mode":  "new-run",
+                         "binding_rationale":  ""
+                     },
+                     {
+                         "case":  "G05",
+                         "expected_exit":  1,
+                         "observed_exit":  "1",
+                         "verdict":  "PASS",
+                         "expected_reason":  "stale_handshake_rejected",
+                         "source":  "runs/entrygate-20261103-203427-27292/matrix.csv",
+                         "mode":  "new-run",
+                         "binding_rationale":  ""
+                     },
+                     {
+                         "case":  "G15",
+                         "expected_exit":  1,
+                         "observed_exit":  "1",
+                         "verdict":  "PASS",
+                         "expected_reason":  "bootstrap_blocks_on_guard_fail",
+                         "source":  "runs/entrygate-20261103-203427-27292/matrix.csv",
+                         "mode":  "new-run",
+                         "binding_rationale":  ""
+                     },
+                     {
+                         "case":  "G12",
+                         "expected_exit":  1,
+                         "observed_exit":  "1",
+                         "verdict":  "PASS",
+                         "expected_reason":  "empty_host_rejected",
+                         "source":  "empty-host-20261103-202242-17608/probe-exit.txt",
+                         "mode":  "new-run",
+                         "binding_rationale":  ""
+                     },
+                     {
+                         "case":  "N02",
+                         "expected_exit":  1,
+                         "observed_exit":  "1",
+                         "verdict":  "PASS",
+                         "expected_reason":  "mutation_rejected",
+                         "source":  "mutations-20261103-202231-12332/matrix.csv",
+                         "mode":  "new-run",
+                         "binding_rationale":  ""
+                     },
+                     {
+                         "case":  "G16",
+                         "expected_exit":  0,
+                         "observed_exit":  "0",
+                         "verdict":  "PASS",
+                         "expected_reason":  "env_restored",
+                         "source":  "runs/env-restore-20261103-203429-16224/matrix.csv",
+                         "mode":  "new-run",
+                         "binding_rationale":  ""
+                     },
+                     {
+                         "case":  "N04",
+                         "expected_exit":  1,
+                         "observed_exit":  "1",
+                         "verdict":  "PASS",
+                         "expected_reason":  "failure_result_written",
+                         "source":  "runs/recorder-perprocess-n04/entry-run/result.json",
+                         "mode":  "new-run",
+                         "binding_rationale":  ""
+                     },
+                     {
+                         "case":  "P01",
+                         "expected_exit":  0,
+                         "observed_exit":  "0",
+                         "verdict":  "PASS",
+                         "expected_reason":  "perprocess_valid",
+                         "source":  "runs/recorder-perprocess/entry-run/result.json",
+                         "mode":  "new-run",
+                         "binding_rationale":  ""
+                     },
+                     {
+                         "case":  "P02",
+                         "expected_exit":  0,
+                         "observed_exit":  "0",
+                         "verdict":  "PASS",
+                         "expected_reason":  "result_complete",
+                         "source":  "runs/recorder-perprocess/entry-run/result.json",
+                         "mode":  "new-run",
+                         "binding_rationale":  ""
+                     },
+                     {
+                         "case":  "I03",
+                         "expected_exit":  1,
+                         "observed_exit":  "1",
+                         "verdict":  "PASS",
+                         "expected_reason":  "attribution_import_fail",
+                         "source":  "runs/recorder-attribution-fail/entry-run/result.json",
+                         "mode":  "new-run",
+                         "binding_rationale":  ""
+                     },
+                     {
+                         "case":  "I02",
+                         "expected_exit":  0,
+                         "observed_exit":  "0",
+                         "verdict":  "PASS",
+                         "expected_reason":  "attribution_valid",
+                         "source":  "runs/recorder-attribution/entry-run/result.json",
+                         "mode":  "new-run",
+                         "binding_rationale":  ""
+                     },
+                     {
+                         "case":  "I01",
+                         "expected_exit":  0,
+                         "observed_exit":  "0",
+                         "verdict":  "PASS",
+                         "expected_reason":  "baseline_smoke_pass",
+                         "source":  "runs/recorder-baseline/entry-run/run-v3-20261103-202727-27764/result.json",
+                         "mode":  "new-run",
+                         "binding_rationale":  ""
+                     },
+                     {
+                         "case":  "I04",
+                         "expected_exit":  0,
+                         "observed_exit":  "0",
+                         "verdict":  "PASS",
+                         "expected_reason":  "matrix_pass",
+                         "source":  "runs/recorder-matrix/entry-run/cases/matrix.csv",
+                         "mode":  "new-run",
+                         "binding_rationale":  ""
+                     },
+                     {
+                         "case":  "G01",
+                         "expected_exit":  0,
+                         "observed_exit":  "0",
+                         "verdict":  "PASS",
+                         "expected_reason":  "guard_blocked_sync",
+                         "source":  "runs/recorder-matrix/entry-run/cases/matrix.csv",
+                         "mode":  "new-run",
+                         "binding_rationale":  ""
+                     },
+                     {
+                         "case":  "G11",
+                         "expected_exit":  0,
+                         "observed_exit":  "0",
+                         "verdict":  "PASS",
+                         "expected_reason":  "proxy_stripped_guard_blocks",
+                         "source":  "runs/recorder-matrix/entry-run/cases/matrix.csv",
+                         "mode":  "new-run",
+                         "binding_rationale":  ""
+                     },
+                     {
+                         "case":  "N03",
+                         "expected_exit":  0,
+                         "observed_exit":  "0",
+                         "verdict":  "PASS",
+                         "expected_reason":  "checker_selftest_pass",
+                         "source":  "runs/checker-selftest-report.json",
+                         "mode":  "new-run",
+                         "binding_rationale":  ""
+                     },
+                     {
+                         "case":  "M01",
+                         "expected_exit":  0,
+                         "observed_exit":  "0",
+                         "verdict":  "PASS",
+                         "expected_reason":  "evidence_valid",
+                         "source":  "runs/checker-prior-pass/report.json (real checker execution, status PASS)",
+                         "mode":  "new-run",
+                         "binding_rationale":  ""
+                     },
+                     {
+                         "case":  "M02",
+                         "expected_exit":  0,
+                         "observed_exit":  "0",
+                         "verdict":  "PASS",
+                         "expected_reason":  "index_accurate",
+                         "source":  "runs/checker-prior-pass/report.json (INDEX links validated)",
+                         "mode":  "new-run",
+                         "binding_rationale":  ""
+                     }
+                 ]
+}

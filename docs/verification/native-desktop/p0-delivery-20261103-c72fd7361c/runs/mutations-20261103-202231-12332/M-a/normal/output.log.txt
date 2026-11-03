@@ -1,0 +1,130 @@
+﻿  [PASS] fallback_confirmed: fallback fully confirmed (active=True log_line=True counter=True writable=True)
+  [PASS] guard_loaded: GUARD_ACTIVE with PID 16888
+  [PASS] fallback_active
+
+--- Mode: normal (guard active, all hooks installed) ---
+  [FAIL] sync_blocked: source=fallback reason=fallback caught it (guard failed); no real connection made but guard is broken
+  [FAIL] connect_ex_blocked: source=fallback reason=fallback caught it (guard failed); no real connection made but guard is broken
+  [PASS] dns_blocked: source=guard reason=guard blocked with matching log entry
+  [FAIL] async_blocked: source=fallback reason=fallback caught it (guard failed); no real connection made but guard is broken
+  [FAIL] httpx_blocked: source=fallback reason=fallback caught it (guard failed); no real connection made but guard is broken
+  [PASS] loopback_allowed: source=allowed reason=connection succeeded as expected
+  [FAIL] fallback_zero_hits: fallback hits = 4 (guard had gaps!)
+  [PASS] pseudo_loopback_predicate: both layers reject 5 pseudo-loopback hosts
+  [FAIL] pseudo_loopback_connect_127audit: source=fallback reason=fallback caught it (guard failed); no real connection made but guard is broken
+  [FAIL] pseudo_loopback_connect_localhostaudit: source=fallback reason=fallback caught it (guard failed); no real connection made but guard is broken
+  [PASS] empty_host_rejected: empty host rejected by both guard and fallback predicates
+
+=== Guard test [normal mode]: 9/17 passed, 8 failed ===
+
+=== JSON ===
+{
+  "fallback_confirmed": {
+    "passed": true,
+    "reason": "fallback fully confirmed (active=True log_line=True counter=True writable=True)"
+  },
+  "guard_loaded": {
+    "passed": true,
+    "reason": "GUARD_ACTIVE with PID 16888"
+  },
+  "fallback_active": {
+    "passed": true,
+    "reason": "fallback installed"
+  },
+  "sync_blocked": {
+    "rejected": true,
+    "error": "FALLBACK: outbound blocked to '192.0.2.1' (guard failed; fallback safety net active)",
+    "new_guard_blocks": 0,
+    "new_fallback_hits": 1,
+    "source": "fallback",
+    "passed": false,
+    "reason": "fallback caught it (guard failed); no real connection made but guard is broken"
+  },
+  "connect_ex_blocked": {
+    "rejected": true,
+    "error": "FALLBACK: outbound blocked to '192.0.2.1'",
+    "new_guard_blocks": 0,
+    "new_fallback_hits": 1,
+    "source": "fallback",
+    "passed": false,
+    "reason": "fallback caught it (guard failed); no real connection made but guard is broken"
+  },
+  "dns_blocked": {
+    "rejected": true,
+    "error": "net-guard: DNS blocked for 'example-test-nonexistent.com' (offline)",
+    "new_guard_blocks": 1,
+    "new_fallback_hits": 0,
+    "source": "guard",
+    "passed": true,
+    "reason": "guard blocked with matching log entry"
+  },
+  "async_blocked": {
+    "rejected": true,
+    "error": "FALLBACK: async outbound blocked to '192.0.2.1' (guard failed; fallback active)",
+    "new_guard_blocks": 0,
+    "new_fallback_hits": 1,
+    "source": "fallback",
+    "passed": false,
+    "reason": "fallback caught it (guard failed); no real connection made but guard is broken"
+  },
+  "httpx_blocked": {
+    "rejected": true,
+    "error": "All connection attempts failed",
+    "new_guard_blocks": 0,
+    "new_fallback_hits": 1,
+    "source": "fallback",
+    "passed": false,
+    "reason": "fallback caught it (guard failed); no real connection made but guard is broken"
+  },
+  "loopback_allowed": {
+    "rejected": false,
+    "error": "",
+    "new_guard_blocks": 0,
+    "new_fallback_hits": 0,
+    "source": "allowed",
+    "passed": true,
+    "reason": "connection succeeded as expected"
+  },
+  "fallback_zero_hits": {
+    "passed": false,
+    "reason": "fallback hits = 4 (guard had gaps!)"
+  },
+  "pseudo_loopback_predicate": {
+    "passed": true,
+    "reason": "both layers reject 5 pseudo-loopback hosts"
+  },
+  "pseudo_loopback_connect_127audit": {
+    "rejected": true,
+    "error": "FALLBACK: outbound blocked to '127.audit.invalid' (guard failed; fallback safety net active)",
+    "new_guard_blocks": 0,
+    "new_fallback_hits": 1,
+    "source": "fallback",
+    "passed": false,
+    "reason": "fallback caught it (guard failed); no real connection made but guard is broken"
+  },
+  "pseudo_loopback_connect_localhostaudit": {
+    "rejected": true,
+    "error": "FALLBACK: outbound blocked to 'localhost.audit.invalid' (guard failed; fallback safety net active)",
+    "new_guard_blocks": 0,
+    "new_fallback_hits": 1,
+    "source": "fallback",
+    "passed": false,
+    "reason": "fallback caught it (guard failed); no real connection made but guard is broken"
+  },
+  "leading_zero_octet_blocked": {
+    "passed": true,
+    "reason": "both predicates reject; no connect"
+  },
+  "leading_zero_long_blocked": {
+    "passed": true,
+    "reason": "both predicates reject; no connect"
+  },
+  "empty_host_rejected": {
+    "passed": true,
+    "reason": "empty host rejected by both guard and fallback predicates"
+  },
+  "overall": {
+    "passed": false,
+    "reason": "some tests failed"
+  }
+}

@@ -1,0 +1,8 @@
+FALLBACK_ACTIVE 16888 3.12.13
+FALLBACK_SELFTEST_OK 16888
+FALLBACK_HIT 1 connect 192.0.2.1
+FALLBACK_HIT 2 connect_ex 192.0.2.1
+FALLBACK_HIT 3 async_connect 192.0.2.1
+FALLBACK_HIT 4 async_connect 192.0.2.1
+FALLBACK_HIT 5 connect 127.audit.invalid
+FALLBACK_HIT 6 connect localhost.audit.invalid

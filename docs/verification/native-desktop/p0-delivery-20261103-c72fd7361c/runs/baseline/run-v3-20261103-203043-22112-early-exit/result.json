@@ -1,0 +1,13 @@
+﻿{
+    "exitCode":  1,
+    "failures":  [
+                     "startup-1 : backend process exited early (code 5)",
+                     "net-guard : guard.log exists but GUARD_ACTIVE not found: guard failed to load (B2)"
+                 ],
+    "unhandledException":  null,
+    "runDir":  "D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\docs\\verification\\native-desktop\\p0-delivery-20261103-c72fd7361c\\runs\\baseline\\run-v3-20261103-203043-22112-early-exit",
+    "tempRoot":  "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\p0-temp\\pdf2zh-p0-20261103-203043-22112",
+    "backend":  "repo",
+    "failInject":  "early-exit",
+    "note":  "single exit decision made here after finally cleanup; translation never submitted (offline)"
+}

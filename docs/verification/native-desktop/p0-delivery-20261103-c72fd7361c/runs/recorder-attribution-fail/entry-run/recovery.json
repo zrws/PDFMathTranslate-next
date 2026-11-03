@@ -1,0 +1,45 @@
+﻿{
+    "payload_count":  3,
+    "owned_count":  0,
+    "all_gone":  true,
+    "identities":  [
+                       null,
+                       null,
+                       null
+                   ],
+    "rows":  [
+
+             ],
+    "batches":  [
+                    {
+                        "payload":  "import_babeldoc_assets",
+                        "captured_at":  "2026-11-03T20:27:21.3236651+08:00",
+                        "owned_count":  0,
+                        "all_gone":  true,
+                        "identities":  null,
+                        "rows":  [
+
+                                 ]
+                    },
+                    {
+                        "payload":  "import_fastapi_uvicorn_pydantic",
+                        "captured_at":  "2026-11-03T20:27:23.9273959+08:00",
+                        "owned_count":  0,
+                        "all_gone":  true,
+                        "identities":  null,
+                        "rows":  [
+
+                                 ]
+                    },
+                    {
+                        "payload":  "import_pdf2zh_next_http_api",
+                        "captured_at":  "2026-11-03T20:27:26.0667915+08:00",
+                        "owned_count":  0,
+                        "all_gone":  true,
+                        "identities":  null,
+                        "rows":  [
+
+                                 ]
+                    }
+                ]
+}

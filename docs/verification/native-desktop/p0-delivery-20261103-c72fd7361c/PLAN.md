@@ -1,0 +1,1 @@
+﻿Frozen 24+4 cases unchanged. Pure-local preflights, then recorder-owned backend smoke/import/recovery/pytest, then full negative matrix; no translation/download/user cache access. Two checker passes: M01/M02 explicit N/A in first pass, final requires that pass, its actual exit, identity and report hash. All failures preserved; root reuse refused.

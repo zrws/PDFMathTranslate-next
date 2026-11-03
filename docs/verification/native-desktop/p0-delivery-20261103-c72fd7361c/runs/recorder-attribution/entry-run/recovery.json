@@ -1,0 +1,315 @@
+﻿{
+    "payload_count":  4,
+    "owned_count":  12,
+    "all_gone":  true,
+    "identities":  [
+                       {
+                           "created":  "\/Date(1793708823481)\/",
+                           "pid":  12756,
+                           "name":  "cmd.exe"
+                       },
+                       {
+                           "created":  "\/Date(1793708823493)\/",
+                           "pid":  27448,
+                           "name":  "conhost.exe"
+                       },
+                       {
+                           "created":  "\/Date(1793708823515)\/",
+                           "pid":  16268,
+                           "name":  "python.exe"
+                       },
+                       {
+                           "created":  "\/Date(1793708826489)\/",
+                           "pid":  6200,
+                           "name":  "cmd.exe"
+                       },
+                       {
+                           "created":  "\/Date(1793708826498)\/",
+                           "pid":  25052,
+                           "name":  "conhost.exe"
+                       },
+                       {
+                           "created":  "\/Date(1793708826521)\/",
+                           "pid":  6820,
+                           "name":  "python.exe"
+                       },
+                       {
+                           "created":  "\/Date(1793708828888)\/",
+                           "pid":  4040,
+                           "name":  "cmd.exe"
+                       },
+                       {
+                           "created":  "\/Date(1793708828898)\/",
+                           "pid":  23624,
+                           "name":  "conhost.exe"
+                       },
+                       {
+                           "created":  "\/Date(1793708828921)\/",
+                           "pid":  23172,
+                           "name":  "python.exe"
+                       },
+                       {
+                           "created":  "\/Date(1793708831471)\/",
+                           "pid":  14636,
+                           "name":  "cmd.exe"
+                       },
+                       {
+                           "created":  "\/Date(1793708831481)\/",
+                           "pid":  26824,
+                           "name":  "conhost.exe"
+                       },
+                       {
+                           "created":  "\/Date(1793708831527)\/",
+                           "pid":  18944,
+                           "name":  "python.exe"
+                       }
+                   ],
+    "rows":  [
+                 {
+                     "pid":  12756,
+                     "created":  "\/Date(1793708823481)\/",
+                     "name":  "cmd.exe",
+                     "post_status":  "gone"
+                 },
+                 {
+                     "pid":  27448,
+                     "created":  "\/Date(1793708823493)\/",
+                     "name":  "conhost.exe",
+                     "post_status":  "gone"
+                 },
+                 {
+                     "pid":  16268,
+                     "created":  "\/Date(1793708823515)\/",
+                     "name":  "python.exe",
+                     "post_status":  "gone"
+                 },
+                 {
+                     "pid":  6200,
+                     "created":  "\/Date(1793708826489)\/",
+                     "name":  "cmd.exe",
+                     "post_status":  "gone"
+                 },
+                 {
+                     "pid":  25052,
+                     "created":  "\/Date(1793708826498)\/",
+                     "name":  "conhost.exe",
+                     "post_status":  "gone"
+                 },
+                 {
+                     "pid":  6820,
+                     "created":  "\/Date(1793708826521)\/",
+                     "name":  "python.exe",
+                     "post_status":  "gone"
+                 },
+                 {
+                     "pid":  4040,
+                     "created":  "\/Date(1793708828888)\/",
+                     "name":  "cmd.exe",
+                     "post_status":  "gone"
+                 },
+                 {
+                     "pid":  23624,
+                     "created":  "\/Date(1793708828898)\/",
+                     "name":  "conhost.exe",
+                     "post_status":  "gone"
+                 },
+                 {
+                     "pid":  23172,
+                     "created":  "\/Date(1793708828921)\/",
+                     "name":  "python.exe",
+                     "post_status":  "gone"
+                 },
+                 {
+                     "pid":  14636,
+                     "created":  "\/Date(1793708831471)\/",
+                     "name":  "cmd.exe",
+                     "post_status":  "gone"
+                 },
+                 {
+                     "pid":  26824,
+                     "created":  "\/Date(1793708831481)\/",
+                     "name":  "conhost.exe",
+                     "post_status":  "gone"
+                 },
+                 {
+                     "pid":  18944,
+                     "created":  "\/Date(1793708831527)\/",
+                     "name":  "python.exe",
+                     "post_status":  "gone"
+                 }
+             ],
+    "batches":  [
+                    {
+                        "payload":  "bare_sleep",
+                        "captured_at":  "2026-11-03T20:27:05.1783125+08:00",
+                        "owned_count":  3,
+                        "all_gone":  true,
+                        "identities":  [
+                                           {
+                                               "created":  "\/Date(1793708823481)\/",
+                                               "pid":  12756,
+                                               "name":  "cmd.exe"
+                                           },
+                                           {
+                                               "created":  "\/Date(1793708823493)\/",
+                                               "pid":  27448,
+                                               "name":  "conhost.exe"
+                                           },
+                                           {
+                                               "created":  "\/Date(1793708823515)\/",
+                                               "pid":  16268,
+                                               "name":  "python.exe"
+                                           }
+                                       ],
+                        "rows":  [
+                                     {
+                                         "pid":  12756,
+                                         "created":  "\/Date(1793708823481)\/",
+                                         "name":  "cmd.exe",
+                                         "post_status":  "gone"
+                                     },
+                                     {
+                                         "pid":  27448,
+                                         "created":  "\/Date(1793708823493)\/",
+                                         "name":  "conhost.exe",
+                                         "post_status":  "gone"
+                                     },
+                                     {
+                                         "pid":  16268,
+                                         "created":  "\/Date(1793708823515)\/",
+                                         "name":  "python.exe",
+                                         "post_status":  "gone"
+                                     }
+                                 ]
+                    },
+                    {
+                        "payload":  "import_babeldoc_assets",
+                        "captured_at":  "2026-11-03T20:27:08.2996885+08:00",
+                        "owned_count":  3,
+                        "all_gone":  true,
+                        "identities":  [
+                                           {
+                                               "created":  "\/Date(1793708826489)\/",
+                                               "pid":  6200,
+                                               "name":  "cmd.exe"
+                                           },
+                                           {
+                                               "created":  "\/Date(1793708826498)\/",
+                                               "pid":  25052,
+                                               "name":  "conhost.exe"
+                                           },
+                                           {
+                                               "created":  "\/Date(1793708826521)\/",
+                                               "pid":  6820,
+                                               "name":  "python.exe"
+                                           }
+                                       ],
+                        "rows":  [
+                                     {
+                                         "pid":  6200,
+                                         "created":  "\/Date(1793708826489)\/",
+                                         "name":  "cmd.exe",
+                                         "post_status":  "gone"
+                                     },
+                                     {
+                                         "pid":  25052,
+                                         "created":  "\/Date(1793708826498)\/",
+                                         "name":  "conhost.exe",
+                                         "post_status":  "gone"
+                                     },
+                                     {
+                                         "pid":  6820,
+                                         "created":  "\/Date(1793708826521)\/",
+                                         "name":  "python.exe",
+                                         "post_status":  "gone"
+                                     }
+                                 ]
+                    },
+                    {
+                        "payload":  "import_fastapi_uvicorn_pydantic",
+                        "captured_at":  "2026-11-03T20:27:10.8497634+08:00",
+                        "owned_count":  3,
+                        "all_gone":  true,
+                        "identities":  [
+                                           {
+                                               "created":  "\/Date(1793708828888)\/",
+                                               "pid":  4040,
+                                               "name":  "cmd.exe"
+                                           },
+                                           {
+                                               "created":  "\/Date(1793708828898)\/",
+                                               "pid":  23624,
+                                               "name":  "conhost.exe"
+                                           },
+                                           {
+                                               "created":  "\/Date(1793708828921)\/",
+                                               "pid":  23172,
+                                               "name":  "python.exe"
+                                           }
+                                       ],
+                        "rows":  [
+                                     {
+                                         "pid":  4040,
+                                         "created":  "\/Date(1793708828888)\/",
+                                         "name":  "cmd.exe",
+                                         "post_status":  "gone"
+                                     },
+                                     {
+                                         "pid":  23624,
+                                         "created":  "\/Date(1793708828898)\/",
+                                         "name":  "conhost.exe",
+                                         "post_status":  "gone"
+                                     },
+                                     {
+                                         "pid":  23172,
+                                         "created":  "\/Date(1793708828921)\/",
+                                         "name":  "python.exe",
+                                         "post_status":  "gone"
+                                     }
+                                 ]
+                    },
+                    {
+                        "payload":  "import_pdf2zh_next_http_api",
+                        "captured_at":  "2026-11-03T20:27:18.6109391+08:00",
+                        "owned_count":  3,
+                        "all_gone":  true,
+                        "identities":  [
+                                           {
+                                               "created":  "\/Date(1793708831471)\/",
+                                               "pid":  14636,
+                                               "name":  "cmd.exe"
+                                           },
+                                           {
+                                               "created":  "\/Date(1793708831481)\/",
+                                               "pid":  26824,
+                                               "name":  "conhost.exe"
+                                           },
+                                           {
+                                               "created":  "\/Date(1793708831527)\/",
+                                               "pid":  18944,
+                                               "name":  "python.exe"
+                                           }
+                                       ],
+                        "rows":  [
+                                     {
+                                         "pid":  14636,
+                                         "created":  "\/Date(1793708831471)\/",
+                                         "name":  "cmd.exe",
+                                         "post_status":  "gone"
+                                     },
+                                     {
+                                         "pid":  26824,
+                                         "created":  "\/Date(1793708831481)\/",
+                                         "name":  "conhost.exe",
+                                         "post_status":  "gone"
+                                     },
+                                     {
+                                         "pid":  18944,
+                                         "created":  "\/Date(1793708831527)\/",
+                                         "name":  "python.exe",
+                                         "post_status":  "gone"
+                                     }
+                                 ]
+                    }
+                ]
+}

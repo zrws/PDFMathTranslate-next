@@ -1,0 +1,23 @@
+﻿{
+    "started_at":  "2026-11-03T20:22:31.0677300+08:00",
+    "child_pid":  12332,
+    "actual_exit":  0,
+    "cleanup":  "owned process exited",
+    "timeout_hit":  false,
+    "argument_vector":  [
+                            "-NoProfile",
+                            "-ExecutionPolicy",
+                            "Bypass",
+                            "-File",
+                            "D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\tests\\performance\\p0_guard_mutations.ps1",
+                            "-RepoRoot",
+                            "D:\\student\\翻译\\p0-frozen-fa97b2e6f9",
+                            "-InstallRoot",
+                            "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\runtime",
+                            "-PythonExe",
+                            "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\python.exe",
+                            "-EvidenceRoot",
+                            "D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\docs\\verification\\native-desktop\\p0-delivery-20261103-c72fd7361c"
+                        ],
+    "entry":  "D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\tests\\performance\\p0_guard_mutations.ps1"
+}

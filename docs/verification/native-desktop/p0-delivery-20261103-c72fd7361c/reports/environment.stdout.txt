@@ -1,0 +1,29 @@
+=== 1-existed-true-restore ===
+  1-existed-true-restore: observed=PASS expected=PASS verdict=PASS
+=== existed-false-key-removed ===
+  existed-false-key-removed: observed=PASS expected=PASS verdict=PASS
+=== case-insensitive-dedup ===
+  case-insensitive-dedup: observed=PASS expected=PASS verdict=PASS
+=== proxy-batch-success-path ===
+  proxy-batch-success-path: observed=PASS expected=PASS verdict=PASS
+=== exception-path-restored ===
+  exception-path-restored: observed=PASS expected=PASS verdict=PASS
+=== timeout-path-restored ===
+  timeout-path-restored: observed=PASS expected=PASS verdict=PASS
+=== PYTHONPATH-restored ===
+  PYTHONPATH-restored: observed=PASS expected=PASS verdict=PASS
+=== PYTHONPATH-absent-removed ===
+  PYTHONPATH-absent-removed: observed=PASS expected=PASS verdict=PASS
+=== CWD-restored ===
+  CWD-restored: observed=PASS expected=PASS verdict=PASS
+case,expected,actual,verdict
+1-existed-true-restore,PASS,PASS,PASS
+existed-false-key-removed,PASS,PASS,PASS
+case-insensitive-dedup,PASS,PASS,PASS
+proxy-batch-success-path,PASS,PASS,PASS
+exception-path-restored,PASS,PASS,PASS
+timeout-path-restored,PASS,PASS,PASS
+PYTHONPATH-restored,PASS,PASS,PASS
+PYTHONPATH-absent-removed,PASS,PASS,PASS
+CWD-restored,PASS,PASS,PASS
+[PASS] env restore delivery tests pass

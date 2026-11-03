@@ -1,0 +1,11 @@
+﻿{
+    "run_id":  "attr-entry-run-16116",
+    "entry":  "p0_probe_attribution",
+    "fail_inject":  "import-fail",
+    "verdict":  "FAIL",
+    "planned_exit":  1,
+    "gate_blocks":  0,
+    "evidence_path":  "D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\docs\\verification\\native-desktop\\p0-delivery-20261103-c72fd7361c\\runs\\recorder-attribution-fail\\entry-run\\probe-attribution.jsonl",
+    "temp_root":  "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\p0-temp\\pdf2zh-attr-entry-run-16116",
+    "note":  "structured result per S4: planned exit only; outer runner records observed exit separately"
+}

@@ -1,0 +1,27 @@
+Warmup BabelDOC assets...
+User data dir: D:\student\翻译\PDFMathTranslate-next\.local\p0-temp\pdf2zh-p0-20261103-202727-27764\home
+Starting PDFMathTranslate-next WebUI (new interface)...
+WebUI ready: http://127.0.0.1:7913
+No translation engine selected, using SiliconFlow Free
+No translation engine selected, using SiliconFlow Free
+WebUI dir: D:\student\翻译\p0-frozen-fa97b2e6f9\webui
+WebUI ready: http://127.0.0.1:7913
+INFO:     Started server process [7636]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:7913 (Press CTRL+C to quit)
+INFO:     127.0.0.1:59993 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59993 - "GET /api/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60027 - "POST /api/files HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60027 - "GET /api/files/d1745a1c__p0-sample-20p.pdf/preview?page=1&width=900 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60027 - "GET /api/files/d1745a1c__p0-sample-20p.pdf/preview?page=2&width=900 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60027 - "GET /api/files/d1745a1c__p0-sample-20p.pdf/preview?page=3&width=900 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60027 - "GET /api/files/d1745a1c__p0-sample-20p.pdf/preview?page=4&width=900 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60027 - "GET /api/files/d1745a1c__p0-sample-20p.pdf/preview?page=1&width=900 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60027 - "GET /api/files/d1745a1c__p0-sample-20p.pdf/preview?page=2&width=900 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60027 - "GET /api/files/d1745a1c__p0-sample-20p.pdf/preview?page=3&width=900 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60027 - "GET /api/files/d1745a1c__p0-sample-20p.pdf/preview?page=4&width=900 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60027 - "GET /api/files/d1745a1c__p0-sample-20p.pdf/preview?page=1&width=900 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60027 - "GET /api/files/d1745a1c__p0-sample-20p.pdf/preview?page=2&width=900 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60027 - "GET /api/files/d1745a1c__p0-sample-20p.pdf/preview?page=3&width=900 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60027 - "GET /api/files/d1745a1c__p0-sample-20p.pdf/preview?page=4&width=900 HTTP/1.1" 200 OK

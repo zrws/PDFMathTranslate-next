@@ -1,0 +1,2 @@
+# Preserve sealed evidence bytes, including original Windows line endings.
+docs/verification/native-desktop/** -text

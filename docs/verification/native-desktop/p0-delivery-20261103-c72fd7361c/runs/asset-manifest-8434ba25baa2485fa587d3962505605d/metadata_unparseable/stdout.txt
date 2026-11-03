@@ -1,0 +1,3 @@
+[meta] (test seam: metadata injected from file)
+[FAIL] asset check: metadata JSON parse error (metadata_unparseable): Invalid object passed in, ':' or '}' expected. (9): {broken
+

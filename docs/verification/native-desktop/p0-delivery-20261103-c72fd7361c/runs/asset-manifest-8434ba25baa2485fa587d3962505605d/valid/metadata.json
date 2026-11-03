@@ -1,0 +1,22 @@
+﻿{
+    "effective_home":  "D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\docs\\verification\\native-desktop\\p0-delivery-20261103-c72fd7361c\\runs\\asset-manifest-8434ba25baa2485fa587d3962505605d\\valid\\isolated-home",
+    "cache_folder":  "D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\docs\\verification\\native-desktop\\p0-delivery-20261103-c72fd7361c\\runs\\asset-manifest-8434ba25baa2485fa587d3962505605d\\fixture\\cache",
+    "file_list":  {
+                      "fonts":  [
+
+                                ],
+                      "models":  [
+                                     {
+                                         "name":  "stub.bin",
+                                         "sha3_256":  "3a985da74fe225b2045c172d6bd390bd855f086e3e9d525b46bfe24511431532"
+                                     }
+                                 ],
+                      "cmap":  [
+
+                               ],
+                      "tiktoken":  [
+
+                                   ]
+                  },
+    "babeldoc_version":  "synthetic-not-installed"
+}

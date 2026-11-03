@@ -1,0 +1,5 @@
+FALLBACK_ACTIVE 18968 3.12.13
+FALLBACK_SELFTEST_OK 18968
+FALLBACK_HIT 1 connect 192.0.2.1
+FALLBACK_HIT 2 async_connect 192.0.2.1
+FALLBACK_HIT 3 dns example-test-nonexistent.com

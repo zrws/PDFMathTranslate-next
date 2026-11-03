@@ -1,0 +1,11 @@
+bare_sleep: private=13.5MB ws=22.3MB
+[PASS] owned processes confirmed gone (per-identity recheck)
+import_babeldoc_assets: private=24.3MB ws=34.5MB
+[PASS] owned processes confirmed gone (per-identity recheck)
+import_fastapi_uvicorn_pydantic: private=35.0MB ws=45.6MB
+[PASS] owned processes confirmed gone (per-identity recheck)
+import_pdf2zh_next_http_api: private=915.3MB ws=242.1MB
+[PASS] owned processes confirmed gone (per-identity recheck)
+[PASS] entry gate: APP_ENTERED present
+attribution v4 done: D:\student\翻译\p0-frozen-fa97b2e6f9\docs\verification\native-desktop\p0-delivery-20261103-c72fd7361c\runs\recorder-attribution\entry-run\probe-attribution.jsonl
+temp root preserved: D:\student\翻译\PDFMathTranslate-next\.local\p0-temp\pdf2zh-attr-entry-run-21396

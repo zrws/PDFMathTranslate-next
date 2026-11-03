@@ -1,0 +1,47 @@
+﻿  [PASS] fallback_confirmed: fallback fully confirmed (active=True log_line=True counter=True writable=True)
+  [PASS] guard_loaded: GUARD_ACTIVE with PID 3660
+  [PASS] fallback_active
+
+--- Mode: partial (sync OK, async skipped -> fallback catches) ---
+  [FAIL] partial_sync_guarded: source=fallback reason=fallback caught it (guard failed); no real connection made but guard is broken
+  [PASS] partial_async_fallback: source=fallback reason=fallback correctly caught guard failure
+
+=== Guard test [partial mode]: 4/6 passed, 2 failed ===
+
+=== JSON ===
+{
+  "fallback_confirmed": {
+    "passed": true,
+    "reason": "fallback fully confirmed (active=True log_line=True counter=True writable=True)"
+  },
+  "guard_loaded": {
+    "passed": true,
+    "reason": "GUARD_ACTIVE with PID 3660"
+  },
+  "fallback_active": {
+    "passed": true,
+    "reason": "fallback installed"
+  },
+  "partial_sync_guarded": {
+    "rejected": true,
+    "error": "FALLBACK: outbound blocked to '192.0.2.1' (guard failed; fallback safety net active)",
+    "new_guard_blocks": 0,
+    "new_fallback_hits": 1,
+    "source": "fallback",
+    "passed": false,
+    "reason": "fallback caught it (guard failed); no real connection made but guard is broken"
+  },
+  "partial_async_fallback": {
+    "rejected": true,
+    "error": "FALLBACK: async outbound blocked to '192.0.2.1' (guard failed; fallback active)",
+    "new_guard_blocks": 0,
+    "new_fallback_hits": 1,
+    "source": "fallback",
+    "passed": true,
+    "reason": "fallback correctly caught guard failure"
+  },
+  "overall": {
+    "passed": false,
+    "reason": "async hook was skipped; fallback caught async attempt"
+  }
+}

@@ -1,0 +1,28 @@
+selftest[clean]: exit=0 ok=True
+selftest[git-log-exception]: exit=0 ok=True
+selftest[missing-evidence]: exit=1 rejected=True reasonMatch=True
+selftest[missing-script]: exit=1 rejected=True reasonMatch=True
+selftest[wrong-hash]: exit=1 rejected=True reasonMatch=True
+selftest[helper-drift]: exit=1 rejected=True reasonMatch=True
+selftest[dead-link]: exit=1 rejected=True reasonMatch=True
+selftest[missing-mandatory]: exit=1 rejected=True reasonMatch=True
+selftest[wrong-reason]: exit=1 rejected=True reasonMatch=True
+selftest[wrong-verdict]: exit=1 rejected=True reasonMatch=True
+selftest[empty-matrix]: exit=1 rejected=True reasonMatch=True
+selftest[zero-match-filter]: exit=1 rejected=True reasonMatch=True
+selftest[runid-reuse]: exit=1 rejected=True reasonMatch=True
+selftest[log-copy-mismatch]: exit=1 rejected=True reasonMatch=True
+selftest[git-check-failure]: exit=1 rejected=True reasonMatch=True
+selftest[illegal-original-path]: exit=1 rejected=True reasonMatch=True
+selftest[unknown-original-claimed]: exit=1 rejected=True reasonMatch=True
+selftest[source-run-missing]: exit=1 rejected=True reasonMatch=True
+selftest[source-runtime-hash-mismatch]: exit=1 rejected=True reasonMatch=True
+selftest[planned-observed-mismatch]: exit=1 rejected=True reasonMatch=True
+selftest[observed-exit-missing]: exit=1 rejected=True reasonMatch=True
+selftest[same-code-wrong-reason]: exit=1 rejected=True reasonMatch=True
+selftest[recovery-unknown-pass]: exit=1 rejected=True reasonMatch=True
+selftest[selected-run-missing-artifact]: exit=1 rejected=True reasonMatch=True
+selftest[p02-without-recorded-run]: exit=1 rejected=True reasonMatch=True
+selftest[i04-selftest-pollution]: exit=1 rejected=True reasonMatch=True
+selftest[final-missing-prior-observation]: exit=1 rejected=True reasonMatch=True
+selftest report: D:\student\翻译\p0-frozen-fa97b2e6f9\docs\verification\native-desktop\p0-delivery-20261103-c72fd7361c\runs\checker-selftest-report.json

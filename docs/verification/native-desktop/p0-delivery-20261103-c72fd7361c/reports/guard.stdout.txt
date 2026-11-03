@@ -1,0 +1,15 @@
+
+=== Guard test mode: normal ===
+  Mode normal: exit=0 passed=True :: exit=0(expected 0) guardActive=True blocked=7 fbHits=0 missingSubitems=[] failedSubitems=[]
+
+=== Guard test mode: no_guard ===
+  Mode no_guard: exit=1 passed=True :: exit=1(expected 1) fbActive=True fbHits=3 guardActive=False perItem=[no_guard_sync=fallback no_guard_async=fallback no_guard_dns=fallback] missing=[] failed=[]
+
+=== Guard test mode: partial ===
+  Mode partial: exit=1 passed=True :: exit=1(expected 1) sync=guard async=fallback missing=[] failed=[]
+
+=== Guard test overall: 3/3 modes passed ===
+  normal: PASS
+  no_guard: PASS
+  partial: PASS
+[PASS] All guard test modes pass

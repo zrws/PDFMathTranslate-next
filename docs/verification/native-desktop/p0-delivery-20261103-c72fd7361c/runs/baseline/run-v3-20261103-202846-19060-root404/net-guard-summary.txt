@@ -1,0 +1,1 @@
+﻿warmup-window blocked outbound attempts: 0 (expected: warmup may probe; cache was complete so no downloads occurred)

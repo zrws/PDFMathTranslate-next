@@ -1,0 +1,79 @@
+=== case 1-attribution-import-fail (expect exit 1, reason token: no IMPORT_DONE) ===
+=== case 1-attribution-import-fail exit=1 verdict=PASS observed=[FAIL] import_babeldoc_assets no IMPORT_DONE | [PASS] owned processes confirmed gone (per-identity recheck) | [FAIL] imp ===
+=== case 2-baseline-root404 (expect exit 1, reason token: root page did not return 200) ===
+=== case 2-baseline-root404 exit=1 verdict=PASS observed=[PASS] port-precheck 127.0.0.1:7913 free | [PASS] asset-integrity all required assets verified against locked babeldoc S ===
+=== case 3a-baseline-missing-cache (expect exit 4, reason token: asset_missing) ===
+=== case 3a-baseline-missing-cache exit=4 verdict=PASS observed=[PASS] port-precheck 127.0.0.1:7913 free | [FAIL] cmap/CNS2-V.json MISSING (asset_missing) | [FAIL] authoritative asset  ===
+=== case 3b-baseline-corrupt-cache (expect exit 4, reason token: asset_corrupt) ===
+=== case 3b-baseline-corrupt-cache exit=4 verdict=PASS observed=[PASS] port-precheck 127.0.0.1:7913 free | [FAIL] models/doclayout_yolo_docstructbench_imgsz1024.onnx SHA3-256 MISMATCH  ===
+=== case 4-netguard-nonloopback (expect exit 0, reason token: BLOCKED-BY-GUARD) ===
+=== case 4-netguard-nonloopback exit=0 verdict=PASS observed=BLOCKED-BY-GUARD ===
+=== case 5a-baseline-early-exit (expect exit 1, reason token: backend process exited early) ===
+=== case 5a-baseline-early-exit exit=1 verdict=PASS observed=[PASS] port-precheck 127.0.0.1:7913 free | [PASS] asset-integrity all required assets verified against locked babeldoc S ===
+=== case 6-baseline-cleanup-leftover (expect exit 1, reason token: injected live process detected by identity recheck) ===
+=== case 6-baseline-cleanup-leftover exit=1 verdict=PASS observed=[PASS] port-precheck 127.0.0.1:7913 free | [PASS] asset-integrity all required assets verified against locked babeldoc S ===
+=== case 7-port-occupied (expect exit 3, reason token: already in use) ===
+=== case 7-port-occupied exit=3 verdict=PASS observed=[FAIL] port 7918 already in use ===
+=== case 8-external-config-sentinel (expect exit 0, reason token: sentinelUnchanged=True) ===
+=== case 8-external-config-sentinel exit=0 verdict=PASS observed=[PASS] port-precheck 127.0.0.1:7913 free | [PASS] asset-integrity all required assets verified against locked babeldoc S ===
+=== case 9-png-invalid-inputs (expect exit 0, reason token: png-check failures: 0) ===
+[ok] truncated rejected (too short)
+[ok] bad-signature rejected (bad signature)
+[ok] zero-dimension rejected (zero dimension)
+[ok] wrong-width rejected (width 640 != expected 900)
+[ok] truncated-image-data rejected (not decodable: cannot identify image file 'D:\\student\\翻译\\PDFMathTranslate-next\\.local\\p0-temp\\p0-png-iso-4aef82ef\\pngcheck-tmp\\)
+[ok] valid PNG accepted (640x906)
+=== case 9-png-invalid-inputs exit=0 verdict=PASS observed=png-check failures: 0 ===
+=== case 10-normal-smoke (expect exit 0, reason token: DONE failures=0) ===
+=== case 10-normal-smoke exit=0 verdict=PASS observed=[PASS] port-precheck 127.0.0.1:7913 free | [PASS] asset-integrity all required assets verified against locked babeldoc S ===
+=== case 11-c1-asset-source-corrupt (expect exit 4, reason token: asset_corrupt) ===
+=== case 11-c1-asset-source-corrupt exit=4 verdict=PASS observed=[FAIL] fonts/GoNotoKurrent-Bold.ttf MISSING (asset_missing) | [FAIL] fonts/GoNotoKurrent-Regular.ttf MISSING (asset_miss ===
+=== case 12-c1-asset-source-missing (expect exit 4, reason token: asset_missing) ===
+=== case 12-c1-asset-source-missing exit=4 verdict=PASS observed=[FAIL] fonts/GoNotoKurrent-Bold.ttf MISSING (asset_missing) | [FAIL] fonts/GoNotoKurrent-Regular.ttf MISSING (asset_miss ===
+=== case 13-c3-png-33byte-ihdr-only (expect exit 0, reason token: not decodable) ===
+33-byte IHDR-only: accepted=False reason=not decodable: cannot identify image file 'D:\\student\\翻译\\PDFMathTranslate-next\\.local\\p0-temp\\p0-png-iso-4aef82ef\\pngcheck-tmp\\
+=== case 13-c3-png-33byte-ihdr-only exit=0 verdict=PASS observed=33-byte IHDR-only: accepted=False reason=not decodable: cannot identify image file 'D:\\student\\翻译\\PDFMathTranslate-ne ===
+=== case 14-netguard-proxy-no-tunnel (expect exit 0, reason token: BLOCKED-BY-GUARD) ===
+=== case 14-netguard-proxy-no-tunnel exit=0 verdict=PASS observed=BLOCKED-BY-GUARD ===
+=== case 15a-entrygate-pos (expect exit 0, reason token: entry-gate negative tests pass) ===
+=== case 15a-entrygate-pos exit=0 verdict=PASS observed=  exit=1 expected=1 sentinelRan=False reasonOk=True verdict=PASS gateStderr=ENTRY_GATE: no GUARD_ACTIVE entry with PID 6 ===
+=== case 15b-entrygate-g04 (expect exit 0, reason token: entry-gate negative tests pass) ===
+=== case 15b-entrygate-g04 exit=0 verdict=PASS observed=  exit=1 expected=1 sentinelRan=False reasonOk=True verdict=PASS gateStderr=ENTRY_GATE: no GUARD_ACTIVE entry with PID 3 ===
+=== case 15c-entrygate-g05 (expect exit 0, reason token: entry-gate negative tests pass) ===
+=== case 15c-entrygate-g05 exit=0 verdict=PASS observed=  exit=1 expected=1 sentinelRan=False reasonOk=True verdict=PASS gateStderr=ENTRY_GATE: no GUARD_ACTIVE entry with PID 1 ===
+=== case 15d-entrygate-g15 (expect exit 0, reason token: entry-gate negative tests pass) ===
+=== case 15d-entrygate-g15 exit=0 verdict=PASS observed=  exit=1 expected=1 sentinelRan=False reasonOk=True verdict=PASS gateStderr=ENTRY_GATE: no GUARD_ACTIVE entry with PID 1 ===
+=== case 16-env-restore-suite (expect exit 0, reason token: env restore delivery tests pass) ===
+=== case 16-env-restore-suite exit=0 verdict=PASS observed=[PASS] env restore delivery tests pass ===
+=== case 17-r1-loopback-vectors (expect exit 0, reason token: R1 loopback vectors: both layers strict, bottom stub untouched) ===
+=== case 17-r1-loopback-vectors exit=0 verdict=PASS observed=[PASS] R1 loopback vectors: both layers strict, bottom stub untouched ===
+=== case 18-r2-isolation-sentinels (expect exit 0, reason token: R2 isolation sentinels) ===
+=== case 18-r2-isolation-sentinels exit=0 verdict=PASS observed=[PASS] standalone: asset check passes with isolated home | [PASS] standalone: cache_folder inside isolated root (machine ===
+=== case 19-r4-recovery-stubs (expect exit 0, reason token: R4 recovery stubs) ===
+=== case 19-r4-recovery-stubs exit=0 verdict=PASS observed=[PASS] stub1: alive same-identity -> NOT all_gone (acceptance would FAIL) | [PASS] stub1: status = still_alive_same_iden ===
+case,expectedExit,actualExit,verdict,expected_reason,frozenId,frozenExpectedReason
+1-attribution-import-fail,1,1,PASS,no IMPORT_DONE,,
+2-baseline-root404,1,1,PASS,root page did not return 200,,
+3a-baseline-missing-cache,4,4,PASS,asset_missing,,
+3b-baseline-corrupt-cache,4,4,PASS,asset_corrupt,,
+4-netguard-nonloopback,0,0,PASS,BLOCKED-BY-GUARD,G01,guard_blocked_sync
+5a-baseline-early-exit,1,1,PASS,backend process exited early,,
+6-baseline-cleanup-leftover,1,1,PASS,injected live process detected by identity recheck,,
+7-port-occupied,3,3,PASS,already in use,,
+8-external-config-sentinel,0,0,PASS,sentinelUnchanged=True,,
+9-png-invalid-inputs,0,0,PASS,png-check failures: 0,,
+10-normal-smoke,0,0,PASS,DONE failures=0,,
+11-c1-asset-source-corrupt,4,4,PASS,asset_corrupt,,
+12-c1-asset-source-missing,4,4,PASS,asset_missing,,
+13-c3-png-33byte-ihdr-only,0,0,PASS,not decodable,,
+14-netguard-proxy-no-tunnel,0,0,PASS,BLOCKED-BY-GUARD,G11,proxy_stripped_guard_blocks
+15a-entrygate-pos,0,0,PASS,entry-gate negative tests pass,G14,startup_gate_active
+15b-entrygate-g04,0,0,PASS,entry-gate negative tests pass,G04,guard_handshake_missing
+15c-entrygate-g05,0,0,PASS,entry-gate negative tests pass,G05,stale_handshake_rejected
+15d-entrygate-g15,0,0,PASS,entry-gate negative tests pass,G15,bootstrap_blocks_on_guard_fail
+16-env-restore-suite,0,0,PASS,env restore delivery tests pass,G16,env_restored
+17-r1-loopback-vectors,0,0,PASS,R1 loopback vectors: both layers strict, bottom stub untouched,N01,pseudo_loopback_rejected
+18-r2-isolation-sentinels,0,0,PASS,R2 isolation sentinels,,
+19-r4-recovery-stubs,0,0,PASS,R4 recovery stubs,,
+[ok] no script drift during run
+negative matrix done: 23/23 cases passed

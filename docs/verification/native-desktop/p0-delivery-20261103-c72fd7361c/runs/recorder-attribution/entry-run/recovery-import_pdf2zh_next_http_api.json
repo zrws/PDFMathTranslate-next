@@ -1,0 +1,43 @@
+﻿{
+    "payload":  "import_pdf2zh_next_http_api",
+    "captured_at":  "2026-11-03T20:27:18.6109391+08:00",
+    "owned_count":  3,
+    "all_gone":  true,
+    "identities":  [
+                       {
+                           "created":  "\/Date(1793708831471)\/",
+                           "pid":  14636,
+                           "name":  "cmd.exe"
+                       },
+                       {
+                           "created":  "\/Date(1793708831481)\/",
+                           "pid":  26824,
+                           "name":  "conhost.exe"
+                       },
+                       {
+                           "created":  "\/Date(1793708831527)\/",
+                           "pid":  18944,
+                           "name":  "python.exe"
+                       }
+                   ],
+    "rows":  [
+                 {
+                     "pid":  14636,
+                     "created":  "\/Date(1793708831471)\/",
+                     "name":  "cmd.exe",
+                     "post_status":  "gone"
+                 },
+                 {
+                     "pid":  26824,
+                     "created":  "\/Date(1793708831481)\/",
+                     "name":  "conhost.exe",
+                     "post_status":  "gone"
+                 },
+                 {
+                     "pid":  18944,
+                     "created":  "\/Date(1793708831527)\/",
+                     "name":  "python.exe",
+                     "post_status":  "gone"
+                 }
+             ]
+}

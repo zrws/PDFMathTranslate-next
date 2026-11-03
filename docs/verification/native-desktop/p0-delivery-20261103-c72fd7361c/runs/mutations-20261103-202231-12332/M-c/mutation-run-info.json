@@ -1,0 +1,5 @@
+﻿{
+    "encountered_test_script_sha256":  "BE5976643B520E9C7837B2A72EC1A92A68ABE4034E911E2E73AC03FF8D81659F",
+    "note":  "mutation/variant run: the variant script is not a repo file; hash recorded here, not in script-hashes.json (M4)",
+    "encountered_test_script":  "D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\docs\\verification\\native-desktop\\p0-delivery-20261103-c72fd7361c\\runs\\mutations-20261103-202231-12332\\guard_test_deleted-subitem.py"
+}

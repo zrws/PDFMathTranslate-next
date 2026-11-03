@@ -1,0 +1,19 @@
+﻿{
+    "started_at":  "2026-11-03T20:24:13.4379395+08:00",
+    "child_pid":  12116,
+    "actual_exit":  0,
+    "cleanup":  "owned process exited",
+    "timeout_hit":  false,
+    "argument_vector":  [
+                            "-NoProfile",
+                            "-ExecutionPolicy",
+                            "Bypass",
+                            "-File",
+                            "D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\tests\\performance\\p0_env_negtest.ps1",
+                            "-RepoRoot",
+                            "D:\\student\\翻译\\p0-frozen-fa97b2e6f9",
+                            "-EvidenceRoot",
+                            "D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\docs\\verification\\native-desktop\\p0-delivery-20261103-c72fd7361c"
+                        ],
+    "entry":  "D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\tests\\performance\\p0_env_negtest.ps1"
+}

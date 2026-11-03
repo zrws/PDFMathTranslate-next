@@ -1,0 +1,13 @@
+﻿{
+    "metric":  "idle",
+    "backend":  "repo",
+    "wallSec":  10.3,
+    "cpuSecondsDelta":  0,
+    "normalizedCpuPercent":  0,
+    "logicalProcessors":  12,
+    "privateMBEnd":  988,
+    "workingSetMBEnd":  315.6,
+    "threadsEnd":  36,
+    "handlesEnd":  868,
+    "processesEnd":  2
+}

@@ -1,0 +1,43 @@
+﻿{
+    "payload":  "bare_sleep",
+    "captured_at":  "2026-11-03T20:27:05.1783125+08:00",
+    "owned_count":  3,
+    "all_gone":  true,
+    "identities":  [
+                       {
+                           "created":  "\/Date(1793708823481)\/",
+                           "pid":  12756,
+                           "name":  "cmd.exe"
+                       },
+                       {
+                           "created":  "\/Date(1793708823493)\/",
+                           "pid":  27448,
+                           "name":  "conhost.exe"
+                       },
+                       {
+                           "created":  "\/Date(1793708823515)\/",
+                           "pid":  16268,
+                           "name":  "python.exe"
+                       }
+                   ],
+    "rows":  [
+                 {
+                     "pid":  12756,
+                     "created":  "\/Date(1793708823481)\/",
+                     "name":  "cmd.exe",
+                     "post_status":  "gone"
+                 },
+                 {
+                     "pid":  27448,
+                     "created":  "\/Date(1793708823493)\/",
+                     "name":  "conhost.exe",
+                     "post_status":  "gone"
+                 },
+                 {
+                     "pid":  16268,
+                     "created":  "\/Date(1793708823515)\/",
+                     "name":  "python.exe",
+                     "post_status":  "gone"
+                 }
+             ]
+}

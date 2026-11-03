@@ -1,0 +1,110 @@
+{
+  "fallback_confirmed": {
+    "passed": true,
+    "reason": "fallback fully confirmed (active=True log_line=True counter=True writable=True)"
+  },
+  "guard_loaded": {
+    "passed": true,
+    "reason": "GUARD_ACTIVE with PID 2228"
+  },
+  "fallback_active": {
+    "passed": true,
+    "reason": "fallback installed"
+  },
+  "sync_blocked": {
+    "rejected": true,
+    "error": "net-guard: outbound blocked to '192.0.2.1' (measurement runs are offline; assets must be pre-staged and verified)",
+    "new_guard_blocks": 1,
+    "new_fallback_hits": 0,
+    "source": "guard",
+    "passed": true,
+    "reason": "guard blocked with matching log entry"
+  },
+  "connect_ex_blocked": {
+    "rejected": true,
+    "error": "net-guard: outbound blocked to '192.0.2.1'",
+    "new_guard_blocks": 1,
+    "new_fallback_hits": 0,
+    "source": "guard",
+    "passed": true,
+    "reason": "guard blocked with matching log entry"
+  },
+  "dns_blocked": {
+    "rejected": true,
+    "error": "net-guard: DNS blocked for 'example-test-nonexistent.com' (offline)",
+    "new_guard_blocks": 1,
+    "new_fallback_hits": 0,
+    "source": "guard",
+    "passed": true,
+    "reason": "guard blocked with matching log entry"
+  },
+  "async_blocked": {
+    "rejected": true,
+    "error": "net-guard: async outbound blocked to '192.0.2.1' (offline measurement)",
+    "new_guard_blocks": 1,
+    "new_fallback_hits": 0,
+    "source": "guard",
+    "passed": true,
+    "reason": "guard blocked with matching log entry"
+  },
+  "httpx_blocked": {
+    "rejected": true,
+    "error": "All connection attempts failed",
+    "new_guard_blocks": 1,
+    "new_fallback_hits": 0,
+    "source": "guard",
+    "passed": true,
+    "reason": "guard blocked with matching log entry"
+  },
+  "loopback_allowed": {
+    "rejected": false,
+    "error": "",
+    "new_guard_blocks": 0,
+    "new_fallback_hits": 0,
+    "source": "allowed",
+    "passed": true,
+    "reason": "connection succeeded as expected"
+  },
+  "fallback_zero_hits": {
+    "passed": true,
+    "reason": "fallback hits = 0 (guard blocked all, fallback untouched)"
+  },
+  "pseudo_loopback_predicate": {
+    "passed": true,
+    "reason": "both layers reject 5 pseudo-loopback hosts"
+  },
+  "pseudo_loopback_connect_127audit": {
+    "rejected": true,
+    "error": "net-guard: outbound blocked to '127.audit.invalid' (measurement runs are offline; assets must be pre-staged and verified)",
+    "new_guard_blocks": 1,
+    "new_fallback_hits": 0,
+    "source": "guard",
+    "passed": true,
+    "reason": "guard blocked with matching log entry"
+  },
+  "pseudo_loopback_connect_localhostaudit": {
+    "rejected": true,
+    "error": "net-guard: outbound blocked to 'localhost.audit.invalid' (measurement runs are offline; assets must be pre-staged and verified)",
+    "new_guard_blocks": 1,
+    "new_fallback_hits": 0,
+    "source": "guard",
+    "passed": true,
+    "reason": "guard blocked with matching log entry"
+  },
+  "leading_zero_octet_blocked": {
+    "passed": true,
+    "reason": "both predicates reject; no connect"
+  },
+  "leading_zero_long_blocked": {
+    "passed": true,
+    "reason": "both predicates reject; no connect"
+  },
+  "empty_host_rejected": {
+    "passed": true,
+    "reason": "empty host rejected by both guard and fallback predicates"
+  },
+  "overall": {
+    "passed": true,
+    "reason": "all 16 tests passed, fallback hits = 0"
+  }
+}

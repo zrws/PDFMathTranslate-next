@@ -1,0 +1,5 @@
+﻿{
+    "encountered_test_script_sha256":  "9254708E8E0B9433EAD8767EE6CB7F1427DBE8F2F5327DB5B0B4AB92777A8001",
+    "note":  "mutation/variant run: the variant script is not a repo file; hash recorded here, not in script-hashes.json (M4)",
+    "encountered_test_script":  "D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\docs\\verification\\native-desktop\\p0-delivery-20261103-c72fd7361c\\runs\\mutations-20261103-202231-12332\\guard_test_fake-timeout.py"
+}

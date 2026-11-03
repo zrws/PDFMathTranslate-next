@@ -1,0 +1,24 @@
+case,expectedExit,actualExit,verdict,expected_reason,frozenId,frozenExpectedReason
+1-attribution-import-fail,1,1,PASS,no IMPORT_DONE,,
+2-baseline-root404,1,1,PASS,root page did not return 200,,
+3a-baseline-missing-cache,4,4,PASS,asset_missing,,
+3b-baseline-corrupt-cache,4,4,PASS,asset_corrupt,,
+4-netguard-nonloopback,0,0,PASS,BLOCKED-BY-GUARD,G01,guard_blocked_sync
+5a-baseline-early-exit,1,1,PASS,backend process exited early,,
+6-baseline-cleanup-leftover,1,1,PASS,injected live process detected by identity recheck,,
+7-port-occupied,3,3,PASS,already in use,,
+8-external-config-sentinel,0,0,PASS,sentinelUnchanged=True,,
+9-png-invalid-inputs,0,0,PASS,png-check failures: 0,,
+10-normal-smoke,0,0,PASS,DONE failures=0,,
+11-c1-asset-source-corrupt,4,4,PASS,asset_corrupt,,
+12-c1-asset-source-missing,4,4,PASS,asset_missing,,
+13-c3-png-33byte-ihdr-only,0,0,PASS,not decodable,,
+14-netguard-proxy-no-tunnel,0,0,PASS,BLOCKED-BY-GUARD,G11,proxy_stripped_guard_blocks
+15a-entrygate-pos,0,0,PASS,entry-gate negative tests pass,G14,startup_gate_active
+15b-entrygate-g04,0,0,PASS,entry-gate negative tests pass,G04,guard_handshake_missing
+15c-entrygate-g05,0,0,PASS,entry-gate negative tests pass,G05,stale_handshake_rejected
+15d-entrygate-g15,0,0,PASS,entry-gate negative tests pass,G15,bootstrap_blocks_on_guard_fail
+16-env-restore-suite,0,0,PASS,env restore delivery tests pass,G16,env_restored
+17-r1-loopback-vectors,0,0,PASS,R1 loopback vectors: both layers strict, bottom stub untouched,N01,pseudo_loopback_rejected
+18-r2-isolation-sentinels,0,0,PASS,R2 isolation sentinels,,
+19-r4-recovery-stubs,0,0,PASS,R4 recovery stubs,,

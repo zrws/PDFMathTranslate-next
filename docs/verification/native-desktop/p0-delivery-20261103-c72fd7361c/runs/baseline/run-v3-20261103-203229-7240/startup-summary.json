@@ -1,0 +1,10 @@
+﻿{
+    "run":  1,
+    "rootPid":  22508,
+    "backend":  "repo",
+    "logReadyObservedMs":  7371,
+    "startupCompleteObservedMs":  7372,
+    "apiReadyMs":  7376,
+    "root200Ms":  7319,
+    "exitedEarly":  false
+}

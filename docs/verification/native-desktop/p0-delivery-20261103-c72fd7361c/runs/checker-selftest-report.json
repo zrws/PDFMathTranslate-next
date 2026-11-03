@@ -1,0 +1,200 @@
+﻿{
+    "selftest_version":  5,
+    "checker_sha256":  "762AFE5CD518D19147B1EE40BBF804A47FFC4AEFEF6E1C535AEA0FA77EEB13C1",
+    "dependency_hashes":  {
+                              "p0_paths.ps1":  "3115C8D9C99129AD514842B8E545D47999B9280F8D561F8C5FACF20CC128B269",
+                              "p0_runs.ps1":  "99EEAEDFDCBB1F8CD8D58B538337E004197A4C4A50B3B45A3EFFA261DE333789",
+                              "p0_env.ps1":  "14877DFAC860C11DB524340D57C8393B1390DABC640EDFA6D18D4FAB66DABA38",
+                              "p0_seal_round.ps1":  "16A91F818AC6E26555A34A12FCFD512688E408E3A3B4A50E4C103096B08AF309",
+                              "p0_run_recorder.ps1":  "0A5782FCA1BE98CB8A9771659F2AEB500A8589C358FA423239408686869869B1"
+                          },
+    "clean_pass":  true,
+    "git_log_exception_clean_pass":  true,
+    "mutation_count":  26,
+    "all_mutations_rejected":  true,
+    "mutations":  [
+                      {
+                          "mutation":  "genuinely-ignored-evidence",
+                          "exit":  1,
+                          "rejected":  true,
+                          "reason_matched":  true,
+                          "expected_reason":  "gitignored_evidence"
+                      },
+                      {
+                          "mutation":  "missing-evidence",
+                          "exit":  1,
+                          "rejected":  true,
+                          "reason_matched":  true,
+                          "expected_reason":  "dead_link"
+                      },
+                      {
+                          "mutation":  "missing-script",
+                          "exit":  1,
+                          "rejected":  true,
+                          "reason_matched":  true,
+                          "expected_reason":  "unresolved_hash_target"
+                      },
+                      {
+                          "mutation":  "wrong-hash",
+                          "exit":  1,
+                          "rejected":  true,
+                          "reason_matched":  true,
+                          "expected_reason":  "hash_drift"
+                      },
+                      {
+                          "mutation":  "helper-drift",
+                          "exit":  1,
+                          "rejected":  true,
+                          "reason_matched":  true,
+                          "expected_reason":  "hash_drift"
+                      },
+                      {
+                          "mutation":  "dead-link",
+                          "exit":  1,
+                          "rejected":  true,
+                          "reason_matched":  true,
+                          "expected_reason":  "dead_link"
+                      },
+                      {
+                          "mutation":  "missing-mandatory",
+                          "exit":  1,
+                          "rejected":  true,
+                          "reason_matched":  true,
+                          "expected_reason":  "missing_mandatory_case"
+                      },
+                      {
+                          "mutation":  "wrong-reason",
+                          "exit":  1,
+                          "rejected":  true,
+                          "reason_matched":  true,
+                          "expected_reason":  "wrong_reason"
+                      },
+                      {
+                          "mutation":  "wrong-verdict",
+                          "exit":  1,
+                          "rejected":  true,
+                          "reason_matched":  true,
+                          "expected_reason":  "verdict_inconsistent"
+                      },
+                      {
+                          "mutation":  "empty-matrix",
+                          "exit":  1,
+                          "rejected":  true,
+                          "reason_matched":  true,
+                          "expected_reason":  "empty_matrix"
+                      },
+                      {
+                          "mutation":  "zero-match-filter",
+                          "exit":  1,
+                          "rejected":  true,
+                          "reason_matched":  true,
+                          "expected_reason":  "zero_match_filter"
+                      },
+                      {
+                          "mutation":  "runid-reuse",
+                          "exit":  1,
+                          "rejected":  true,
+                          "reason_matched":  true,
+                          "expected_reason":  "runid_reuse"
+                      },
+                      {
+                          "mutation":  "log-copy-mismatch",
+                          "exit":  1,
+                          "rejected":  true,
+                          "reason_matched":  true,
+                          "expected_reason":  "log_copy_hash_mismatch"
+                      },
+                      {
+                          "mutation":  "git-check-failure",
+                          "exit":  1,
+                          "rejected":  true,
+                          "reason_matched":  true,
+                          "expected_reason":  "git_check_error"
+                      },
+                      {
+                          "mutation":  "illegal-original-path",
+                          "exit":  1,
+                          "rejected":  true,
+                          "reason_matched":  true,
+                          "expected_reason":  "path_illegal"
+                      },
+                      {
+                          "mutation":  "unknown-original-claimed",
+                          "exit":  1,
+                          "rejected":  true,
+                          "reason_matched":  true,
+                          "expected_reason":  "unknown_original_claimed_verified"
+                      },
+                      {
+                          "mutation":  "source-run-missing",
+                          "exit":  1,
+                          "rejected":  true,
+                          "reason_matched":  true,
+                          "expected_reason":  "missing_source_run"
+                      },
+                      {
+                          "mutation":  "source-runtime-hash-mismatch",
+                          "exit":  1,
+                          "rejected":  true,
+                          "reason_matched":  true,
+                          "expected_reason":  "hash_drift"
+                      },
+                      {
+                          "mutation":  "planned-observed-mismatch",
+                          "exit":  1,
+                          "rejected":  true,
+                          "reason_matched":  true,
+                          "expected_reason":  "planned_observed_mismatch"
+                      },
+                      {
+                          "mutation":  "observed-exit-missing",
+                          "exit":  1,
+                          "rejected":  true,
+                          "reason_matched":  true,
+                          "expected_reason":  "unverified_observation"
+                      },
+                      {
+                          "mutation":  "same-code-wrong-reason",
+                          "exit":  1,
+                          "rejected":  true,
+                          "reason_matched":  true,
+                          "expected_reason":  "wrong_reason"
+                      },
+                      {
+                          "mutation":  "recovery-unknown-pass",
+                          "exit":  1,
+                          "rejected":  true,
+                          "reason_matched":  true,
+                          "expected_reason":  "recovery_query_failed"
+                      },
+                      {
+                          "mutation":  "selected-run-missing-artifact",
+                          "exit":  1,
+                          "rejected":  true,
+                          "reason_matched":  true,
+                          "expected_reason":  "missing_mandatory_case"
+                      },
+                      {
+                          "mutation":  "p02-without-recorded-run",
+                          "exit":  1,
+                          "rejected":  true,
+                          "reason_matched":  true,
+                          "expected_reason":  "missing_semantic_run"
+                      },
+                      {
+                          "mutation":  "i04-selftest-pollution",
+                          "exit":  1,
+                          "rejected":  true,
+                          "reason_matched":  true,
+                          "expected_reason":  "missing_semantic_run"
+                      },
+                      {
+                          "mutation":  "final-missing-prior-observation",
+                          "exit":  1,
+                          "rejected":  true,
+                          "reason_matched":  true,
+                          "expected_reason":  "missing_outer_observation"
+                      }
+                  ],
+    "note":  "clean run + every mutation executed as a real child process; exits recorded per mutation; reasons matched against structured reason codes"
+}

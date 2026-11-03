@@ -1,0 +1,14 @@
+check,verdict
+standalone: asset check passes with isolated home,PASS
+standalone: cache_folder inside isolated root (machine artifact),PASS
+standalone: no real user dir in child output,PASS
+failure: empty cache -> false with asset_missing,PASS
+failure: corrupted file -> false with asset_corrupt,PASS
+failure: garbled metadata -> false with metadata_unparseable,PASS
+failure: empty manifest -> false with empty_manifest,PASS
+failure: missing required category -> false with missing_category,PASS
+failure: hash tool failure -> false with hash_tool_failed,PASS
+failure: nonexistent IsolatedHome -> refused,PASS
+png: valid decode through isolated child,PASS
+png: isolated child wrote temp artifacts only under iso root,PASS
+env: existed/value restore after child-env window,PASS

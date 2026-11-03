@@ -1,0 +1,33 @@
+[LOG_COPY_INDEX] 158 pairs
+  [coverage] G06: observed=0 verdict=PASS <- runs/guard-test-20261103-202224-19772/normal/testResults.json (new-run)
+  [coverage] G13: observed=0 verdict=PASS <- runs/guard-test-20261103-202224-19772/normal/testResults.json (new-run)
+  [coverage] G09: observed=0 verdict=PASS <- runs/guard-test-20261103-202224-19772/normal/testResults.json (new-run)
+  [coverage] N01: observed=0 verdict=PASS <- runs/guard-test-20261103-202224-19772/normal/testResults.json (new-run)
+  [coverage] G07: observed=0 verdict=PASS <- runs/guard-test-20261103-202224-19772/normal/testResults.json (new-run)
+  [coverage] G10: observed=0 verdict=PASS <- runs/guard-test-20261103-202224-19772/normal/testResults.json (new-run)
+  [coverage] G08: observed=0 verdict=PASS <- runs/guard-test-20261103-202224-19772/normal/testResults.json (new-run)
+  [coverage] G02: observed=1 verdict=PASS <- runs/guard-test-20261103-202224-19772/no_guard (new-run)
+  [coverage] G03: observed=1 verdict=PASS <- runs/guard-test-20261103-202224-19772/partial (new-run)
+  [coverage] G14: observed=0 verdict=PASS <- runs/entrygate-20261103-203427-27292/matrix.csv (new-run)
+  [coverage] G04: observed=1 verdict=PASS <- runs/entrygate-20261103-203427-27292/matrix.csv (new-run)
+  [coverage] G05: observed=1 verdict=PASS <- runs/entrygate-20261103-203427-27292/matrix.csv (new-run)
+  [coverage] G15: observed=1 verdict=PASS <- runs/entrygate-20261103-203427-27292/matrix.csv (new-run)
+  [coverage] G12: observed=1 verdict=PASS <- empty-host-20261103-202242-17608/probe-exit.txt (new-run)
+  [coverage] N02: observed=1 verdict=PASS <- mutations-20261103-202231-12332/matrix.csv (new-run)
+  [coverage] G16: observed=0 verdict=PASS <- runs/env-restore-20261103-203429-16224/matrix.csv (new-run)
+  [coverage] N04: observed=1 verdict=PASS <- runs/recorder-perprocess-n04/entry-run/result.json (new-run)
+  [coverage] P01: observed=0 verdict=PASS <- runs/recorder-perprocess/entry-run/result.json (new-run)
+  [coverage] P02: observed=0 verdict=PASS <- runs/recorder-perprocess/entry-run/result.json (new-run)
+  [coverage] I03: observed=1 verdict=PASS <- runs/recorder-attribution-fail/entry-run/result.json (new-run)
+  [coverage] I02: observed=0 verdict=PASS <- runs/recorder-attribution/entry-run/result.json (new-run)
+  [coverage] I01: observed=0 verdict=PASS <- runs/recorder-baseline/entry-run/run-v3-20261103-202727-27764/result.json (new-run)
+  [coverage] I04: observed=0 verdict=PASS <- runs/recorder-matrix/entry-run/cases/matrix.csv (new-run)
+  [coverage] G01: observed=0 verdict=PASS <- runs/recorder-matrix/entry-run/cases/matrix.csv (new-run)
+  [coverage] G11: observed=0 verdict=PASS <- runs/recorder-matrix/entry-run/cases/matrix.csv (new-run)
+  [coverage] N03: observed=0 verdict=PASS <- runs/checker-selftest-report.json (new-run)
+  [coverage] M01: observed=0 verdict=PASS <- runs/checker-prior-pass/report.json (real checker execution, status PASS) (new-run)
+  [coverage] M02: observed=0 verdict=PASS <- runs/checker-prior-pass/report.json (INDEX links validated) (new-run)
+[COVERAGE] 28 derived case rows
+[hashes] canonical index written
+[INPUT_MANIFEST] 1048 files, digest=707B97901444B1B0
+[PASS] seal-round v2 complete

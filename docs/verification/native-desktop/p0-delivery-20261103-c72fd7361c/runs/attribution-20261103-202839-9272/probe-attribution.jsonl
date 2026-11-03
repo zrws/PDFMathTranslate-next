@@ -1,0 +1,3 @@
+{"label":"import_babeldoc_assets","privateMB":null,"workingSetMB":null,"gate_blocked":false,"note":"no IMPORT_DONE within 120s (import failed/timeout/gate block)"}
+{"label":"import_fastapi_uvicorn_pydantic","privateMB":null,"workingSetMB":null,"gate_blocked":false,"note":"no IMPORT_DONE within 120s (import failed/timeout/gate block)"}
+{"label":"import_pdf2zh_next_http_api","privateMB":null,"workingSetMB":null,"gate_blocked":false,"note":"no IMPORT_DONE within 120s (import failed/timeout/gate block)"}

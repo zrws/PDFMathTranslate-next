@@ -1,0 +1,33 @@
+﻿# INDEX - P0 p0-delivery-20261103-c72fd7361c
+
+- Frozen cases: `CASE_MANIFEST.json`; changes: `CHANGE_IMPACT.json`; coverage: `COVERAGE.json`; digest: `INPUT_MANIFEST.json`
+- Log originals/copies: `LOG_COPY_INDEX.json`; unavailable originals remain unavailable.
+- `runs/asset-manifest-8434ba25baa2485fa587d3962505605d/`
+- `runs/attribution-20261103-202839-9272/`
+- `runs/baseline/`
+- `runs/checker-prior-pass/`
+- `runs/coverage-derive/`
+- `runs/empty-host-20261103-202242-17608/`
+- `runs/entrygate-20261103-202228-11088/`
+- `runs/entrygate-20261103-203420-23068/`
+- `runs/entrygate-20261103-203422-24708/`
+- `runs/entrygate-20261103-203424-22792/`
+- `runs/entrygate-20261103-203427-27292/`
+- `runs/env-restore-20261103-202413-12116/`
+- `runs/env-restore-20261103-203429-16224/`
+- `runs/guard-test-20261103-202224-19772/`
+- `runs/isolation-sentinel-20261103-202245-4788/`
+- `runs/isolation-sentinel-20261103-203433-20792/`
+- `runs/loopback-vectors-20261103-202244-1824/`
+- `runs/loopback-vectors-20261103-203432-26148/`
+- `runs/mutations-20261103-202231-12332/`
+- `runs/pytest-20261103-202820/`
+- `runs/recorder-attribution/`
+- `runs/recorder-attribution-fail/`
+- `runs/recorder-baseline/`
+- `runs/recorder-matrix/`
+- `runs/recorder-perprocess/`
+- `runs/recorder-perprocess-n04/`
+- `runs/recovery-stubs-20261103-202405-15896/`
+- `runs/recovery-stubs-20261103-203533-8764/`
+- Historical runs are not current evidence. Current acceptance requires the recorded checker result, not historical counts.

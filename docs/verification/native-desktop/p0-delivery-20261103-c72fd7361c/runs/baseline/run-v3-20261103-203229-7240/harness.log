@@ -1,0 +1,9 @@
+﻿[20:32:29.739] staging babeldoc cache into isolated home (read-only borrow)...
+[20:32:30.165] verifying required assets against LOCKED babeldoc metadata (SHA3-256)...
+[20:32:50.194] verifying cache copy consistency (per-file SHA256, source vs staged copy)...
+[20:32:56.532] run 1 started (rootPid 22508) inject=none
+[20:33:04.617] startup run 1: {"run":1,"rootPid":22508,"backend":"repo","logReadyObservedMs":7371,"startupCompleteObservedMs":7372,"apiReadyMs":7376,"root200Ms":7319,"exitedEarly":false}
+[20:33:09.896] idle: wall=5.2s cpuDelta=0.01s norm=0.0159% privEnd=987.2MB wsEnd=316MB
+[20:33:12.404] translation: never submitted (offline requirement, note only)
+[20:33:15.911] DONE failures=0 evidence=D:\student\翻译\p0-frozen-fa97b2e6f9\docs\verification\native-desktop\p0-delivery-20261103-c72fd7361c\runs\baseline\run-v3-20261103-203229-7240
+[20:33:15.912] temp root preserved (not auto-deleted): D:\student\翻译\PDFMathTranslate-next\.local\p0-temp\pdf2zh-p0-20261103-203229-7240

@@ -1,0 +1,3 @@
+[meta] (test seam: metadata injected from file)
+[asset-meta] babeldoc synthetic-not-installed, cache_folder=D:\student\翻译\p0-frozen-fa97b2e6f9\docs\verification\native-desktop\p0-delivery-20261103-c72fd7361c\runs\asset-manifest-8434ba25baa2485fa587d3962505605d\fixture\cache, effective HOME=D:\student\翻译\p0-frozen-fa97b2e6f9\docs\verification\native-desktop\p0-delivery-20261103-c72fd7361c\runs\asset-manifest-8434ba25baa2485fa587d3962505605d\missing_category\isolated-home
+[FAIL] asset check: required category missing from manifest (missing_category): fonts

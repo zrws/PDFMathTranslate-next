@@ -1,0 +1,6 @@
+case,expectedExit,actualExit,verdict,expectedReason
+POS-healthy-handshake,0,0,PASS,
+G04-guard-log-unwritable,1,1,PASS,no GUARD_ACTIVE entry with PID
+G05-stale-handshake,1,1,PASS,no GUARD_ACTIVE entry with PID
+G15a-sitecustomize-missing,1,1,PASS,sitecustomize module not loaded
+G15b-sitecustomize-hash-mismatch,1,1,PASS,guard hash mismatch

@@ -1,0 +1,22 @@
+﻿{
+    "started_at":  "2026-11-03T20:35:40.2466727+08:00",
+    "child_pid":  16684,
+    "actual_exit":  0,
+    "cleanup":  "owned process exited",
+    "timeout_hit":  false,
+    "argument_vector":  [
+                            "-NoProfile",
+                            "-ExecutionPolicy",
+                            "Bypass",
+                            "-File",
+                            "D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\tests\\performance\\p0_evidence_check.ps1",
+                            "-RepoRoot",
+                            "D:\\student\\翻译\\p0-frozen-fa97b2e6f9",
+                            "-SelfTest",
+                            "-SelfTestOut",
+                            "C:\\Users\\Administrator\\AppData\\Local\\Temp\\p0-checker-final-234c3dfb0f574c939b4617d9735be1f8",
+                            "-ReportPath",
+                            "D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\docs\\verification\\native-desktop\\p0-delivery-20261103-c72fd7361c\\runs\\checker-selftest-report.json"
+                        ],
+    "entry":  "D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\tests\\performance\\p0_evidence_check.ps1"
+}

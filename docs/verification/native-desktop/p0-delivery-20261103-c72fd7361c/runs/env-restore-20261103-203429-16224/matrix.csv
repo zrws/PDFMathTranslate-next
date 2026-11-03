@@ -1,0 +1,10 @@
+case,expected,actual,verdict
+1-existed-true-restore,PASS,PASS,PASS
+existed-false-key-removed,PASS,PASS,PASS
+case-insensitive-dedup,PASS,PASS,PASS
+proxy-batch-success-path,PASS,PASS,PASS
+exception-path-restored,PASS,PASS,PASS
+timeout-path-restored,PASS,PASS,PASS
+PYTHONPATH-restored,PASS,PASS,PASS
+PYTHONPATH-absent-removed,PASS,PASS,PASS
+CWD-restored,PASS,PASS,PASS

@@ -1,0 +1,22 @@
+{
+  "host_version": "Windows PowerShell 5.1",
+  "actual_exit": 0,
+  "child_pid": 11240,
+  "started_at": "2026-11-03T20:22:23.6931589+08:00",
+  "caller_version": "7.6.5",
+  "argument_vector": [
+    "-NoProfile",
+    "-ExecutionPolicy",
+    "Bypass",
+    "-File",
+    "D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\tests\\performance\\p0_acceptance.ps1",
+    "-RepoRoot",
+    "D:\\student\\翻译\\p0-frozen-fa97b2e6f9",
+    "-InstallRoot",
+    "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\runtime",
+    "-PythonExe",
+    "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\python.exe",
+    "-EvidenceRoot",
+    "D:\\student\\翻译\\p0-frozen-fa97b2e6f9\\docs\\verification\\native-desktop\\p0-delivery-20261103-c72fd7361c"
+  ]
+}

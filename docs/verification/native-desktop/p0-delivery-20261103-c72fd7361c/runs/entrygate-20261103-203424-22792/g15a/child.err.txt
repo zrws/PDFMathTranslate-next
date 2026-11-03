@@ -1,0 +1,1 @@
+ENTRY_GATE: sitecustomize module not loaded in this process (Python ignores sitecustomize import errors); guard cannot be verified; refusing to start

@@ -1,0 +1,44 @@
+﻿{
+    "normal":  {
+                   "missingSubitems":  [
+
+                                       ],
+                   "expectedExit":  0,
+                   "exitCode":  0,
+                   "reason":  "exit=0(expected 0) guardActive=True blocked=7 fbHits=0 missingSubitems=[] failedSubitems=[]",
+                   "passed":  true,
+                   "blockedCount":  7,
+                   "failedSubitems":  [
+
+                                      ],
+                   "fallbackHits":  0
+               },
+    "no_guard":  {
+                     "missingSubitems":  [
+
+                                         ],
+                     "expectedExit":  1,
+                     "exitCode":  0,
+                     "reason":  "exit=0(expected 1) fbActive=True fbHits=3 guardActive=False perItem=[no_guard_sync=fallback no_guard_async=fallback no_guard_dns=fallback] missing=[] failed=[]",
+                     "passed":  false,
+                     "blockedCount":  0,
+                     "failedSubitems":  [
+
+                                        ],
+                     "fallbackHits":  3
+                 },
+    "partial":  {
+                    "missingSubitems":  [
+
+                                        ],
+                    "expectedExit":  1,
+                    "exitCode":  0,
+                    "reason":  "exit=0(expected 1) sync=guard async=fallback missing=[] failed=[]",
+                    "passed":  false,
+                    "blockedCount":  1,
+                    "failedSubitems":  [
+
+                                       ],
+                    "fallbackHits":  1
+                }
+}

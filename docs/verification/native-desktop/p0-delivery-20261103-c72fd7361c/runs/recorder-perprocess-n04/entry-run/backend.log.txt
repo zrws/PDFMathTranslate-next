@@ -1,0 +1,13 @@
+Warmup BabelDOC assets...
+User data dir: D:\student\翻译\PDFMathTranslate-next\.local\p0-temp\pdf2zh-probe-pp-20261103-202602-3980\home
+Starting PDFMathTranslate-next WebUI (new interface)...
+WebUI ready: http://127.0.0.1:7916
+No translation engine selected, using SiliconFlow Free
+No translation engine selected, using SiliconFlow Free
+WebUI dir: D:\student\翻译\p0-frozen-fa97b2e6f9\webui
+WebUI ready: http://127.0.0.1:7916
+INFO:     Started server process [24492]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:7916 (Press CTRL+C to quit)
+INFO:     127.0.0.1:59935 - "GET /api/version HTTP/1.1" 200 OK

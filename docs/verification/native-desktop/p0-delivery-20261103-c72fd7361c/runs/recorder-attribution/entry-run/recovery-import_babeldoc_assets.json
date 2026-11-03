@@ -1,0 +1,43 @@
+﻿{
+    "payload":  "import_babeldoc_assets",
+    "captured_at":  "2026-11-03T20:27:08.2996885+08:00",
+    "owned_count":  3,
+    "all_gone":  true,
+    "identities":  [
+                       {
+                           "created":  "\/Date(1793708826489)\/",
+                           "pid":  6200,
+                           "name":  "cmd.exe"
+                       },
+                       {
+                           "created":  "\/Date(1793708826498)\/",
+                           "pid":  25052,
+                           "name":  "conhost.exe"
+                       },
+                       {
+                           "created":  "\/Date(1793708826521)\/",
+                           "pid":  6820,
+                           "name":  "python.exe"
+                       }
+                   ],
+    "rows":  [
+                 {
+                     "pid":  6200,
+                     "created":  "\/Date(1793708826489)\/",
+                     "name":  "cmd.exe",
+                     "post_status":  "gone"
+                 },
+                 {
+                     "pid":  25052,
+                     "created":  "\/Date(1793708826498)\/",
+                     "name":  "conhost.exe",
+                     "post_status":  "gone"
+                 },
+                 {
+                     "pid":  6820,
+                     "created":  "\/Date(1793708826521)\/",
+                     "name":  "python.exe",
+                     "post_status":  "gone"
+                 }
+             ]
+}

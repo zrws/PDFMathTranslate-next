@@ -1,0 +1,233 @@
+﻿{
+    "python":  "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\runtime\\uv-python\\cpython-3.12.13-windows-x86_64-none\\python.exe",
+    "driver_sha256":  "39307FE9D360B339F906F25BF52B6E16BF19335BDAE18FEED715DE5875F6F202",
+    "baseline":  "080262216d6a405519097d30b90f09a1ffdb130a",
+    "round":  "p0-delivery-20261103-c72fd7361c",
+    "runtime":  "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\runtime",
+    "cases":  [
+                  {
+                      "historical_evidence":  "unavailable, never inherited",
+                      "expected_exit":  0,
+                      "case":  "G01",
+                      "mode":  "new-run",
+                      "expected_reason":  "guard_blocked_sync",
+                      "status":  "unverified-before-execution"
+                  },
+                  {
+                      "historical_evidence":  "unavailable, never inherited",
+                      "expected_exit":  1,
+                      "case":  "G02",
+                      "mode":  "new-run",
+                      "expected_reason":  "guard_missing_detected_by_fallback",
+                      "status":  "unverified-before-execution"
+                  },
+                  {
+                      "historical_evidence":  "unavailable, never inherited",
+                      "expected_exit":  1,
+                      "case":  "G03",
+                      "mode":  "new-run",
+                      "expected_reason":  "guard_partial_failure_detected",
+                      "status":  "unverified-before-execution"
+                  },
+                  {
+                      "historical_evidence":  "unavailable, never inherited",
+                      "expected_exit":  1,
+                      "case":  "G04",
+                      "mode":  "new-run",
+                      "expected_reason":  "guard_handshake_missing",
+                      "status":  "unverified-before-execution"
+                  },
+                  {
+                      "historical_evidence":  "unavailable, never inherited",
+                      "expected_exit":  1,
+                      "case":  "G05",
+                      "mode":  "new-run",
+                      "expected_reason":  "stale_handshake_rejected",
+                      "status":  "unverified-before-execution"
+                  },
+                  {
+                      "historical_evidence":  "unavailable, never inherited",
+                      "expected_exit":  0,
+                      "case":  "G06",
+                      "mode":  "new-run",
+                      "expected_reason":  "sync_blocked",
+                      "status":  "unverified-before-execution"
+                  },
+                  {
+                      "historical_evidence":  "unavailable, never inherited",
+                      "expected_exit":  0,
+                      "case":  "G07",
+                      "mode":  "new-run",
+                      "expected_reason":  "async_blocked",
+                      "status":  "unverified-before-execution"
+                  },
+                  {
+                      "historical_evidence":  "unavailable, never inherited",
+                      "expected_exit":  0,
+                      "case":  "G08",
+                      "mode":  "new-run",
+                      "expected_reason":  "httpx_blocked",
+                      "status":  "unverified-before-execution"
+                  },
+                  {
+                      "historical_evidence":  "unavailable, never inherited",
+                      "expected_exit":  0,
+                      "case":  "G09",
+                      "mode":  "new-run",
+                      "expected_reason":  "dns_blocked",
+                      "status":  "unverified-before-execution"
+                  },
+                  {
+                      "historical_evidence":  "unavailable, never inherited",
+                      "expected_exit":  0,
+                      "case":  "G10",
+                      "mode":  "new-run",
+                      "expected_reason":  "loopback_allowed",
+                      "status":  "unverified-before-execution"
+                  },
+                  {
+                      "historical_evidence":  "unavailable, never inherited",
+                      "expected_exit":  0,
+                      "case":  "G11",
+                      "mode":  "new-run",
+                      "expected_reason":  "proxy_stripped_guard_blocks",
+                      "status":  "unverified-before-execution"
+                  },
+                  {
+                      "historical_evidence":  "unavailable, never inherited",
+                      "expected_exit":  1,
+                      "case":  "G12",
+                      "mode":  "new-run",
+                      "expected_reason":  "empty_host_rejected",
+                      "status":  "unverified-before-execution"
+                  },
+                  {
+                      "historical_evidence":  "unavailable, never inherited",
+                      "expected_exit":  0,
+                      "case":  "G13",
+                      "mode":  "new-run",
+                      "expected_reason":  "fallback_zero_hits",
+                      "status":  "unverified-before-execution"
+                  },
+                  {
+                      "historical_evidence":  "unavailable, never inherited",
+                      "expected_exit":  0,
+                      "case":  "G14",
+                      "mode":  "new-run",
+                      "expected_reason":  "startup_gate_active",
+                      "status":  "unverified-before-execution"
+                  },
+                  {
+                      "historical_evidence":  "unavailable, never inherited",
+                      "expected_exit":  1,
+                      "case":  "G15",
+                      "mode":  "new-run",
+                      "expected_reason":  "bootstrap_blocks_on_guard_fail",
+                      "status":  "unverified-before-execution"
+                  },
+                  {
+                      "historical_evidence":  "unavailable, never inherited",
+                      "expected_exit":  0,
+                      "case":  "G16",
+                      "mode":  "new-run",
+                      "expected_reason":  "env_restored",
+                      "status":  "unverified-before-execution"
+                  },
+                  {
+                      "historical_evidence":  "unavailable, never inherited",
+                      "expected_exit":  0,
+                      "case":  "P01",
+                      "mode":  "new-run",
+                      "expected_reason":  "perprocess_valid",
+                      "status":  "unverified-before-execution"
+                  },
+                  {
+                      "historical_evidence":  "unavailable, never inherited",
+                      "expected_exit":  0,
+                      "case":  "P02",
+                      "mode":  "new-run",
+                      "expected_reason":  "result_complete",
+                      "status":  "unverified-before-execution"
+                  },
+                  {
+                      "historical_evidence":  "unavailable, never inherited",
+                      "expected_exit":  0,
+                      "case":  "M01",
+                      "mode":  "new-run",
+                      "expected_reason":  "evidence_valid",
+                      "status":  "unverified-before-execution"
+                  },
+                  {
+                      "historical_evidence":  "unavailable, never inherited",
+                      "expected_exit":  0,
+                      "case":  "M02",
+                      "mode":  "new-run",
+                      "expected_reason":  "index_accurate",
+                      "status":  "unverified-before-execution"
+                  },
+                  {
+                      "historical_evidence":  "unavailable, never inherited",
+                      "expected_exit":  0,
+                      "case":  "I01",
+                      "mode":  "new-run",
+                      "expected_reason":  "baseline_smoke_pass",
+                      "status":  "unverified-before-execution"
+                  },
+                  {
+                      "historical_evidence":  "unavailable, never inherited",
+                      "expected_exit":  0,
+                      "case":  "I02",
+                      "mode":  "new-run",
+                      "expected_reason":  "attribution_valid",
+                      "status":  "unverified-before-execution"
+                  },
+                  {
+                      "historical_evidence":  "unavailable, never inherited",
+                      "expected_exit":  1,
+                      "case":  "I03",
+                      "mode":  "new-run",
+                      "expected_reason":  "attribution_import_fail",
+                      "status":  "unverified-before-execution"
+                  },
+                  {
+                      "historical_evidence":  "unavailable, never inherited",
+                      "expected_exit":  0,
+                      "case":  "I04",
+                      "mode":  "new-run",
+                      "expected_reason":  "matrix_pass",
+                      "status":  "unverified-before-execution"
+                  },
+                  {
+                      "historical_evidence":  "unavailable, never inherited",
+                      "expected_exit":  0,
+                      "case":  "N01",
+                      "mode":  "new-run",
+                      "expected_reason":  "pseudo_loopback_rejected",
+                      "status":  "unverified-before-execution"
+                  },
+                  {
+                      "historical_evidence":  "unavailable, never inherited",
+                      "expected_exit":  1,
+                      "case":  "N02",
+                      "mode":  "new-run",
+                      "expected_reason":  "mutation_rejected",
+                      "status":  "unverified-before-execution"
+                  },
+                  {
+                      "historical_evidence":  "unavailable, never inherited",
+                      "expected_exit":  0,
+                      "case":  "N03",
+                      "mode":  "new-run",
+                      "expected_reason":  "checker_selftest_pass",
+                      "status":  "unverified-before-execution"
+                  },
+                  {
+                      "historical_evidence":  "unavailable, never inherited",
+                      "expected_exit":  1,
+                      "case":  "N04",
+                      "mode":  "new-run",
+                      "expected_reason":  "failure_result_written",
+                      "status":  "unverified-before-execution"
+                  }
+              ]
+}

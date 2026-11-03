@@ -1,0 +1,45 @@
+{
+  "fallback_confirmed": {
+    "passed": true,
+    "reason": "fallback fully confirmed (active=True log_line=True counter=True writable=True)"
+  },
+  "guard_loaded": {
+    "passed": true,
+    "reason": "expected absent (no_guard mode)"
+  },
+  "fallback_active": {
+    "passed": true,
+    "reason": "fallback installed"
+  },
+  "no_guard_sync": {
+    "rejected": true,
+    "error": "FALLBACK: outbound blocked to '192.0.2.1' (guard failed; fallback safety net active)",
+    "new_guard_blocks": 0,
+    "new_fallback_hits": 1,
+    "source": "fallback",
+    "passed": true,
+    "reason": "fallback correctly caught guard failure"
+  },
+  "no_guard_async": {
+    "rejected": true,
+    "error": "FALLBACK: async outbound blocked to '192.0.2.1' (guard failed; fallback active)",
+    "new_guard_blocks": 0,
+    "new_fallback_hits": 1,
+    "source": "fallback",
+    "passed": true,
+    "reason": "fallback correctly caught guard failure"
+  },
+  "no_guard_dns": {
+    "rejected": true,
+    "error": "FALLBACK: DNS blocked for 'example-test-nonexistent.com' (guard failed)",
+    "new_guard_blocks": 0,
+    "new_fallback_hits": 1,
+    "source": "fallback",
+    "passed": true,
+    "reason": "fallback correctly caught guard failure"
+  },
+  "overall": {
+    "passed": false,
+    "reason": "guard absent; fallback caught 3 attempts (safety net worked, but guard test fails)"
+  }
+}

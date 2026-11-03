@@ -1,0 +1,9 @@
+check,verdict
+stub1: alive same-identity -> NOT all_gone (acceptance would FAIL),PASS
+stub1: status = still_alive_same_identity,PASS
+stub1: port closed while process alive (port alone would mislead),PASS
+stub3: live pid with WRONG created time -> pid_reused,PASS
+stub3: pid_reused does NOT fail acceptance,PASS
+stub4: simulated CIM failure -> query_failed,PASS
+stub4: query_failed FAILS acceptance,PASS
+cleanup: all stub pythons terminated,PASS

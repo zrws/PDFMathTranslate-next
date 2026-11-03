@@ -1,0 +1,43 @@
+﻿{
+    "payload":  "import_fastapi_uvicorn_pydantic",
+    "captured_at":  "2026-11-03T20:27:10.8497634+08:00",
+    "owned_count":  3,
+    "all_gone":  true,
+    "identities":  [
+                       {
+                           "created":  "\/Date(1793708828888)\/",
+                           "pid":  4040,
+                           "name":  "cmd.exe"
+                       },
+                       {
+                           "created":  "\/Date(1793708828898)\/",
+                           "pid":  23624,
+                           "name":  "conhost.exe"
+                       },
+                       {
+                           "created":  "\/Date(1793708828921)\/",
+                           "pid":  23172,
+                           "name":  "python.exe"
+                       }
+                   ],
+    "rows":  [
+                 {
+                     "pid":  4040,
+                     "created":  "\/Date(1793708828888)\/",
+                     "name":  "cmd.exe",
+                     "post_status":  "gone"
+                 },
+                 {
+                     "pid":  23624,
+                     "created":  "\/Date(1793708828898)\/",
+                     "name":  "conhost.exe",
+                     "post_status":  "gone"
+                 },
+                 {
+                     "pid":  23172,
+                     "created":  "\/Date(1793708828921)\/",
+                     "name":  "python.exe",
+                     "post_status":  "gone"
+                 }
+             ]
+}

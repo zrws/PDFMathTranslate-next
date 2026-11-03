@@ -1,0 +1,1 @@
+﻿png-check failures: 0

@@ -1,0 +1,83 @@
+
+=== Guard test mode: normal ===
+  Mode normal: exit=0 passed=True :: exit=0(expected 0) guardActive=True blocked=7 fbHits=0 missingSubitems=[] failedSubitems=[]
+
+=== Guard test mode: no_guard ===
+  Mode no_guard: exit=1 passed=True :: exit=1(expected 1) fbActive=True fbHits=3 guardActive=False perItem=[no_guard_sync=fallback no_guard_async=fallback no_guard_dns=fallback] missing=[] failed=[]
+
+=== Guard test mode: partial ===
+  Mode partial: exit=1 passed=True :: exit=1(expected 1) sync=guard async=fallback missing=[] failed=[]
+
+=== Guard test overall: 3/3 modes passed ===
+  normal: PASS
+  no_guard: PASS
+  partial: PASS
+[PASS] All guard test modes pass
+  clean: exit=0 expected=0 verdict=PASS
+
+=== Guard test mode: normal ===
+  Mode normal: exit=1 passed=False :: exit=1(expected 0) guardActive=True blocked=1 fbHits=6 missingSubitems=[] failedSubitems=[sync_blocked,connect_ex_blocked,async_blocked,httpx_blocked,fallback_zero_hits,pseudo_loopback_connect_127audit,pseudo_loopback_connect_localhostaudit]
+
+=== Guard test mode: no_guard ===
+  Mode no_guard: exit=1 passed=True :: exit=1(expected 1) fbActive=True fbHits=3 guardActive=False perItem=[no_guard_sync=fallback no_guard_async=fallback no_guard_dns=fallback] missing=[] failed=[]
+
+=== Guard test mode: partial ===
+  Mode partial: exit=1 passed=False :: exit=1(expected 1) sync=fallback async=fallback missing=[] failed=[partial_sync_guarded]
+
+=== Guard test overall: 1/3 modes passed ===
+  normal: FAIL
+  no_guard: PASS
+  partial: FAIL
+  M-a: exit=1 expected=1 verdict=PASS
+
+=== Guard test mode: normal ===
+  Mode normal: exit=0 passed=True :: exit=0(expected 0) guardActive=True blocked=7 fbHits=0 missingSubitems=[] failedSubitems=[]
+
+=== Guard test mode: no_guard ===
+  Mode no_guard: exit=0 passed=False :: exit=0(expected 1) fbActive=True fbHits=3 guardActive=False perItem=[no_guard_sync=fallback no_guard_async=fallback no_guard_dns=fallback] missing=[] failed=[]
+
+=== Guard test mode: partial ===
+  Mode partial: exit=0 passed=False :: exit=0(expected 1) sync=guard async=fallback missing=[] failed=[]
+
+=== Guard test overall: 1/3 modes passed ===
+  normal: PASS
+  no_guard: FAIL
+  partial: FAIL
+  M-b: exit=1 expected=1 verdict=PASS
+
+=== Guard test mode: normal ===
+  Mode normal: exit=0 passed=True :: exit=0(expected 0) guardActive=True blocked=7 fbHits=0 missingSubitems=[] failedSubitems=[]
+
+=== Guard test mode: no_guard ===
+  Mode no_guard: exit=1 passed=False :: exit=1(expected 1) fbActive=True fbHits=3 guardActive=False perItem=[no_guard_sync=fallback no_guard_dns=fallback] missing=[no_guard_async] failed=[]
+
+=== Guard test mode: partial ===
+  Mode partial: exit=1 passed=True :: exit=1(expected 1) sync=guard async=fallback missing=[] failed=[]
+
+=== Guard test overall: 2/3 modes passed ===
+  normal: PASS
+  no_guard: FAIL
+  partial: PASS
+  M-c: exit=1 expected=1 verdict=PASS
+
+=== Guard test mode: normal ===
+  Mode normal: exit=1 passed=False :: exit=1(expected 0) guardActive=True blocked=7 fbHits=0 missingSubitems=[] failedSubitems=[sync_blocked]
+
+=== Guard test mode: no_guard ===
+  Mode no_guard: exit=1 passed=True :: exit=1(expected 1) fbActive=True fbHits=3 guardActive=False perItem=[no_guard_sync=fallback no_guard_async=fallback no_guard_dns=fallback] missing=[] failed=[]
+
+=== Guard test mode: partial ===
+  Mode partial: exit=1 passed=True :: exit=1(expected 1) sync=guard async=fallback missing=[] failed=[]
+
+=== Guard test overall: 2/3 modes passed ===
+  normal: FAIL
+  no_guard: PASS
+  partial: PASS
+  M-d: exit=1 expected=1 verdict=PASS
+case,expectedExit,actualExit,verdict
+clean,0,0,PASS
+M-a,1,1,PASS
+M-b,1,1,PASS
+M-c,1,1,PASS
+M-d,1,1,PASS
+[PASS] all mutations rejected; clean copy passed
