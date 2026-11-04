@@ -1,0 +1,59 @@
+{
+  "scope": "Independent read-only complete new payload and vendored license identity; NuGet archive-content check is separate",
+  "checked_unix": 1793778660.406653,
+  "source_commit": "bc4e36836301816a99c635244275728d65d38415",
+  "copy_source_commit": "bc4e36836301816a99c635244275728d65d38415",
+  "source_dirty_reported": false,
+  "payload_files": 16430,
+  "payload_bytes": 792943181,
+  "manifest_rows": 16429,
+  "manifest_missing": [],
+  "manifest_extra_except_self": [],
+  "manifest_hash_mismatch": [],
+  "manifest_unsafe": [],
+  "manifest_duplicates": [],
+  "reparse_entries": [],
+  "python_source_files": 55,
+  "python_source_hash_mismatch": [],
+  "python_source_missing": [],
+  "python_source_extra": [],
+  "identity": {
+    "build_report": "3174c1e9f4e7814b413cc180a5ed8b2c66ce711c066d2a8df576c8c55e3f538b",
+    "manifest": "19d85a01ac707768f07229f366ab48de254a082188cc102f0a57869e1eec634c",
+    "source_report": "d489df75803315a4b3710ba59330e196ae1362ea83aed13d2aad186b86701d98",
+    "installer": "cc2bceccfad905314d70344f8b758747b5fe56d14d17264a40120446c61ef531"
+  },
+  "report_bindings_match": {
+    "manifest": true,
+    "source_report": true,
+    "installer": true,
+    "python_lock": true,
+    "patch_lock": true,
+    "nuget_lock": true
+  },
+  "licenses": {
+    "XamlFlair-LICENSE.txt": {
+      "sha256": "cad49aa0afc58ec8e27cde49989e4c84684ba765aa1b64022931ce7e178e5637",
+      "matches_vendored_bytes": true
+    },
+    "System.Reactive-LICENSE.txt": {
+      "sha256": "cfc21f5e8bd655ae997eec916138b707b1d290b83272c02a95c9f821b8c87310",
+      "matches_vendored_bytes": true
+    },
+    "Microsoft.Extensions-LICENSE.txt": {
+      "sha256": "cfc21f5e8bd655ae997eec916138b707b1d290b83272c02a95c9f821b8c87310",
+      "matches_vendored_bytes": true
+    },
+    "Microsoft.Extensions-NOTICE.txt": {
+      "sha256": "25ef71433d140b71fccf5ddd78c1612f6dc2508a1c2cf7ef0f94ef66dda469bf",
+      "matches_vendored_bytes": true
+    }
+  },
+  "extensions_license_and_notice_source_match": true,
+  "version": {
+    "version": "2.9.0",
+    "channel": "preview"
+  },
+  "source_link_runtime_libraries": [],
+  "passed": true
+}

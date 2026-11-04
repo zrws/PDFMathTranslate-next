@@ -1,0 +1,154 @@
+{
+  "passed": true,
+  "completed_at": "2026-11-04T10:01:17.620219+08:00",
+  "scope": "native WPF presentation only; existing legacy webui CSS is preserved",
+  "component_counts": {
+    "Badge": 6,
+    "Button": 34,
+    "Card": 10,
+    "CardAction": 1,
+    "CardControl": 6,
+    "CardControl.Header": 6,
+    "CardExpander": 5,
+    "CardExpander.Header": 5,
+    "ControlsDictionary": 1,
+    "DataGrid": 2,
+    "DataGrid.Columns": 2,
+    "FluentWindow": 1,
+    "HyperlinkButton": 1,
+    "InfoBar": 2,
+    "NavigationView": 1,
+    "NavigationView.MenuItems": 1,
+    "NavigationView.PaneFooter": 1,
+    "NavigationView.PaneHeader": 1,
+    "NavigationViewItem": 5,
+    "PasswordBox": 1,
+    "SymbolIcon": 11,
+    "TextBlock": 92,
+    "TextBox": 7,
+    "ThemesDictionary": 1,
+    "TitleBar": 1,
+    "ToggleSwitch": 6
+  },
+  "packages": {
+    "WPF-UI": "[4.3.0]",
+    "CommunityToolkit.Mvvm": "[8.4.2]",
+    "XamlFlair.WPF": "[1.2.13]",
+    "Microsoft.Extensions.Logging.Abstractions": "[10.0.0]"
+  },
+  "violations": [],
+  "source_files": [
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/App.xaml",
+      "sha256": "e9f22d2898fd0aa3fb24b892eb7256b530fa794fd8507a3a1d57bfbdf5bc17f9"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/GlossaryPage.xaml",
+      "sha256": "c697b42f9b47f35cf79de77a538ed2489d719148f519bd51756ea1bed56eddeb"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/MainWindow.xaml",
+      "sha256": "5bd68d84d8a4ea144b69262c1bfb4d8e92e245a3bff48178e7e67c9dbdc87a5b"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/ResultsPage.xaml",
+      "sha256": "03e367042759273e57e5153616c21c1ff60427e34faefd7beb8930a5169a7817"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/SettingsPage.xaml",
+      "sha256": "a411f5e4900cd88a123f6837c38d5b9caf610541fde632e7384bbf82f5313b04"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/TasksPage.xaml",
+      "sha256": "0c842413f557682567a654af1cb5ef040ac541a51427089a705bd12b6bc2eb83"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/WorkbenchPage.xaml",
+      "sha256": "01bb0d1b5a03f2104bb771aa7b011c609125ff55aea9bb8866529a30b7b7462b"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/App.xaml.cs",
+      "sha256": "0cae474bd9802cbd3f24c4114c399bf3af8d33cf3253b9edb617bbd93566d8e7"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/BackendClient.cs",
+      "sha256": "1e8f1a8139e3a81e3a587dd231bce8721a6ab172ceb30122ae6a2ae64ac30444"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/BackendSupervisor.cs",
+      "sha256": "89f0e40e0da37ca953e4b8618334d770cbf1ef7394a6bd8a0f9f54649e6ce053"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/DesktopAppearance.cs",
+      "sha256": "4b5cbc10bb5243b2c4b380b8213d811d15059ead19fc919f1fef49d23593d3e8"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/GlobalUsings.cs",
+      "sha256": "9eb56b713f4bd450c169f140e74ff7b6d5e456f3742a30188b947223d01628e4"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/GlossaryPage.xaml.cs",
+      "sha256": "08911b4b206d0d73437693a8da69d9dad013653b6cab3271784bcee9b06b2f07"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/LibraryMotion.cs",
+      "sha256": "e03507cc24ba80d8504e52654b29af171bf03ee27bd2cc5736ba6ce880b7d259"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/MainWindow.xaml.cs",
+      "sha256": "9b7a1991f83949768a5b386374c0df860d13075c08a90ca93dfa973f4feda597"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/Models.cs",
+      "sha256": "bc970e411f0bd8dec04a032c40b91ad4388eef29805f646c8ff68aa450c31078"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/NativeJob.cs",
+      "sha256": "def90d5c9f5fd9a2756843874e2026e5078d76beceba03c3fb19e2f546e5ed9a"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/NativeUiVerification.cs",
+      "sha256": "111040db31ec37f91c09f85ce373568fdec1ec18e6657d183eb19cd027b1793c"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/OperationOutbox.cs",
+      "sha256": "ac242b932b267b8d321aee7feaf106df8406448ce59826be22645b6b310c79a9"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/PresentationConverters.cs",
+      "sha256": "d4aad9eaed0ed68da4b30ae82fcb1b16247322c2f7b2d5c3548085e6d2f13c19"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/ResultsPage.xaml.cs",
+      "sha256": "86713c5aaecec15947d3a463da7406d08061ae30cec4e3162e93cf65f6d624da"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/SettingsPage.xaml.cs",
+      "sha256": "816a1027cf1a1bc5c9c2ef8115a39710278110c1421285d8b474dbea1dd45196"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/TasksPage.xaml.cs",
+      "sha256": "f6b3e35736cac201f51e045cca287986d9f8a52abbcb5b0bc2f400e908fbf3f5"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/UpdateService.cs",
+      "sha256": "33e64673d975390d93e02d23cd25ecd3704fc5ae60c8e14eca76ea6051e86219"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/WorkbenchPage.xaml.cs",
+      "sha256": "7d644019998b016ecbd0fbb7602607dc0c0b81a42646ab1001adadb8b2949eb1"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/WorkbenchViewModel.cs",
+      "sha256": "8184017fd86ba813ce45d2aebd71b568716f64dff767068cdca369a1fcae1e6c"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/PDFMathTranslate.Desktop.csproj",
+      "sha256": "9562c6326e4d0c3f71ce185c2f7d61a821432a695d95e3cf8824ab2c8a651bc1"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/packages.lock.json",
+      "sha256": "70432c585cb472fe9bdb93019a96bf8abe309650ebaefd6cd231304f39f02820"
+    }
+  ]
+}

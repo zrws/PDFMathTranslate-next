@@ -1,0 +1,10 @@
+{
+  "started_at": "2026-11-04T16:06:25.5718960+08:00",
+  "actual_exit": 0,
+  "runtime_root": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload",
+  "completed_at": "2026-11-04T16:08:59.1475492+08:00",
+  "payload_membership_unchanged": true,
+  "source_commit": "c24b7e32f1a161a7e0dc9ae4a81b6638ecf22ce1",
+  "scope": "final acceptance helper with kernel Job, fresh parent/child identities, python/pythonw allowlist; real packaged BabelDOC and loopback LLM; no source overlay or diagnostic hooks",
+  "run_root": "D:\\student\\翻译\\PDFMathTranslate-next\\docs\\verification\\native-desktop\\ardot-packaged-api-final-2af91b4c73"
+}

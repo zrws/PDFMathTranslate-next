@@ -1,0 +1,8 @@
+{
+  "unexpected_output_created": false,
+  "completed_at": "2026-11-04T16:04:38.3713959+08:00",
+  "missing_reason_actual_exit": 1,
+  "outside_root_actual_exit": 1,
+  "passed": true,
+  "index_script_sha256": "D6CE76A03F9339B990FDB21D827E549C683889AFE2F0A917209CC38B2724FAA7"
+}

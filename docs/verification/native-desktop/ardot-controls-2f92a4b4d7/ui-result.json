@@ -1,0 +1,43 @@
+{
+  "api_ready": true,
+  "real_window_visible": true,
+  "window_handle": 27855530,
+  "window_ready_ms": 2772.0586,
+  "api_ready_ms": 9359.7805,
+  "render_kind": "actual running WPF visual tree, RenderTargetBitmap; not OS input automation",
+  "ui_dll_sha256": "3B22357C8014CE311CE1807D5696403B9997BDD6DEB018C3F35FBCCB7D6B2136",
+  "normal_layout": {
+    "SubmitButton": {
+      "x": 248.8,
+      "y": 761.5999999999999,
+      "width": 503.36,
+      "height": 44
+    },
+    "SourceLanguageInput": {
+      "x": 269.8,
+      "y": 456.3800000000001,
+      "width": 214.68,
+      "height": 35.78
+    },
+    "TargetLanguageInput": {
+      "x": 516.48,
+      "y": 456.3800000000001,
+      "width": 214.68,
+      "height": 35.78
+    }
+  },
+  "component_library": "Wpf.Ui, Version=4.3.0.0, Culture=neutral, PublicKeyToken=11f9f5cc97b3ffd6",
+  "motion_library": "XamlFlair.WPF, Version=1.2.13.0, Culture=neutral, PublicKeyToken=null",
+  "system_client_area_animation": true,
+  "library_motion_attached": true,
+  "custom_application_styles": 0,
+  "reduced_motion_detaches_library_animation": true,
+  "appearance_roundtrip": true,
+  "uncommon_language_readback": true,
+  "auto_update_opt_out_readback": true,
+  "missing_update_installer_keeps_service": true,
+  "error": "SourceLanguageInput \u5728\u5F53\u524D\u7A97\u53E3\u4E2D\u4E0D\u53EF\u89C1\u6216\u88AB\u88C1\u5207\u3002",
+  "passed": false,
+  "completed_at": "2026-11-04T09:37:51.6537908+08:00",
+  "process_id": 1956
+}

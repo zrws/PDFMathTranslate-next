@@ -1,0 +1,14 @@
+{
+  "package": "dist/native-9b66790bc7ea/PDFMathTranslate-Setup-2.9.0.exe",
+  "status": "BLOCKED for this package, pending new identity with exact MIT and copyright/source notice",
+  "checked_at": "2026-11-04T15:33:46.6131941+08:00",
+  "expected_source": "dotnet/dotnet@b0f34d51fccc69fd334253924abd8d6853fad7aa src/runtime/LICENSE.TXT",
+  "packages": [
+    "Microsoft.Extensions.Logging.Abstractions/10.0.0",
+    "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.0"
+  ],
+  "installer_sha256": "C92302A5DFD6638D7465FC973D52DF066A82C427AF0AE0EE19C2484788524D6C",
+  "scope": "Static license-file content finding; identity hashes do not imply licensing acceptance",
+  "payload_license_sha256": "7F6839A61CE892B79C6549E2DC5A81FDBD240A0B260F8881216B45B7FDA8B45D",
+  "finding": "Microsoft.Extensions-LICENSE.txt contains Microsoft .NET Library SDK terms rather than MIT, while both locked package nuspecs declare MIT"
+}

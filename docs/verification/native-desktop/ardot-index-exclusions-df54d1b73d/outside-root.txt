@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "D:\student\����\PDFMathTranslate-next\tests\native\index-delivery.py", line 24, in <module>
+    raise RuntimeError('excluded evidence must be an existing file inside an indexed run')
+RuntimeError: excluded evidence must be an existing file inside an indexed run

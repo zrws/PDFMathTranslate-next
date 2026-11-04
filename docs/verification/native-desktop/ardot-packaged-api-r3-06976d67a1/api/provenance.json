@@ -1,0 +1,83 @@
+{
+  "python_executable": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\uv-python\\cpython-3.12.13-windows-x86_64-none\\python.exe",
+  "sys_path": [
+    "",
+    "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\uv-tools\\pdf2zh-next\\Lib\\site-packages",
+    "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\uv-python\\cpython-3.12.13-windows-x86_64-none\\python312.zip",
+    "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\uv-python\\cpython-3.12.13-windows-x86_64-none\\DLLs",
+    "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib",
+    "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\uv-python\\cpython-3.12.13-windows-x86_64-none",
+    "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\uv-python\\cpython-3.12.13-windows-x86_64-none\\Lib\\site-packages"
+  ],
+  "modules": [
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pdf2zh_next\\__init__.py",
+      "sha256": "176af7d8815c2c87b1dfd413156d9afb30312b8d44071a4a19da12a72edf78d7"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pdf2zh_next\\desktop\\server.py",
+      "sha256": "6810d5fcdd87db0951b8b4e3611bac773248ad57b5b24e7d8f27498b17f11624"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pdf2zh_next\\desktop\\engine.py",
+      "sha256": "63836dad302ddaeb8916b8dde48d530b5bd83d0e580ef82990b1fb74159e1c88"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pdf2zh_next\\desktop\\worker.py",
+      "sha256": "6105d82a5f87df356214df43a44237e0bcd25e2e3436fd539bac2ac35b5012ea"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pdf2zh_next\\desktop\\storage.py",
+      "sha256": "687b8da36996eb19942dac8aee3b008351b75fd54d0e9cecab490133e1eabd97"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pdf2zh_next\\desktop\\runtime.py",
+      "sha256": "f74c95738aa71701071075967e4770c39796cd4c903a157464e751b3a6b5ce2c"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pdf2zh_next\\desktop\\exports.py",
+      "sha256": "8d1e8287cabf3859c3bcd3a9c9fab5b88aa259385534aef2eef0cdb9c2a0a005"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pdf2zh_next\\desktop\\snapshots.py",
+      "sha256": "a6896e5e1e6fabffcfa17174d691f9ba737d031a523d4898894b10dd09ab7d3c"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pdf2zh_next\\desktop\\policy.py",
+      "sha256": "d9261a8a01f2bce66d7f948888eba6f4ae6dcebe126db9c41ee9f764303b5816"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pdf2zh_next\\desktop\\pdf_operations.py",
+      "sha256": "80ae0f1840d2c24880898b794bc1acfd1472313a8744ccf14f87eafca71feadd"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pdf2zh_next\\desktop\\assets.py",
+      "sha256": "1e218a932494a32d1b33665c58031f0f1756d66218cb79b3253d26d4e30c18c5"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pdf2zh_next\\desktop\\preview_control.py",
+      "sha256": "ac9cb840a572ee3aaf1e9b9113454435d02898b808b2d194e7bb30ebe45826bf"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pdf2zh_next\\desktop\\preview.py",
+      "sha256": "98bb87ad9778d6e391ff0ae6144166c571f9a6e31c3a3c672627531387446e34"
+    }
+  ],
+  "argv": [
+    "tests/native/acceptance.py",
+    "--runtime-root",
+    "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload",
+    "--asset-root",
+    "./.local/runtime/home/.cache/babeldoc",
+    "--evidence-root",
+    "D:\\student\\翻译\\PDFMathTranslate-next\\docs\\verification\\native-desktop\\ardot-packaged-api-r3-06976d67a1\\api",
+    "--packaged"
+  ],
+  "packaged": true,
+  "source_mode": "packaged",
+  "acceptance_sha256": "93a75de62c057a863cdf0197108c5f460ba87ec6c06ef93dca91957017ee9e23",
+  "ownership_helper_sha256": "948d8554e8c74ae1dec85d1e8ae3560a0e3073bfa423d73243e1ea1e26926fa9",
+  "diagnostic_observation": false,
+  "sample_pages": 2,
+  "sample_sha256": "e115c83fbdb9823ccb5bdd72b0c9ca1b2d001d0dbffcb4534c1e70a410e0c16b"
+}

@@ -1,0 +1,7 @@
+{
+  "completed_at": "2026-11-04T15:59:19.6584399+08:00",
+  "actual_exit": 0,
+  "tests_sha256": "E6A92F622BC5F11774C3A8F28017C9D49DFD0111EC98A15AC6C8E26F82180738",
+  "helper_sha256": "948D8554E8C74AE1DEC85D1E8AE3560A0E3073BFA423D73243E1EA1E26926FA9",
+  "scope": "six ownership regressions including owned nested Job termination and outside owned sentinel survival"
+}

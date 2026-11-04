@@ -1,0 +1,7 @@
+{
+  "helper_sha256": "89D26C6612185B0421E49734896DEF89CC47BE39C9C600522B18C497602E3C39",
+  "scope": "seven ownership regressions, fresh cached-object replacement check and actual nested Job reclamation/outside owned sentinel survival",
+  "actual_exit": 0,
+  "completed_at": "2026-11-04T16:03:48.0665559+08:00",
+  "tests_sha256": "03F569E454A90834B8AA12253D722992BE4C305AC9C13B5B4CAC9C9C91CD01A7"
+}

@@ -1,0 +1,71 @@
+{
+  "files": [
+    {
+      "sha256": "07937539AC427DDECA9C3542DEAD5A1C858EF429A7FFB69F0D1C4AD7277A109F",
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\PDFMathTranslate.exe",
+      "bytes": 169472
+    },
+    {
+      "sha256": "27A2119137724916817827BB606A57DF3724D26BE260E2C97A926972BBDA7BE5",
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\PDFMathTranslate.dll",
+      "bytes": 185344
+    },
+    {
+      "sha256": "966176695819E39752211DF271A53CEE7DF91F55A5E20EF9BF61FC7220FCAA1A",
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\Wpf.Ui.dll",
+      "bytes": 6565888
+    },
+    {
+      "sha256": "19B2144FED9600D58A742A5A4A5FD7B10D4D0D2C2E79F5D8019307CF5657044F",
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\CommunityToolkit.Mvvm.dll",
+      "bytes": 146760
+    },
+    {
+      "sha256": "27A428F3078684A6F64517FCC9F05DF703E35493C5D62DFEB8F16B8D683AB5A1",
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\XamlFlair.WPF.dll",
+      "bytes": 199168
+    },
+    {
+      "sha256": "2B6C31DFB1FC6019A42A007ED0E5E00574DE6EA0C47FED0CA282BF3BB2771B0C",
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\System.Reactive.dll",
+      "bytes": 1455056
+    },
+    {
+      "sha256": "A76A735B63E6EF3B0BF41FF92423CBD16103B8952E8306140A9BD650346034DC",
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\Microsoft.Extensions.Logging.Abstractions.dll",
+      "bytes": 67344
+    },
+    {
+      "sha256": "7C97C4463FE0FC11D1F22F4D160B2BD2288981ADF1DE2717A6FF3FB993DDF294",
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+      "bytes": 66312
+    },
+    {
+      "sha256": "19D85A01AC707768F07229F366AB48DE254A082188CC102F0A57869E1EEC634C",
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\owned-files.tsv",
+      "bytes": 2348544
+    },
+    {
+      "sha256": "1E369C4ADF34ACEC7ED8991A5F0BA9D2E833F61ED2D64CCDD6557CF8DE998C22",
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\THIRD_PARTY_NOTICES.md",
+      "bytes": 1697
+    },
+    {
+      "sha256": "BBCA69BBFEE32238794DE48F930CEDDE3D1D2429E185123533AF1018912A8288",
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\version.json",
+      "bytes": 53
+    },
+    {
+      "sha256": "CFC21F5E8BD655AE997EEC916138B707B1D290B83272C02A95C9F821B8C87310",
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\licenses\\Microsoft.Extensions-LICENSE.txt",
+      "bytes": 1116
+    },
+    {
+      "sha256": "25EF71433D140B71FCCF5DDD78C1612F6DC2508A1C2CF7EF0F94EF66DDA469BF",
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload\\licenses\\Microsoft.Extensions-NOTICE.txt",
+      "bytes": 773
+    }
+  ],
+  "source_commit": "bc4e36836301816a99c635244275728d65d38415",
+  "scope": "identity of Release payload selected UI/runtime and corrected-license files; full manifest verified separately by independent reviewer"
+}

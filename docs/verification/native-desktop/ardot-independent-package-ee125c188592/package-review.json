@@ -1,0 +1,223 @@
+{
+  "scope": "Independent read-only complete payload, locked runtime dependency and license identity audit; no application or installer execution",
+  "checked_unix": 1793777687.1011379,
+  "source_commit": "60aa6dc3c40a5b8f44a6b67c271f8d108a82fe97",
+  "copy_source_commit": "60aa6dc3c40a5b8f44a6b67c271f8d108a82fe97",
+  "source_dirty_reported": false,
+  "payload_files": 16459,
+  "payload_bytes": 793658035,
+  "manifest_rows": 16428,
+  "manifest_missing": [],
+  "manifest_extra_except_self": [
+    "uv-tools/pdf2zh-next/Lib/site-packages/PIL/__pycache__/BmpImagePlugin.cpython-312.pyc",
+    "uv-tools/pdf2zh-next/Lib/site-packages/PIL/__pycache__/ExifTags.cpython-312.pyc",
+    "uv-tools/pdf2zh-next/Lib/site-packages/PIL/__pycache__/GifImagePlugin.cpython-312.pyc",
+    "uv-tools/pdf2zh-next/Lib/site-packages/PIL/__pycache__/GimpGradientFile.cpython-312.pyc",
+    "uv-tools/pdf2zh-next/Lib/site-packages/PIL/__pycache__/GimpPaletteFile.cpython-312.pyc",
+    "uv-tools/pdf2zh-next/Lib/site-packages/PIL/__pycache__/Image.cpython-312.pyc",
+    "uv-tools/pdf2zh-next/Lib/site-packages/PIL/__pycache__/ImageChops.cpython-312.pyc",
+    "uv-tools/pdf2zh-next/Lib/site-packages/PIL/__pycache__/ImageColor.cpython-312.pyc",
+    "uv-tools/pdf2zh-next/Lib/site-packages/PIL/__pycache__/ImageFile.cpython-312.pyc",
+    "uv-tools/pdf2zh-next/Lib/site-packages/PIL/__pycache__/ImageMath.cpython-312.pyc",
+    "uv-tools/pdf2zh-next/Lib/site-packages/PIL/__pycache__/ImageMode.cpython-312.pyc",
+    "uv-tools/pdf2zh-next/Lib/site-packages/PIL/__pycache__/ImageOps.cpython-312.pyc",
+    "uv-tools/pdf2zh-next/Lib/site-packages/PIL/__pycache__/ImagePalette.cpython-312.pyc",
+    "uv-tools/pdf2zh-next/Lib/site-packages/PIL/__pycache__/ImageSequence.cpython-312.pyc",
+    "uv-tools/pdf2zh-next/Lib/site-packages/PIL/__pycache__/JpegImagePlugin.cpython-312.pyc",
+    "uv-tools/pdf2zh-next/Lib/site-packages/PIL/__pycache__/JpegPresets.cpython-312.pyc",
+    "uv-tools/pdf2zh-next/Lib/site-packages/PIL/__pycache__/PaletteFile.cpython-312.pyc",
+    "uv-tools/pdf2zh-next/Lib/site-packages/PIL/__pycache__/PngImagePlugin.cpython-312.pyc",
+    "uv-tools/pdf2zh-next/Lib/site-packages/PIL/__pycache__/PpmImagePlugin.cpython-312.pyc",
+    "uv-tools/pdf2zh-next/Lib/site-packages/PIL/__pycache__/TiffTags.cpython-312.pyc",
+    "uv-tools/pdf2zh-next/Lib/site-packages/PIL/__pycache__/__init__.cpython-312.pyc",
+    "uv-tools/pdf2zh-next/Lib/site-packages/PIL/__pycache__/_binary.cpython-312.pyc",
+    "uv-tools/pdf2zh-next/Lib/site-packages/PIL/__pycache__/_deprecate.cpython-312.pyc",
+    "uv-tools/pdf2zh-next/Lib/site-packages/PIL/__pycache__/_typing.cpython-312.pyc",
+    "uv-tools/pdf2zh-next/Lib/site-packages/PIL/__pycache__/_util.cpython-312.pyc",
+    "uv-tools/pdf2zh-next/Lib/site-packages/PIL/__pycache__/_version.cpython-312.pyc",
+    "uv-tools/pdf2zh-next/Lib/site-packages/psutil/__pycache__/__init__.cpython-312.pyc",
+    "uv-tools/pdf2zh-next/Lib/site-packages/psutil/__pycache__/_common.cpython-312.pyc",
+    "uv-tools/pdf2zh-next/Lib/site-packages/psutil/__pycache__/_ntuples.cpython-312.pyc",
+    "uv-tools/pdf2zh-next/Lib/site-packages/psutil/__pycache__/_pswindows.cpython-312.pyc"
+  ],
+  "manifest_hash_mismatch": [],
+  "manifest_unsafe": [],
+  "manifest_duplicates": [],
+  "reparse_entries": [],
+  "python_source_files": 55,
+  "python_source_hash_mismatch": [],
+  "python_source_missing": [],
+  "python_source_extra": [],
+  "identity": {
+    "build_report_sha256": "928e625a02b81db26543464348bf88e88fda3059a285e24d4c06b0ad87a8c07e",
+    "product_source_sha256": "14ac1467dc103944329f8cc17e9e67c641b6d4a12eafae480581f767ccec3cce",
+    "manifest_sha256": "c90a2611b3036fb30c66cde7dde6f57edad9511e7540c1c8b1a8a35eb890cdad",
+    "installer_sha256": "c92302a5dfd6638d7465fc973d52df066a82c427af0ae0ee19c2484788524d6c",
+    "installer_bytes": 225341691,
+    "nuget_lock_sha256": "70432c585cb472fe9bdb93019a96bf8abe309650ebaefd6cd231304f39f02820",
+    "python_lock_sha256": "3eb8d21e800548391180c44594e2af952ea36d071bdad45bfcc30efd5371e607",
+    "patch_lock_sha256": "069ff7e8d8972e5eb029ae8397845475251c9565a7040dbbf6b5cde2e5a5055a"
+  },
+  "report_bindings_match": {
+    "manifest": true,
+    "product_source": true,
+    "installer": true,
+    "nuget_lock": true,
+    "python_lock": true,
+    "patch_lock": true
+  },
+  "runtime_dependencies": [
+    {
+      "package": "CommunityToolkit.Mvvm/8.4.2",
+      "nupkg_sha512_matches_lock": false,
+      "deps_sha512_matches_lock": true,
+      "runtime_files": [
+        {
+          "path": "CommunityToolkit.Mvvm.dll",
+          "matches_locked_package_bytes": true,
+          "sha256": "19b2144fed9600d58a742a5a4a5fd7b10d4d0d2c2e79f5d8019307cf5657044f"
+        }
+      ]
+    },
+    {
+      "package": "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.0",
+      "nupkg_sha512_matches_lock": false,
+      "deps_sha512_matches_lock": true,
+      "runtime_files": [
+        {
+          "path": "Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+          "matches_locked_package_bytes": true,
+          "sha256": "7c97c4463fe0fc11d1f22f4d160b2bd2288981adf1de2717a6ff3fb993ddf294"
+        }
+      ]
+    },
+    {
+      "package": "Microsoft.Extensions.Logging.Abstractions/10.0.0",
+      "nupkg_sha512_matches_lock": false,
+      "deps_sha512_matches_lock": true,
+      "runtime_files": [
+        {
+          "path": "Microsoft.Extensions.Logging.Abstractions.dll",
+          "matches_locked_package_bytes": true,
+          "sha256": "a76a735b63e6ef3b0bf41ff92423cbd16103b8952e8306140a9bd650346034dc"
+        }
+      ]
+    },
+    {
+      "package": "System.Reactive/5.0.0",
+      "nupkg_sha512_matches_lock": false,
+      "deps_sha512_matches_lock": true,
+      "runtime_files": [
+        {
+          "path": "System.Reactive.dll",
+          "matches_locked_package_bytes": true,
+          "sha256": "2b6c31dfb1fc6019a42a007ed0e5e00574de6ea0c47fed0ca282bf3bb2771b0c"
+        }
+      ]
+    },
+    {
+      "package": "WPF-UI/4.3.0",
+      "nupkg_sha512_matches_lock": false,
+      "deps_sha512_matches_lock": true,
+      "runtime_files": [
+        {
+          "path": "Wpf.Ui.dll",
+          "matches_locked_package_bytes": true,
+          "sha256": "966176695819e39752211df271a53cee7df91f55a5e20ef9bf61fc7220fcaa1a"
+        }
+      ]
+    },
+    {
+      "package": "WPF-UI.Abstractions/4.3.0",
+      "nupkg_sha512_matches_lock": false,
+      "deps_sha512_matches_lock": true,
+      "runtime_files": [
+        {
+          "path": "Wpf.Ui.Abstractions.dll",
+          "matches_locked_package_bytes": true,
+          "sha256": "defcd3554e362ce84be4dbbf98a18308705bf7c16eac5f483532df83cb1f87fe"
+        }
+      ]
+    },
+    {
+      "package": "XamlFlair.WPF/1.2.13",
+      "nupkg_sha512_matches_lock": false,
+      "deps_sha512_matches_lock": true,
+      "runtime_files": [
+        {
+          "path": "XamlFlair.WPF.dll",
+          "matches_locked_package_bytes": true,
+          "sha256": "27a428f3078684a6f64517fcc9f05df703e35493c5d62dfeb8f16b8d683ab5a1"
+        }
+      ]
+    }
+  ],
+  "licenses": {
+    "communitytoolkit.mvvm-LICENSE.md": {
+      "bytes": 1158,
+      "sha256": "651997ef19dbb9ecb8dd660dbc86444a65af21f18cfe08daa69bf201cd5cfdfc"
+    },
+    "communitytoolkit.mvvm-ThirdPartyNotices.txt": {
+      "bytes": 8600,
+      "sha256": "7774f8b0ab66bfb47ec154ce24a2d6d574febc44a74d940b8a037d1c56756163"
+    },
+    "dotnet-LICENSE.txt": {
+      "bytes": 9519,
+      "sha256": "7f6839a61ce892b79c6549e2dc5a81fdbd240a0b260f8881216b45b7fda8b45d"
+    },
+    "dotnet-ThirdPartyNotices.txt": {
+      "bytes": 78887,
+      "sha256": "deb4427a295e1ed474b0d81c5a0d972c1b550b9a715cda939cdfa9236b1b418f"
+    },
+    "Microsoft.Extensions-LICENSE.txt": {
+      "bytes": 9519,
+      "sha256": "7f6839a61ce892b79c6549e2dc5a81fdbd240a0b260f8881216b45b7fda8b45d"
+    },
+    "microsoft.extensions.dependencyinjection.abstractions-ThirdPartyNotices.txt": {
+      "bytes": 78041,
+      "sha256": "6d15e10a101c6bfff2ab4429ed061bf76c456fc4b23ad6b03e0d0f8377148a21"
+    },
+    "microsoft.extensions.dependencyinjection.abstractions.nuspec": {
+      "bytes": 1741,
+      "sha256": "9e13d9b543405e86955f6b047a1d7680684fa37f4ec094f4bad6e33ba775c0db"
+    },
+    "microsoft.extensions.logging.abstractions-ThirdPartyNotices.txt": {
+      "bytes": 78041,
+      "sha256": "6d15e10a101c6bfff2ab4429ed061bf76c456fc4b23ad6b03e0d0f8377148a21"
+    },
+    "microsoft.extensions.logging.abstractions.nuspec": {
+      "bytes": 2990,
+      "sha256": "126d33e134dcbe6a65a969b93e2faa3dcf73dbc460c307e783b4f719eed12688"
+    },
+    "System.Reactive-LICENSE.txt": {
+      "bytes": 1116,
+      "sha256": "cfc21f5e8bd655ae997eec916138b707b1d290b83272c02a95c9f821b8c87310"
+    },
+    "system.reactive.nuspec": {
+      "bytes": 2377,
+      "sha256": "36aa6d1a444eb57b2bd7d00c7bbf938c06df0f30cea3b5bc006d6c7798739e4f"
+    },
+    "wpf-ui-LICENSE.md": {
+      "bytes": 1143,
+      "sha256": "efb68dbccb1be73cd78729b76f39720132126bacff8194eed934323bab6455b7"
+    },
+    "wpf-ui-ThirdPartyNotices.txt": {
+      "bytes": 7031,
+      "sha256": "871e788e025383423fae377a97229dafcb9254687ce917d63ebbf7b10f34c588"
+    },
+    "XamlFlair-LICENSE.txt": {
+      "bytes": 1066,
+      "sha256": "cad49aa0afc58ec8e27cde49989e4c84684ba765aa1b64022931ce7e178e5637"
+    }
+  },
+  "license_matches_repository": {
+    "XamlFlair-LICENSE.txt": true,
+    "System.Reactive-LICENSE.txt": true
+  },
+  "version": {
+    "version": "2.9.0",
+    "channel": "preview"
+  },
+  "source_link_runtime_libraries": [],
+  "passed": false
+}

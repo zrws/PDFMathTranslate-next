@@ -1,0 +1,64 @@
+{
+  "id": "f2d36948aba44dd5",
+  "filename": "sample.pdf",
+  "file_sha256": "a15960c9a5f37133e4d33cb44499de860cb68fba482f1fd5fa83e53f261a3795",
+  "page_count": 2,
+  "lang_in": "en",
+  "lang_out": "zh-CN",
+  "options": {
+    "lang_in": "en",
+    "lang_out": "zh-CN",
+    "pages": "",
+    "no_dual": false,
+    "no_mono": false,
+    "auto_term_extraction": false,
+    "watermark_output_mode": "watermarked",
+    "export_dir": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-acceptance-36b92933905144fc8550d61151e31a44\\exports",
+    "resource_policy": {
+      "tier": "balanced",
+      "document_concurrency": 1,
+      "local_compute_threads": 4,
+      "api_qps_cap": 4,
+      "api_inflight_limit": 8,
+      "preview_concurrency": 1,
+      "gpu": false
+    },
+    "engine": {
+      "service": "OpenAI",
+      "base_url": "http://127.0.0.1:42103/v1",
+      "model": "local-test-model"
+    },
+    "term_credential_provider": null,
+    "glossary_fingerprints": [],
+    "settings_fingerprint": "15d52ef1a4463d0723a1bb20c5453ef42e3c0a28418b8126f44990101e48371d"
+  },
+  "status": "done",
+  "phase": "finalizing",
+  "stage": "翻译完成 · 待保存",
+  "message": "产物已生成，请保存到所选目录",
+  "error": "",
+  "progress": 100,
+  "revision": 78,
+  "created_at": 1793779613.6853163,
+  "finished_at": 1793779707.616714,
+  "outputs": {
+    "dual": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-acceptance-36b92933905144fc8550d61151e31a44\\work\\outputs\\f2d36948aba44dd5\\0ac15cf2__sample.zh-CN.dual.pdf",
+    "mono": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-acceptance-36b92933905144fc8550d61151e31a44\\work\\outputs\\f2d36948aba44dd5\\0ac15cf2__sample.zh-CN.mono.pdf"
+  },
+  "saved_paths": [],
+  "parent_task_id": null,
+  "output_identities": {
+    "dual": {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-acceptance-36b92933905144fc8550d61151e31a44\\work\\outputs\\f2d36948aba44dd5\\0ac15cf2__sample.zh-CN.dual.pdf",
+      "output_revision": 1,
+      "size_bytes": 31855,
+      "sha256": "43f31a12a5ba07f56d9a8de6e9afc39eed967a583fe14b5a9bed5a643f44af60"
+    },
+    "mono": {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-acceptance-36b92933905144fc8550d61151e31a44\\work\\outputs\\f2d36948aba44dd5\\0ac15cf2__sample.zh-CN.mono.pdf",
+      "output_revision": 1,
+      "size_bytes": 28504,
+      "sha256": "92f4929210eeeaf00aa174f89b15250edc3cc863e63ae5c2817726eac129f5b7"
+    }
+  }
+}

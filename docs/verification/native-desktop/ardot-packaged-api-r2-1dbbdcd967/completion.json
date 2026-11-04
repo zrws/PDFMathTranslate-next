@@ -1,0 +1,10 @@
+{
+  "started_at": "2026-11-04T15:52:41.9803501+08:00",
+  "payload_membership_unchanged": true,
+  "run_root": "D:\\student\\翻译\\PDFMathTranslate-next\\docs\\verification\\native-desktop\\ardot-packaged-api-r2-1dbbdcd967",
+  "actual_exit": 0,
+  "scope": "new corrected Release payload actual packaged Python/BabelDOC plus loopback LLM; host/child bytecode disabled; no diagnostic hooks or repository source overlay",
+  "runtime_root": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload",
+  "completed_at": "2026-11-04T15:54:48.8211152+08:00",
+  "source_commit": "bc4e36836301816a99c635244275728d65d38415"
+}

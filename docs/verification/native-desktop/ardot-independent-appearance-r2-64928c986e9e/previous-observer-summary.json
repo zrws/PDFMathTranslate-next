@@ -1,0 +1,16 @@
+{
+  "identity_claim_valid": false,
+  "observer_actual_exit": 1,
+  "excluded_raw_sha256": "BFE7CD9DCA3B5C200715391FB2B86D12C201CA24559FD1C2F25E5CCDCC3D8706",
+  "source": "tool exec session 34228 actual completion",
+  "appearance_reparse_check": true,
+  "sentinel_unchanged": true,
+  "excluded_raw_path": "D:\\student\\翻译\\PDFMathTranslate-next\\docs\\verification\\native-desktop\\ardot-independent-appearance-8d1c22abf146\\driver-observed.json",
+  "delivery": "Keep original raw locally; exclude it from Git because it contains unrelated process metadata. This safe summary does not reproduce that metadata.",
+  "wpf_started": "2026-11-04T10:00:12.2957822+08:00",
+  "wpf_actual_exit": 0,
+  "excluded_raw_bytes": 46335,
+  "wpf_pid": 15072,
+  "reason": "Observer omitted parent identity revalidation and monotonic parent-child creation checks; stale parent PID references caused false attribution. No non-owned process was stopped or modified.",
+  "ui_passed": true
+}

@@ -1,0 +1,13 @@
+{
+  "scope": "actual Debug executable and configured source identity; API provenance separately observes packaged imports",
+  "ui_exe_sha256": "47ed7a658925e4a8c0e253a8dbd3b8e098bf593a75c6cdfe29fb13771cbc5016",
+  "ui_dll_sha256": "47d13fb7a7d5b4c29d22b893ddc12764852b4e39b7cc0e13112cd7f8ee0d0f4d",
+  "profile_sha256": "29122893c960c813cbf9069fe34d2243f9e75cab274b57a5433fe363a9e4bac8",
+  "configured_paths": {
+    "PDF2ZH_APP_ROOT": "D:\\student\\翻译\\PDFMathTranslate-next",
+    "PDF2ZH_RUNTIME_ROOT": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cc12e21d7a4e\\payload",
+    "PDF2ZH_HOME": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\ui-ardot-home-a",
+    "PDF2ZH_SOURCE_ROOT": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cc12e21d7a4e\\payload\\uv-tools\\pdf2zh-next\\Lib\\site-packages"
+  },
+  "configured_source_matches_api": true
+}

@@ -1,0 +1,27 @@
+{
+  "api_ready": true,
+  "real_window_visible": true,
+  "window_handle": 14550366,
+  "window_ready_ms": 7308.6872,
+  "api_ready_ms": 21477.3283,
+  "render_kind": "actual running WPF visual tree, RenderTargetBitmap; not OS input automation",
+  "component_library": "Wpf.Ui, Version=4.3.0.0, Culture=neutral, PublicKeyToken=11f9f5cc97b3ffd6",
+  "motion_library": "XamlFlair.WPF, Version=1.2.13.0, Culture=neutral, PublicKeyToken=null",
+  "system_client_area_animation": true,
+  "library_motion_attached": true,
+  "custom_application_styles": 0,
+  "reduced_motion_detaches_library_animation": true,
+  "appearance_roundtrip": true,
+  "uncommon_language_readback": true,
+  "auto_update_opt_out_readback": true,
+  "missing_update_installer_keeps_service": true,
+  "dpi_scope": "100/150/200 percent raster rendering of the same real WPF layout; system DPI and dialogs require manual verification",
+  "manual_pending": [
+    "native file/folder picker keyboard and mouse input",
+    "OS drag/drop",
+    "cross-monitor DPI"
+  ],
+  "passed": true,
+  "completed_at": "2026-11-04T09:31:12.5106729+08:00",
+  "process_id": 9580
+}

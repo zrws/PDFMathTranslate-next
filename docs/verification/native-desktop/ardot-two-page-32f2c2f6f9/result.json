@@ -1,0 +1,694 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "case": "health authenticated",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "health rejects missing bearer",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "host rejects spoof",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "origin rejects cross-site",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "initial SSE snapshot",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "settings actual capped policy",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "invalid settings rejected",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "settings failure preserves value",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "real two-page PDF upload",
+      "passed": true,
+      "detail": {
+        "file_id": "c5ff6edf__sample.pdf",
+        "filename": "sample.pdf",
+        "page_count": 2,
+        "size_bytes": 3474,
+        "sha256": "ff8d90b945a918b5aa150e51dc6fe2e3017f4967ba9355e71a30ada614e61584"
+      }
+    },
+    {
+      "case": "bounded preview PNG",
+      "passed": true,
+      "detail": [
+        1600,
+        2265
+      ]
+    },
+    {
+      "case": "real task accepted",
+      "passed": true,
+      "detail": {
+        "id": "6839236ae2b8497d",
+        "filename": "sample.pdf",
+        "file_sha256": "ff8d90b945a918b5aa150e51dc6fe2e3017f4967ba9355e71a30ada614e61584",
+        "page_count": 2,
+        "lang_in": "en",
+        "lang_out": "zh-CN",
+        "options": {
+          "lang_in": "en",
+          "lang_out": "zh-CN",
+          "pages": "",
+          "no_dual": false,
+          "no_mono": false,
+          "auto_term_extraction": false,
+          "watermark_output_mode": "watermarked",
+          "export_dir": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-acceptance-9707f02399b24e4bbbe8de29aebb0ad5\\exports",
+          "resource_policy": {
+            "tier": "balanced",
+            "document_concurrency": 1,
+            "local_compute_threads": 4,
+            "api_qps_cap": 4,
+            "api_inflight_limit": 8,
+            "preview_concurrency": 1,
+            "gpu": false
+          },
+          "engine": {
+            "service": "OpenAI",
+            "base_url": "http://127.0.0.1:37207/v1",
+            "model": "local-test-model"
+          },
+          "term_credential_provider": null,
+          "glossary_fingerprints": [],
+          "settings_fingerprint": "aaf5ebc9c57cba17f343dee4e5a58b222e2898cfd24ed4b8b7b806fca11cc6a1"
+        },
+        "status": "queued",
+        "phase": "preparing",
+        "stage": "等待资源与工作线程",
+        "message": "排队中",
+        "error": "",
+        "progress": 0,
+        "revision": 1,
+        "created_at": 1793757152.4466858,
+        "finished_at": null,
+        "outputs": {},
+        "saved_paths": [],
+        "parent_task_id": null,
+        "output_identities": {}
+      }
+    },
+    {
+      "case": "create replay one task",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "same key different language conflict",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "genuine BabelDOC produced both outputs",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "case": "real loopback provider used",
+      "passed": true,
+      "detail": 32
+    },
+    {
+      "case": "translated output preview page two",
+      "passed": true,
+      "detail": {
+        "date": "Wed, 04 Nov 2026 01:54:40 GMT",
+        "server": "uvicorn",
+        "x-page-count": "2",
+        "x-page-index": "2",
+        "cache-control": "private, max-age=30",
+        "content-length": "201824",
+        "content-type": "image/png"
+      }
+    },
+    {
+      "case": "actual export saved",
+      "passed": true,
+      "detail": {
+        "id": "6839236ae2b8497d",
+        "filename": "sample.pdf",
+        "file_sha256": "ff8d90b945a918b5aa150e51dc6fe2e3017f4967ba9355e71a30ada614e61584",
+        "page_count": 2,
+        "lang_in": "en",
+        "lang_out": "zh-CN",
+        "options": {
+          "lang_in": "en",
+          "lang_out": "zh-CN",
+          "pages": "",
+          "no_dual": false,
+          "no_mono": false,
+          "auto_term_extraction": false,
+          "watermark_output_mode": "watermarked",
+          "export_dir": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-acceptance-9707f02399b24e4bbbe8de29aebb0ad5\\exports",
+          "resource_policy": {
+            "tier": "balanced",
+            "document_concurrency": 1,
+            "local_compute_threads": 4,
+            "api_qps_cap": 4,
+            "api_inflight_limit": 8,
+            "preview_concurrency": 1,
+            "gpu": false
+          },
+          "engine": {
+            "service": "OpenAI",
+            "base_url": "http://127.0.0.1:37207/v1",
+            "model": "local-test-model"
+          },
+          "term_credential_provider": null,
+          "glossary_fingerprints": [],
+          "settings_fingerprint": "aaf5ebc9c57cba17f343dee4e5a58b222e2898cfd24ed4b8b7b806fca11cc6a1"
+        },
+        "status": "done",
+        "phase": "finalizing",
+        "stage": "已有结果保存记录",
+        "message": "文件已保存，可打开结果或目录",
+        "error": "",
+        "progress": 100,
+        "revision": 80,
+        "created_at": 1793757152.4466858,
+        "finished_at": 1793757281.5171275,
+        "outputs": {
+          "dual": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-acceptance-9707f02399b24e4bbbe8de29aebb0ad5\\work\\outputs\\6839236ae2b8497d\\c5ff6edf__sample.zh-CN.dual.pdf",
+          "mono": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-acceptance-9707f02399b24e4bbbe8de29aebb0ad5\\work\\outputs\\6839236ae2b8497d\\c5ff6edf__sample.zh-CN.mono.pdf"
+        },
+        "saved_paths": [
+          "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-acceptance-9707f02399b24e4bbbe8de29aebb0ad5\\exports\\sample_2026-11-04\\sample_双语.pdf",
+          "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-acceptance-9707f02399b24e4bbbe8de29aebb0ad5\\exports\\sample_2026-11-04\\sample_单语.pdf"
+        ],
+        "parent_task_id": null,
+        "output_identities": {
+          "dual": {
+            "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-acceptance-9707f02399b24e4bbbe8de29aebb0ad5\\work\\outputs\\6839236ae2b8497d\\c5ff6edf__sample.zh-CN.dual.pdf",
+            "output_revision": 1,
+            "size_bytes": 31855,
+            "sha256": "3598d60fac424f6543376829d86412688a26946e9874061d2ec434fc6570b62b"
+          },
+          "mono": {
+            "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-acceptance-9707f02399b24e4bbbe8de29aebb0ad5\\work\\outputs\\6839236ae2b8497d\\c5ff6edf__sample.zh-CN.mono.pdf",
+            "output_revision": 1,
+            "size_bytes": 28504,
+            "sha256": "aeb47992a31459199a83f3a6c77c39163d6764ad57c3ef1cd5aaf1d8f4ab0a8d"
+          }
+        }
+      }
+    },
+    {
+      "case": "export replay no duplicate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "second export versions",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "download mono",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "download dual",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "SSE final not dropped",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "no credential in events",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "effective snapshot contains no API key",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "create replay survives changed global settings",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "queued cancellation is terminal",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "retry freezes original full configuration",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "retry lost-response key stable",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "clear history preserves create tombstone",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "clear history preserves retry tombstone",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "case": "native WPF integration flow",
+      "passed": true,
+      "detail": {
+        "actual_exit": 0,
+        "evidence_root": "D:\\student\\翻译\\PDFMathTranslate-next\\docs\\verification\\native-desktop\\p1-ui-flow-c3a603904d",
+        "ui_provenance_sha256": "b26139fc0ad0952fb774921e5755ffdd10217f3be8db84ebe778dff921c34742"
+      }
+    },
+    {
+      "case": "owned backend process tree reclaimed",
+      "passed": true,
+      "detail": {
+        "control_actual_exit": 0,
+        "surviving_identities": []
+      }
+    }
+  ],
+  "home": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-acceptance-9707f02399b24e4bbbe8de29aebb0ad5",
+  "control_pid": 6096,
+  "control_actual_exit": 0,
+  "provider_calls": [
+    {
+      "ts": 1793757226.5143814,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 293
+    },
+    {
+      "ts": 1793757256.9641507,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 2480
+    },
+    {
+      "ts": 1793757257.2109938,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 3416
+    },
+    {
+      "ts": 1793757257.4523678,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 3309
+    },
+    {
+      "ts": 1793757257.7142317,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 2172
+    },
+    {
+      "ts": 1793757257.9405785,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 3486
+    },
+    {
+      "ts": 1793757258.1923645,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 3379
+    },
+    {
+      "ts": 1793757258.4667866,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 2243
+    },
+    {
+      "ts": 1793757258.741148,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1173
+    },
+    {
+      "ts": 1793757258.965153,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1172
+    },
+    {
+      "ts": 1793757259.2170088,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 869
+    },
+    {
+      "ts": 1793757259.4719188,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1172
+    },
+    {
+      "ts": 1793757259.7165728,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1172
+    },
+    {
+      "ts": 1793757259.9641063,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1172
+    },
+    {
+      "ts": 1793757260.2212894,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1172
+    },
+    {
+      "ts": 1793757260.4704192,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1172
+    },
+    {
+      "ts": 1793757260.7399876,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1172
+    },
+    {
+      "ts": 1793757260.9620564,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1172
+    },
+    {
+      "ts": 1793757261.2344546,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1172
+    },
+    {
+      "ts": 1793757261.488966,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1172
+    },
+    {
+      "ts": 1793757261.7452242,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 868
+    },
+    {
+      "ts": 1793757261.993787,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 939
+    },
+    {
+      "ts": 1793757262.2458036,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1242
+    },
+    {
+      "ts": 1793757262.489503,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1242
+    },
+    {
+      "ts": 1793757262.7504325,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1242
+    },
+    {
+      "ts": 1793757263.008359,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1242
+    },
+    {
+      "ts": 1793757263.247744,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1242
+    },
+    {
+      "ts": 1793757263.4946113,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1242
+    },
+    {
+      "ts": 1793757263.7509718,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1242
+    },
+    {
+      "ts": 1793757264.0091095,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1242
+    },
+    {
+      "ts": 1793757264.2544382,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1243
+    },
+    {
+      "ts": 1793757264.5088878,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 938
+    },
+    {
+      "ts": 1793757342.0981565,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 293
+    },
+    {
+      "ts": 1793757363.5094607,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 2480
+    },
+    {
+      "ts": 1793757363.7681687,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 3416
+    },
+    {
+      "ts": 1793757364.02474,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 3309
+    },
+    {
+      "ts": 1793757364.273856,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 2172
+    },
+    {
+      "ts": 1793757364.5183475,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 3486
+    },
+    {
+      "ts": 1793757364.776524,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 3379
+    },
+    {
+      "ts": 1793757365.0191994,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 2243
+    },
+    {
+      "ts": 1793757365.278672,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1172
+    },
+    {
+      "ts": 1793757365.5341866,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1173
+    },
+    {
+      "ts": 1793757365.7786422,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 869
+    },
+    {
+      "ts": 1793757366.0369213,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1172
+    },
+    {
+      "ts": 1793757366.251669,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1172
+    },
+    {
+      "ts": 1793757366.5277753,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1172
+    },
+    {
+      "ts": 1793757366.7545207,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1172
+    },
+    {
+      "ts": 1793757367.007046,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1172
+    },
+    {
+      "ts": 1793757367.2790673,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1172
+    },
+    {
+      "ts": 1793757367.5219245,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1172
+    },
+    {
+      "ts": 1793757367.7617905,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1172
+    },
+    {
+      "ts": 1793757368.0148668,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1172
+    },
+    {
+      "ts": 1793757368.28716,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 868
+    },
+    {
+      "ts": 1793757368.5186403,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 939
+    },
+    {
+      "ts": 1793757368.7703526,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1242
+    },
+    {
+      "ts": 1793757369.0314717,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1242
+    },
+    {
+      "ts": 1793757369.291093,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1242
+    },
+    {
+      "ts": 1793757369.5507102,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1242
+    },
+    {
+      "ts": 1793757369.7777476,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1242
+    },
+    {
+      "ts": 1793757370.0497897,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1242
+    },
+    {
+      "ts": 1793757370.300279,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1242
+    },
+    {
+      "ts": 1793757370.5526016,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1242
+    },
+    {
+      "ts": 1793757370.8062832,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 1243
+    },
+    {
+      "ts": 1793757371.0559905,
+      "path": "/v1/chat/completions",
+      "model": "local-test-model",
+      "text_length": 938
+    }
+  ],
+  "source_mode": "packaged",
+  "provenance_sha256": "ba74c516c004af167e12c704de466cd3511da5ecc82d228dd02dc544f99d4b30",
+  "mode": "real BabelDOC + loopback LLM fixture; commercial translation quality unverified"
+}

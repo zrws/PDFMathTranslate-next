@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "D:\student\����\PDFMathTranslate-next\tests\native\index-delivery.py", line 21, in <module>
+    if excluded and not args.exclusion_reason: raise RuntimeError('explicit exclusion reason required')
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: explicit exclusion reason required

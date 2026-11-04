@@ -1,0 +1,16 @@
+{
+  "payload_files": 16430,
+  "nuget_content_review_sha256": "0BBFB0875443E8ABDAC5EA05CACEB1953BA34E3FDFCEBD284976F244840702FB",
+  "release_smoke_unverified_at_this_snapshot": true,
+  "manifest_rows": 16429,
+  "nuget_archive_checks_passed": true,
+  "package_identity_passed": true,
+  "source_commit": "bc4e36836301816a99c635244275728d65d38415",
+  "payload_bytes": 792943181,
+  "package_review_sha256": "38E6C4E760AEFA66F5D8818CFFC9CD32542B99E86046CF5EA0CE011A902FDF46",
+  "installer_sha256": "cc2bceccfad905314d70344f8b758747b5fe56d14d17264a40120446c61ef531",
+  "frozen_at": "2026-11-04T15:56:21.0319554+08:00",
+  "scope": "Frozen independent static audit before final API/smoke; not execution proof",
+  "static_passed": true,
+  "api_unverified_at_this_snapshot": true
+}

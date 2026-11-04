@@ -1,0 +1,12 @@
+test_cached_old_process_object_does_not_pass_fresh_postcheck (__main__.OwnershipTests.test_cached_old_process_object_does_not_pass_fresh_postcheck) ... ok
+test_changed_root_identity_is_not_recorded (__main__.OwnershipTests.test_changed_root_identity_is_not_recorded) ... ok
+test_invalid_target_assignment_fails_closed (__main__.OwnershipTests.test_invalid_target_assignment_fails_closed) ... ok
+test_kernel_close_reclaims_nested_child_and_preserves_outside_sentinel (__main__.OwnershipTests.test_kernel_close_reclaims_nested_child_and_preserves_outside_sentinel) ... ok
+test_nonmember_child_is_not_recorded (__main__.OwnershipTests.test_nonmember_child_is_not_recorded) ... ok
+test_reused_parent_number_rejects_older_child (__main__.OwnershipTests.test_reused_parent_number_rejects_older_child) ... ok
+test_unexpected_image_is_counted_without_metadata (__main__.OwnershipTests.test_unexpected_image_is_counted_without_metadata) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.135s
+
+OK

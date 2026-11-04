@@ -1,0 +1,50 @@
+{
+  "id": "9df4895d082d4c14",
+  "filename": "sample.pdf",
+  "file_sha256": "bf4bdd40e17c45e8928c7a9498a3c28770a1140d621a854a3108661784c01018",
+  "page_count": 2,
+  "lang_in": "en",
+  "lang_out": "zh-CN",
+  "options": {
+    "lang_in": "en",
+    "lang_out": "zh-CN",
+    "pages": "",
+    "no_dual": false,
+    "no_mono": false,
+    "auto_term_extraction": false,
+    "watermark_output_mode": "watermarked",
+    "export_dir": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\native-acceptance-9368d7f238d449499f8bb725cee46448\\exports",
+    "resource_policy": {
+      "tier": "balanced",
+      "document_concurrency": 1,
+      "local_compute_threads": 4,
+      "api_qps_cap": 4,
+      "api_inflight_limit": 8,
+      "preview_concurrency": 1,
+      "gpu": false
+    },
+    "engine": {
+      "service": "OpenAI",
+      "base_url": "http://127.0.0.1:57499/v1",
+      "model": "local-test-model"
+    },
+    "term_credential_provider": null,
+    "glossary_fingerprints": [],
+    "settings_fingerprint": "e83e7fe46d87c8aaee0cd1f2bd30b3931494f83326385acfa617a6e7c803d870"
+  },
+  "status": "failed",
+  "phase": "preparing",
+  "stage": "翻译失败",
+  "message": "可按原配置重试",
+  "error": "引擎启动或响应超时，请检查服务设置后重试。",
+  "progress": 0,
+  "revision": 7,
+  "created_at": 1793777409.2469683,
+  "finished_at": 1793777529.713557,
+  "outputs": {},
+  "saved_paths": [],
+  "parent_task_id": null,
+  "worker_exit": 1,
+  "worker_finish_received": false,
+  "output_identities": {}
+}

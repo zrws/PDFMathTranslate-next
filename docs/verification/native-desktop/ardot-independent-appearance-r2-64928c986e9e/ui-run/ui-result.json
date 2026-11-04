@@ -1,0 +1,104 @@
+{
+  "api_ready": true,
+  "real_window_visible": true,
+  "window_handle": 25431272,
+  "window_ready_ms": 1795.2165,
+  "api_ready_ms": 7835.0811,
+  "render_kind": "actual running WPF visual tree, RenderTargetBitmap; not OS input automation",
+  "ui_dll_sha256": "199EF9736EB4F283AB979131E967682AB0611B4B9414FAB8572FB67C3A11FA12",
+  "normal_layout": {
+    "SubmitButton": {
+      "x": 248.8,
+      "y": 761.5999999999999,
+      "width": 503.36,
+      "height": 44
+    },
+    "SourceLanguageInput": {
+      "x": 265.8,
+      "y": 444.38,
+      "width": 218.68,
+      "height": 35.78
+    },
+    "TargetLanguageInput": {
+      "x": 516.48,
+      "y": 444.38,
+      "width": 218.68,
+      "height": 35.78
+    }
+  },
+  "component_library": "Wpf.Ui, Version=4.3.0.0, Culture=neutral, PublicKeyToken=11f9f5cc97b3ffd6",
+  "motion_library": "XamlFlair.WPF, Version=1.2.13.0, Culture=neutral, PublicKeyToken=null",
+  "system_client_area_animation": true,
+  "library_motion_attached": true,
+  "custom_application_styles": 0,
+  "library_motion_probe": {
+    "loaded": true,
+    "opacity": 0.8449203291778138,
+    "settings": true,
+    "enabled": true
+  },
+  "library_fade_has_actual_opacity_clock": true,
+  "reduced_motion_detaches_library_animation": true,
+  "reduced_motion_clears_actual_opacity_clock": true,
+  "appearance_roundtrip": true,
+  "finite_fade_releases_opacity_clock": true,
+  "cached_page_reentry_visible": true,
+  "malformed_appearance_isolated_from_backend": true,
+  "appearance_reparse_read_and_write_refused": true,
+  "failed_save_retains_key_draft": true,
+  "all_save_paths_clear_key_after_success": true,
+  "layout_sample_sha256": "FF8D90B945A918B5AA150E51DC6FE2E3017F4967BA9355E71A30ADA614E61584",
+  "four_pending_compact_layout": {
+    "SubmitButton": {
+      "x": 248.8,
+      "y": 560,
+      "width": 316.6933333333334,
+      "height": 44
+    },
+    "SourceLanguageInput": {
+      "x": 265.8,
+      "y": 450.7400000000001,
+      "width": 125.34666666666669,
+      "height": 35.78
+    },
+    "TargetLanguageInput": {
+      "x": 423.1466666666667,
+      "y": 450.7400000000001,
+      "width": 125.34666666666669,
+      "height": 35.78
+    }
+  },
+  "actual_translated_view_page_two": true,
+  "uncommon_language_readback": true,
+  "auto_update_opt_out_readback": true,
+  "missing_update_installer_keeps_service": true,
+  "compact_layout": {
+    "SubmitButton": {
+      "x": 248.8,
+      "y": 560,
+      "width": 316.6933333333334,
+      "height": 44
+    },
+    "SourceLanguageInput": {
+      "x": 265.8,
+      "y": 444.38,
+      "width": 125.34666666666669,
+      "height": 35.78
+    },
+    "TargetLanguageInput": {
+      "x": 423.1466666666667,
+      "y": 444.38,
+      "width": 125.34666666666669,
+      "height": 35.78
+    }
+  },
+  "dpi_scope": "100/150/200 percent raster rendering of the same real WPF layout; system DPI and dialogs require manual verification",
+  "manual_pending": [
+    "native file/folder picker keyboard and mouse input",
+    "OS drag/drop",
+    "cross-monitor DPI"
+  ],
+  "passed": true,
+  "completed_at": "2026-11-04T10:06:18.6292501+08:00",
+  "process_id": 18200
+}

@@ -1,0 +1,1 @@
+{"passed": true, "checks": 31, "evidence": "D:\\student\\翻译\\PDFMathTranslate-next\\docs\\verification\\native-desktop\\ardot-packaged-api-final-2af91b4c73\\api"}

@@ -1,0 +1,194 @@
+{
+  "executable_sha256": "75F05021F7E9283532E3781CB7399BD12C194667B80568A44C0B1D0686AF70FB",
+  "driver_sha256": "544BADE4087BBC9AF70CDE8070A549DCBF8007AA3735415EA869BC1F944B5F70",
+  "source_commit": "60aa6dc3c40a5b8f44a6b67c271f8d108a82fe97",
+  "ui_result_sha256": "3EA48677D69D6B62D19F1D798922FB41CA4708D7425A5CAD831DBE3F09AF8F9D",
+  "process_started": "2026-11-04T10:05:28.7714320+08:00",
+  "observed_identity_survivors": [],
+  "passed": true,
+  "sentinel_before_sha256": "5F5599E6231EC5CE632CFFDEFADB56CAB73C99BABC7598B1A10F777E3F8F4783",
+  "profile_sha256": "29122893C960C813CBF9069FE34D2243F9E75CAB274B57A5433FE363A9E4BAC8",
+  "sentinel_unchanged": true,
+  "independent_reparse_check": true,
+  "observed_child_identities": [
+    {
+      "started": "2026-11-04T10:05:48.8560050+08:00",
+      "utc_ticks": 639293547488560050,
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cc12e21d7a4e\\payload\\uv-python\\cpython-3.12.13-windows-x86_64-none\\python.exe",
+      "pid": 27712,
+      "parent_pid": 16028,
+      "parent_started": "2026-11-04T10:05:30.6097045+08:00"
+    },
+    {
+      "started": "2026-11-04T10:05:46.0417079+08:00",
+      "utc_ticks": 639293547460417079,
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cc12e21d7a4e\\payload\\uv-python\\cpython-3.12.13-windows-x86_64-none\\python.exe",
+      "pid": 4464,
+      "parent_pid": 16028,
+      "parent_started": "2026-11-04T10:05:30.6097045+08:00"
+    },
+    {
+      "started": "2026-11-04T10:06:05.3435159+08:00",
+      "utc_ticks": 639293547653435159,
+      "path": "C:\\WINDOWS\\system32\\conhost.exe",
+      "pid": 19088,
+      "parent_pid": 6688,
+      "parent_started": "2026-11-04T10:06:05.3380533+08:00"
+    },
+    {
+      "started": "2026-11-04T10:06:09.7498912+08:00",
+      "utc_ticks": 639293547697498912,
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cc12e21d7a4e\\payload\\uv-python\\cpython-3.12.13-windows-x86_64-none\\python.exe",
+      "pid": 14136,
+      "parent_pid": 16028,
+      "parent_started": "2026-11-04T10:05:30.6097045+08:00"
+    },
+    {
+      "started": "2026-11-04T10:06:09.7596470+08:00",
+      "utc_ticks": 639293547697596470,
+      "path": "C:\\WINDOWS\\system32\\conhost.exe",
+      "pid": 27924,
+      "parent_pid": 14136,
+      "parent_started": "2026-11-04T10:06:09.7498912+08:00"
+    },
+    {
+      "started": "2026-11-04T10:05:48.8668965+08:00",
+      "utc_ticks": 639293547488668965,
+      "path": "C:\\WINDOWS\\system32\\conhost.exe",
+      "pid": 13280,
+      "parent_pid": 27712,
+      "parent_started": "2026-11-04T10:05:48.8560050+08:00"
+    },
+    {
+      "started": "2026-11-04T10:05:56.9406794+08:00",
+      "utc_ticks": 639293547569406794,
+      "path": "C:\\WINDOWS\\system32\\conhost.exe",
+      "pid": 17376,
+      "parent_pid": 17840,
+      "parent_started": "2026-11-04T10:05:56.9306386+08:00"
+    },
+    {
+      "started": "2026-11-04T10:05:51.3008876+08:00",
+      "utc_ticks": 639293547513008876,
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cc12e21d7a4e\\payload\\uv-python\\cpython-3.12.13-windows-x86_64-none\\python.exe",
+      "pid": 27688,
+      "parent_pid": 16028,
+      "parent_started": "2026-11-04T10:05:30.6097045+08:00"
+    },
+    {
+      "started": "2026-11-04T10:05:30.6275030+08:00",
+      "utc_ticks": 639293547306275030,
+      "path": "C:\\WINDOWS\\system32\\conhost.exe",
+      "pid": 8612,
+      "parent_pid": 16028,
+      "parent_started": "2026-11-04T10:05:30.6097045+08:00"
+    },
+    {
+      "started": "2026-11-04T10:05:30.6097045+08:00",
+      "utc_ticks": 639293547306097045,
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cc12e21d7a4e\\payload\\uv-python\\cpython-3.12.13-windows-x86_64-none\\python.exe",
+      "pid": 16028,
+      "parent_pid": 18200,
+      "parent_started": "2026-11-04T10:05:28.7714320+08:00"
+    },
+    {
+      "started": "2026-11-04T10:06:00.0687220+08:00",
+      "utc_ticks": 639293547600687220,
+      "path": "C:\\WINDOWS\\system32\\conhost.exe",
+      "pid": 25144,
+      "parent_pid": 25560,
+      "parent_started": "2026-11-04T10:06:00.0599827+08:00"
+    },
+    {
+      "started": "2026-11-04T10:06:02.6820830+08:00",
+      "utc_ticks": 639293547626820830,
+      "path": "C:\\WINDOWS\\system32\\conhost.exe",
+      "pid": 11068,
+      "parent_pid": 27980,
+      "parent_started": "2026-11-04T10:06:02.6665158+08:00"
+    },
+    {
+      "started": "2026-11-04T10:05:54.3732398+08:00",
+      "utc_ticks": 639293547543732398,
+      "path": "C:\\WINDOWS\\system32\\conhost.exe",
+      "pid": 26508,
+      "parent_pid": 16000,
+      "parent_started": "2026-11-04T10:05:54.3642617+08:00"
+    },
+    {
+      "started": "2026-11-04T10:05:51.3107471+08:00",
+      "utc_ticks": 639293547513107471,
+      "path": "C:\\WINDOWS\\system32\\conhost.exe",
+      "pid": 27000,
+      "parent_pid": 27688,
+      "parent_started": "2026-11-04T10:05:51.3008876+08:00"
+    },
+    {
+      "started": "2026-11-04T10:05:56.9306386+08:00",
+      "utc_ticks": 639293547569306386,
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cc12e21d7a4e\\payload\\uv-python\\cpython-3.12.13-windows-x86_64-none\\python.exe",
+      "pid": 17840,
+      "parent_pid": 16028,
+      "parent_started": "2026-11-04T10:05:30.6097045+08:00"
+    },
+    {
+      "started": "2026-11-04T10:06:05.3380533+08:00",
+      "utc_ticks": 639293547653380533,
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cc12e21d7a4e\\payload\\uv-python\\cpython-3.12.13-windows-x86_64-none\\python.exe",
+      "pid": 6688,
+      "parent_pid": 16028,
+      "parent_started": "2026-11-04T10:05:30.6097045+08:00"
+    },
+    {
+      "started": "2026-11-04T10:06:00.0599827+08:00",
+      "utc_ticks": 639293547600599827,
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cc12e21d7a4e\\payload\\uv-python\\cpython-3.12.13-windows-x86_64-none\\python.exe",
+      "pid": 25560,
+      "parent_pid": 16028,
+      "parent_started": "2026-11-04T10:05:30.6097045+08:00"
+    },
+    {
+      "started": "2026-11-04T10:06:02.6665158+08:00",
+      "utc_ticks": 639293547626665158,
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cc12e21d7a4e\\payload\\uv-python\\cpython-3.12.13-windows-x86_64-none\\python.exe",
+      "pid": 27980,
+      "parent_pid": 16028,
+      "parent_started": "2026-11-04T10:05:30.6097045+08:00"
+    },
+    {
+      "started": "2026-11-04T10:05:46.0519855+08:00",
+      "utc_ticks": 639293547460519855,
+      "path": "C:\\WINDOWS\\system32\\conhost.exe",
+      "pid": 23728,
+      "parent_pid": 4464,
+      "parent_started": "2026-11-04T10:05:46.0417079+08:00"
+    },
+    {
+      "started": "2026-11-04T10:05:54.3642617+08:00",
+      "utc_ticks": 639293547543642617,
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cc12e21d7a4e\\payload\\uv-python\\cpython-3.12.13-windows-x86_64-none\\python.exe",
+      "pid": 16000,
+      "parent_pid": 16028,
+      "parent_started": "2026-11-04T10:05:30.6097045+08:00"
+    }
+  ],
+  "argv": [
+    "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\ui-ardot-components-a\\PDFMathTranslate.exe",
+    "--ui-test",
+    "D:\\student\\翻译\\PDFMathTranslate-next\\docs\\verification\\native-desktop\\ardot-independent-appearance-r2-64928c986e9e\\scenario.json"
+  ],
+  "process_ended": "2026-11-04T10:06:18.8956610+08:00",
+  "dll_sha256": "199EF9736EB4F283AB979131E967682AB0611B4B9414FAB8572FB67C3A11FA12",
+  "rejected_unexpected_image_candidates": 0,
+  "actual_exit": 0,
+  "timeout": false,
+  "rejected_stale_candidates": 0,
+  "scope": "Independent fixture supplied to production DEBUG WPF verification entry; not OS input automation",
+  "ui_passed": true,
+  "scenario_sha256": "32AC1FEF6866A082A6A1847FAFD6A42CF8C4BEED39EC624BE42099E8D0B8C0ED",
+  "observer_ended": "2026-11-04T10:06:19.0355795+08:00",
+  "sentinel_after_sha256": "5F5599E6231EC5CE632CFFDEFADB56CAB73C99BABC7598B1A10F777E3F8F4783",
+  "observer_started": "2026-11-04T10:05:28.7569006+08:00",
+  "identity_gate": "Live parent PID+creation+exe checked before and after CIM; WQL child CreationDate >= parent; expected-image allowlist; live child creation matches snapshot within 10ms; only accepted identities traversed or tested for residuals",
+  "pid": 18200
+}

@@ -1,6 +1,6 @@
 # 本机原生桌面实施状态
 
-2026-11-04 后续界面修订在 `codex/ardot-component-ui-2026-11-04`，基于已交付 be3147e。用户否定上一轮视觉结果，要求按 Ardot 原版结构、组件库与动效库重新实施；本轮设计依据见 [组件约束](reviews/native-desktop/ARDOT-COMPONENT-BRIEF-2026-11-04.md)。下文 P0、性能和旧安装记录仍是上一轮的具体证据，不代表新 UI 已重新跑过相同项目；本轮独立复审和新运行记录另行交接。
+2026-11-04 后续界面修订在 `codex/ardot-component-ui-2026-11-04`，基于已交付 be3147e。用户否定上一轮视觉结果，要求按 Ardot 原版结构、组件库与动效库重新实施；已完成 WPF UI 4.3.0 + XamlFlair.WPF 1.2.13 组件改版，UI 冻结 `60aa6dc3c40a5b8f44a6b67c271f8d108a82fe97`，许可修正后的最终构建源为 `bc4e36836301816a99c635244275728d65d38415`。本轮设计依据见 [组件约束](reviews/native-desktop/ARDOT-COMPONENT-BRIEF-2026-11-04.md)，新运行、独立复审和安装包身份见 [2026-11-04 交接](ARDOT_COMPONENT_UI_HANDOFF_2026-11-04.md)。下文 P0、性能和旧安装记录仍是上一轮的具体证据，不代表新 UI 已重新跑过相同项目。
 
 本文件替代此前“P0 BLOCKED / P1 未开始”的进度快照；历史裁决保留在 reviews 和 Git 历史中，不是本机运行结论。
 

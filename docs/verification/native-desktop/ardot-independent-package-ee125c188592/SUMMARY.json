@@ -1,0 +1,18 @@
+{
+  "reason": "Wrong SDK terms supplied as Extensions MIT in this package; new package required",
+  "owned_hashes_match": true,
+  "licensing_accepted": false,
+  "overall_package_accepted": false,
+  "nuget_content_and_archived_runtime_passed": true,
+  "extra_scope": "Observed in local payload after acceptance host wrote bytecode; not attributed to already sealed installer",
+  "frozen_at": "2026-11-04T15:42:49.0173305+08:00",
+  "post_build_extra_pyc_count": 30,
+  "package_review_sha256": "36FFB7A625B465199C5208DE412997464F5CCF020A93D2CDE07272F246B199EB",
+  "raw_zip_hash_comparison_valid_as_content_verdict": false,
+  "installer_sha256": "c92302a5dfd6638d7465fc973d52df066a82c427af0ae0ee19c2484788524d6c",
+  "owned_manifest_items": 16428,
+  "license_finding_sha256": "D767122983A9F5448A8785F1CFD2317D2DD4B9A9F5AAD6C024B63550FC27D615",
+  "nuget_content_review_sha256": "4523B18CF65951BF248D2DEEAE2D2256F23D4A8594ED846F986765A3C3AC0350",
+  "python_source_exact": true,
+  "scope": "Final interpretation of this old package static audit; original reports unchanged"
+}

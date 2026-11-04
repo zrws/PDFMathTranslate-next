@@ -1,0 +1,88 @@
+{
+  "api_ready": true,
+  "real_window_visible": true,
+  "window_handle": 525748,
+  "window_ready_ms": 3317.4721,
+  "api_ready_ms": 17324.8036,
+  "render_kind": "actual running WPF visual tree, RenderTargetBitmap; not OS input automation",
+  "ui_dll_sha256": "47D13FB7A7D5B4C29D22B893DDC12764852B4E39B7CC0E13112CD7F8EE0D0F4D",
+  "normal_layout": {
+    "SubmitButton": {
+      "x": 248.8,
+      "y": 761.5999999999999,
+      "width": 503.36,
+      "height": 44
+    },
+    "SourceLanguageInput": {
+      "x": 265.8,
+      "y": 444.38,
+      "width": 218.68,
+      "height": 35.78
+    },
+    "TargetLanguageInput": {
+      "x": 516.48,
+      "y": 444.38,
+      "width": 218.68,
+      "height": 35.78
+    }
+  },
+  "component_library": "Wpf.Ui, Version=4.3.0.0, Culture=neutral, PublicKeyToken=11f9f5cc97b3ffd6",
+  "motion_library": "XamlFlair.WPF, Version=1.2.13.0, Culture=neutral, PublicKeyToken=null",
+  "system_client_area_animation": true,
+  "library_motion_attached": true,
+  "custom_application_styles": 0,
+  "library_motion_probe": {
+    "loaded": true,
+    "opacity": 0,
+    "settings": true,
+    "enabled": true
+  },
+  "library_fade_has_actual_opacity_clock": true,
+  "reduced_motion_detaches_library_animation": true,
+  "reduced_motion_clears_actual_opacity_clock": true,
+  "appearance_roundtrip": true,
+  "finite_fade_releases_opacity_clock": true,
+  "cached_page_reentry_visible": true,
+  "malformed_appearance_isolated_from_backend": true,
+  "failed_save_retains_key_draft": true,
+  "all_save_paths_clear_key_after_success": true,
+  "uncommon_language_readback": true,
+  "auto_update_opt_out_readback": true,
+  "task_status": "done",
+  "shared_task_reference": true,
+  "translated_preview_page_count": 2,
+  "missing_update_installer_keeps_service": true,
+  "lost_export_response_pending": true,
+  "lost_export_response_no_duplicate": true,
+  "saved_versions": 4,
+  "result_version_cards": true,
+  "compact_layout": {
+    "SubmitButton": {
+      "x": 248.8,
+      "y": 560,
+      "width": 316.6933333333334,
+      "height": 44
+    },
+    "SourceLanguageInput": {
+      "x": 265.8,
+      "y": 444.38,
+      "width": 125.34666666666669,
+      "height": 35.78
+    },
+    "TargetLanguageInput": {
+      "x": 423.1466666666667,
+      "y": 444.38,
+      "width": 125.34666666666669,
+      "height": 35.78
+    }
+  },
+  "dpi_scope": "100/150/200 percent raster rendering of the same real WPF layout; system DPI and dialogs require manual verification",
+  "manual_pending": [
+    "native file/folder picker keyboard and mouse input",
+    "OS drag/drop",
+    "cross-monitor DPI"
+  ],
+  "passed": true,
+  "completed_at": "2026-11-04T09:56:34.8042908+08:00",
+  "process_id": 27008
+}

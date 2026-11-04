@@ -1,5 +1,7 @@
 # 原生桌面本机复审交接
 
+后续用户要求按 Ardot 原版重做组件化 UI，最新功能分支 `codex/ardot-component-ui-2026-11-04` 的交接见 [2026-11-04 组件界面报告](ARDOT_COMPONENT_UI_HANDOFF_2026-11-04.md)。下文保留上一轮 be3147e 的证据与包身份，不能当作新版界面的验收或下载指向。
+
 本机Windows重新生成运行证据，不继承旧电脑缺失证据。分支 `codex/native-desktop-implementation-2026-11-03`，交接基点 `ab5d684df52aa1ec760eb25bc777932003b984b7`。精确最终构建与交付索引见末尾；历史工单/审核保持原样。
 
 ## 安全门与环境

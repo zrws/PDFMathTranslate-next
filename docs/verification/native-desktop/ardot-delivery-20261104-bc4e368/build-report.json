@@ -1,0 +1,88 @@
+{
+  "schema": 2,
+  "id": "cd32fa24a67f",
+  "version": "2.9.0",
+  "channel": "preview",
+  "source_commit": "bc4e36836301816a99c635244275728d65d38415",
+  "source_dirty": false,
+  "sdk": "10.0.403",
+  "python": "Python 3.12.13",
+  "payload": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload",
+  "payload_files": 16430,
+  "payload_bytes": 792943181.0,
+  "removed": [
+    {
+      "reason": "optional Gradio UI; same exclusion as prior slim build",
+      "path": "gradio"
+    },
+    {
+      "reason": "optional Gradio UI; same exclusion as prior slim build",
+      "path": "gradio_client"
+    },
+    {
+      "reason": "optional Gradio UI; same exclusion as prior slim build",
+      "path": "gradio_client-1.10.4.dist-info"
+    },
+    {
+      "reason": "optional Gradio UI; same exclusion as prior slim build",
+      "path": "gradio_pdf"
+    },
+    {
+      "reason": "optional Gradio UI; same exclusion as prior slim build",
+      "path": "gradio_pdf-0.0.22.dist-info"
+    },
+    {
+      "reason": "optional Gradio UI; same exclusion as prior slim build",
+      "path": "gradio-5.35.0.dist-info"
+    },
+    {
+      "reason": "test-only graph verified",
+      "path": "_pytest",
+      "bytes": 1309777.0
+    },
+    {
+      "reason": "test-only graph verified",
+      "path": "iniconfig",
+      "bytes": 13529.0
+    },
+    {
+      "reason": "test-only graph verified",
+      "path": "iniconfig-2.3.1.dist-info",
+      "bytes": 4992.0
+    },
+    {
+      "reason": "test-only graph verified",
+      "path": "pluggy",
+      "bytes": 74497.0
+    },
+    {
+      "reason": "test-only graph verified",
+      "path": "pluggy-1.7.0.dist-info",
+      "bytes": 7778.0
+    },
+    {
+      "reason": "test-only graph verified",
+      "path": "pytest",
+      "bytes": 5736.0
+    },
+    {
+      "reason": "test-only graph verified",
+      "path": "pytest-9.0.2.dist-info",
+      "bytes": 15611.0
+    },
+    {
+      "reason": "unused video codec; PDF image pipeline separately tested",
+      "path": "cv2/opencv_videoio_ffmpeg500_64.dll",
+      "bytes": 30876160,
+      "sha256": "7AABFF029D1FA47CF56EDE4DBBE05DC62DA3208F07CD16471D4C966A33F9AA31"
+    }
+  ],
+  "lock_sha256": "3EB8D21E800548391180C44594E2AF952EA36D071BDAD45BFCC30EFD5371E607",
+  "patch_lock_sha256": "069FF7E8D8972E5EB029AE8397845475251C9565A7040DBBF6B5CDE2E5A5055A",
+  "nuget_lock_sha256": "70432C585CB472FE9BDB93019A96BF8ABE309650EBAEFD6CD231304F39F02820",
+  "owned_manifest_sha256": "19D85A01AC707768F07229F366AB48DE254A082188CC102F0A57869E1EEC634C",
+  "product_source_report_sha256": "D489DF75803315A4B3710BA59330E196AE1362EA83AED13D2AAD186B86701D98",
+  "installer": "D:\\student\\翻译\\PDFMathTranslate-next\\dist\\native-cd32fa24a67f\\PDFMathTranslate-Setup-2.9.0.exe",
+  "installer_bytes": 225338584,
+  "installer_sha256": "CC2BCECCFAD905314D70344F8B758747B5FE56D14D17264A40120446C61EF531"
+}

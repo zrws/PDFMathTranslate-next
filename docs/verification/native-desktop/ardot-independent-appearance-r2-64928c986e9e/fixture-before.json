@@ -1,0 +1,12 @@
+{
+  "scope": "Independent reviewer-owned round2 fixture; no user directories",
+  "scenario_sha256": "32AC1FEF6866A082A6A1847FAFD6A42CF8C4BEED39EC624BE42099E8D0B8C0ED",
+  "sentinel_sha256": "5F5599E6231EC5CE632CFFDEFADB56CAB73C99BABC7598B1A10F777E3F8F4783",
+  "sample_sha256": "FF8D90B945A918B5AA150E51DC6FE2E3017F4967BA9355E71A30ADA614E61584",
+  "link_target": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\ardot-independent-appearance-r2-64928c986e9e\\target",
+  "sentinel_bytes": 37,
+  "link": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\ardot-independent-appearance-r2-64928c986e9e\\home\\desktop",
+  "target": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\ardot-independent-appearance-r2-64928c986e9e\\target",
+  "prepared_at": "2026-11-04T10:04:05.0167562+08:00",
+  "fixture_home": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\ardot-independent-appearance-r2-64928c986e9e\\home"
+}
