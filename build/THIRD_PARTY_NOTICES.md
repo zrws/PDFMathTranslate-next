@@ -8,4 +8,6 @@ PDFMathTranslate-next 按仓库 LICENSE 分发。翻译与排版继续使用 Bab
 
 模型与字体不随安装包分发。应用显式下载 BabelDOC 的资源，资源名称、大小与内容哈希固定于 source/pdf2zh_next/desktop/assets.lock.json；对应资源的上游许可仍适用。
 
+Microsoft.Extensions 的 MIT 原文、NuGet 版权和固定源码来源分别见 licenses/Microsoft.Extensions-LICENSE.txt 与 Microsoft.Extensions-NOTICE.txt。私有 .NET 的 dotnet-LICENSE.txt 单独保留，不代替这些 NuGet 包的许可。
+
 源码与构建说明：https://github.com/zrws/PDFMathTranslate-next

@@ -101,7 +101,9 @@ foreach($package in @(@('system.reactive','5.0.0'),@('microsoft.extensions.loggi
     Copy-Item -LiteralPath $metadata -Destination (Join-Path $licenses ($package[0]+'.nuspec'))
 }
 Copy-Item -LiteralPath (Join-Path $repo 'build/licenses/System.Reactive-LICENSE.txt') -Destination (Join-Path $licenses 'System.Reactive-LICENSE.txt')
-Copy-Item -LiteralPath (Join-Path $sdkRoot 'LICENSE.txt') -Destination (Join-Path $licenses 'Microsoft.Extensions-LICENSE.txt')
+foreach($file in @('Microsoft.Extensions-LICENSE.txt','Microsoft.Extensions-NOTICE.txt')){
+    Copy-Item -LiteralPath (Join-Path $repo ('build/licenses/'+$file)) -Destination (Join-Path $licenses $file)
+}
 foreach($package in @('microsoft.extensions.logging.abstractions','microsoft.extensions.dependencyinjection.abstractions')){
     Copy-Item -LiteralPath (Join-Path $env:NUGET_PACKAGES ($package+'/10.0.0/THIRD-PARTY-NOTICES.TXT')) -Destination (Join-Path $licenses ($package+'-ThirdPartyNotices.txt'))
 }

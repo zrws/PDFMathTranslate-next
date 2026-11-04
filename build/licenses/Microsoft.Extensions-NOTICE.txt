@@ -1,0 +1,15 @@
+Microsoft.Extensions.Logging.Abstractions 10.0.0
+Microsoft.Extensions.DependencyInjection.Abstractions 10.0.0
+
+Package copyright from both NuGet nuspec files:
+© Microsoft Corporation. All rights reserved.
+
+Both packages declare the MIT license and the source repository commit:
+https://github.com/dotnet/dotnet/tree/b0f34d51fccc69fd334253924abd8d6853fad7aa
+
+Microsoft.Extensions-LICENSE.txt is the unmodified MIT text from that commit:
+https://raw.githubusercontent.com/dotnet/dotnet/b0f34d51fccc69fd334253924abd8d6853fad7aa/src/runtime/LICENSE.TXT
+
+The two original nuspec files and their THIRD-PARTY-NOTICES.TXT are also
+distributed in this directory. The separate dotnet-LICENSE.txt contains
+the private .NET distribution's license, not the Extensions package license.
