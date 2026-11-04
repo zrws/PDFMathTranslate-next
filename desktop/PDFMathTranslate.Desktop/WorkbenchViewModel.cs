@@ -10,6 +10,9 @@ namespace PDFMathTranslate.Desktop;
 public partial class WorkbenchViewModel : ObservableObject, IDisposable
 {
     public TaskStore Store { get; } = new();
+    public DesktopAppearance Appearance { get; } = new();
+    public bool HasFiles => Files.Count>0;
+    public string DocumentSummary => Files.Count==0?"支持多份 PDF，保留公式与排版":$"已选择 {Files.Count} 份 PDF";
     public ObservableCollection<ImportedFile> Files { get; } = [];
     public ObservableCollection<string> Services { get; } = [];
     public ObservableCollection<GlossaryRow> GlossaryRows {get;}=[];
@@ -58,7 +61,8 @@ public partial class WorkbenchViewModel : ObservableObject, IDisposable
     public string NewApiKey { private get; set; } = "";
     public string LanguageSummary => $"{SourceLanguage?.Label ?? "请选择源语言"} → {TargetLanguage?.Label ?? "请选择目标语言"}";
     public event Action? SelectionChanged;
-    public WorkbenchViewModel() { SourceLanguage=Languages[1]; TargetLanguage=Languages[2]; Tier=Tiers[1];Files.CollectionChanged+=(_,_)=>CommandsChanged();Store.PropertyChanged+=(_,_)=>CommandsChanged(); }
+    public event Action? SettingsSaved;
+    public WorkbenchViewModel() { SourceLanguage=Languages[1]; TargetLanguage=Languages[2]; Tier=Tiers[1];Appearance.SaveFailed+=message=>Notice=message;Files.CollectionChanged+=(_,_)=>{OnPropertyChanged(nameof(HasFiles));OnPropertyChanged(nameof(DocumentSummary));CommandsChanged();};Store.PropertyChanged+=(_,_)=>CommandsChanged(); }
     private void CommandsChanged(){OnPropertyChanged(nameof(CanSubmit));SubmitCommand.NotifyCanExecuteChanged();CancelCommand.NotifyCanExecuteChanged();RetryCommand.NotifyCanExecuteChanged();ExportCommand.NotifyCanExecuteChanged();}
     partial void OnReadyChanged(bool value)=>CommandsChanged();
     partial void OnAssetsReadyChanged(bool value)=>CommandsChanged();
@@ -76,6 +80,7 @@ public partial class WorkbenchViewModel : ObservableObject, IDisposable
             client=await supervisor.StartAsync(life.Token);
             var health=await client.JsonAsync("api/health",ct:life.Token);
             DataDirectory=health.GetProperty("data_dirs").GetProperty("home").GetString()!;
+            Appearance.Load(DataDirectory);
             UpdateState=UpdateService.ReadVersion(RuntimePaths.OptionalEnvironment("PDF2ZH_APP_ROOT")??AppContext.BaseDirectory).Preview?"开发预览，正式更新源已停用":"尚未检查更新";
             outbox=new OperationOutbox(DataDirectory);
             ServiceState="窗口已就绪 · 翻译服务已就绪";
@@ -175,7 +180,7 @@ public partial class WorkbenchViewModel : ObservableObject, IDisposable
             var fields=new Dictionary<string,object?> { ["service"]=Service,["model"]=Model,["base_url"]=BaseUrl,["qps"]=qps,["resource_tier"]=Tier?.Code??"balanced",["lang_in"]=SourceLanguage?.Code,["lang_out"]=TargetLanguage?.Code,["download_dir"]=SaveDirectory };
             if(NewApiKey.Length>0) fields["api_key"]=NewApiKey;
             fields["auto_update"]=AutoCheckUpdates;
-            await client.JsonAsync("api/settings",HttpMethod.Put,fields); NewApiKey="";
+            await client.JsonAsync("api/settings",HttpMethod.Put,fields); NewApiKey=""; SettingsSaved?.Invoke();
             await ReadSettingsAsync(); Notice="设置已保存，并已读回后端实际生效值。";
         }
         catch(Exception ex) { Notice="设置未保存："+Friendly(ex); }
@@ -267,5 +272,5 @@ public partial class WorkbenchViewModel : ObservableObject, IDisposable
     internal int PendingOperations=>outbox?.Pending.Count??0;
 #endif
     private static string Friendly(Exception ex) => ex is OperationCanceledException ? "操作已取消或服务超时，请重试。" : ex.Message;
-    public void Dispose() { if(disposed)return;disposed=true;life.Cancel();life.Dispose();supervisor.Dispose(); }
+    public void Dispose() { if(disposed)return;disposed=true;Appearance.Dispose();life.Cancel();life.Dispose();supervisor.Dispose(); }
 }

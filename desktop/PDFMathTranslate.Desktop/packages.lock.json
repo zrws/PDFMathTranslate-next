@@ -8,6 +8,15 @@
         "resolved": "8.4.2",
         "contentHash": "WadCzGEc2U+3e20avRLng4qNtt4zoOGWrdUISqJWrHe3/FSnrYjuM5Sb4yQb09LhkBXrrI4Zt3dLKgRMbItsrg=="
       },
+      "Microsoft.Extensions.Logging.Abstractions": {
+        "type": "Direct",
+        "requested": "[10.0.0, 10.0.0]",
+        "resolved": "10.0.0",
+        "contentHash": "FU/IfjDfwaMuKr414SSQNTIti/69bHEMb+QKrskRb26oVqpx3lNFXMjs/RC9ZUuhBhcwDM2BwOgoMw+PZ+beqQ==",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.0"
+        }
+      },
       "WPF-UI": {
         "type": "Direct",
         "requested": "[4.3.0, 4.3.0]",
@@ -16,6 +25,46 @@
         "dependencies": {
           "WPF-UI.Abstractions": "4.3.0"
         }
+      },
+      "XamlFlair.WPF": {
+        "type": "Direct",
+        "requested": "[1.2.13, 1.2.13]",
+        "resolved": "1.2.13",
+        "contentHash": "TFNbPjZGQuu6SJcXFgY/MIy0y7RiRim9utapHS9tO5ysE0ddLep++0ceNGQu22QSUpzdyDUg6qlCHZQQAaeKxA==",
+        "dependencies": {
+          "Microsoft.Extensions.Logging.Abstractions": "1.1.1",
+          "Microsoft.SourceLink.GitHub": "1.0.0",
+          "System.Reactive": "5.0.0"
+        }
+      },
+      "Microsoft.Build.Tasks.Git": {
+        "type": "Transitive",
+        "resolved": "1.0.0",
+        "contentHash": "z2fpmmt+1Jfl+ZnBki9nSP08S1/tbEOxFdsK1rSR+LBehIJz1Xv9/6qOOoGNqlwnAGGVGis1Oj6S8Kt9COEYlQ=="
+      },
+      "Microsoft.Extensions.DependencyInjection.Abstractions": {
+        "type": "Transitive",
+        "resolved": "10.0.0",
+        "contentHash": "L3AdmZ1WOK4XXT5YFPEwyt0ep6l8lGIPs7F5OOBZc77Zqeo01Of7XXICy47628sdVl0v/owxYJTe86DTgFwKCA=="
+      },
+      "Microsoft.SourceLink.Common": {
+        "type": "Transitive",
+        "resolved": "1.0.0",
+        "contentHash": "G8DuQY8/DK5NN+3jm5wcMcd9QYD90UV7MiLmdljSJixi3U/vNaeBKmmXUqI4DJCOeWizIUEh4ALhSt58mR+5eg=="
+      },
+      "Microsoft.SourceLink.GitHub": {
+        "type": "Transitive",
+        "resolved": "1.0.0",
+        "contentHash": "aZyGyGg2nFSxix+xMkPmlmZSsnGQ3w+mIG23LTxJZHN+GPwTQ5FpPgDo7RMOq+Kcf5D4hFWfXkGhoGstawX13Q==",
+        "dependencies": {
+          "Microsoft.Build.Tasks.Git": "1.0.0",
+          "Microsoft.SourceLink.Common": "1.0.0"
+        }
+      },
+      "System.Reactive": {
+        "type": "Transitive",
+        "resolved": "5.0.0",
+        "contentHash": "erBZjkQHWL9jpasCE/0qKAryzVBJFxGHVBAvgRN1bzM0q2s1S4oYREEEL0Vb+1kA/6BKb5FjUZMp5VXmy+gzkQ=="
       },
       "WPF-UI.Abstractions": {
         "type": "Transitive",

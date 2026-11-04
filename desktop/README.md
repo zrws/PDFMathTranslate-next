@@ -2,6 +2,8 @@
 
 默认发行入口是 `PDFMathTranslate.Desktop`：WPF、.NET 10、WPF UI 4.3.0、CommunityToolkit.Mvvm 8.4.2。Python/BabelDOC 保留翻译、排版与 CLI；默认窗口不加载浏览器或 Gradio。
 
+2026-11-04 的 Ardot 界面修订恢复顶部工具栏、原五页导航顺序与左参数右预览，页面由 WPF UI 的 Card/CardControl/CardExpander/InfoBar/DataGrid 等组件组合；原生界面不写 CSS、自定义 Style 或 ControlTemplate。XamlFlair.WPF 1.2.13 提供实际 180ms 淡入，适配缓存页面、减少动效与退出时的透明度恢复；外观偏好保存在本应用数据目录 desktop/appearance.json。组件约束可运行 tests/native/component_contract.py 检查；设计依据见 docs/reviews/native-desktop/ARDOT-COMPONENT-BRIEF-2026-11-04.md。
+
 构建工具全部可以放在项目外的个人工具目录。无需全局安装 SDK 或修改 PATH。SDK 精确版本见根目录 global.json，CPython 为 3.12.13，依赖安装使用 build/dependency-locks/windows-py312.txt 的哈希锁。先自行准备可信的 SDK、uv、完整 CPython 和 Inno Setup 6.7.1，然后在仓库根运行：
 
 ```powershell
@@ -10,7 +12,7 @@
 
 `-Offline` 要求依赖已经在本仓库 `.local/uv-cache` 中，不会临时联网补包。每轮创建新的洁净 venv 与 payload，验证哈希后应用三个 BabelDOC 补丁；原 Python 环境不修改。NuGet 以 packages.lock.json 锁定。默认预览频道不生成正式 latest.json，不自动发布、删除 dist、创建 tag 或 Release。构建报告、安装包与 payload 路径写入新的 `dist/native-*/build-report.json`。
 
-安装包自带私有 .NET 10 与单套 Python，不带 SDK、模型、字体缓存或用户配置。首次使用需在「资源与设置」显式准备 BabelDOC 资源；也可由运维把经清单校验的离线资源放进应用数据目录的 `.cache/babeldoc`。默认 GPU 关闭，翻译任务并发为 1。
+安装包自带私有 .NET 10 与单套 Python，不带 SDK、模型、字体缓存或用户配置。首次使用需在「设置」的翻译资源组显式准备 BabelDOC 资源；也可由运维把经清单校验的离线资源放进应用数据目录的 `.cache/babeldoc`。默认 GPU 关闭，翻译任务并发为 1。
 
 数据默认存于 `%LOCALAPPDATA%/PDFMathTranslate`；`portable.marker` 放在应用根目录时改用旁边的 home。测试可通过 PDF2ZH_HOME 指定独立目录。PDF2ZH_APP_ROOT、PDF2ZH_RUNTIME_ROOT、PDF2ZH_SOURCE_ROOT 用于明确的本地开发配置；Release 忽略 development-run.json。应用独占 home 的 writer lock，WPF 与显式旧入口不能同时写入。
 

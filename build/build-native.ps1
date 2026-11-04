@@ -95,6 +95,16 @@ foreach($package in @(@('wpf-ui','4.3.0','LICENSE.md'),@('communitytoolkit.mvvm'
     Copy-Item -LiteralPath (Join-Path $packageRoot $package[2]) -Destination (Join-Path $licenses ($package[0]+'-LICENSE.md'))
     Copy-Item -LiteralPath (Join-Path $packageRoot 'ThirdPartyNotices.txt') -Destination (Join-Path $licenses ($package[0]+'-ThirdPartyNotices.txt'))
 }
+Copy-Item -LiteralPath (Join-Path $repo 'build/licenses/XamlFlair-LICENSE.txt') -Destination (Join-Path $licenses 'XamlFlair-LICENSE.txt')
+foreach($package in @(@('system.reactive','5.0.0'),@('microsoft.extensions.logging.abstractions','10.0.0'),@('microsoft.extensions.dependencyinjection.abstractions','10.0.0'))){
+    $metadata=Join-Path $env:NUGET_PACKAGES ($package[0]+'/'+$package[1]+'/'+$package[0]+'.nuspec')
+    Copy-Item -LiteralPath $metadata -Destination (Join-Path $licenses ($package[0]+'.nuspec'))
+}
+Copy-Item -LiteralPath (Join-Path $repo 'build/licenses/System.Reactive-LICENSE.txt') -Destination (Join-Path $licenses 'System.Reactive-LICENSE.txt')
+Copy-Item -LiteralPath (Join-Path $sdkRoot 'LICENSE.txt') -Destination (Join-Path $licenses 'Microsoft.Extensions-LICENSE.txt')
+foreach($package in @('microsoft.extensions.logging.abstractions','microsoft.extensions.dependencyinjection.abstractions')){
+    Copy-Item -LiteralPath (Join-Path $env:NUGET_PACKAGES ($package+'/10.0.0/THIRD-PARTY-NOTICES.TXT')) -Destination (Join-Path $licenses ($package+'-ThirdPartyNotices.txt'))
+}
 foreach($name in @('LICENSE','README.md')){if(Test-Path -LiteralPath (Join-Path $repo $name)){Copy-Item -LiteralPath (Join-Path $repo $name) -Destination $payload}}
 Copy-Item -LiteralPath (Join-Path $repo 'build/THIRD_PARTY_NOTICES.md') -Destination $payload
 @{version=$Version;channel=$Channel} | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $payload 'version.json') -Encoding utf8

@@ -1,5 +1,7 @@
 # 本机原生桌面实施状态
 
+2026-11-04 后续界面修订在 `codex/ardot-component-ui-2026-11-04`，基于已交付 be3147e。用户否定上一轮视觉结果，要求按 Ardot 原版结构、组件库与动效库重新实施；本轮设计依据见 [组件约束](reviews/native-desktop/ARDOT-COMPONENT-BRIEF-2026-11-04.md)。下文 P0、性能和旧安装记录仍是上一轮的具体证据，不代表新 UI 已重新跑过相同项目；本轮独立复审和新运行记录另行交接。
+
 本文件替代此前“P0 BLOCKED / P1 未开始”的进度快照；历史裁决保留在 reviews 和 Git 历史中，不是本机运行结论。
 
 - 目录：`D:\student\翻译\PDFMathTranslate-next`；初始目录为空，没有覆盖用户改动。

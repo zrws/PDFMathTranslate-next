@@ -1,41 +1,119 @@
-<Page x:Class="PDFMathTranslate.Desktop.WorkbenchPage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml" Title="工作台" Background="Transparent" AllowDrop="True" Drop="FilesDropped">
-  <Grid Margin="20,16,20,12">
-    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-    <DockPanel Margin="0,0,0,16"><Button DockPanel.Dock="Right" Content="导入 PDF  (Ctrl+O)" Click="ImportClicked"/><StackPanel><TextBlock Text="文档翻译" FontSize="23" FontWeight="SemiBold"/><TextBlock Text="保留公式与排版，确认语言后加入队列。" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,4,0,0"/></StackPanel></DockPanel>
-    <Grid Grid.Row="1">
-      <Grid.ColumnDefinitions><ColumnDefinition Width="*" MinWidth="280"/><ColumnDefinition Width="18"/><ColumnDefinition Width="300"/></Grid.ColumnDefinitions>
-      <Grid>
-        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-        <TextBlock Text="待翻译文档 · 可将 PDF 拖到此处" FontWeight="SemiBold" Margin="0,0,0,8"/>
-        <ListBox Grid.Row="1" ItemsSource="{Binding Files}" SelectedItem="{Binding SelectedFile}" MaxHeight="116" MinHeight="60" AutomationProperties.Name="待翻译文件">
-          <ListBox.ItemTemplate><DataTemplate><DockPanel Margin="4"><TextBlock DockPanel.Dock="Right" Text="{Binding Pages,StringFormat={}{0} 页}" Margin="12,0,0,0"/><TextBlock Text="{Binding Filename}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Filename}"/></DockPanel></DataTemplate></ListBox.ItemTemplate>
+<Page x:Class="PDFMathTranslate.Desktop.WorkbenchPage"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml" xmlns:xf="clr-namespace:XamlFlair;assembly=XamlFlair.WPF"
+ Title="翻译工作台" Background="Transparent" AllowDrop="True" Drop="FilesDropped">
+ <Grid x:Name="WorkbenchLayout" Margin="24,16,24,12" xf:Animations.Primary="{Binding Appearance.EntranceAnimation}">
+  <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+  <DockPanel Margin="0,0,0,20">
+   <ui:Button DockPanel.Dock="Right" Content="翻译历史" Icon="{ui:SymbolIcon History24}" Click="HistoryClicked" VerticalAlignment="Center"/>
+   <StackPanel><ui:TextBlock Text="翻译工作台" FontTypography="Title"/><ui:TextBlock Text="上传论文 PDF，保留公式与排版，生成双语译文。" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/></StackPanel>
+  </DockPanel>
+  <Grid Grid.Row="1">
+   <Grid.ColumnDefinitions><ColumnDefinition Width="1.05*" MinWidth="290"/><ColumnDefinition Width="20"/><ColumnDefinition Width="1.2*" MinWidth="280"/></Grid.ColumnDefinitions>
+   <Grid x:Name="FileOptionsPane">
+    <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+     <StackPanel Margin="0,0,4,0">
+      <ui:Card Padding="16" Margin="0,0,0,16">
+       <StackPanel>
+        <DockPanel><ui:Button DockPanel.Dock="Right" Content="添加文件" Icon="{ui:SymbolIcon DocumentAdd24}" Click="ImportClicked" Visibility="{Binding HasFiles,Converter={StaticResource VisibleWhenTrue}}"/><ui:TextBlock Text="文件" FontTypography="Subtitle" VerticalAlignment="Center"/></DockPanel>
+        <ui:TextBlock Text="{Binding DocumentSummary}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontTypography="Caption" Margin="0,4,0,14"/>
+        <ui:CardAction Click="ImportClicked" IsChevronVisible="False" HorizontalContentAlignment="Stretch" Padding="12" Visibility="{Binding Files.Count,Converter={StaticResource VisibleWhenEmpty}}" AutomationProperties.Name="选择待翻译 PDF">
+         <DockPanel>
+          <ui:SymbolIcon Symbol="DocumentAdd24" FontSize="28" Margin="0,0,12,0" VerticalAlignment="Center"/>
+          <StackPanel><ui:TextBlock Text="拖入或选择 PDF" FontTypography="BodyStrong" TextWrapping="Wrap"/><ui:TextBlock Text="支持多选  /  Ctrl+O" FontTypography="Caption" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,4,0,0"/></StackPanel>
+         </DockPanel>
+        </ui:CardAction>
+        <ListBox ItemsSource="{Binding Files}" SelectedItem="{Binding SelectedFile}" MaxHeight="52" Margin="0,12,0,0"
+          Visibility="{Binding HasFiles,Converter={StaticResource VisibleWhenTrue}}" AutomationProperties.Name="待翻译文件">
+         <ListBox.ItemTemplate><DataTemplate><Grid Margin="4,6">
+          <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+          <ui:SymbolIcon Symbol="DocumentPdf24" Margin="0,0,10,0"/>
+          <ui:TextBlock Grid.Column="1" Text="{Binding Filename}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Filename}"/>
+          <ui:Badge Grid.Column="2" Content="{Binding Pages,StringFormat={}{0} 页}" Appearance="Light" Margin="8,0,0,0"/>
+         </Grid></DataTemplate></ListBox.ItemTemplate>
         </ListBox>
-        <Border Grid.Row="2" Margin="0,12,0,0" BorderThickness="1" BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" CornerRadius="6">
-          <Grid><ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"><Image x:Name="Preview" Stretch="Uniform" VerticalAlignment="Top" AutomationProperties.Name="PDF 页面预览"/></ScrollViewer><TextBlock x:Name="PreviewMessage" Text="导入 PDF 后按需预览页面" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="24" Foreground="{DynamicResource TextFillColorSecondaryBrush}" TextAlignment="Center"/></Grid>
-        </Border>
-        <WrapPanel Grid.Row="3" Margin="0,8,0,0" VerticalAlignment="Center">
-          <Button Content="上一页" Click="PreviousPage"/><TextBox x:Name="PageNumber" Text="1" Width="52" AutomationProperties.Name="预览页码" KeyDown="PageKeyDown"/><TextBlock x:Name="PageCount" Text=" / 0" VerticalAlignment="Center" Margin="4,0,10,0"/><Button Content="下一页" Click="NextPage"/>
-          <CheckBox x:Name="OutputPreview" Content="预览选中任务的译文" Checked="PreviewModeChanged" Unchecked="PreviewModeChanged" VerticalAlignment="Center"/>
-        </WrapPanel>
-      </Grid>
-      <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-        <StackPanel>
-          <TextBlock Text="翻译选项" FontWeight="SemiBold" Margin="0,0,0,12"/>
-          <TextBlock Text="源语言" Margin="0,0,0,6"/><ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding SourceLanguage}" AutomationProperties.Name="源语言"/>
-          <TextBlock Text="目标语言" Margin="0,14,0,6" FontWeight="SemiBold"/><ComboBox ItemsSource="{Binding TargetLanguages}" SelectedItem="{Binding TargetLanguage}" AutomationProperties.Name="目标语言"/>
-          <TextBlock Text="{Binding LanguageSummary}" Margin="0,8,0,0" Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"/>
-          <TextBlock Text="翻译服务" Margin="0,16,0,6"/><ComboBox ItemsSource="{Binding Services}" SelectedItem="{Binding Service}" IsEnabled="False" AutomationProperties.Name="当前翻译服务"/><TextBlock Text="服务、密钥与模型在「资源与设置」中修改。" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0"/>
-          <TextBlock Text="输出内容" Margin="0,16,0,6"/><WrapPanel><CheckBox Content="双语对照" IsChecked="{Binding Dual}" Margin="0,0,14,0"/><CheckBox Content="单语译文" IsChecked="{Binding Mono}"/></WrapPanel>
-          <CheckBox Content="自动提取术语" IsChecked="{Binding AutoTerms}" Margin="0,10,0,0"/>
-          <TextBlock Text="页码范围（留空为全部）" Margin="0,16,0,6"/><TextBox Text="{Binding Pages,UpdateSourceTrigger=PropertyChanged}" ToolTip="例如 1,3,5-10" AutomationProperties.Name="翻译页码范围"/>
-          <TextBlock Text="默认保存目录" Margin="0,16,0,6"/><TextBlock Text="{Binding SaveDirectory}" ToolTip="{Binding SaveDirectory}" FontSize="12"/>
-          <Button Content="选择本次保存目录…" Click="TaskFolderClicked" Margin="0,8,0,0"/><TextBox Text="{Binding TaskDirectory,UpdateSourceTrigger=PropertyChanged}" Margin="0,8,0,0" ToolTip="留空则使用默认保存目录" AutomationProperties.Name="本次保存目录"/>
-          <TextBlock Text="{Binding EffectivePolicy}" FontSize="12" Margin="0,16,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-        </StackPanel>
-      </ScrollViewer>
+       </StackPanel>
+      </ui:Card>
+      <ui:Card Padding="16" Margin="0,0,0,16">
+       <StackPanel>
+        <ui:TextBlock Text="翻译选项" FontTypography="Subtitle"/>
+        <Grid Margin="0,16,0,0">
+         <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="32"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+         <StackPanel><ui:TextBlock Text="源语言" Margin="0,0,0,6"/><ComboBox x:Name="SourceLanguageInput" ItemsSource="{Binding Languages}" SelectedItem="{Binding SourceLanguage}" HorizontalAlignment="Stretch" AutomationProperties.Name="源语言"/></StackPanel>
+         <ui:SymbolIcon Grid.Column="1" Symbol="ArrowRight24" VerticalAlignment="Bottom" Margin="0,0,0,8"/>
+         <StackPanel Grid.Column="2"><ui:TextBlock Text="目标语言" Margin="0,0,0,6"/><ComboBox x:Name="TargetLanguageInput" ItemsSource="{Binding TargetLanguages}" SelectedItem="{Binding TargetLanguage}" HorizontalAlignment="Stretch" AutomationProperties.Name="目标语言"/></StackPanel>
+        </Grid>
+        <ui:TextBlock Text="{Binding LanguageSummary}" FontTypography="Caption" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,8,0,16"/>
+        <ui:TextBlock Text="页面范围" Margin="0,0,0,6"/>
+        <ui:TextBox Text="{Binding Pages,UpdateSourceTrigger=PropertyChanged}" PlaceholderText="全部页面，或输入 1,3,5-10" AutomationProperties.Name="翻译页码范围"/>
+        <Separator Margin="0,16,0,12"/>
+        <ui:ToggleSwitch Content="双语对照输出" IsChecked="{Binding Dual}" Margin="0,0,0,12"/>
+        <ui:ToggleSwitch Content="单语译文输出" IsChecked="{Binding Mono}" Margin="0,0,0,12"/>
+        <ui:ToggleSwitch Content="自动提取术语" IsChecked="{Binding AutoTerms}"/>
+       </StackPanel>
+      </ui:Card>
+      <ui:CardExpander Icon="{ui:SymbolIcon FolderOpen24}" IsExpanded="False" Margin="0,0,0,12">
+       <ui:CardExpander.Header><StackPanel><ui:TextBlock Text="保存位置" FontTypography="BodyStrong"/><ui:TextBlock Text="{Binding SaveDirectory,TargetNullValue=在设置中选择默认目录}" FontTypography="Caption" Foreground="{DynamicResource TextFillColorSecondaryBrush}" TextTrimming="CharacterEllipsis" MaxWidth="300" ToolTip="{Binding SaveDirectory}"/></StackPanel></ui:CardExpander.Header>
+       <StackPanel>
+        <ui:TextBlock Text="本次任务目录（留空使用默认位置）" FontTypography="Caption" Foreground="{DynamicResource TextFillColorSecondaryBrush}" TextWrapping="Wrap"/>
+        <ui:TextBox Text="{Binding TaskDirectory,UpdateSourceTrigger=PropertyChanged}" PlaceholderText="使用默认保存目录" Margin="0,8,0,8" AutomationProperties.Name="本次保存目录"/>
+        <ui:Button Content="选择本次目录" Icon="{ui:SymbolIcon FolderOpen24}" Click="TaskFolderClicked"/>
+        <ui:TextBlock Text="按 PDF 名称和日期归档，多次保存自动保留版本。" Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontTypography="Caption" TextWrapping="Wrap" Margin="0,10,0,0"/>
+       </StackPanel>
+      </ui:CardExpander>
+     </StackPanel>
+    </ScrollViewer>
+    <Grid Grid.Row="1" Margin="0,12,4,0">
+     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+     <ui:CardControl Icon="{ui:SymbolIcon Settings24}" Padding="12,8" Margin="0,0,0,10">
+      <ui:CardControl.Header><StackPanel><ui:TextBlock Text="当前翻译服务" FontTypography="Caption" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/><ui:TextBlock Text="{Binding Service}" FontTypography="BodyStrong"/></StackPanel></ui:CardControl.Header>
+      <ui:Button Content="配置" Appearance="Transparent" Click="SettingsClicked"/>
+     </ui:CardControl>
+     <ui:Button x:Name="SubmitButton" Grid.Row="1" Content="开始翻译" Icon="{ui:SymbolIcon Translate24}" Appearance="Primary"
+       Command="{Binding SubmitCommand}" HorizontalAlignment="Stretch" Height="44" AutomationProperties.Name="开始翻译"/>
     </Grid>
-    <Border Grid.Row="2" BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="0,1,0,0" Padding="0,14,0,0" Margin="0,12,0,0">
-      <DockPanel><ui:Button DockPanel.Dock="Right" Content="开始翻译" Appearance="Primary" Command="{Binding SubmitCommand}"/><StackPanel><TextBlock Text="{Binding SelectedTask.Stage}" FontWeight="SemiBold"/><ProgressBar Value="{Binding SelectedTask.Progress,Mode=OneWay}" Maximum="100" Height="4" MinWidth="180" Margin="0,8,18,4"/><TextBlock Text="{Binding AssetsState}" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/></StackPanel></DockPanel>
-    </Border>
+   </Grid>
+   <Grid x:Name="PreviewPane" Grid.Column="2">
+    <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+    <ui:Card Padding="20" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch">
+     <Grid>
+      <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+      <DockPanel Margin="0,0,0,16">
+       <ui:ToggleSwitch x:Name="OutputPreview" DockPanel.Dock="Right" Content="译文" OnContent="译文" OffContent="原文" Checked="PreviewModeChanged" Unchecked="PreviewModeChanged"/>
+       <ui:TextBlock Text="文档预览" FontTypography="Subtitle" VerticalAlignment="Center"/>
+      </DockPanel>
+      <Grid x:Name="PreviewArea" Grid.Row="1" SizeChanged="PreviewAreaChanged">
+       <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <Image x:Name="Preview" Stretch="Uniform" VerticalAlignment="Top" AutomationProperties.Name="PDF 页面预览"/>
+       </ScrollViewer>
+       <StackPanel x:Name="PreviewPlaceholder" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="8">
+        <ui:SymbolIcon x:Name="PreviewIcon" Symbol="DocumentPdf24" FontSize="36" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center" Margin="0,0,0,12"/>
+        <ui:TextBlock x:Name="PreviewMessage" Text="添加 PDF 后即可预览" FontTypography="BodyStrong" TextAlignment="Center" TextWrapping="Wrap" MaxWidth="270"/>
+       </StackPanel>
+      </Grid>
+      <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,14,0,0">
+       <ui:Button Icon="{ui:SymbolIcon ChevronLeft24}" Click="PreviousPage" ToolTip="上一页" AutomationProperties.Name="上一页"/>
+       <ui:TextBox x:Name="PageNumber" Text="1" Width="48" Margin="8,0,0,0" AutomationProperties.Name="预览页码" KeyDown="PageKeyDown"/>
+       <ui:TextBlock x:Name="PageCount" Text=" / 0" VerticalAlignment="Center" Margin="6,0,8,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+       <ui:Button Icon="{ui:SymbolIcon ChevronRight24}" Click="NextPage" ToolTip="下一页" AutomationProperties.Name="下一页"/>
+      </StackPanel>
+     </Grid>
+    </ui:Card>
+    <ui:Card Padding="20" Margin="0,16,0,0" Grid.Row="1">
+     <StackPanel>
+      <DockPanel><ui:Badge DockPanel.Dock="Right" Content="{Binding SelectedTask.StatusLabel,TargetNullValue=未开始,FallbackValue=未开始}" Appearance="{Binding SelectedTask.Status,Converter={StaticResource TaskAppearance},FallbackValue=Light}"/><ui:TextBlock Text="翻译进度" FontTypography="BodyStrong"/></DockPanel>
+      <ui:TextBlock Text="{Binding SelectedTask.Filename,TargetNullValue=导入文档并开始翻译,FallbackValue=导入文档并开始翻译}" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedTask.Filename}" Margin="0,10,0,4"/>
+      <ProgressBar Value="{Binding SelectedTask.Progress,Mode=OneWay}" Maximum="100" Height="5" Margin="0,8,0,8"/>
+      <ui:TextBlock Text="{Binding SelectedTask.Stage,TargetNullValue=等待任务,FallbackValue=等待任务}" FontTypography="Caption" Foreground="{DynamicResource TextFillColorSecondaryBrush}" TextWrapping="Wrap"/>
+      <ui:TextBlock Text="{Binding AssetsState}" FontTypography="Caption" Foreground="{DynamicResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" Margin="0,6,0,0"/>
+      <WrapPanel Margin="0,12,0,0">
+       <ui:Button Content="任务详情" Icon="{ui:SymbolIcon TaskListSquareLtr24}" Click="HistoryClicked" Margin="0,0,8,0"/>
+       <ui:Button Content="取消任务" Command="{Binding CancelCommand}" Appearance="Secondary"/>
+      </WrapPanel>
+     </StackPanel>
+    </ui:Card>
+   </Grid>
   </Grid>
+ </Grid>
 </Page>

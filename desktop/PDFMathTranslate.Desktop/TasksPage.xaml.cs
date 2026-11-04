@@ -11,7 +11,7 @@ public partial class TasksPage : Page
     protected readonly WorkbenchViewModel Vm;
     public TasksPage(WorkbenchViewModel vm, bool resultsOnly=false)
     {
-        Vm=vm;InitializeComponent();DataContext=vm;
+        Vm=vm;InitializeComponent();DataContext=vm;LibraryMotion.Attach(this,vm.Appearance);
         var view=new ListCollectionView(vm.Store.Tasks);
         view.SortDescriptions.Add(new SortDescription(nameof(TaskRow.Terminal),ListSortDirection.Ascending));
         if(resultsOnly){Heading.Text="翻译结果";view.Filter=x=>x is TaskRow row&&row.Status=="done";}
@@ -30,4 +30,3 @@ public partial class TasksPage : Page
         else {var info=new ProcessStartInfo("explorer.exe"){UseShellExecute=false};info.ArgumentList.Add("/select,"+path);Process.Start(info);}
     }
 }
-public sealed class ResultsPage : TasksPage {public ResultsPage(WorkbenchViewModel vm):base(vm,true) {}}

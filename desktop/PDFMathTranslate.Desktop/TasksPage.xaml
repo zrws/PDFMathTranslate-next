@@ -1,10 +1,48 @@
-<Page x:Class="PDFMathTranslate.Desktop.TasksPage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="任务队列" Background="Transparent">
-  <Grid Margin="20,16"><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-    <DockPanel Margin="0,0,0,16"><TextBlock DockPanel.Dock="Right" Text="{Binding Store.Summary}" VerticalAlignment="Center"/><StackPanel><TextBlock x:Name="Heading" Text="任务队列" FontSize="23" FontWeight="SemiBold"/><TextBlock Text="工作台与队列使用同一份实时进度。" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,4,0,0"/></StackPanel></DockPanel>
-    <DataGrid Grid.Row="1" x:Name="TaskGrid" ItemsSource="{Binding Store.Tasks}" SelectedItem="{Binding SelectedTask,Mode=OneWay}" SelectionChanged="TaskSelectionChanged" AutoGenerateColumns="False" IsReadOnly="True" EnableRowVirtualization="True" EnableColumnVirtualization="True" CanUserAddRows="False" HeadersVisibility="Column" SelectionMode="Single" RowHeight="48" AutomationProperties.Name="翻译任务列表">
-      <DataGrid.Columns><DataGridTextColumn Header="文档" Binding="{Binding Filename,Mode=OneWay}" Width="2*" MinWidth="160"/><DataGridTextColumn Header="语言" Binding="{Binding Languages,Mode=OneWay}" Width="130"/><DataGridTextColumn Header="状态" Binding="{Binding StatusLabel,Mode=OneWay}" Width="90"/><DataGridTextColumn Header="当前阶段" Binding="{Binding Stage,Mode=OneWay}" Width="*" MinWidth="120"/><DataGridTextColumn Header="进度" Binding="{Binding Progress,Mode=OneWay,StringFormat={}{0:F0}%}" Width="80"/></DataGrid.Columns>
-    </DataGrid>
-    <Border Grid.Row="2" Padding="12" Margin="0,12,0,12" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" CornerRadius="6"><ScrollViewer MaxHeight="148" VerticalScrollBarVisibility="Auto"><TextBlock Text="{Binding SelectedTask.Detail}" TextWrapping="Wrap" AutomationProperties.Name="选中任务详情"/></ScrollViewer></Border>
-    <WrapPanel Grid.Row="3"><Button Content="取消任务" Command="{Binding CancelCommand}"/><Button Content="按原配置重试" Command="{Binding RetryCommand}"/><Button Content="保存结果" Command="{Binding ExportCommand}"/><Button Content="打开结果目录" Click="OpenFolderClicked"/><Button Content="打开 PDF" Click="OpenFileClicked"/><Button Content="更多历史" Command="{Binding MoreHistoryCommand}"/><Button Content="清除终态历史" Command="{Binding ClearHistoryCommand}"/></WrapPanel>
+<Page x:Class="PDFMathTranslate.Desktop.TasksPage"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml" xmlns:xf="clr-namespace:XamlFlair;assembly=XamlFlair.WPF"
+ Title="任务队列" Background="Transparent">
+ <Grid Margin="24,16,24,12" xf:Animations.Primary="{Binding Appearance.EntranceAnimation}">
+  <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+  <DockPanel Margin="0,0,0,20">
+   <ui:Badge DockPanel.Dock="Right" Content="{Binding Store.Summary}" Appearance="Light" VerticalAlignment="Center"/>
+   <StackPanel><ui:TextBlock x:Name="Heading" Text="任务队列" FontTypography="Title"/><ui:TextBlock Text="查看当前阶段、翻译进度和任务记录。" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0"/></StackPanel>
+  </DockPanel>
+  <WrapPanel Grid.Row="1" Margin="0,0,0,12">
+   <ui:Button Content="保存结果" Icon="{ui:SymbolIcon ArrowDownload24}" Appearance="Primary" Command="{Binding ExportCommand}" Margin="0,0,8,8"/>
+   <ui:Button Content="取消任务" Command="{Binding CancelCommand}" Margin="0,0,8,8"/>
+   <ui:Button Content="按原配置重试" Icon="{ui:SymbolIcon ArrowSync24}" Command="{Binding RetryCommand}" Margin="0,0,8,8"/>
+   <ui:Button Content="打开结果目录" Icon="{ui:SymbolIcon FolderOpen24}" Click="OpenFolderClicked" Margin="0,0,8,8"/>
+   <ui:Button Content="打开 PDF" Click="OpenFileClicked" Margin="0,0,0,8"/>
+  </WrapPanel>
+  <Grid Grid.Row="2">
+   <ui:DataGrid x:Name="TaskGrid" ItemsSource="{Binding Store.Tasks}" SelectedItem="{Binding SelectedTask,Mode=OneWay}"
+    SelectionChanged="TaskSelectionChanged" AutoGenerateColumns="False" IsReadOnly="True"
+    EnableRowVirtualization="True" EnableColumnVirtualization="True" CanUserAddRows="False"
+    HeadersVisibility="Column" SelectionMode="Single" RowHeight="56" AutomationProperties.Name="翻译任务列表">
+    <ui:DataGrid.Columns>
+     <DataGridTemplateColumn Header="文档" Width="2*" MinWidth="160"><DataGridTemplateColumn.CellTemplate><DataTemplate>
+      <DockPanel Margin="8,0"><ui:SymbolIcon Symbol="DocumentPdf24" Margin="0,0,10,0"/><ui:TextBlock Text="{Binding Filename}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Filename}" VerticalAlignment="Center"/></DockPanel>
+     </DataTemplate></DataGridTemplateColumn.CellTemplate></DataGridTemplateColumn>
+     <DataGridTextColumn Header="语言" Binding="{Binding Languages,Mode=OneWay}" Width="105"/>
+     <DataGridTemplateColumn Header="状态" Width="104"><DataGridTemplateColumn.CellTemplate><DataTemplate><ui:Badge Content="{Binding StatusLabel}" Appearance="{Binding Status,Converter={StaticResource TaskAppearance}}" VerticalAlignment="Center" HorizontalAlignment="Left"/></DataTemplate></DataGridTemplateColumn.CellTemplate></DataGridTemplateColumn>
+     <DataGridTextColumn Header="当前阶段" Binding="{Binding Stage,Mode=OneWay}" Width="*" MinWidth="100"/>
+     <DataGridTemplateColumn Header="进度" Width="115"><DataGridTemplateColumn.CellTemplate><DataTemplate><StackPanel Margin="4,0,10,0" VerticalAlignment="Center"><ui:TextBlock Text="{Binding Progress,Mode=OneWay,StringFormat={}{0:F0}%}" FontTypography="Caption"/><ProgressBar Value="{Binding Progress,Mode=OneWay}" Maximum="100" Height="4" Margin="0,6,0,0"/></StackPanel></DataTemplate></DataGridTemplateColumn.CellTemplate></DataGridTemplateColumn>
+    </ui:DataGrid.Columns>
+   </ui:DataGrid>
+   <StackPanel Visibility="{Binding Store.Tasks.Count,Converter={StaticResource VisibleWhenEmpty}}" HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False">
+    <ui:SymbolIcon Symbol="TaskListSquareLtr24" FontSize="44" Foreground="{DynamicResource TextFillColorTertiaryBrush}" HorizontalAlignment="Center"/>
+    <ui:TextBlock Text="还没有翻译任务" FontTypography="Subtitle" Margin="0,16,0,6"/>
+    <ui:TextBlock Text="到翻译工作台添加 PDF 后，任务会显示在这里。" Foreground="{DynamicResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" MaxWidth="280" TextAlignment="Center"/>
+   </StackPanel>
   </Grid>
+  <ui:CardExpander Grid.Row="3" Icon="{ui:SymbolIcon DocumentCopy24}" IsExpanded="True" Margin="0,16,0,12">
+   <ui:CardExpander.Header><ui:TextBlock Text="任务详情" FontTypography="BodyStrong"/></ui:CardExpander.Header>
+   <ScrollViewer MaxHeight="120" VerticalScrollBarVisibility="Auto"><ui:TextBlock Text="{Binding SelectedTask.Detail,TargetNullValue=选中任务可查看阶段、错误信息和保存路径。,FallbackValue=选中任务可查看阶段、错误信息和保存路径。}" TextWrapping="Wrap" AutomationProperties.Name="选中任务详情"/></ScrollViewer>
+  </ui:CardExpander>
+  <DockPanel Grid.Row="4">
+   <ui:Button DockPanel.Dock="Right" Content="清除终态历史" Command="{Binding ClearHistoryCommand}" Appearance="Transparent"/>
+   <ui:Button Content="更多历史" Command="{Binding MoreHistoryCommand}" Icon="{ui:SymbolIcon History24}" HorizontalAlignment="Left"/>
+  </DockPanel>
+ </Grid>
 </Page>

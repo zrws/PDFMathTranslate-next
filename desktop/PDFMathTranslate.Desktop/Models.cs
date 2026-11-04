@@ -25,6 +25,11 @@ public static class LanguageChoices
 public sealed record ImportedFile(string Id, string Filename, int Pages, long Bytes);
 public sealed record PreviewFrame(byte[] Image,int Pages,int Page);
 public sealed record GlossaryRow(string Source,string Target,string File);
+public sealed record SavedOutput(string FullPath)
+{
+    public string Filename => Path.GetFileName(FullPath);
+    public string Format => Path.GetExtension(FullPath).Equals(".pdf",StringComparison.OrdinalIgnoreCase)?"PDF 文档":"术语文件";
+}
 public sealed class TaskRow : ObservableObject
 {
     private JsonElement value;
@@ -41,6 +46,7 @@ public sealed class TaskRow : ObservableObject
     public bool Terminal => Status is "done" or "failed" or "cancelled";
     public string StatusLabel => Status switch { "queued" => "等待中", "running" => "翻译中", "done" => "翻译完成", "failed" => "失败", "cancelled" => "已取消", _ => Status };
     public string SavedPaths => value.TryGetProperty("saved_paths", out var paths) ? string.Join(Environment.NewLine, paths.EnumerateArray().Select(x => x.GetString())) : "";
+    public IReadOnlyList<SavedOutput> SavedFiles => SavedPaths.Split(Environment.NewLine,StringSplitOptions.RemoveEmptyEntries).Select(x=>new SavedOutput(x)).ToArray();
     public string PlannedDirectory => value.TryGetProperty("options",out var options)&&options.TryGetProperty("export_dir",out var dir)?dir.GetString()??"":"";
     public string Detail => $"{Filename}　{Languages}\n{Stage} · {Message}\n{Error}\n{SavedPaths}".Trim();
     public IEnumerable<string> Kinds => value.TryGetProperty("outputs", out var outputs) ? outputs.EnumerateObject().Select(x => x.Name).ToArray() : [];
