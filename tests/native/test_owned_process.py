@@ -58,6 +58,14 @@ class OwnershipTests(unittest.TestCase):
     def test_invalid_target_assignment_fails_closed(self):
         with self.assertRaises(OSError): OwnedJob(SimpleNamespace(_handle=0))
 
+    def test_cached_old_process_object_does_not_pass_fresh_postcheck(self):
+        cached=FakeProcess(1,20,'expected-python')
+        replacement=FakeProcess(1,21,'expected-python')
+        with patch('owned_process.psutil.Process',side_effect=[cached,replacement]):
+            records,rejected=sample_owned(identity(cached),SimpleNamespace(contains=lambda pid:True),{canonical('expected-python')})
+        self.assertEqual(records,[])
+        self.assertEqual(rejected['identity_changed_during_metrics'],1)
+
     def test_kernel_close_reclaims_nested_child_and_preserves_outside_sentinel(self):
         flags=0x08000000
         sentinel=subprocess.Popen([sys.executable,'-c','import time;time.sleep(60)'],creationflags=flags)

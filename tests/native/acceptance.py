@@ -111,7 +111,7 @@ d.save(sys.argv[1]);d.close()
     measurements=[];measurement_stop=threading.Event()
     def measure():
         while not measurement_stop.is_set():
-            allowed={canonical(python),canonical(Path(os.environ['SystemRoot'])/'System32/conhost.exe')}
+            allowed={canonical(python),canonical(python.with_name('pythonw.exe')),canonical(Path(os.environ['SystemRoot'])/'System32/conhost.exe')}
             records,rejected=sample_owned(root_identity,owned_job,allowed)
             measurements.append({"ts":time.time(),"processes":records,"rejected_counts":rejected})
             measurement_stop.wait(.25)

@@ -83,7 +83,8 @@ def sample_owned(root, job, allowed_images):
                    "parent_pid":parent_identity[0] if parent_identity else None,"parent_created":parent_identity[1] if parent_identity else None,
                    "private_bytes":memory.private,"working_set_bytes":memory.rss,"threads":process.num_threads(),
                    "cpu_seconds":cpu.user+cpu.system,"read_bytes":io.read_bytes,"write_bytes":io.write_bytes}
-            if identity(process) != expected: rejected["identity_changed_during_metrics"] += 1; continue
+            if identity(psutil.Process(process.pid)) != expected or not job.contains(process.pid):
+                rejected["identity_changed_during_metrics"] += 1; continue
             if parent_identity is not None and identity(psutil.Process(parent_identity[0])) != parent_identity:
                 rejected["parent_changed_during_metrics"] += 1; continue
             records.append(row)
@@ -94,7 +95,7 @@ def sample_owned(root, job, allowed_images):
                         rejected["child_predates_parent_or_changed_parent"] += 1; continue
                     if candidate[2] not in allowed_images:
                         rejected["unexpected_image"] += 1; continue
-                    if identity(process) != expected or identity(child) != candidate or not job.contains(child.pid):
+                    if identity(psutil.Process(process.pid)) != expected or identity(psutil.Process(child.pid)) != candidate or not job.contains(child.pid):
                         rejected["candidate_changed_or_not_job_member"] += 1; continue
                     pending.append((candidate, expected))
                 except (psutil.NoSuchProcess, psutil.AccessDenied): rejected["candidate_exited_or_inaccessible"] += 1
