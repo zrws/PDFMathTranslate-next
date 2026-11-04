@@ -18,6 +18,7 @@ import uuid
 import psutil
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from owned_process import OwnedJob, canonical, identity, sample_owned
 
 
 def main():
@@ -55,7 +56,7 @@ def main():
     provenance_code="import hashlib,json,pathlib,sys,pdf2zh_next,pdf2zh_next.desktop.server;root=pathlib.Path(pdf2zh_next.__file__).parent;names=['__init__.py','desktop/server.py','desktop/engine.py','desktop/worker.py','desktop/storage.py','desktop/runtime.py','desktop/exports.py','desktop/snapshots.py','desktop/policy.py','desktop/pdf_operations.py','desktop/assets.py','desktop/preview_control.py','desktop/preview.py'];print(json.dumps({'python_executable':sys.executable,'sys_path':sys.path,'modules':[{'path':str(root/name),'sha256':hashlib.sha256((root/name).read_bytes()).hexdigest()} for name in names]},ensure_ascii=False))"
     probe=subprocess.run([str(python),"-c",provenance_code],env=env,cwd=home/"work",capture_output=True,text=True,encoding="utf-8",timeout=40,check=True)
     provenance=json.loads(probe.stdout)
-    provenance.update(argv=sys.argv,packaged=args.packaged,source_mode="packaged" if args.packaged else "repository overlay",acceptance_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),diagnostic_observation=args.observe_worker_errors)
+    provenance.update(argv=sys.argv,packaged=args.packaged,source_mode="packaged" if args.packaged else "repository overlay",acceptance_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),ownership_helper_sha256=hashlib.sha256(Path(__file__).with_name('owned_process.py').read_bytes()).hexdigest(),diagnostic_observation=args.observe_worker_errors)
     if args.observe_worker_errors:provenance['diagnostic_hook_sha256']=hashlib.sha256((repo/'tests/native/diagnostic_hooks/sitecustomize.py').read_bytes()).hexdigest()
     expected=(packages/"pdf2zh_next" if args.packaged else repo/"source/pdf2zh_next").resolve()
     if not all(Path(row["path"]).resolve().is_relative_to(expected) for row in provenance["modules"]):raise RuntimeError("实际模块导入路径与验收模式不一致")
@@ -95,22 +96,24 @@ d.save(sys.argv[1]);d.close()
     token = secrets.token_hex(32)
     stderr = (evidence/"control-stderr.txt").open("wb")
     child = subprocess.Popen([str(python),"-u","-m","pdf2zh_next.desktop.server"], env=env,cwd=home/"work",stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=stderr,creationflags=0x08000000)
+    try:
+        owned_job = OwnedJob(child)
+    except Exception:
+        child.kill(); child.wait(10); stderr.close(); provider.shutdown()
+        raise  # No stdin bootstrap or recursive PID-based kill after assignment failure.
+    root_identity = identity(psutil.Process(child.pid))
+    if root_identity[2] != canonical(python):
+        owned_job.close(); child.wait(10)
+        raise RuntimeError('Acceptance controller executable identity mismatch')
     child.stdin.write((json.dumps({"token":token,"downloads":str(home/"exports")})+"\n").encode());child.stdin.flush()
     hello = json.loads(child.stdout.readline())
     port = hello["port"]
     measurements=[];measurement_stop=threading.Event()
     def measure():
         while not measurement_stop.is_set():
-            records=[]
-            try:
-                parent=psutil.Process(child.pid)
-                for process in [parent]+parent.children(recursive=True):
-                    try:
-                        memory=process.memory_info();cpu=process.cpu_times();io=process.io_counters()
-                        records.append({"pid":process.pid,"created":process.create_time(),"exe":process.exe(),"name":process.name(),"private_bytes":memory.private,"working_set_bytes":memory.rss,"threads":process.num_threads(),"cpu_seconds":cpu.user+cpu.system,"read_bytes":io.read_bytes,"write_bytes":io.write_bytes})
-                    except (psutil.NoSuchProcess,psutil.AccessDenied):pass
-            except psutil.NoSuchProcess:pass
-            measurements.append({"ts":time.time(),"processes":records})
+            allowed={canonical(python),canonical(Path(os.environ['SystemRoot'])/'System32/conhost.exe')}
+            records,rejected=sample_owned(root_identity,owned_job,allowed)
+            measurements.append({"ts":time.time(),"processes":records,"rejected_counts":rejected})
             measurement_stop.wait(.25)
     measurement_thread=threading.Thread(target=measure,daemon=True);measurement_thread.start()
     rows = []; events = []; event_stop = threading.Event(); connection = None
@@ -257,9 +260,10 @@ d.save(sys.argv[1]);d.close()
         child.stdin.close()
         try: child.wait(15)
         except subprocess.TimeoutExpired:
-            subprocess.run(["taskkill","/PID",str(child.pid),"/T","/F"],capture_output=True);child.wait(10)
+            owned_job.close();child.wait(10)
         stderr.close();provider.shutdown()
-        measurement_stop.set();measurement_thread.join(2)
+        measurement_stop.set();measurement_thread.join(10)
+        owned_job.close()  # Kernel handle covers descendants even if observation missed one.
         identities={(p['pid'],p['created']):p['exe'] for row in measurements for p in row['processes']}
         survivors=[]
         deadline=time.monotonic()+3
@@ -272,10 +276,10 @@ d.save(sys.argv[1]);d.close()
                 except (psutil.NoSuchProcess,psutil.AccessDenied):pass
             if not survivors or time.monotonic()>=deadline:break
             time.sleep(.05)
-        cleanup_ok=child.returncode==0 and not survivors
-        rows.append({'case':'owned backend process tree reclaimed','passed':cleanup_ok,'detail':{'control_actual_exit':child.returncode,'surviving_identities':survivors}})
+        cleanup_ok=child.returncode==0 and not survivors and not measurement_thread.is_alive()
+        rows.append({'case':'owned backend process tree reclaimed','passed':cleanup_ok,'detail':{'control_actual_exit':child.returncode,'surviving_identities':survivors,'measurement_thread_stopped':not measurement_thread.is_alive(),'recovery_boundary':'kernel Job handle; never recursive PID-based taskkill'}})
         passed=passed and cleanup_ok
-        (evidence/"process-samples.json").write_text(json.dumps({"scope":"real native API process tree, 250ms sampling, includes pipeline and previews; GPU counters not measured","samples":measurements},ensure_ascii=False),encoding="utf-8")
+        (evidence/"process-samples.json").write_text(json.dumps({"scope":"real native API Job members, live parent/child creation/exe checks, 250ms sampling; rejected candidates counted without metadata; GPU counters not measured","root_identity":root_identity,"samples":measurements},ensure_ascii=False),encoding="utf-8")
         (evidence/"events.jsonl").write_text("".join(json.dumps(e,ensure_ascii=False)+"\n" for e in events),encoding="utf-8")
         report={"passed":passed,"checks":rows,"home":str(home),"control_pid":child.pid,"control_actual_exit":child.returncode,"provider_calls":calls,"source_mode":provenance["source_mode"],"provenance_sha256":hashlib.sha256((evidence/"provenance.json").read_bytes()).hexdigest(),"mode":"real BabelDOC + loopback LLM fixture; commercial translation quality unverified"}
         (evidence/"result.json").write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8")
