@@ -67,7 +67,7 @@
     <Grid Grid.Row="1" Margin="0,12,4,0">
      <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
      <ui:CardControl Icon="{ui:SymbolIcon Settings24}" Padding="12,8" Margin="0,0,0,10">
-      <ui:CardControl.Header><StackPanel><ui:TextBlock Text="当前翻译服务" FontTypography="Caption" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/><ui:TextBlock Text="{Binding Service}" FontTypography="BodyStrong"/></StackPanel></ui:CardControl.Header>
+      <ui:CardControl.Header><StackPanel><ui:TextBlock Text="{Binding LanguageSummary}" FontTypography="Caption" Foreground="{DynamicResource TextFillColorSecondaryBrush}" ToolTip="{Binding LanguageSummary}"/><ui:TextBlock Text="{Binding Service}" FontTypography="BodyStrong"/></StackPanel></ui:CardControl.Header>
       <ui:Button Content="配置" Appearance="Transparent" Click="SettingsClicked"/>
      </ui:CardControl>
      <ui:Button x:Name="SubmitButton" Grid.Row="1" Content="开始翻译" Icon="{ui:SymbolIcon Translate24}" Appearance="Primary"

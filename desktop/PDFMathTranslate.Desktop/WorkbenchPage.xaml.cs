@@ -30,6 +30,13 @@ public partial class WorkbenchPage : Page
     private async void NextPage(object sender,RoutedEventArgs e) {page=Math.Min(Math.Max(1,count),page+1);await RenderAsync();}
     private async void PageKeyDown(object sender,KeyEventArgs e) {if(e.Key==Key.Enter){if(int.TryParse(PageNumber.Text,out var n)) page=Math.Clamp(n,1,Math.Max(1,count));await RenderAsync();}}
     private async void PreviewModeChanged(object sender,RoutedEventArgs e) {if(!IsInitialized)return;page=1;await RenderAsync();}
+#if DEBUG
+    internal async Task VerifyPreviewAsync(int requested,bool translated)
+    {
+        OutputPreview.IsChecked=translated;page=requested;await RenderAsync();
+        if(Preview.Source==null||count<requested||page!=requested)throw new InvalidOperationException("真实视图未显示请求的 PDF 页面。");
+    }
+#endif
     private async Task RenderAsync()
     {
         render?.Cancel();render?.Dispose();render=new CancellationTokenSource();var current=render;

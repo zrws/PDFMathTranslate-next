@@ -117,6 +117,21 @@ internal static class NativeUiVerification
             if(!(bool)checks["failed_save_retains_key_draft"]||!(bool)checks["all_save_paths_clear_key_after_success"])throw new InvalidOperationException("共享保存命令未正确处理密钥草稿。");
             window.ShowSettingsStorage(true);await Capture(window,root,"02b-save-directory.png");window.ShowSettingsStorage(false);
             window.ShowPage(typeof(TasksPage)); await Capture(window,root,"03-queue.png");
+            if(scenario.TryGetProperty("layout_sample",out var layoutSample))
+            {
+                var samplePath=Path.GetFullPath(layoutSample.GetString()!);
+                checks["layout_sample_sha256"]=Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(File.ReadAllBytes(samplePath)));
+                var width=window.ActualWidth;var height=window.ActualHeight;
+                window.ShowPage(typeof(WorkbenchPage));await vm.ImportAsync(Enumerable.Repeat(samplePath,4));
+                if(vm.Files.Count!=4)throw new InvalidOperationException("多文件待提交夹具未完成四次实际上传。");
+                window.Width=980;window.Height=680;await workbench.VerifyPreviewAsync(1,false);await Capture(window,root,"04a-four-pending-documents.png");
+                checks["four_pending_compact_layout"]=VerifyWorkbench(window,workbench);
+                vm.Files.Clear();vm.SelectedFile=null;window.Width=width;window.Height=height;
+                vm.SelectedTask=vm.Store.Tasks.FirstOrDefault(x=>x.Status=="done");
+                if(vm.SelectedTask==null)throw new InvalidOperationException("缺少真实已完成任务，不能验证译文视图。");
+                await workbench.VerifyPreviewAsync(2,true);await Capture(window,root,"04b-actual-translated-page-two.png");
+                checks["actual_translated_view_page_two"]=true;
+            }
             if(!vm.Ready) throw new InvalidOperationException("后台尚未就绪："+vm.Notice);
             if(scenario.TryGetProperty("controls_only",out var controls)&&controls.GetBoolean())
             {
