@@ -537,11 +537,11 @@ class ConfigManager:
 
         return result
 
-    def initialize_config(self) -> SettingsModel:
+    def initialize_config(self, credential_resolver=None) -> SettingsModel:
         """Initialize configuration from all sources"""
         # Parse CLI arguments (highest priority)
-        self._settings = self.initialize_cli_config().to_settings_model()
-        log.debug(f"Initialized settings: {self._settings.model_dump_json()}")
+        self._settings = (self.initialize_cli_config() if credential_resolver is None else self.initialize_cli_config(credential_resolver)).to_settings_model()
+        if credential_resolver is None:log.debug(f"Initialized settings: {self._settings.model_dump_json()}")
 
         return self._settings
 
@@ -553,7 +553,7 @@ class ConfigManager:
             log.exception("Error in test_config:")
             return False
 
-    def initialize_cli_config(self) -> CLIEnvSettingsModel:
+    def initialize_cli_config(self, credential_resolver=None) -> CLIEnvSettingsModel:
         # Reset the write target on every initialization.  A ConfigManager is a
         # process singleton, so retaining a previous invocation's explicit
         # config path would make a later initialization write to the wrong file.
@@ -614,6 +614,9 @@ class ConfigManager:
         )
 
         cli_settings = self._build_model_from_args(CLIEnvSettingsModel, merged_args)
+        if credential_resolver is not None:
+            credential_resolver(self.config_cli_settings)
+            credential_resolver(cli_settings)
         cli_settings.validate_settings()
         return cli_settings
 

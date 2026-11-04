@@ -4,6 +4,7 @@
 本文只定义**必须遵守的接口与数据契约**，不重复方案论述。标注【新增】的为现有后端没有的能力，标注【保留】的为现有语义不变。
 
 修订记录：
+- 2026-11-04 渠道/保存扩展：具名渠道与受保护密钥、批量显式渠道 revision、原目录路径身份、中文版本名及按输出种类保存，见本文末尾。原任务/SSE/幂等契约继续有效。
 - v1（2026-09-28 上午）：初稿。
 - v1.1（2026-09-28，P0 整改轮）：按 `docs/reviews/native-desktop/P0-CODEX-review-2026-09-28.md` R3/R4/R5 修订——就绪三态拆分与 stdout 降级定位（§1）；create+retry 幂等语义完整化（§3）；SSE wire 格式/水位/重放/溢出/竞态测试清单（§4）；资源档位与目录所有权的 P1/P2 实现归属（§5/§6）；环境变量边界澄清（§6）；导出回执改为内容身份校验、允许合法改名（§7）；鉴权传递格式与旧入口兼容（§8）。
 - v1.2（2026-09-28，P0 收尾轮）：按 `docs/reviews/native-desktop/P0-CODEX-remediation-final-review-2026-09-28.md` F1/F5 修订——§7 清理校验对象改为 saved_path 最终文件（可读+size+SHA256 对稳定产物身份）、暂存保留条件、不可变载荷五元组、5 个验收案例；§3 清历史与 TTL 去重解耦（tombstone）、retry 键作用域与原任务身份；§4 冻结唯一事件信封（id: `<instance_id>:<event_id>`）与初连/同实例重放/游标过期/实例重启四条唯一流程；EventSource ticket 用后重新取票。
@@ -184,3 +185,13 @@ POST /api/export-receipts
 - 未知字段/状态容忍：旧客户端忽略新字段（phase、revision 等）；新客户端容忍缺失新字段。
 - 状态枚举扩展（如引入 preparing/finalizing 为顶层）必须升 `api_version` 并同步所有 UI/持久化/测试。
 - 本契约未覆盖处，以方案为准；冲突时先修订本契约并经审核，不得实现间擅自分叉。
+
+## 10. 2026-11-04 渠道与保存扩展
+
+- `GET /api/channels` 返回 profiles、active_id；档案只公开 id/name/service/base_url/model/api_key_set/revision，不返回密钥或 DPAPI 密文。`POST /api/channels` 保存草稿，`POST /api/channels/{id}/activate` 启用，`DELETE /api/channels/{id}` 删除非当前且无活动任务引用的档案。设置保存也可带嵌套 `channel`，与偏好同一事务提交。
+- 草稿 api_key 缺省保留原密钥，显式空串清除；本机 DPAPI 只适用于当前 Windows 用户。原生 home 的历史明文备份先核归属、转为可恢复原字节的加密归档，再更新迁移标记与移除该自有旧备份。用户原来源文件不修改；prepared 标记在脱敏 TOML 发布前持久化，失败可以重启恢复。
+- `POST /api/channels/probe` 主动测试草稿或发现模型：OpenAI 兼容 `/models` / `/chat/completions`，总时限 15 秒、最多两项并发、响应不超过 512 KiB，不跟随重定向、不回显提供方错误正文。客户端草稿改变或请求取消即丢弃旧探测结果；其它旧引擎仍可翻译，模型手动填写。
+- 上传 `POST /api/files` 可附 `source_path`，须绝对路径且源文件 size/SHA 与上传内容相同，返回已验证 source_directory。源目录保存不得猜测上传临时目录。
+- `POST /api/tasks` 可传 channel_id/channel_revision；revision 改变返回 409，未提交文件保留。原生批量将同一次提交的渠道、语言、页码、输出、保存方式固定，每份创建独立幂等任务；默认 pages 空串表示全部页面。no_dual/no_mono 在创建、引擎回传和保存三层均生效，至少一种 PDF。
+- 偏好 save_mode=`custom|source` 与 download_dir 独立保存/读回。任务与导出可覆盖；source 模式直接使用已验证原目录，custom 模式在目标下建文章子文件夹。导出请求的 kinds 可选择已有输出子集；与保存方式一起进入新请求指纹，旧请求的指纹和已有导出计划保持兼容。
+- 新文件名为 `文章_双语对照.pdf`、`文章_译文.pdf`、`文章_术语表.csv`，冲突生成 `_第2版` 等后缀。历史按源目录和文章名归组，源目录模式不另建文章文件夹。原始 PDF 字节与已有版本不得覆盖。

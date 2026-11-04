@@ -12,21 +12,32 @@
    <Grid.ColumnDefinitions><ColumnDefinition Width="1*" MinWidth="200"/><ColumnDefinition Width="20"/><ColumnDefinition Width="2*" MinWidth="300"/></Grid.ColumnDefinitions>
    <ui:Card Padding="16" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch">
     <Grid><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-     <ui:TextBlock Text="已完成文档" FontTypography="BodyStrong" Margin="0,0,0,12"/>
-     <ListBox x:Name="CompletedTasks" Grid.Row="1" SelectedItem="{Binding SelectedTask,Mode=OneWay}" SelectionChanged="TaskSelectionChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizing="True" AutomationProperties.Name="已完成文档">
-      <ListBox.ItemTemplate><DataTemplate><StackPanel Margin="4,8"><ui:TextBlock Text="{Binding Filename}" FontTypography="BodyStrong" TextTrimming="CharacterEllipsis" ToolTip="{Binding Filename}"/><ui:TextBlock Text="{Binding Languages}" FontTypography="Caption" Margin="0,6,0,0"/></StackPanel></DataTemplate></ListBox.ItemTemplate>
+     <ui:TextBlock Text="文章记录" FontTypography="BodyStrong" Margin="0,0,0,12"/>
+     <ListBox x:Name="CompletedTasks" Grid.Row="1" SelectedItem="{Binding SelectedTask,Mode=OneWay}" SelectionChanged="TaskSelectionChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.IsVirtualizingWhenGrouping="True" AutomationProperties.Name="按文章归组的翻译记录">
+      <ListBox.GroupStyle><GroupStyle><GroupStyle.HeaderTemplate><DataTemplate><StackPanel Margin="0,12,0,6"><DockPanel><ui:SymbolIcon Symbol="FolderOpen24" Margin="0,0,8,0"/><ui:TextBlock Text="{Binding Items[0].ArticleTitle}" FontTypography="BodyStrong" TextTrimming="CharacterEllipsis"/></DockPanel><ui:TextBlock Text="{Binding ItemCount,StringFormat=共 {0} 次翻译}" FontTypography="Caption" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0"/></StackPanel></DataTemplate></GroupStyle.HeaderTemplate></GroupStyle></ListBox.GroupStyle>
+      <ListBox.ItemTemplate><DataTemplate><StackPanel Margin="4,8"><DockPanel><ui:TextBlock Text="{Binding CreatedLabel}" FontTypography="BodyStrong"/><ui:TextBlock Text="{Binding StatusLabel}" FontTypography="Caption" Margin="8,0,0,0" VerticalAlignment="Center"/></DockPanel><ui:TextBlock Text="{Binding Languages}" FontTypography="Caption" Margin="0,6,0,0"/></StackPanel></DataTemplate></ListBox.ItemTemplate>
      </ListBox>
      <ui:Button Grid.Row="2" Content="更多历史" Icon="{ui:SymbolIcon History24}" Command="{Binding MoreHistoryCommand}" Margin="0,12,0,0"/>
     </Grid>
    </ui:Card>
    <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
     <StackPanel Margin="0,0,4,0">
+     <ui:Card Padding="16" Margin="0,0,0,12">
+      <StackPanel>
+       <ui:TextBlock Text="本次保存" FontTypography="BodyStrong" Margin="0,0,0,12"/>
+       <WrapPanel><ui:ToggleSwitch Content="双语对照" IsChecked="{Binding ExportDual,Mode=TwoWay}" IsEnabled="{Binding HasDualOutput}" Margin="0,0,16,12"/><ui:ToggleSwitch Content="仅译文" IsChecked="{Binding ExportMono,Mode=TwoWay}" IsEnabled="{Binding HasMonoOutput}" Margin="0,0,16,12"/><ui:ToggleSwitch Content="术语表" IsChecked="{Binding ExportGlossary,Mode=TwoWay}" Visibility="{Binding HasGlossaryOutput,Converter={StaticResource VisibleWhenTrue}}" Margin="0,0,0,12"/></WrapPanel>
+       <ui:ToggleSwitch Content="直接保存到源 PDF 旁边" IsChecked="{Binding ExportToSource,Mode=TwoWay}" IsEnabled="{Binding HasSourceDirectory}" Margin="0,0,0,12"/>
+       <Grid Visibility="{Binding ExportToSource,Converter={StaticResource VisibleWhenFalse}}"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><ui:TextBox Text="{Binding ExportDirectory,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" PlaceholderText="选择本次结果保存目录" AutomationProperties.Name="本次结果保存目录"/><ui:Button Grid.Column="1" Content="更改" Click="ChooseExportFolder" Icon="{ui:SymbolIcon FolderOpen24}" Margin="8,0,0,0"/></Grid>
+       <ui:TextBlock Text="{Binding ExportDestination}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontTypography="Caption" TextWrapping="Wrap" Margin="0,8,0,0"/>
+       <ui:Button Content="改用当前默认目录" Command="{Binding UseDefaultExportDirectoryCommand}" Appearance="Transparent" Margin="0,8,0,0"/>
+      </StackPanel>
+     </ui:Card>
      <ui:Card Padding="20" Margin="0,0,0,16">
       <StackPanel>
        <DockPanel><ui:Badge DockPanel.Dock="Right" Content="{Binding SelectedTask.StatusLabel,TargetNullValue=等待文档,FallbackValue=等待文档}" Appearance="{Binding SelectedTask.Status,Converter={StaticResource TaskAppearance},FallbackValue=Light}"/><ui:TextBlock Text="译文与版本" FontTypography="Subtitle"/></DockPanel>
        <ui:TextBlock Text="{Binding SelectedTask.Filename,TargetNullValue=暂无已完成文档,FallbackValue=暂无已完成文档}" FontTypography="BodyStrong" TextWrapping="Wrap" Margin="0,16,0,6"/>
        <ui:TextBlock Text="{Binding SelectedTask.Languages}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontTypography="Caption"/>
-       <ui:TextBlock Text="保存后按文档名称和日期归档。再次点击保存会创建新版本。" Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontTypography="Caption" TextWrapping="Wrap" Margin="0,12,0,0"/>
+       <ui:TextBlock Text="本次只保存勾选的类型。源目录模式与 PDF 放在一起；重名文件生成新版本。" Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontTypography="Caption" TextWrapping="Wrap" Margin="0,12,0,0"/>
       </StackPanel>
      </ui:Card>
      <ItemsControl ItemsSource="{Binding SelectedTask.SavedFiles}">

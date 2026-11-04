@@ -33,7 +33,7 @@ class Exports:
     def retained_task(task):
         value=copy.deepcopy(task)
         value.pop("file_path",None);value.pop("cancel_requested",None)
-        value["options"]={"export_dir":task.get("options",{}).get("export_dir","")}
+        value["options"]={k:v for k,v in task.get('options',{}).items() if k in {'export_dir','save_mode','source_directory','no_dual','no_mono','auto_term_extraction'}}
         return value
 
     def durable(self, mutate):
@@ -68,24 +68,34 @@ class Exports:
             # Policy: retain staging. No path-existence-based destructive cleanup.
             return copy.deepcopy({k:v for k,v in record.items() if k!="task"})
 
-    def save(self, task_id, destination, export_id):
+    def save(self, task_id, destination, export_id, *, alongside=False, kinds=None):
         uuid.UUID(export_id)
         target = directory(destination)
         with self.lock:
             task = self.store.retained(task_id)
             if not task or task["status"] != "done" or not task["outputs"]: raise ValueError("请选择已完成且有输出的任务。")
-            request_hash = fingerprint({"task_id": task_id, "directory": str(target), "outputs": {kind:{k:out[k] for k in ("output_revision","size_bytes","sha256")} for kind,out in task["outputs"].items()}})
+            options=task.get('options',{})
+            outputs={kind:out for kind,out in task['outputs'].items() if kind in {'dual','mono','glossary'} and not (kind=='dual' and options.get('no_dual')) and not (kind=='mono' and options.get('no_mono'))}
+            if kinds is not None:
+                if not isinstance(kinds,list) or not kinds or len(kinds)>3 or any(not isinstance(k,str) or k not in outputs for k in kinds):raise ValueError('请至少选择一种已生成的输出。')
+                outputs={kind:out for kind,out in outputs.items() if kind in kinds}
+            if not outputs:raise ValueError('所选输出没有生成，请检查任务的输出选项。')
+            identity={"task_id": task_id, "directory": str(target), "outputs": {kind:{k:out[k] for k in ("output_revision","size_bytes","sha256")} for kind,out in outputs.items()}}
+            if alongside:identity['layout']='source'
+            if kinds is not None:identity['selected_kinds']=sorted(set(kinds))
+            request_hash = fingerprint(identity)
             existing = self.store.state["exports"].get(export_id)
             if existing and existing["fingerprint"] != request_hash: raise ValueError("同一保存请求不能修改内容或目录。")
             if not existing:
                 self.durable(lambda state:state["exports"].__setitem__(export_id,{"fingerprint":request_hash,"files":{},"task":self.retained_task(task)}))
             with self.store.lock:operation = copy.deepcopy(self.store.state["exports"][export_id])
             stem = safe_stem(task["filename"])
-            folder = target/(stem+"_"+datetime.date.today().isoformat())
+            folder = target if alongside else target/stem
+            if existing and operation['files']:folder=Path(next(iter(operation['files'].values()))).parent
             folder.mkdir(parents=True, exist_ok=True)
-            required = sum(o["size_bytes"] for o in task["outputs"].values())
+            required = sum(o["size_bytes"] for o in outputs.values())
             if shutil.disk_usage(folder).free < required+8*1024*1024: raise ValueError("保存目录磁盘空间不足，请更换目录。暂存产物已保留。")
-            for kind, output in task["outputs"].items():
+            for kind, output in outputs.items():
                 if kind not in {"dual", "mono", "glossary"}: continue
                 saved = operation["files"].get(kind)
                 if saved:
@@ -96,10 +106,10 @@ class Exports:
                         self._copy(Path(output["path"]), path, output)
                 else:
                     suffix = ".csv" if kind == "glossary" else ".pdf"
-                    label = {"dual": "双语", "mono": "单语", "glossary": "术语"}[kind]
+                    label = {"dual": "双语对照", "mono": "译文", "glossary": "术语表"}[kind]
                     version = 1
                     while True:
-                        path = folder/(stem+"_"+label+("" if version == 1 else f"_v{version}")+suffix)
+                        path = folder/(stem+"_"+label+("" if version == 1 else f"_第{version}版")+suffix)
                         reservation = path.with_name(path.name+".reserve")
                         try:
                             with reservation.open("x", encoding="ascii") as stream: stream.write(export_id)

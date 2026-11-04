@@ -4,6 +4,7 @@
       <ui:ThemesDictionary Theme="Light" /><ui:ControlsDictionary /><xf:XamlFlairResources />
     </ResourceDictionary.MergedDictionaries>
       <BooleanToVisibilityConverter x:Key="VisibleWhenTrue" />
+      <local:FalseVisibilityConverter x:Key="VisibleWhenFalse" />
       <local:TaskAppearanceConverter x:Key="TaskAppearance" />
       <local:EmptyCollectionVisibilityConverter x:Key="VisibleWhenEmpty" />
     </ResourceDictionary>

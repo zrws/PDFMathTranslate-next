@@ -1,5 +1,9 @@
 # Windows 原生桌面预览
 
+渠道与批量修订（2026-11-04）：具名渠道可保存、切换、测试连接和探测模型；密钥以 Windows 本机 DPAPI 保护，不在界面/API 回显。原明文配置迁入原生 home 时先保存可恢复原字节的 DPAPI 归档，再提交脱敏 TOML；用户原配置不修改。受保护归档属于当前 Windows 用户，不能用它代替跨电脑密钥备份。旧引擎翻译入口继续保留，模型探测仅支持 OpenAI 兼容接口。
+
+工作台默认翻译全部页面，多选文件创建逐份独立任务，整批固定提交时的渠道与输出选项。源目录模式将 `文章名_双语对照.pdf` / `文章名_译文.pdf` 直接放在原 PDF 旁；自定义目录按文章建子文件夹。记录按文章归组，重名保留 `第2版` 等版本。默认目录可单独记忆，结果页还能改本次保存目录与输出类型。当前实现及新测试入口见 docs/CHANNELS_BATCH_OUTPUT_HANDOFF_2026-11-04.md 与 tests/native/channels_acceptance.py。
+
 默认发行入口是 `PDFMathTranslate.Desktop`：WPF、.NET 10、WPF UI 4.3.0、CommunityToolkit.Mvvm 8.4.2。Python/BabelDOC 保留翻译、排版与 CLI；默认窗口不加载浏览器或 Gradio。
 
 2026-11-04 的 Ardot 界面修订恢复顶部工具栏、原五页导航顺序与左参数右预览，页面由 WPF UI 的 Card/CardControl/CardExpander/InfoBar/DataGrid 等组件组合；原生界面不写 CSS、自定义 Style 或 ControlTemplate。XamlFlair.WPF 1.2.13 提供实际 180ms 淡入，适配缓存页面、减少动效与退出时的透明度恢复；外观偏好保存在本应用数据目录 desktop/appearance.json。组件约束可运行 tests/native/component_contract.py 检查；设计依据见 docs/reviews/native-desktop/ARDOT-COMPONENT-BRIEF-2026-11-04.md。

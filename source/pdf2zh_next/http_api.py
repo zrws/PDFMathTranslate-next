@@ -356,7 +356,7 @@ def _pick_field(detail: Any, *keywords: str) -> str | None:
     """在详情模型里按关键词找字段名（兼容各引擎的命名差异）。"""
     if detail is None:
         return None
-    names = list(detail.model_fields.keys())
+    names = list(type(detail).model_fields.keys())
     for keyword in keywords:
         for name in names:
             if name == keyword or name.endswith(f"_{keyword}"):
@@ -503,7 +503,7 @@ class SettingsUpdate(BaseModel):
     watermark_output_mode: str | None = None
 
 
-def apply_settings(update: SettingsUpdate) -> dict[str, Any]:
+def apply_settings(update: SettingsUpdate, *, persist_secrets=True) -> dict[str, Any]:
     manager = _config_manager()
     # 在副本上修改，校验通过后再提交，避免写坏配置导致应用无法启动
     settings = _cli_settings().clone()
@@ -563,7 +563,11 @@ def apply_settings(update: SettingsUpdate) -> dict[str, Any]:
         logger.warning("设置校验失败，未保存：%s", exc)
         raise HTTPException(status_code=400, detail=f"设置无效，未保存：{exc}") from exc
 
-    manager.write_user_default_config_file(settings=settings)
+    persisted=settings
+    if not persist_secrets:
+        from pdf2zh_next.desktop.channels import without_secrets
+        persisted=without_secrets(settings)
+    manager.write_user_default_config_file(settings=persisted)
     manager.config_cli_settings = settings
     try:
         manager._settings = settings.to_settings_model()  # noqa: SLF001

@@ -43,6 +43,8 @@ internal static class NativeUiVerification
             }
             await Capture(window,root,"01-workbench.png");
             if(!vm.Ready)throw new InvalidOperationException("后台尚未就绪："+vm.Notice);
+            if(scenario.TryGetProperty("channels_batch",out var workflow)&&workflow.GetBoolean())
+            {await NativeWorkflowVerification.RunAsync(window,vm,root,scenario,checks);success=true;return;}
             var workbench=Descendants(window).OfType<WorkbenchPage>().Single();
             checks["normal_layout"]=VerifyWorkbench(window,workbench);
             var entrance=(FrameworkElement)workbench.FindName("WorkbenchLayout");
@@ -215,7 +217,7 @@ internal static class NativeUiVerification
     {
         var clock=Stopwatch.StartNew();while(!condition()){if(clock.Elapsed>timeout)throw new TimeoutException("原生流程等待超时");await Task.Delay(100);}
     }
-    private static IEnumerable<DependencyObject> Descendants(DependencyObject parent)
+    internal static IEnumerable<DependencyObject> Descendants(DependencyObject parent)
     {
         for(var i=0;i<VisualTreeHelper.GetChildrenCount(parent);i++)
         {
@@ -223,7 +225,7 @@ internal static class NativeUiVerification
             foreach(var nested in Descendants(child))yield return nested;
         }
     }
-    private static object VerifyWorkbench(MainWindow window,WorkbenchPage page)
+    internal static object VerifyWorkbench(MainWindow window,WorkbenchPage page)
     {
         var bounds=new Dictionary<string,object>();
         foreach(var name in new[]{"SubmitButton","SourceLanguageInput","TargetLanguageInput"})
@@ -242,7 +244,7 @@ internal static class NativeUiVerification
         if(window.Content is not Panel panel||panel.Background is not SolidColorBrush brush||brush.Color.A!=255)throw new InvalidOperationException("窗口根背景不是组件库的不透明主题画刷。");
         return bounds;
     }
-    private static async Task Capture(MainWindow window,string root,string name,double scale=1)
+    internal static async Task Capture(MainWindow window,string root,string name,double scale=1)
     {
         // NavigationView transitions can still be fading at 180 ms. Capture
         // after transition completion and a fresh layout/render pass.

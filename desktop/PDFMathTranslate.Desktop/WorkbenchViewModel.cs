@@ -47,7 +47,7 @@ public partial class WorkbenchViewModel : ObservableObject, IDisposable
     [ObservableProperty] private bool assetsReady;
     [ObservableProperty] private bool autoCheckUpdates=true;
     public string VersionDescription {get{var version=UpdateService.ReadVersion(RuntimePaths.OptionalEnvironment("PDF2ZH_APP_ROOT")??AppContext.BaseDirectory);return version.Preview?"开发预览 · 正式更新源已停用":$"版本 {version.Version}";}}
-    public bool CanSubmit=>Ready&&AssetsReady&&Files.Count>0&&SourceLanguage!=null&&TargetLanguage!=null;
+    public bool CanSubmit=>Ready&&AssetsReady&&Files.Count>0&&SourceLanguage!=null&&TargetLanguage!=null&&(Dual||Mono)&&!ImportBusy;
     [ObservableProperty] private string updateState="尚未检查更新";
     [ObservableProperty] private bool canDownloadUpdate;
     [ObservableProperty] private bool canInstallUpdate;
@@ -58,18 +58,21 @@ public partial class WorkbenchViewModel : ObservableObject, IDisposable
     [ObservableProperty] private Choice? sourceLanguage;
     [ObservableProperty] private Choice? targetLanguage;
     [ObservableProperty] private Choice? tier;
-    public string NewApiKey { private get; set; } = "";
+    private string newApiKey="";
+    public string NewApiKey { private get=>newApiKey;set{if(newApiKey==value)return;newApiKey=value;AdvanceChannelDraft();} }
     public string LanguageSummary => $"{SourceLanguage?.Label ?? "请选择源语言"} → {TargetLanguage?.Label ?? "请选择目标语言"}";
     public event Action? SelectionChanged;
     public event Action? SettingsSaved;
-    public WorkbenchViewModel() { SourceLanguage=Languages[1]; TargetLanguage=Languages[2]; Tier=Tiers[1];Appearance.SaveFailed+=message=>Notice=message;Files.CollectionChanged+=(_,_)=>{OnPropertyChanged(nameof(HasFiles));OnPropertyChanged(nameof(DocumentSummary));CommandsChanged();};Store.PropertyChanged+=(_,_)=>CommandsChanged(); }
+    public WorkbenchViewModel() { SourceLanguage=Languages[1]; TargetLanguage=Languages[2]; Tier=Tiers[1];Appearance.SaveFailed+=message=>Notice=message;Files.CollectionChanged+=(_,_)=>{OnPropertyChanged(nameof(HasFiles));OnPropertyChanged(nameof(DocumentSummary));OnPropertyChanged(nameof(SubmitLabel));CommandsChanged();};Store.PropertyChanged+=(_,_)=>{RefreshTaskOutputs();CommandsChanged();}; }
     private void CommandsChanged(){OnPropertyChanged(nameof(CanSubmit));SubmitCommand.NotifyCanExecuteChanged();CancelCommand.NotifyCanExecuteChanged();RetryCommand.NotifyCanExecuteChanged();ExportCommand.NotifyCanExecuteChanged();}
     partial void OnReadyChanged(bool value)=>CommandsChanged();
     partial void OnAssetsReadyChanged(bool value)=>CommandsChanged();
     partial void OnSourceLanguageChanged(Choice? value) {OnPropertyChanged(nameof(LanguageSummary));CommandsChanged();}
     partial void OnTargetLanguageChanged(Choice? value) {OnPropertyChanged(nameof(LanguageSummary));CommandsChanged();}
     partial void OnSelectedFileChanged(ImportedFile? value) => SelectionChanged?.Invoke();
-    partial void OnSelectedTaskChanged(TaskRow? value) {OnPropertyChanged(nameof(SelectedTask));CommandsChanged();SelectionChanged?.Invoke();}
+    partial void OnSelectedTaskChanged(TaskRow? value) {OnPropertyChanged(nameof(SelectedTask));OnPropertyChanged(nameof(HasSelectedTask));ResetExportChoice(value);CommandsChanged();SelectionChanged?.Invoke();}
+    partial void OnDualChanged(bool value){OnPropertyChanged(nameof(SubmissionSummary));CommandsChanged();}
+    partial void OnMonoChanged(bool value){OnPropertyChanged(nameof(SubmissionSummary));CommandsChanged();}
     private static Task OnUi(Action action) => Application.Current.Dispatcher.InvokeAsync(action).Task;
     public async Task InitializeAsync()
     {
@@ -85,7 +88,8 @@ public partial class WorkbenchViewModel : ObservableObject, IDisposable
             outbox=new OperationOutbox(DataDirectory);
             ServiceState="窗口已就绪 · 翻译服务已就绪";
             await ReadSettingsAsync();
-            var prefs=await client.JsonAsync("api/prefs"); SaveDirectory=prefs.GetProperty("download_dir").GetString() ?? "";
+            var prefs=await client.JsonAsync("api/prefs"); SaveDirectory=prefs.GetProperty("download_dir").GetString() ?? "";UseSourceDirectory=prefs.TryGetProperty("save_mode",out var mode)&&mode.GetString()=="source";
+            await ReadChannelsAsync();
             ApplyAssets(await client.JsonAsync("api/assets/status"));
             Ready=true;
             _ = ListenAsync(life.Token);
@@ -111,6 +115,9 @@ public partial class WorkbenchViewModel : ObservableObject, IDisposable
         var settings=await client!.JsonAsync("api/settings");
         Services.Clear(); foreach(var s in settings.GetProperty("services").EnumerateArray()) Services.Add(s.GetString()!);
         Service=settings.GetProperty("service").GetString() ?? ""; Model=settings.GetProperty("model").GetString() ?? ""; BaseUrl=settings.GetProperty("base_url").GetString() ?? "";
+        ActiveChannelName=settings.TryGetProperty("active_channel_name",out var channel)?channel.GetString()??"":"原有配置";
+        ActiveModel=Model;ActiveService=Service;
+        ActiveChannelId=settings.GetProperty("active_channel_id").GetString()!;ActiveChannelRevision=settings.GetProperty("active_channel_revision").GetInt32();
         ApiKeyState=settings.GetProperty("api_key_set").GetBoolean() ? "已保存密钥（不回显）" : "尚未设置密钥";
         AutoCheckUpdates=!settings.TryGetProperty("auto_update",out var auto)||auto.GetBoolean();
         Qps=settings.GetProperty("requested_qps").GetInt32().ToString();
@@ -124,32 +131,44 @@ public partial class WorkbenchViewModel : ObservableObject, IDisposable
     public async Task ImportAsync(IEnumerable<string> paths)
     {
         if(client==null || !Ready) { Notice="服务尚未就绪，请先重试启动。"; return; }
-        foreach(var path in paths)
+        if(ImportBusy){Notice="文件正在导入，请稍候。";return;}
+        ImportBusy=true;var imported=0;var failed=0;
+        try{foreach(var path in paths)
         {
-            if(!path.EndsWith(".pdf",StringComparison.OrdinalIgnoreCase)) { Notice="仅支持 PDF 文件。"; continue; }
-            try { Notice="正在上传并读取页数："+Path.GetFileName(path); var file=await client.UploadAsync(path,life.Token); Files.Add(file); SelectedFile=file; Notice=$"已导入 {file.Filename}，共 {file.Pages} 页。"; }
-            catch(Exception ex) { Notice="导入失败："+Friendly(ex); }
-        }
+            if(!path.EndsWith(".pdf",StringComparison.OrdinalIgnoreCase)) { failed++;Notice="仅支持 PDF 文件。"; continue; }
+            try { Notice="正在上传并读取页数："+Path.GetFileName(path); var file=await client.UploadAsync(path,life.Token); Files.Add(file); SelectedFile=file;imported++; }
+            catch(Exception ex) { failed++;Notice="导入失败："+Friendly(ex); }
+        }}finally{ImportBusy=false;}
+        Notice=$"本次导入 {imported} 份，失败 {failed} 份；待翻译共 {Files.Count} 份。";
     }
     [RelayCommand(CanExecute=nameof(CanSubmit))] private async Task SubmitAsync()
     {
         if(client==null || !Ready || Files.Count==0) { Notice="请先导入 PDF，并等待服务就绪。"; return; }
         if(TargetLanguage==null || SourceLanguage==null || !Dual && !Mono) { Notice="请选择源语言、目标语言，并至少保留一种输出。"; return; }
+        if(!AllPages&&string.IsNullOrWhiteSpace(Pages)){Notice="请输入页码范围，或选择全部页面。";return;}
+        var submitted=0;var batch=Files.ToArray();
+        var source=SourceLanguage.Code;var target=TargetLanguage.Code;var requestedPages=AllPages?"":Pages;
+        var noDual=!Dual;var noMono=!Mono;var terms=AutoTerms;var mode=UseSourceDirectory?"source":"custom";
+        var channelId=ActiveChannelId;var channelRevision=ActiveChannelRevision;
+        var destination=string.IsNullOrWhiteSpace(TaskDirectory)?SaveDirectory:TaskDirectory;
         try
         {
-            foreach(var file in Files.ToArray())
+            batchTasks.Clear();
+            foreach(var file in batch)
             {
-                var payload=new { file_id=file.Id,lang_in=SourceLanguage.Code,lang_out=TargetLanguage.Code,pages=Pages,no_dual=!Dual,no_mono=!Mono,auto_term_extraction=AutoTerms,export_dir=string.IsNullOrWhiteSpace(TaskDirectory)?SaveDirectory:TaskDirectory };
+                var payload=new { file_id=file.Id,lang_in=source,lang_out=target,pages=requestedPages,no_dual=noDual,no_mono=noMono,auto_term_extraction=terms,export_dir=destination,save_mode=mode,channel_id=channelId,channel_revision=channelRevision };
                 var operation=outbox!.Ensure("create","api/tasks",payload);
                 var task=await SendPending(operation); Store.Merge(task); SelectedTask=Store.Tasks.First(x=>x.Id==task.GetProperty("id").GetString()); Files.Remove(file);
+                submitted++;BatchState=$"已加入 {submitted}/{batch.Length} 份，队列将逐份翻译。";
+                batchTasks.Add(task.GetProperty("id").GetString()!);OnPropertyChanged(nameof(BatchSummary));
             }
-            Notice="任务已加入队列 · "+LanguageSummary+"。完成后请点击「保存结果」。";
+            Notice=$"已加入 {submitted} 份任务，{LanguageSummary}。每份完成后可在文档输出保存。";
         }
-        catch(Exception ex) { Notice="提交未完成："+Friendly(ex)+" 可直接重试，同一请求不会重复创建任务。"; }
+        catch(Exception ex) { Notice=$"已提交 {submitted}/{batch.Length} 份；其余仍保留。"+Friendly(ex)+" 可重试，同一请求不会重复创建。"; }
     }
     private bool CanCancel()=>SelectedTask?.Status is "queued" or "running";
     private bool CanRetry()=>SelectedTask?.Status is "failed" or "cancelled";
-    private bool CanExport()=>SelectedTask?.Status=="done";
+    private bool CanExport()=>SelectedTask?.Status=="done"&&SelectedExportKinds.Length>0;
     [RelayCommand(CanExecute=nameof(CanCancel))] private async Task CancelAsync() => await TaskAction("cancel");
     [RelayCommand(CanExecute=nameof(CanRetry))] private async Task RetryAsync() => await TaskAction("retry");
     private async Task TaskAction(string action)
@@ -161,7 +180,7 @@ public partial class WorkbenchViewModel : ObservableObject, IDisposable
     [RelayCommand(CanExecute=nameof(CanExport))] private async Task ExportAsync()
     {
         if(client==null || SelectedTask?.Status!="done") { Notice="请选择已完成的任务。"; return; }
-        try { Notice="正在保存结果，请稍候…"; var operation=outbox!.Ensure("export",$"api/tasks/{SelectedTask.Id}/export",new { directory=SelectedTask.PlannedDirectory.Length>0?SelectedTask.PlannedDirectory:SaveDirectory });var result=await SendPending(operation); Store.Merge(result); Notice=$"结果已保存，所选任务共有 {result.GetProperty("saved_paths").GetArrayLength()} 个保存路径。可查看任务详情或打开结果目录。"; }
+        try { Notice="正在保存结果，请稍候…"; var operation=outbox!.Ensure("export",$"api/tasks/{SelectedTask.Id}/export",new { directory=ExportDirectory,save_mode=ExportToSource?"source":"custom",kinds=SelectedExportKinds });var result=await SendPending(operation); Store.Merge(result); Notice=$"已按本次输出选择保存，任务累计 {result.GetProperty("saved_paths").GetArrayLength()} 个文件。"; }
         catch(Exception ex) { Notice="保存状态待同步确认："+Friendly(ex)+" 请重试同步，已产生的文件会沿用原版本路径。"; }
     }
     [RelayCommand] private async Task MoreHistoryAsync()
@@ -177,11 +196,10 @@ public partial class WorkbenchViewModel : ObservableObject, IDisposable
         try
         {
             if(!int.TryParse(Qps,out var qps) || qps<1 || qps>1000) throw new InvalidOperationException("QPS 需为 1–1000 的整数。");
-            var fields=new Dictionary<string,object?> { ["service"]=Service,["model"]=Model,["base_url"]=BaseUrl,["qps"]=qps,["resource_tier"]=Tier?.Code??"balanced",["lang_in"]=SourceLanguage?.Code,["lang_out"]=TargetLanguage?.Code,["download_dir"]=SaveDirectory };
-            if(NewApiKey.Length>0) fields["api_key"]=NewApiKey;
+            var fields=new Dictionary<string,object?> { ["channel"]=ChannelDraft(),["qps"]=qps,["resource_tier"]=Tier?.Code??"balanced",["lang_in"]=SourceLanguage?.Code,["lang_out"]=TargetLanguage?.Code,["download_dir"]=SaveDirectory,["save_mode"]=UseSourceDirectory?"source":"custom" };
             fields["auto_update"]=AutoCheckUpdates;
             await client.JsonAsync("api/settings",HttpMethod.Put,fields); NewApiKey=""; SettingsSaved?.Invoke();
-            await ReadSettingsAsync(); Notice="设置已保存，并已读回后端实际生效值。";
+            await ReadSettingsAsync();await ReadChannelsAsync(); Notice="设置已保存，并已读回后端实际生效值。";
         }
         catch(Exception ex) { Notice="设置未保存："+Friendly(ex); }
     }
@@ -193,7 +211,7 @@ public partial class WorkbenchViewModel : ObservableObject, IDisposable
     private async Task<JsonElement> SendPending(PendingOperation operation)
     {
         object body=operation.Payload;
-        if(operation.Kind=="export")body=new{directory=operation.Payload.GetProperty("directory").GetString(),export_id=operation.Key};
+        if(operation.Kind=="export"){var fields=JsonSerializer.Deserialize<Dictionary<string,JsonElement>>(operation.Payload.GetRawText())!;fields["export_id"]=JsonSerializer.SerializeToElement(operation.Key);body=fields;}
         var result=await client!.JsonAsync(operation.Endpoint,HttpMethod.Post,body,operation.Key,life.Token);
         outbox!.Complete(operation);return result;
     }
@@ -259,6 +277,7 @@ public partial class WorkbenchViewModel : ObservableObject, IDisposable
     public async Task LoadGlossaryAsync() { if(client!=null) ReadGlossary(await client.JsonAsync("api/glossary")); }
     public async Task ImportGlossaryAsync(string path){if(client==null)return;try{ReadGlossary(await client.UploadGlossaryAsync(path));Notice="术语表已导入，后续任务生效。";}catch(Exception ex){Notice="术语表导入失败："+Friendly(ex);}}
 #if DEBUG
+    internal BackendClient TestApi=>client??throw new InvalidOperationException("后台未就绪");
     internal async Task<bool> VerifyMissingInstallerKeepsService()
     {
         var previous=availableUpdate;var oldFile=updateFile;var oldInstall=CanInstallUpdate;

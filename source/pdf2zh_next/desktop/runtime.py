@@ -38,27 +38,37 @@ def migrate_ui_prefs(home,legacy_root):
     atomic_json(marker,{"version":1,"prefs":migrated,"policy":"existing current preferences retained"})
 
 
-def migrate_config(home, legacy_root):
-    """Never replace a current config. Copy/verify first, then atomic switch."""
-    home = Path(home)
+def migrate_config(home, legacy_root, *, protect_backup=False):
+    """Preserve the source; native protected migration has a durable prepared state."""
+    home=Path(home)
+    if protect_backup:
+        from .protected_config import owned_path,protect_existing,resume_prepared,migrate_protected
+        owned_path(home,home/'config/legacy-backup')
+        owned_path(home,home/'.config/pdf2zh/config.v3.toml')
+        owned_path(home,home/'config/migration-v1.json')
     migrate_ui_prefs(home,legacy_root)
-    marker = home/"config/migration-v1.json"
-    if marker.exists(): return
-    source = Path(legacy_root)/"home/.config/pdf2zh/config.v3.toml"
-    target = home/".config/pdf2zh/config.v3.toml"
-    migrated = []
-    if source.is_file() and source.resolve() != target.resolve() and not target.exists():
-        backup = home/"config/legacy-backup"/uuid.uuid4().hex
+    marker=home/'config/migration-v1.json'
+    if marker.exists():
+        if protect_backup:
+            protect_existing(home,marker)
+            resume_prepared(home,marker)
+        return
+    source=Path(legacy_root)/'home/.config/pdf2zh/config.v3.toml'
+    target=home/'.config/pdf2zh/config.v3.toml'
+    if protect_backup and source.is_file() and source.resolve()!=target.resolve() and not target.exists():
+        migrate_protected(home,source,target)
+        return
+    migrated=[]
+    if source.is_file() and source.resolve()!=target.resolve() and not target.exists():
+        backup=home/'config/legacy-backup'/uuid.uuid4().hex
         backup.mkdir(parents=True)
-        shutil.copy2(source, backup/"config.v3.toml")
-        if file_identity(source) != file_identity(backup/"config.v3.toml"): raise ValueError("旧配置备份校验失败")
-        target.parent.mkdir(parents=True, exist_ok=True)
-        temporary = target.with_name(target.name+".migration.partial")
-        shutil.copy2(backup/"config.v3.toml", temporary)
-        os.replace(temporary, target)
-        migrated.append({"source": str(source), "backup": str(backup), "target": str(target)})
-    atomic_json(marker, {"version": 1, "config": migrated, "policy": "originals retained; current config never overwritten; history migration separately reconciled"})
-
+        shutil.copy2(source,backup/'config.v3.toml')
+        if file_identity(source)!=file_identity(backup/'config.v3.toml'):raise ValueError('旧配置备份校验失败')
+        target.parent.mkdir(parents=True,exist_ok=True)
+        temporary=target.with_name(target.name+'.migration.partial')
+        shutil.copy2(backup/'config.v3.toml',temporary);os.replace(temporary,target)
+        migrated.append({'source':str(source),'backup':str(backup),'target':str(target)})
+    atomic_json(marker,{'version':1,'config':migrated,'policy':'originals retained; current config never overwritten; history migration separately reconciled'})
 
 def migrate_history(home, legacy_root, store):
     marker = Path(home)/"config/history-migration-v1.json"

@@ -18,7 +18,7 @@ import uuid
 from pathlib import Path
 from urllib.parse import urlparse
 
-from fastapi import FastAPI, File, Header, HTTPException, Request, UploadFile
+from fastapi import FastAPI, File, Form, Header, HTTPException, Request, UploadFile
 from fastapi.responses import FileResponse, JSONResponse, Response, StreamingResponse
 from fastapi.exceptions import RequestValidationError
 from .assets import Assets
@@ -29,6 +29,7 @@ from .runtime import DataOwner, migrate_config, migrate_history
 from .storage import Store, atomic_json, file_identity, fingerprint
 from .snapshots import freeze, restore
 from . import settings_transaction
+from .channels import Channels, without_secrets, probe as probe_channel
 from .preview_control import capture_process, while_connected, PreviewDisconnected
 
 
@@ -47,6 +48,14 @@ def create_app(home, token, port, downloads, *, legacy_root=None):
     assets = Assets(home, store)
     engine = Engine(home, store)
     exports = Exports(store)
+    channels = Channels(store)
+    manager=legacy.ConfigManager()
+    if manager._settings is None:manager.initialize_config(credential_resolver=channels.inject)
+    initial=legacy.settings_payload()
+    _,initial_detail=legacy._current_engine(legacy._cli_settings())
+    initial_key_field=legacy._pick_field(initial_detail,'api_key')
+    channels.initial(initial,getattr(initial_detail,initial_key_field,'') if initial_key_field else '',legacy._cli_settings())
+    manager.write_user_default_config_file(without_secrets(legacy._cli_settings()))
     @contextlib.asynccontextmanager
     async def lifespan(app):
         yield
@@ -113,6 +122,10 @@ def create_app(home, token, port, downloads, *, legacy_root=None):
         value.update(resource_tier=prefs["resource_tier"], requested_qps=prefs["requested_qps"], effective_policy=effective_policy(prefs["resource_tier"], prefs["requested_qps"]))
         value.pop("api_key_masked", None)
         value["auto_update"]=prefs.get("auto_update",True)
+        channel_data=channels.public()
+        value['active_channel_id']=channel_data['active_id']
+        value['active_channel_name']=next((p['name'] for p in channel_data['profiles'] if p['id']==channel_data['active_id']),'未选择渠道')
+        value['active_channel_revision']=next((p['revision'] for p in channel_data['profiles'] if p['id']==channel_data['active_id']),1)
         return value
 
     def settings():
@@ -132,6 +145,9 @@ def create_app(home, token, port, downloads, *, legacy_root=None):
         if not isinstance(qps, int) or isinstance(qps, bool) or not 1<=qps<=1000: raise HTTPException(400, "QPS 需为 1–1000 的整数。")
         effective_policy(tier, qps)
         changes={"resource_tier":tier,"requested_qps":qps}
+        if 'save_mode' in payload:
+            if payload['save_mode'] not in {'custom','source'}:raise HTTPException(400,'请选择有效的保存方式。')
+            changes['save_mode']=payload['save_mode']
         if "auto_update" in payload:
             if not isinstance(payload["auto_update"],bool):raise HTTPException(400,"自动更新偏好需为开关值。")
             changes["auto_update"]=payload["auto_update"]
@@ -143,12 +159,65 @@ def create_app(home, token, port, downloads, *, legacy_root=None):
             parsed = urlparse(payload["base_url"])
             if parsed.scheme not in {"http", "https"} or not parsed.hostname or parsed.username or parsed.password or parsed.query or parsed.fragment:
                 raise HTTPException(400, "API 地址需为有效 HTTP(S) 地址，不能在地址中保存密钥。")
-        update = legacy.SettingsUpdate.model_validate({k:v for k,v in payload.items() if k in legacy.SettingsUpdate.model_fields})
+        fields={k:v for k,v in payload.items() if k in legacy.SettingsUpdate.model_fields}
+        channel_data=None
+        if 'channel' in payload:
+            if not isinstance(payload['channel'],dict):raise HTTPException(400,'渠道配置无效。')
+            channel_data,row=channels.draft(payload['channel'],legacy.settings_payload()['services'])
+            fields.update(service=row['service'],model=row['model'],base_url=row['base_url'],api_key=channels.key(row))
+        elif any(k in payload for k in ('service','model','base_url','api_key')):
+            data=channels.data();old=channels.get(data['active_id']);current_settings=legacy.settings_payload()
+            draft={k:old[k] for k in ('id','name')}
+            draft.update({k:payload.get(k,current_settings[k]) or '' for k in ('service','model','base_url')})
+            if not draft['service']:draft['service']=current_settings['service']
+            if 'api_key' in payload:draft['api_key']=payload['api_key'] or ''
+            channel_data,_=channels.draft(draft,current_settings['services'])
+        update=legacy.SettingsUpdate.model_validate(fields)
+        commit_settings(update,changes,channel_data)
+        return settings()
+
+    def commit_settings(update,changes,channel_data=None):
         manager=legacy._config_manager();before_cli=manager.config_cli_settings.clone();before_model=manager._settings
         def rollback_memory():
             manager.config_cli_settings=before_cli;manager._settings=before_model
-        settings_transaction.commit(home,store,lambda: legacy.apply_settings(update),rollback_memory,changes)
-        return settings()
+        settings_transaction.commit(home,store,lambda: legacy.apply_settings(update,persist_secrets=False) if update is not None else None,rollback_memory,changes,channel_data)
+
+    def activate_channel(data,row):
+        update=legacy.SettingsUpdate(service=row['service'],model=row['model'],base_url=row['base_url'],api_key=channels.key(row))
+        data['active_id']=row['id'];commit_settings(update,{},data)
+        return channels.public()
+
+    @app.get('/api/channels')
+    def list_channels():
+        with settings_lock:return channels.public()
+
+    @app.post('/api/channels')
+    def save_channel(payload:dict):
+        with settings_lock:
+            data,row=channels.draft(payload,legacy.settings_payload()['services'])
+            return activate_channel(data,row)
+
+    @app.post('/api/channels/{ident}/activate')
+    def use_channel(ident:str):
+        with settings_lock:return activate_channel(channels.data(),channels.get(ident))
+
+    @app.delete('/api/channels/{ident}')
+    def delete_channel(ident:str):
+        with settings_lock:
+            data=channels.data();channels.get(ident)
+            if ident==data['active_id']:raise HTTPException(400,'请先使用另一个渠道，再删除当前渠道。')
+            if any(t['status'] not in {'done','failed','cancelled'} and t['options'].get('channel_id')==ident for t in store.state['tasks'].values()):raise HTTPException(409,'仍有任务引用该渠道，请等待任务结束。')
+            data['profiles']=[p for p in data['profiles'] if p['id']!=ident]
+            commit_settings(None,{},data);return channels.public()
+
+    @app.post('/api/channels/probe')
+    async def test_channel(request:Request,payload:dict):
+        with settings_lock:
+            draft={**payload,'name':payload.get('name') or '临时测试'}
+            _,row=channels.draft(draft,legacy.settings_payload()['services'])
+            secret=channels.key(row)
+        try:return await while_connected(probe_channel(row,secret,payload.get('action')=='models'),request.is_disconnected)
+        except PreviewDisconnected:raise HTTPException(499,'渠道探测已取消。')
 
     @app.get("/api/capabilities")
     def capabilities():
@@ -162,7 +231,9 @@ def create_app(home, token, port, downloads, *, legacy_root=None):
         with settings_lock:
             target = directory(payload.get("download_dir", ""))
             if target.exists() and not target.is_dir(): raise HTTPException(400, "保存位置必须是文件夹。")
-            return store.prefs({"download_dir": str(target)})
+            mode=payload.get('save_mode',store.prefs().get('save_mode','custom'))
+            if mode not in {'custom','source'}:raise HTTPException(400,'请选择有效的保存方式。')
+            return store.prefs({"download_dir": str(target),'save_mode':mode})
 
     @app.get("/api/assets/status")
     def asset_status(): return assets.status()
@@ -234,7 +305,7 @@ def create_app(home, token, port, downloads, *, legacy_root=None):
         return path
 
     @app.post("/api/files")
-    async def upload(request: Request, file: UploadFile = File(...)):
+    async def upload(request: Request, file: UploadFile = File(...),source_path:str=Form('')):
         raw_filename=file.filename or "文档.pdf"
         # .NET MultipartFormDataContent emits MIME encoded words for Unicode
         # filename; python-multipart leaves that fallback undecoded.
@@ -256,6 +327,11 @@ def create_app(home, token, port, downloads, *, legacy_root=None):
                     out.write(chunk)
             metadata, _ = await render(path, 1, 0, request)
             row = {"file_id": file_id, "filename": filename, "path": str(path), "page_count": metadata["page_count"], **file_identity(path)}
+            if source_path:
+                if len(source_path)>32767 or not Path(source_path).is_absolute():raise HTTPException(400,'源文件路径无效，请重新选择本地 PDF。')
+                original=Path(source_path).resolve()
+                if not original.is_file() or file_identity(original)!={k:row[k] for k in ('size_bytes','sha256')}:raise HTTPException(409,'源文件已改变，请重新导入后再保存到源目录。')
+                row['source_directory']=str(original.parent)
             atomic_json(path.with_suffix(".meta.json"), row)
             return {k:v for k,v in row.items() if k != "path"}
         except FileExistsError:
@@ -308,6 +384,11 @@ def create_app(home, token, port, downloads, *, legacy_root=None):
         for keyword in ("base_url", "model"):
             field = legacy._pick_field(detail, keyword)
             if field: setattr(detail, field, chosen[keyword])
+        if options.get('channel_id'):
+            profile=channels.get(options['channel_id'])
+            if profile['service']!=chosen['service']:raise ValueError('原渠道的引擎类型已改变，请重新导入或恢复该渠道后重试。')
+            field=legacy._pick_field(detail,'api_key')
+            if field:setattr(detail,field,channels.key(profile))
         cli.translation.lang_in = options["lang_in"]; cli.translation.lang_out = options["lang_out"]
         cli.pdf.pages = options["pages"] or None; cli.pdf.no_dual = options["no_dual"]; cli.pdf.no_mono = options["no_mono"]
         cli.translation.no_auto_extract_glossary = not options["auto_term_extraction"]
@@ -317,7 +398,7 @@ def create_app(home, token, port, downloads, *, legacy_root=None):
         return result
 
     def request_fingerprint(payload, file_sha, parent):
-        values={k:payload[k] for k in ("lang_in","lang_out","pages","no_dual","no_mono","auto_term_extraction","watermark_output_mode","export_dir") if k in payload}
+        values={k:payload[k] for k in ("lang_in","lang_out","pages","no_dual","no_mono","auto_term_extraction","watermark_output_mode","export_dir","save_mode","channel_id","channel_revision") if k in payload}
         for key in ("lang_in","lang_out"):
             if key in values: values[key]=legacy._normalize_lang(values[key])
         if "pages" in values: values["pages"]=re.sub(r"\s+","",values["pages"] or "")
@@ -346,7 +427,18 @@ def create_app(home, token, port, downloads, *, legacy_root=None):
             path = upload_path(payload.get("file_id", ""))
             file = json.loads(path.with_suffix(".meta.json").read_text(encoding="utf-8"))
             current = settings()
+            selected=channels.get(payload.get('channel_id') or current['active_channel_id'])
+            if 'channel_revision' in payload and payload['channel_revision']!=selected.get('revision',1):raise HTTPException(409,'渠道配置已改变，其余文件仍保留；请核对后重新提交。')
+            current.update({k:selected[k] for k in ('service','model','base_url')})
+            for flag in ('no_dual','no_mono','auto_term_extraction'):
+                if flag in payload and not isinstance(payload[flag],bool):raise HTTPException(400,'输出与术语选项需为开关值。')
+            if not isinstance(payload.get('pages',''),str):raise HTTPException(400,'页码范围需为文本，留空表示全部页面。')
             options = {"lang_in": legacy._normalize_lang(payload.get("lang_in")) or current["lang_in"], "lang_out": legacy._normalize_lang(payload.get("lang_out")) or current["lang_out"], "pages": payload.get("pages", ""), "no_dual": payload.get("no_dual", current["no_dual"]), "no_mono": payload.get("no_mono", current["no_mono"]), "auto_term_extraction": payload.get("auto_term_extraction", current["auto_term_extraction"]), "watermark_output_mode":payload.get("watermark_output_mode",current["watermark_output_mode"]), "export_dir": str(directory(payload.get("export_dir") or store.prefs()["download_dir"])), "resource_policy": current["effective_policy"], "engine": {k: current[k] for k in ("service", "base_url", "model")}}
+            options.update(channel_id=selected['id'],channel_name=selected['name'],channel_revision=selected.get('revision',1),source_directory=file.get('source_directory',''),save_mode=payload.get('save_mode',store.prefs().get('save_mode','custom')))
+            if options['save_mode'] not in {'custom','source'}:raise HTTPException(400,'请选择有效的保存方式。')
+            if options['save_mode']=='source':
+                if not options['source_directory']:raise HTTPException(400,'无法确定源文件目录，请重新从本地导入 PDF。')
+                options['export_dir']=str(directory(options['source_directory']))
             cli=legacy._cli_settings()
             options["term_credential_provider"]=next((meta.translate_engine_type for meta in TRANSLATION_ENGINE_METADATA if getattr(cli,"term_"+meta.cli_flag_name,False)),None)
         if not re.fullmatch(r"[a-zA-Z]{2,3}(?:-[a-zA-Z]{2,4})?", options["lang_out"]) or options["lang_out"] == "auto": raise HTTPException(400, "请选择明确的目标语言。")
@@ -395,7 +487,14 @@ def create_app(home, token, port, downloads, *, legacy_root=None):
     def clear(): store.clear(); return {"cleared": "terminal_only"}
 
     @app.post("/api/tasks/{ident}/export")
-    def export(ident: str, payload: dict): return store.public(exports.save(ident, payload.get("directory") or require_task(ident)["options"].get("export_dir") or store.prefs()["download_dir"], payload["export_id"]))
+    def export(ident: str, payload: dict):
+        options=require_task(ident)['options'];mode=payload.get('save_mode',options.get('save_mode','custom'))
+        if mode not in {'custom','source'}:raise HTTPException(400,'请选择有效的保存方式。')
+        destination=payload.get('directory') or options.get('export_dir') or store.prefs()['download_dir']
+        if mode=='source':
+            if not options.get('source_directory'):raise HTTPException(400,'该历史任务没有源目录，请选择另存目录或重新导入。')
+            destination=options['source_directory']
+        return store.public(exports.save(ident,destination,payload['export_id'],alongside=mode=='source',kinds=payload.get('kinds')))
 
     @app.post("/api/export-receipts")
     def receipt(payload: dict): return exports.receipt(payload)
@@ -424,7 +523,7 @@ def main():
     token = boot["token"]
     if not isinstance(token, str) or len(token)<32: raise ValueError("会话凭据无效")
     legacy_root = os.environ.get("PDF2ZH_LEGACY_ROOT", str(home))
-    migrate_config(home, legacy_root)
+    migrate_config(home, legacy_root,protect_backup=True)
     listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     listener.bind(("127.0.0.1", 0)); listener.listen(128)
     port = listener.getsockname()[1]

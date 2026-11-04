@@ -12,14 +12,17 @@ public partial class ResultsPage : Page
     public ResultsPage(WorkbenchViewModel vm)
     {
         this.vm=vm;InitializeComponent();DataContext=vm;LibraryMotion.Attach(this,vm.Appearance);
-        var completed=new ListCollectionView(vm.Store.Tasks){Filter=x=>x is TaskRow row&&row.Status=="done"};
+        var completed=new ListCollectionView(vm.Store.Tasks){Filter=x=>x is TaskRow row&&row.Terminal};
+        completed.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TaskRow.ArticleKey)));
         CompletedTasks.ItemsSource=completed;
         vm.Store.PropertyChanged+=(_,e)=>{if(e.PropertyName==nameof(TaskStore.Summary))completed.Refresh();};
-        Loaded+=(_,_)=>{if(vm.SelectedTask?.Status!="done")vm.SelectedTask=completed.Cast<TaskRow>().FirstOrDefault();};
+        Loaded+=(_,_)=>{if(vm.SelectedTask?.Terminal!=true)vm.SelectedTask=completed.Cast<TaskRow>().FirstOrDefault();};
     }
     private void TaskSelectionChanged(object sender,SelectionChangedEventArgs e)
     {if(IsLoaded&&IsVisible&&CompletedTasks.SelectedItem is TaskRow row&&!ReferenceEquals(vm.SelectedTask,row))vm.SelectedTask=row;}
     private void OpenFileClicked(object sender,RoutedEventArgs e)=>Open(sender,false);
+    private void ChooseExportFolder(object sender,RoutedEventArgs e)
+    {var dialog=new Microsoft.Win32.OpenFolderDialog {Title="选择本次结果保存目录"};if(dialog.ShowDialog()==true){vm.ExportDirectory=dialog.FolderName;vm.ExportToSource=false;}}
     private void OpenFolderClicked(object sender,RoutedEventArgs e)=>Open(sender,true);
     private void Open(object sender,bool folder)
     {

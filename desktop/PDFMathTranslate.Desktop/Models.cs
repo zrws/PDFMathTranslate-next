@@ -22,7 +22,15 @@ public static class LanguageChoices
         var value=new Choice(code,label);choices.Add(value);return value;
     }
 }
-public sealed record ImportedFile(string Id, string Filename, int Pages, long Bytes);
+public sealed record ImportedFile(string Id, string Filename, int Pages, long Bytes,string SourceDirectory="")
+{
+    public string PageLabel=>$"{Pages} 页";
+}
+public sealed record ChannelProfile(string Id,string Name,string Service,string BaseUrl,string Model,bool ApiKeySet,int Revision=1)
+{
+    public string Summary=>$"{Service} · {(string.IsNullOrEmpty(Model)?"未指定模型":Model)}";
+    public override string ToString()=>Name;
+}
 public sealed record PreviewFrame(byte[] Image,int Pages,int Page);
 public sealed record GlossaryRow(string Source,string Target,string File);
 public sealed record SavedOutput(string FullPath)
@@ -48,7 +56,14 @@ public sealed class TaskRow : ObservableObject
     public string SavedPaths => value.TryGetProperty("saved_paths", out var paths) ? string.Join(Environment.NewLine, paths.EnumerateArray().Select(x => x.GetString())) : "";
     public IReadOnlyList<SavedOutput> SavedFiles => SavedPaths.Split(Environment.NewLine,StringSplitOptions.RemoveEmptyEntries).Select(x=>new SavedOutput(x)).ToArray();
     public string PlannedDirectory => value.TryGetProperty("options",out var options)&&options.TryGetProperty("export_dir",out var dir)?dir.GetString()??"":"";
-    public string Detail => $"{Filename}　{Languages}\n{Stage} · {Message}\n{Error}\n{SavedPaths}".Trim();
+    public string SourceDirectory=>Option("source_directory");
+    public string SaveMode=>Option("save_mode");
+    public string ArticleTitle=>Path.GetFileNameWithoutExtension(Filename);
+    public string ArticleKey=>SourceDirectory+"|"+Filename;
+    public string ChannelName=>Option("channel_name") is {Length:>0} name?name:"历史配置";
+    public string CreatedLabel=>value.TryGetProperty("created_at",out var time)?DateTimeOffset.FromUnixTimeSeconds((long)time.GetDouble()).LocalDateTime.ToString("MM-dd HH:mm"):"";
+    private string Option(string name)=>value.TryGetProperty("options",out var options)&&options.TryGetProperty(name,out var p)&&p.ValueKind==JsonValueKind.String?p.GetString()??"":"";
+    public string Detail => $"{Filename}　{Languages}\n渠道：{ChannelName}\n{Stage} · {Message}\n{Error}\n{SavedPaths}".Trim();
     public IEnumerable<string> Kinds => value.TryGetProperty("outputs", out var outputs) ? outputs.EnumerateObject().Select(x => x.Name).ToArray() : [];
     private string Text(string key) => value.TryGetProperty(key, out var p) && p.ValueKind == JsonValueKind.String ? p.GetString() ?? "" : "";
     public void Update(JsonElement data)

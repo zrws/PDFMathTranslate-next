@@ -116,7 +116,7 @@ def test_exports_versions_idempotency_and_no_overwrite(store, tmp_path):
     first_id = str(uuid.uuid4())
     first = exports.save(task["id"], str(destination), first_id)
     assert len(first["saved_paths"]) == 1
-    path = Path(first["saved_paths"][0]); assert path.name == "科学论文_双语.pdf"
+    path = Path(first["saved_paths"][0]); assert path.name == "科学论文_双语对照.pdf"
     original = path.read_bytes()
     again = exports.save(task["id"], str(destination), first_id)
     assert again["saved_paths"] == first["saved_paths"]
@@ -124,7 +124,7 @@ def test_exports_versions_idempotency_and_no_overwrite(store, tmp_path):
         list(pool.map(lambda _: exports.save(task["id"], str(destination), str(uuid.uuid4())), range(3)))
     current = store.get(task["id"])
     assert len(current["saved_paths"]) == 4 and path.read_bytes() == original
-    assert {Path(p).name for p in current["saved_paths"]} == {"科学论文_双语.pdf", "科学论文_双语_v2.pdf", "科学论文_双语_v3.pdf", "科学论文_双语_v4.pdf"}
+    assert {Path(p).name for p in current["saved_paths"]} == {"科学论文_双语对照.pdf", "科学论文_双语对照_第2版.pdf", "科学论文_双语对照_第3版.pdf", "科学论文_双语对照_第4版.pdf"}
     assert not list(destination.rglob("*.partial")) and not list(destination.rglob("*.reserve"))
 
 

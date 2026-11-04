@@ -114,11 +114,15 @@ class Engine:
             outputs = {}
             if finished and not failure and not cancelled and child.returncode==0:
                 allowed=(self.home/"work/outputs"/ident).resolve()
+                options=self.store.get(ident)['options']
                 for kind,name in finished.items():
+                    if kind=='dual' and options.get('no_dual') or kind=='mono' and options.get('no_mono') or kind=='glossary' and options.get('auto_term_extraction') is False:continue
                     path=Path(name).resolve()
                     if kind not in {"dual","mono","glossary"} or not path.is_relative_to(allowed) or not path.is_file():raise ValueError("引擎输出路径无效")
                     outputs[kind]={"path":str(path),"output_revision":1,**file_identity(path)}
                 if not outputs:raise ValueError("翻译引擎未生成输出")
+                required={kind for kind,flag in (('dual','no_dual'),('mono','no_mono')) if flag in options and not options[flag]}
+                if not required.issubset(outputs):raise ValueError('翻译引擎没有生成全部勾选的 PDF 类型')
             with self.store.lock:
                 cancelled = cancelled or self.store.get(ident)["cancel_requested"]
                 if cancelled:

@@ -10,6 +10,7 @@ public sealed class BackendClient : IDisposable
     private readonly HttpClient http;
 #if DEBUG
     internal Func<string,bool>? SimulateLostResponse {get;set;}
+    internal Func<string,Task>? BeforeReturn {get;set;}
 #endif
     public BackendClient(Uri address, string token)
     {
@@ -24,6 +25,7 @@ public sealed class BackendClient : IDisposable
         using var response = await http.SendAsync(request, ct);
         var result=await Parse(response,ct);
 #if DEBUG
+        if(BeforeReturn is {} beforeReturn)await beforeReturn(path);
         if(SimulateLostResponse?.Invoke(path)==true)throw new HttpRequestException("本机测试注入：响应在接收确认前丢失");
 #endif
         return result;
@@ -45,9 +47,10 @@ public sealed class BackendClient : IDisposable
         await using var stream = File.OpenRead(path);
         using var body = new MultipartFormDataContent();
         body.Add(new StreamContent(stream), "file", Path.GetFileName(path));
+        body.Add(new StringContent(Path.GetFullPath(path)),"source_path");
         using var response = await http.PostAsync("api/files", body, ct);
         var data = await Parse(response, ct);
-        return new ImportedFile(data.GetProperty("file_id").GetString()!, data.GetProperty("filename").GetString()!, data.GetProperty("page_count").GetInt32(), data.GetProperty("size_bytes").GetInt64());
+        return new ImportedFile(data.GetProperty("file_id").GetString()!, data.GetProperty("filename").GetString()!, data.GetProperty("page_count").GetInt32(), data.GetProperty("size_bytes").GetInt64(),data.TryGetProperty("source_directory",out var source)?source.GetString()??"":"");
     }
     public async Task<PreviewFrame> PreviewAsync(string path, CancellationToken ct)
     {

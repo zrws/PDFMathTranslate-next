@@ -8,14 +8,34 @@
   <ScrollViewer Grid.Row="1" x:Name="SettingsScroll" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
    <StackPanel MaxWidth="1000" Margin="0,0,4,0" HorizontalAlignment="Stretch">
     <ui:CardExpander Icon="{ui:SymbolIcon Translate24}" IsExpanded="True" Margin="0,0,0,16">
-     <ui:CardExpander.Header><StackPanel><ui:TextBlock Text="翻译服务" FontTypography="BodyStrong"/><ui:TextBlock Text="引擎、模型和访问凭据" Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontTypography="Caption"/></StackPanel></ui:CardExpander.Header>
+     <ui:CardExpander.Header><StackPanel><ui:TextBlock Text="渠道管理" FontTypography="BodyStrong"/><ui:TextBlock Text="{Binding ActiveChannelName,StringFormat=当前使用：{0}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontTypography="Caption"/></StackPanel></ui:CardExpander.Header>
      <Grid>
-      <Grid.ColumnDefinitions><ColumnDefinition Width="130"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-      <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-      <ui:TextBlock Text="翻译引擎" VerticalAlignment="Center"/><ComboBox Grid.Column="1" ItemsSource="{Binding Services}" SelectedItem="{Binding Service}" HorizontalAlignment="Stretch" AutomationProperties.Name="翻译服务"/>
-      <ui:TextBlock Grid.Row="1" Text="模型" VerticalAlignment="Center" Margin="0,12,0,0"/><ui:TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Model,UpdateSourceTrigger=PropertyChanged}" PlaceholderText="模型名称" Margin="0,12,0,0" AutomationProperties.Name="模型名称"/>
-      <ui:TextBlock Grid.Row="2" Text="API 地址" VerticalAlignment="Center" Margin="0,12,0,0"/><ui:TextBox Grid.Row="2" Grid.Column="1" Text="{Binding BaseUrl,UpdateSourceTrigger=PropertyChanged}" PlaceholderText="使用服务默认地址，或填写兼容 API 地址" Margin="0,12,0,0" AutomationProperties.Name="API 地址"/>
-      <ui:TextBlock Grid.Row="3" Text="API 密钥" VerticalAlignment="Top" Margin="0,20,0,0"/><StackPanel Grid.Row="3" Grid.Column="1" Margin="0,12,0,0"><ui:PasswordBox x:Name="ApiKey" PasswordChanged="KeyChanged" RevealButtonEnabled="False" PlaceholderText="留空保留已保存的密钥" AutomationProperties.Name="新的 API 密钥"/><ui:TextBlock Text="{Binding ApiKeyState}" FontTypography="Caption" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0"/></StackPanel>
+      <Grid.ColumnDefinitions><ColumnDefinition Width="190"/><ColumnDefinition Width="20"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+      <StackPanel>
+       <DockPanel Margin="0,0,0,12"><ui:Button DockPanel.Dock="Right" Content="新建" Command="{Binding NewChannelCommand}"/><ui:TextBlock Text="已保存渠道" FontTypography="BodyStrong" VerticalAlignment="Center"/></DockPanel>
+       <ListBox ItemsSource="{Binding Channels}" SelectedItem="{Binding SelectedChannel,Mode=TwoWay}" MinHeight="160" MaxHeight="280" ScrollViewer.HorizontalScrollBarVisibility="Disabled" AutomationProperties.Name="已保存渠道">
+        <ListBox.ItemTemplate><DataTemplate><StackPanel Margin="4,8"><ui:TextBlock Text="{Binding Name}" FontTypography="BodyStrong" TextTrimming="CharacterEllipsis"/><ui:TextBlock Text="{Binding Summary}" FontTypography="Caption" TextTrimming="CharacterEllipsis" Margin="0,6,0,0"/></StackPanel></DataTemplate></ListBox.ItemTemplate>
+       </ListBox>
+       <ui:Button Content="使用已保存配置" Command="{Binding ActivateChannelCommand}" HorizontalAlignment="Stretch" Margin="0,12,0,8"/>
+       <ui:Button Content="删除所选渠道" Command="{Binding DeleteChannelCommand}" Appearance="Transparent" HorizontalAlignment="Stretch"/>
+      </StackPanel>
+      <StackPanel Grid.Column="2">
+       <ui:TextBlock Text="渠道名称" Margin="0,0,0,6"/>
+       <ui:TextBox Text="{Binding ChannelName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" PlaceholderText="例如：主用中转、本地模型、备用渠道" AutomationProperties.Name="渠道名称"/>
+       <ui:TextBlock Text="翻译引擎" Margin="0,12,0,6"/>
+       <ComboBox ItemsSource="{Binding Services}" SelectedItem="{Binding Service,Mode=TwoWay}" HorizontalAlignment="Stretch" AutomationProperties.Name="翻译服务"/>
+       <ui:TextBlock Text="API 地址" Margin="0,12,0,6"/>
+       <ui:TextBox Text="{Binding BaseUrl,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" PlaceholderText="兼容地址一般以 /v1 结尾" AutomationProperties.Name="API 地址"/>
+       <ui:TextBlock Text="API 密钥" Margin="0,12,0,6"/>
+       <ui:PasswordBox x:Name="ApiKey" PasswordChanged="KeyChanged" RevealButtonEnabled="False" PlaceholderText="留空保留本渠道密钥" AutomationProperties.Name="新的 API 密钥"/>
+       <ui:TextBlock Text="{Binding ApiKeyState}" FontTypography="Caption" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,8"/>
+       <ui:ToggleSwitch Content="清除此渠道已存密钥" IsChecked="{Binding ClearChannelKey,Mode=TwoWay}" Margin="0,0,0,12"/>
+       <ui:TextBlock Text="模型（可探测，也可手动输入）" Margin="0,0,0,6"/>
+       <ComboBox x:Name="ModelInput" ItemsSource="{Binding DetectedModels}" Text="{Binding Model,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsEditable="True" IsTextSearchEnabled="False" HorizontalAlignment="Stretch" AutomationProperties.Name="模型名称"/>
+       <WrapPanel Margin="0,12,0,4"><ui:Button Content="探测模型" Command="{Binding DiscoverModelsCommand}" Margin="0,0,8,8"/><ui:Button Content="测试渠道" Command="{Binding TestChannelCommand}" Margin="0,0,8,8"/><ui:Button Content="保存并使用" Appearance="Primary" Command="{Binding SaveChannelCommand}" Margin="0,0,0,8"/></WrapPanel>
+       <ui:TextBlock Text="测试发送一条简短请求；探测草稿不会切换当前渠道。" FontTypography="Caption" Foreground="{DynamicResource TextFillColorSecondaryBrush}" TextWrapping="Wrap"/>
+       <ui:InfoBar IsOpen="True" IsClosable="False" Severity="Informational" Message="{Binding ChannelState}" Margin="0,12,0,0"/>
+      </StackPanel>
      </Grid>
     </ui:CardExpander>
     <ui:TextBlock Text="资源与性能" FontTypography="BodyStrong" Margin="0,4,0,10"/>
@@ -43,7 +63,9 @@
        <ui:TextBox Text="{Binding SaveDirectory,UpdateSourceTrigger=PropertyChanged}" PlaceholderText="选择译文保存位置" AutomationProperties.Name="默认保存目录"/>
        <ui:Button Grid.Column="1" Content="选择目录" Icon="{ui:SymbolIcon FolderOpen24}" Click="ChooseFolder" Margin="8,0,0,0"/>
       </Grid>
-      <ui:TextBlock Text="按「PDF名_日期」归档。同日多次保存生成不同版本，已有文件保留。" FontTypography="Caption" Foreground="{DynamicResource TextFillColorSecondaryBrush}" TextWrapping="Wrap"/>
+      <ui:ToggleSwitch Content="直接保存到每份源 PDF 旁边" IsChecked="{Binding UseSourceDirectory,Mode=TwoWay}" Margin="0,4,0,12"/>
+      <ui:TextBlock Text="自定义目录按文章建文件夹；源目录模式直接放在 PDF 旁。重名时保留新版本。" FontTypography="Caption" Foreground="{DynamicResource TextFillColorSecondaryBrush}" TextWrapping="Wrap"/>
+      <ui:Button Content="保存目录与方式" Command="{Binding SaveDirectoryCommand}" Margin="0,12,0,0"/>
      </StackPanel>
     </ui:Card>
     <ui:CardExpander Icon="{ui:SymbolIcon DocumentCopy24}" IsExpanded="False" Margin="0,0,0,16">
