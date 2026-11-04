@@ -14,7 +14,7 @@
     <Grid><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
      <ui:TextBlock Text="已完成文档" FontTypography="BodyStrong" Margin="0,0,0,12"/>
      <ListBox x:Name="CompletedTasks" Grid.Row="1" SelectedItem="{Binding SelectedTask,Mode=OneWay}" SelectionChanged="TaskSelectionChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizing="True" AutomationProperties.Name="已完成文档">
-      <ListBox.ItemTemplate><DataTemplate><StackPanel Margin="4,8"><ui:TextBlock Text="{Binding Filename}" FontTypography="BodyStrong" TextTrimming="CharacterEllipsis" ToolTip="{Binding Filename}"/><ui:TextBlock Text="{Binding Languages}" FontTypography="Caption" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0"/></StackPanel></DataTemplate></ListBox.ItemTemplate>
+      <ListBox.ItemTemplate><DataTemplate><StackPanel Margin="4,8"><ui:TextBlock Text="{Binding Filename}" FontTypography="BodyStrong" TextTrimming="CharacterEllipsis" ToolTip="{Binding Filename}"/><ui:TextBlock Text="{Binding Languages}" FontTypography="Caption" Margin="0,6,0,0"/></StackPanel></DataTemplate></ListBox.ItemTemplate>
      </ListBox>
      <ui:Button Grid.Row="2" Content="更多历史" Icon="{ui:SymbolIcon History24}" Command="{Binding MoreHistoryCommand}" Margin="0,12,0,0"/>
     </Grid>
