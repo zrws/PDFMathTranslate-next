@@ -1,0 +1,2 @@
+  PDFMathTranslate.Desktop -> D:\student\翻译\PDFMathTranslate-next\desktop\PDFMathTranslate.Desktop\bin\Debug\net10.0-windows\win-x64\PDFMathTranslate.dll
+  PDFMathTranslate.Desktop -> D:\student\翻译\PDFMathTranslate-next\.local\ui-channels-final\

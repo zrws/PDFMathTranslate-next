@@ -1,0 +1,12 @@
+{
+  "peak_threads": 100.0,
+  "workflow_wall_seconds": 255.72024989128113,
+  "observed_identity_count": 45,
+  "peak_private_bytes": 3388551168.0,
+  "samples": 387,
+  "observed_cpu_seconds": 348.9375,
+  "scope": "Derived only from fresh-identity kernel Job samples; summed working sets can double-count shared pages; observed CPU is a sampling lower bound; no baseline/GPU/idle comparison",
+  "raw_sha256": "D0AFA8F8361D9A3E85182AEDD6A01AA53591685B9E10FB1A32C5A91D7D093875",
+  "surviving_identity_count": 0,
+  "peak_summed_working_set_bytes": 3023704064.0
+}

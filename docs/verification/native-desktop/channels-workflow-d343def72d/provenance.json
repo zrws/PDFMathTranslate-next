@@ -1,0 +1,199 @@
+{
+  "root": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-0814d6ecd733\\payload\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pdf2zh_next",
+  "files": [
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-0814d6ecd733\\payload\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pdf2zh_next\\desktop\\server.py",
+      "sha256": "b19e494ef535ea3fed057237933f83dd5d1cc4c442fe3ec1bd23839fa184cd41"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-0814d6ecd733\\payload\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pdf2zh_next\\desktop\\channels.py",
+      "sha256": "f95fd8d36ce801ab4fdcf5d1d40981a05ee91ca781f6d4857df1a32b675f2fe4"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-0814d6ecd733\\payload\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pdf2zh_next\\desktop\\protected_config.py",
+      "sha256": "ce63db5add2d2a4ab603e816d686047984ab7b3e4f0a3ed717fe7482646f8b0f"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-0814d6ecd733\\payload\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pdf2zh_next\\desktop\\runtime.py",
+      "sha256": "fc7f36cb32dcb884b29ac396055e53f2cfd567f53448aaf7dc063c13450452b2"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-0814d6ecd733\\payload\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pdf2zh_next\\desktop\\settings_transaction.py",
+      "sha256": "a98d066287d1ca5ca752ed431161deb72622edfb29149732180423d9c4b9f6dd"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-0814d6ecd733\\payload\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pdf2zh_next\\desktop\\engine.py",
+      "sha256": "84d8865524cc01a2c69a0dad06f5c4e79de5a6ff6c8734efe4254e09a8162d03"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-0814d6ecd733\\payload\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pdf2zh_next\\desktop\\exports.py",
+      "sha256": "1c26b7903f2690e7b00a7f3005ab0d70ac9fdf9d6412a567a4a958a67dfe2449"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-0814d6ecd733\\payload\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pdf2zh_next\\desktop\\worker.py",
+      "sha256": "6105d82a5f87df356214df43a44237e0bcd25e2e3436fd539bac2ac35b5012ea"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-0814d6ecd733\\payload\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pdf2zh_next\\desktop\\snapshots.py",
+      "sha256": "a6896e5e1e6fabffcfa17174d691f9ba737d031a523d4898894b10dd09ab7d3c"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-0814d6ecd733\\payload\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pdf2zh_next\\config\\main.py",
+      "sha256": "7f2b13da73100e04a8120c1bb13a476010039183fa08478d81d6d2beffde68b8"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-0814d6ecd733\\payload\\uv-tools\\pdf2zh-next\\Lib\\site-packages\\pdf2zh_next\\http_api.py",
+      "sha256": "d8b06edd14bd6e641b2d75aa7ecbbc40c05d9065c97d67a56b71a362b4ad3c34"
+    }
+  ],
+  "source_mode": "packaged",
+  "ui_exe_sha256": "c29035351ca073e17aebe2faad584fade7bc232f23adacecf84add522fb6c4f4",
+  "ui_dll_sha256": "6685e0bad394e70b19805235147498353895b941a6b63f85127159a96cefe548",
+  "driver_sha256": "addb9d74395b5761cf97ab58afc1610731cdc334518164d23c943649a783032f",
+  "ownership_helper_sha256": "89d26c6612185b0421e49734896def89cc47be39c9c600522b18c497602e3c39",
+  "profile": {
+    "PDF2ZH_APP_ROOT": "D:\\student\\翻译\\PDFMathTranslate-next",
+    "PDF2ZH_RUNTIME_ROOT": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-0814d6ecd733\\payload",
+    "PDF2ZH_SOURCE_ROOT": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-0814d6ecd733\\payload\\uv-tools\\pdf2zh-next\\Lib\\site-packages",
+    "PDF2ZH_HOME": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\channels-workflow-d343def72d\\home"
+  },
+  "profile_sha256": "9c3ea2deeef3d7ca06922dbba825ff529c66081b6f3a82a0797988f142beac0b",
+  "source_commit": "a329045840db30a0b60221408f952baac409c345",
+  "samples": [
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\channels-workflow-d343def72d\\source-1\\论文1.pdf",
+      "sha256": "9e6e1851410a4d33a7306ac4ae34d6f68e94427828428d752e117a9fc08c9059"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\channels-workflow-d343def72d\\source-2\\论文2.pdf",
+      "sha256": "8f39c99dcf8c9b23e1a4143335943e750a320d290a300309e91555707812ded1"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\channels-workflow-d343def72d\\source-3\\论文3.pdf",
+      "sha256": "a9134566fda8798a4337c879b6540a51d5c16ab286e6bad385e8e4668105544e"
+    }
+  ],
+  "source_dirty": false,
+  "native_source_files": [
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/App.xaml",
+      "sha256": "34f1fe94ecea948ba57b814b41e9279f417a07ee60d152d028c401293836b53f"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/App.xaml.cs",
+      "sha256": "e5ceae56fef2b1c89fe362a9d1aab6de43bc006947203f32ac9db34230a47324"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/BackendClient.cs",
+      "sha256": "c99eaea62a8a369d56d592f8c6360d5ed515e69cb60775eafa14a2e29e3ff24c"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/BackendSupervisor.cs",
+      "sha256": "89f0e40e0da37ca953e4b8618334d770cbf1ef7394a6bd8a0f9f54649e6ce053"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/ChannelsViewModel.cs",
+      "sha256": "6fd575c9170591f1cd9e5ff5cd3e7ed11d77cb70e402985c2bd09d89d78620e1"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/DesktopAppearance.cs",
+      "sha256": "4b5cbc10bb5243b2c4b380b8213d811d15059ead19fc919f1fef49d23593d3e8"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/GlobalUsings.cs",
+      "sha256": "9eb56b713f4bd450c169f140e74ff7b6d5e456f3742a30188b947223d01628e4"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/GlossaryPage.xaml",
+      "sha256": "c697b42f9b47f35cf79de77a538ed2489d719148f519bd51756ea1bed56eddeb"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/GlossaryPage.xaml.cs",
+      "sha256": "08911b4b206d0d73437693a8da69d9dad013653b6cab3271784bcee9b06b2f07"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/LibraryMotion.cs",
+      "sha256": "e03507cc24ba80d8504e52654b29af171bf03ee27bd2cc5736ba6ce880b7d259"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/MainWindow.xaml",
+      "sha256": "5bd68d84d8a4ea144b69262c1bfb4d8e92e245a3bff48178e7e67c9dbdc87a5b"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/MainWindow.xaml.cs",
+      "sha256": "9b7a1991f83949768a5b386374c0df860d13075c08a90ca93dfa973f4feda597"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/Models.cs",
+      "sha256": "fe45cb6b7b57afcff3a52c348ebcc0cff0cc468533bb0499c1176b7bdf1041fc"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/NativeJob.cs",
+      "sha256": "def90d5c9f5fd9a2756843874e2026e5078d76beceba03c3fb19e2f546e5ed9a"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/NativeUiVerification.cs",
+      "sha256": "d11c8563a38ce62bccefba793eb82007533d180c2ac9a9d6aad0b2d13bf07158"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/NativeWorkflowVerification.cs",
+      "sha256": "b8ccbcf266d9605980c1dd9cef06780ed9ee85899431d739aaf7f1c91d140a80"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/OperationOutbox.cs",
+      "sha256": "ac242b932b267b8d321aee7feaf106df8406448ce59826be22645b6b310c79a9"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/packages.lock.json",
+      "sha256": "70432c585cb472fe9bdb93019a96bf8abe309650ebaefd6cd231304f39f02820"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/PDFMathTranslate.Desktop.csproj",
+      "sha256": "9562c6326e4d0c3f71ce185c2f7d61a821432a695d95e3cf8824ab2c8a651bc1"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/PresentationConverters.cs",
+      "sha256": "dd605be60b5aae0def65d5200d1054ec16689028e191546fcaf2d812ee35b87c"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/ResultsPage.xaml",
+      "sha256": "d808a7e4bc9be033e6a12a1bbcc48da35b98b06243d089e1f9d6ecd38e75362e"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/ResultsPage.xaml.cs",
+      "sha256": "7a70ba9cda10297b97c9773e074b850e276c542522cc816732625308a260c8bb"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/SettingsPage.xaml",
+      "sha256": "7bd3ff2d04feea4cf20b7a7c4277096423be51a17b1c6a53a89af8938ce7b4e7"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/SettingsPage.xaml.cs",
+      "sha256": "935594e1cf57786d70abbdf8553c3fbde73d3a16c0845963d9a4a7a9826b0121"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/TasksPage.xaml",
+      "sha256": "0c842413f557682567a654af1cb5ef040ac541a51427089a705bd12b6bc2eb83"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/TasksPage.xaml.cs",
+      "sha256": "f6b3e35736cac201f51e045cca287986d9f8a52abbcb5b0bc2f400e908fbf3f5"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/UpdateService.cs",
+      "sha256": "33e64673d975390d93e02d23cd25ecd3704fc5ae60c8e14eca76ea6051e86219"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/WorkbenchPage.xaml",
+      "sha256": "c784481d81bad1b84166180c59318b755909cf0acbf9d925cddbdd363aa42967"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/WorkbenchPage.xaml.cs",
+      "sha256": "7d644019998b016ecbd0fbb7602607dc0c0b81a42646ab1001adadb8b2949eb1"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/WorkbenchViewModel.cs",
+      "sha256": "67c775280851c4cbab37ba2fe8cd1cae088d59f5d3d8e1c0a0e3918976fed49a"
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "root": "D:\\student\\翻译\\PDFMathTranslate-next\\source\\pdf2zh_next",
+  "files": [
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\server.py",
+      "sha256": "b19e494ef535ea3fed057237933f83dd5d1cc4c442fe3ec1bd23839fa184cd41"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\channels.py",
+      "sha256": "f95fd8d36ce801ab4fdcf5d1d40981a05ee91ca781f6d4857df1a32b675f2fe4"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\protected_config.py",
+      "sha256": "ce63db5add2d2a4ab603e816d686047984ab7b3e4f0a3ed717fe7482646f8b0f"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\settings_transaction.py",
+      "sha256": "a98d066287d1ca5ca752ed431161deb72622edfb29149732180423d9c4b9f6dd"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\engine.py",
+      "sha256": "84d8865524cc01a2c69a0dad06f5c4e79de5a6ff6c8734efe4254e09a8162d03"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\exports.py",
+      "sha256": "1c26b7903f2690e7b00a7f3005ab0d70ac9fdf9d6412a567a4a958a67dfe2449"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\worker.py",
+      "sha256": "6105d82a5f87df356214df43a44237e0bcd25e2e3436fd539bac2ac35b5012ea"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\source\\pdf2zh_next\\desktop\\snapshots.py",
+      "sha256": "a6896e5e1e6fabffcfa17174d691f9ba737d031a523d4898894b10dd09ab7d3c"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\source\\pdf2zh_next\\config\\main.py",
+      "sha256": "7f2b13da73100e04a8120c1bb13a476010039183fa08478d81d6d2beffde68b8"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\source\\pdf2zh_next\\http_api.py",
+      "sha256": "d8b06edd14bd6e641b2d75aa7ecbbc40c05d9065c97d67a56b71a362b4ad3c34"
+    }
+  ],
+  "source_mode": "repository overlay",
+  "ui_exe_sha256": "c29035351ca073e17aebe2faad584fade7bc232f23adacecf84add522fb6c4f4",
+  "ui_dll_sha256": "55f241f3c3981ce87a1ec817fe3ff69f56e90b98d48ea79697c816f1f0ca3c85",
+  "driver_sha256": "752f333d4b9698d9ec73d0ddddb9ccc531b7a4ea266ed0b3be69fc32af57f18a",
+  "ownership_helper_sha256": "89d26c6612185b0421e49734896def89cc47be39c9c600522b18c497602e3c39",
+  "profile": {
+    "PDF2ZH_APP_ROOT": "D:\\student\\翻译\\PDFMathTranslate-next",
+    "PDF2ZH_RUNTIME_ROOT": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-cd32fa24a67f\\payload",
+    "PDF2ZH_SOURCE_ROOT": "D:\\student\\翻译\\PDFMathTranslate-next\\source",
+    "PDF2ZH_HOME": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\channels-workflow-e07f88b9b3\\home"
+  },
+  "profile_sha256": "11396db56e3bb9072aac07e2759b43ad5d516092621e3ee85eb111d1d000a581",
+  "source_commit": "74d54222b58f8ab8ab104aabe6eba66978cc6290",
+  "samples": [
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\channels-workflow-e07f88b9b3\\source-1\\论文1.pdf",
+      "sha256": "86cd5c636bff7096faa17e4cad0feb33663d9cae5df7757e2547662856519cd2"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\channels-workflow-e07f88b9b3\\source-2\\论文2.pdf",
+      "sha256": "8fcdfd3338959ae5594b1ab7e0ba11c8daa374f35a58b244749d01b2b4e29572"
+    },
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\channels-workflow-e07f88b9b3\\source-3\\论文3.pdf",
+      "sha256": "920ad57195959d62442a0d7c3d480fa226daff5fbb167ca3ed75f3d2f4d97be3"
+    }
+  ]
+}

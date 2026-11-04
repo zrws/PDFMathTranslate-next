@@ -1,0 +1,29 @@
+{
+  "scope": "Independent final read-only index and staged blob audit; correction of expected index-self-exclusion classification; original audit and all original byte observations retained",
+  "index_sha256": "c22687d00b9c8c32601520811f1509e24deb4deefd638ecfd6cba87c8b8a7f71",
+  "index_source_commit": "a329045840db30a0b60221408f952baac409c345",
+  "evidence_roots": 17,
+  "evidence_rows": 191,
+  "source_rows": 520,
+  "exclusions": 0,
+  "filesystem_hash_or_size_mismatches": [],
+  "duplicate_evidence_paths": 0,
+  "root_extra_files": [],
+  "root_missing_files": [],
+  "evidence_or_index_missing_from_git_index": [],
+  "git_blob_byte_mismatches": [],
+  "staged_count_at_audit": 196,
+  "staged_extra_evidence": [],
+  "staged_forbidden_files": [],
+  "staged_non_docs": [],
+  "high_confidence_credential_texts_scanned": 143,
+  "high_confidence_credential_pattern_hits": [],
+  "product_diff_from_frozen_commit": [],
+  "passed": true,
+  "expected_index_self_exclusion": "docs/verification/native-desktop/channels-delivery-20261104-a329045/delivery-index.json",
+  "reviewer_correction": {
+    "prior_file": "CHANNELS-FINAL-DELIVERY-REVIEW-2026-11-04.json",
+    "prior_sha256": "4dccdbef4d9f0bd1171e3ccb718fb1a41054424f6d7d7ed066e220c90597b673",
+    "reason": "Initial classification counted delivery-index.json itself as an extra evidence file. The index cannot contain its own hash; it is separately SHA-bound and its actual staged blob matched. No source/evidence byte mismatch or missing file existed. Only this classification is corrected; not a test rerun."
+  }
+}

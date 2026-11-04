@@ -1,0 +1,28 @@
+{
+  "scope": "Independent final static package and owned functional evidence review; formula/quality limitations retained",
+  "source_commit": "a329045840db30a0b60221408f952baac409c345",
+  "no_product_or_network_execution": true,
+  "package_static_accepted": true,
+  "functional_evidence_accepted": true,
+  "product_file_count": 57,
+  "python_file_count": 53,
+  "native_file_count": 30,
+  "packaged_module_count": 11,
+  "owned_samples": 387,
+  "peak_private_bytes": 3388551168,
+  "peak_summed_working_set_bytes": 3023704064,
+  "peak_threads": 100,
+  "observed_cpu_seconds": 348.9375,
+  "workflow_wall_seconds": 255.72024989128113,
+  "functional_body_gate_passed": true,
+  "formula_quality_passed": false,
+  "prior_reviewer_comparison_false_preserved": true,
+  "bindings": {
+    "package-review.json": "E57568F7995C1FDD7AE4E2FDD20EB774DFB4567D9D0939CA5B5D80A70DF9E1F9",
+    "evidence-review.json": "C30F7A8B1E02CF1924694E2924728D4FCD78541077D5CFD5E7CCB550F864B3B7",
+    "nuget-content-review.json": "A588FEE28BAAB83FA481C3AF9FACA88BD4BDA512631D6273B6FDBDD52C646918",
+    "evidence-review-r2.json": "DDB33A5F28DF1812120723C5F5AA268FE33A7C4F6B7F7F76560DA235E020B3E0",
+    "pdf-body-review.json": "462F51BDBB08ED673FDEE11F320B2DFD46B8392713FC84617C36D96B9D432B3D",
+    "pdf-body-scope.json": "5A6D034958D005D74EE2FCCD88E31D8108278E8E49B657918F124B1C58952F47"
+  }
+}

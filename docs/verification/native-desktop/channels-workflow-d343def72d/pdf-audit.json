@@ -1,0 +1,30 @@
+[
+  {
+    "task_id": "57420c801f80421f",
+    "kind": "mono",
+    "pages": 7,
+    "sha256": "d3b559801c753629cdff52cddaf7e177fc137cdfc4f6ca8f8bf6aab23f28eaec",
+    "last_page_has_chinese": true
+  },
+  {
+    "task_id": "4587f650acf64e0e",
+    "kind": "dual",
+    "pages": 1,
+    "sha256": "9b761e48c8a311beedfae7548cf55ec7552df4c92aa62931c12cd47f040475d4",
+    "last_page_has_chinese": true
+  },
+  {
+    "task_id": "4e4795d7b5a7444f",
+    "kind": "dual",
+    "pages": 2,
+    "sha256": "aa5f5ef1d86305efa5bf43965c538aa7a0b06e4bec8067aa68275fdcff60d66d",
+    "last_page_has_chinese": true
+  },
+  {
+    "task_id": "2961ba9eeacd4c7b",
+    "kind": "dual",
+    "pages": 7,
+    "sha256": "c37904e7cfde7490decb48643174973d7d693ab6f25c2d82db2fae622a33109a",
+    "last_page_has_chinese": true
+  }
+]

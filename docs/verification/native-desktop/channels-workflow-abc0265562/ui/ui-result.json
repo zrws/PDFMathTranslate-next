@@ -1,0 +1,67 @@
+{
+  "api_ready": true,
+  "real_window_visible": true,
+  "window_handle": 76810388,
+  "window_ready_ms": 1753.9874,
+  "api_ready_ms": 6957.98,
+  "render_kind": "actual running WPF visual tree, RenderTargetBitmap; not OS input automation",
+  "ui_dll_sha256": "5B5AAAC2AF7712DF23C0D274AC027BBFEFC80B24589E3080DBE41E80D648B0CA",
+  "named_channel_A_saved": true,
+  "named_channel_B_saved": true,
+  "late_model_probe_does_not_modify_other_channel": true,
+  "model_discovery_is_real": true,
+  "channel_test_is_real": true,
+  "channels_and_directory_survive_backend_restart": true,
+  "protected_key_restored_after_restart": true,
+  "actual_output_controls_update_viewmodel": true,
+  "all_pages_is_default": true,
+  "three_real_files_imported": true,
+  "compact_batch_layout": {
+    "SubmitButton": {
+      "x": 248.8,
+      "y": 560,
+      "width": 316.6933333333334,
+      "height": 44
+    },
+    "SourceLanguageInput": {
+      "x": 265.8,
+      "y": 418.72,
+      "width": 125.34666666666669,
+      "height": 35.78
+    },
+    "TargetLanguageInput": {
+      "x": 423.1466666666667,
+      "y": 418.72,
+      "width": 125.34666666666669,
+      "height": 35.78
+    }
+  },
+  "three_pending_rows_not_clipped": true,
+  "batch_created_three_distinct_tasks": true,
+  "batch_channel_a33fe341ce4c4711": true,
+  "batch_channel_975f50db390146e9": true,
+  "batch_channel_11b6a33428d54484": true,
+  "all_three_documents_really_completed": true,
+  "dual_only_has_no_mono_output": true,
+  "actual_translated_page_seven": true,
+  "source_export_a33fe341ce4c4711": true,
+  "source_export_975f50db390146e9": true,
+  "source_export_11b6a33428d54484": true,
+  "mono_only_controls_update_viewmodel": true,
+  "mono_only_real_output": true,
+  "lost_export_response_is_pending": true,
+  "lost_export_replay_is_one_file": true,
+  "changed_directory_is_used_and_names_are_chinese": true,
+  "original_pdf_bytes_unchanged": true,
+  "history_is_grouped_by_three_articles": true,
+  "final_preferences_and_channels_persist": true,
+  "channel_keys_absent_from_owned_text_files": true,
+  "manual_pending": [
+    "OS file/folder dialog input",
+    "OS drag/drop",
+    "cross-monitor DPI"
+  ],
+  "passed": true,
+  "completed_at": "2026-11-04T19:20:24.9702333+08:00",
+  "process_id": 8788
+}

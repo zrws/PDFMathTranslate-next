@@ -1,0 +1,18 @@
+{
+  "debug_dll_sha256": "6685E0BAD394E70B19805235147498353895B941A6B63F85127159A96CEFE548",
+  "new_python_dependencies": 0,
+  "installer_sha256": "F80586C92829DE67ADB64D7A0BFC864AE3B11C4F2C831F10F682F45DA5A70236",
+  "installer_bytes": 225365325,
+  "previous_installer_bytes": 225338584,
+  "dependency_locks_unchanged_from_parent": true,
+  "product_file_count": 57,
+  "release_dll_sha256": "9AEE0927850B5CBA58996DFCCEB257958E0FE1E1A597B864415CEAE8C90C74E3",
+  "source_dirty": false,
+  "installer_delta_bytes": 26741,
+  "payload_bytes": 793023102.0,
+  "payload_delta_bytes": 79921.0,
+  "models_and_fonts_packaged": false,
+  "payload_files": 16432,
+  "source_commit": "a329045840db30a0b60221408f952baac409c345",
+  "scope": "Package identity and size only, not a runtime acceptance"
+}

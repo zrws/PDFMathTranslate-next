@@ -1,0 +1,14 @@
+Scientific paper page 7
+
+
+Unique page 7 marker. Scientific evidence must include every page, including page seven.
+The experiment compares a baseline with a bounded resource policy. Mathematical notation
+and paragraph order must survive translation.
+
+Each observation records its effective configuration and actual result.
+
+
+
+
+
+E = m c^2

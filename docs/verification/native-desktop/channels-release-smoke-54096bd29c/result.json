@@ -1,0 +1,34 @@
+{
+  "scope": "Release EXE process/window-handle and unauthenticated control listener smoke; no OS input, screenshot, authenticated health or translation assertion",
+  "source_commit": "a329045840db30a0b60221408f952baac409c345",
+  "driver_sha256": "BF847C1952841B18FB5D3AFBF30D73BACAEA7C2DFF6B24AA61BB6CB8C9ADCB0C",
+  "executable": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-0814d6ecd733\\payload\\PDFMathTranslate.exe",
+  "executable_sha256": "06FF8731BEE0848E469B74678EC9C719357C3AE8863AC06209BCE1066F455088",
+  "dll_sha256": "9AEE0927850B5CBA58996DFCCEB257958E0FE1E1A597B864415CEAE8C90C74E3",
+  "private_dotnet": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-0814d6ecd733\\payload\\dotnet",
+  "home": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\release-smoke-b60ff0ca6e7f4591bd115bb7a024d9a6",
+  "passed": true,
+  "main_window_handle": 26215584,
+  "unauthenticated_health_status": 401,
+  "controller_terminated": true,
+  "children": [
+    {
+      "path": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-0814d6ecd733\\payload\\uv-python\\cpython-3.12.13-windows-x86_64-none\\python.exe",
+      "started_at": "2026-11-04T19:38:23.7415091+08:00",
+      "pid": 7948,
+      "parent_pid": 16388
+    }
+  ],
+  "pid": 16388,
+  "started_at": "2026-11-04T19:38:22.0362379+08:00",
+  "control_port": 46910,
+  "runtime_module_paths": [
+    "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-0814d6ecd733\\payload\\dotnet\\host\\fxr\\10.0.14\\hostfxr.dll",
+    "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-0814d6ecd733\\payload\\dotnet\\shared\\Microsoft.NETCore.App\\10.0.14\\hostpolicy.dll",
+    "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-0814d6ecd733\\payload\\dotnet\\shared\\Microsoft.NETCore.App\\10.0.14\\coreclr.dll"
+  ],
+  "private_coreclr_loaded": true,
+  "main_actual_exit": -1,
+  "ended_at": "2026-11-04T19:38:34.0646473+08:00",
+  "observed_child_residuals": []
+}

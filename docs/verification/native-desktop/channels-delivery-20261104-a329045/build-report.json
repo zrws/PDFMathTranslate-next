@@ -1,0 +1,88 @@
+{
+  "schema": 2,
+  "id": "0814d6ecd733",
+  "version": "2.9.0",
+  "channel": "preview",
+  "source_commit": "a329045840db30a0b60221408f952baac409c345",
+  "source_dirty": false,
+  "sdk": "10.0.403",
+  "python": "Python 3.12.13",
+  "payload": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-0814d6ecd733\\payload",
+  "payload_files": 16432,
+  "payload_bytes": 793023102.0,
+  "removed": [
+    {
+      "path": "gradio",
+      "reason": "optional Gradio UI; same exclusion as prior slim build"
+    },
+    {
+      "path": "gradio_client",
+      "reason": "optional Gradio UI; same exclusion as prior slim build"
+    },
+    {
+      "path": "gradio_client-1.10.4.dist-info",
+      "reason": "optional Gradio UI; same exclusion as prior slim build"
+    },
+    {
+      "path": "gradio_pdf",
+      "reason": "optional Gradio UI; same exclusion as prior slim build"
+    },
+    {
+      "path": "gradio_pdf-0.0.22.dist-info",
+      "reason": "optional Gradio UI; same exclusion as prior slim build"
+    },
+    {
+      "path": "gradio-5.35.0.dist-info",
+      "reason": "optional Gradio UI; same exclusion as prior slim build"
+    },
+    {
+      "path": "_pytest",
+      "reason": "test-only graph verified",
+      "bytes": 1309777.0
+    },
+    {
+      "path": "iniconfig",
+      "reason": "test-only graph verified",
+      "bytes": 13529.0
+    },
+    {
+      "path": "iniconfig-2.3.1.dist-info",
+      "reason": "test-only graph verified",
+      "bytes": 4992.0
+    },
+    {
+      "path": "pluggy",
+      "reason": "test-only graph verified",
+      "bytes": 74497.0
+    },
+    {
+      "path": "pluggy-1.7.0.dist-info",
+      "reason": "test-only graph verified",
+      "bytes": 7778.0
+    },
+    {
+      "path": "pytest",
+      "reason": "test-only graph verified",
+      "bytes": 5736.0
+    },
+    {
+      "path": "pytest-9.0.2.dist-info",
+      "reason": "test-only graph verified",
+      "bytes": 15611.0
+    },
+    {
+      "sha256": "7AABFF029D1FA47CF56EDE4DBBE05DC62DA3208F07CD16471D4C966A33F9AA31",
+      "path": "cv2/opencv_videoio_ffmpeg500_64.dll",
+      "reason": "unused video codec; PDF image pipeline separately tested",
+      "bytes": 30876160
+    }
+  ],
+  "lock_sha256": "3EB8D21E800548391180C44594E2AF952EA36D071BDAD45BFCC30EFD5371E607",
+  "patch_lock_sha256": "069FF7E8D8972E5EB029AE8397845475251C9565A7040DBBF6B5CDE2E5A5055A",
+  "nuget_lock_sha256": "70432C585CB472FE9BDB93019A96BF8ABE309650EBAEFD6CD231304F39F02820",
+  "owned_manifest_sha256": "AB80DA701122CDADE2B3213BF32618A99F18142A1D4093082BE779D6C50FEED6",
+  "product_source_report_sha256": "391B3A12923EFEAE84AF439CB0588870AFD5AE6B34002F07505201C29FCBBE02",
+  "installer": "D:\\student\\翻译\\PDFMathTranslate-next\\dist\\native-0814d6ecd733\\PDFMathTranslate-Setup-2.9.0.exe",
+  "installer_bytes": 225365325,
+  "installer_sha256": "F80586C92829DE67ADB64D7A0BFC864AE3B11C4F2C831F10F682F45DA5A70236"
+}

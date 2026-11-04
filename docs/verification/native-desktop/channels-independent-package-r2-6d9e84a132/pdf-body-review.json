@@ -1,0 +1,1526 @@
+{
+  "scope": "Independent per-page owned fixture body and formula extraction; exact loopback response, not provider translation-quality proof; text extraction does not alone prove layout fidelity",
+  "pymupdf_version": "1.25.2",
+  "pymupdf_module": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\build-native-0814d6ecd733\\clean-venv\\Lib\\site-packages\\pymupdf\\__init__.py",
+  "audit_sha256": "391621b9e61a7ba9d60ce5017f87b30a0812d0e041f59352bbb815cd5c7ee0c9",
+  "expected_fixture_body": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。",
+  "records": [
+    {
+      "role": "source-original",
+      "copy": "docs/verification/native-desktop/channels-delivery-20261104-a329045/pdf-examples/论文1_原文.pdf",
+      "sha256": "9e6e1851410a4d33a7306ac4ae34d6f68e94427828428d752e117a9fc08c9059",
+      "recorded_hash_matches": true,
+      "page_count_matches": true,
+      "pages": [
+        {
+          "page": 1,
+          "width": 595.0,
+          "height": 842.0,
+          "fixture_body_present": false,
+          "fixture_body_occurrences": 0,
+          "formula_E_equals_mc_squared_present": true,
+          "original_unique_page_marker_present": true,
+          "body_blocks": [],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/论文1_原文-page-1.txt"
+        },
+        {
+          "page": 2,
+          "width": 595.0,
+          "height": 842.0,
+          "fixture_body_present": false,
+          "fixture_body_occurrences": 0,
+          "formula_E_equals_mc_squared_present": true,
+          "original_unique_page_marker_present": true,
+          "body_blocks": [],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/论文1_原文-page-2.txt"
+        },
+        {
+          "page": 3,
+          "width": 595.0,
+          "height": 842.0,
+          "fixture_body_present": false,
+          "fixture_body_occurrences": 0,
+          "formula_E_equals_mc_squared_present": true,
+          "original_unique_page_marker_present": true,
+          "body_blocks": [],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/论文1_原文-page-3.txt"
+        },
+        {
+          "page": 4,
+          "width": 595.0,
+          "height": 842.0,
+          "fixture_body_present": false,
+          "fixture_body_occurrences": 0,
+          "formula_E_equals_mc_squared_present": true,
+          "original_unique_page_marker_present": true,
+          "body_blocks": [],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/论文1_原文-page-4.txt"
+        },
+        {
+          "page": 5,
+          "width": 595.0,
+          "height": 842.0,
+          "fixture_body_present": false,
+          "fixture_body_occurrences": 0,
+          "formula_E_equals_mc_squared_present": true,
+          "original_unique_page_marker_present": true,
+          "body_blocks": [],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/论文1_原文-page-5.txt"
+        },
+        {
+          "page": 6,
+          "width": 595.0,
+          "height": 842.0,
+          "fixture_body_present": false,
+          "fixture_body_occurrences": 0,
+          "formula_E_equals_mc_squared_present": true,
+          "original_unique_page_marker_present": true,
+          "body_blocks": [],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/论文1_原文-page-6.txt"
+        },
+        {
+          "page": 7,
+          "width": 595.0,
+          "height": 842.0,
+          "fixture_body_present": false,
+          "fixture_body_occurrences": 0,
+          "formula_E_equals_mc_squared_present": true,
+          "original_unique_page_marker_present": true,
+          "body_blocks": [],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/论文1_原文-page-7.txt"
+        }
+      ],
+      "all_pages_have_fixture_body": null,
+      "all_pages_have_formula": true
+    },
+    {
+      "role": "source-original",
+      "copy": "docs/verification/native-desktop/channels-delivery-20261104-a329045/pdf-examples/论文2_原文.pdf",
+      "sha256": "8f39c99dcf8c9b23e1a4143335943e750a320d290a300309e91555707812ded1",
+      "recorded_hash_matches": true,
+      "page_count_matches": true,
+      "pages": [
+        {
+          "page": 1,
+          "width": 595.0,
+          "height": 842.0,
+          "fixture_body_present": false,
+          "fixture_body_occurrences": 0,
+          "formula_E_equals_mc_squared_present": true,
+          "original_unique_page_marker_present": true,
+          "body_blocks": [],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/论文2_原文-page-1.txt"
+        },
+        {
+          "page": 2,
+          "width": 595.0,
+          "height": 842.0,
+          "fixture_body_present": false,
+          "fixture_body_occurrences": 0,
+          "formula_E_equals_mc_squared_present": true,
+          "original_unique_page_marker_present": true,
+          "body_blocks": [],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/论文2_原文-page-2.txt"
+        }
+      ],
+      "all_pages_have_fixture_body": null,
+      "all_pages_have_formula": true
+    },
+    {
+      "role": "source-original",
+      "copy": "docs/verification/native-desktop/channels-delivery-20261104-a329045/pdf-examples/论文3_原文.pdf",
+      "sha256": "a9134566fda8798a4337c879b6540a51d5c16ab286e6bad385e8e4668105544e",
+      "recorded_hash_matches": true,
+      "page_count_matches": true,
+      "pages": [
+        {
+          "page": 1,
+          "width": 595.0,
+          "height": 842.0,
+          "fixture_body_present": false,
+          "fixture_body_occurrences": 0,
+          "formula_E_equals_mc_squared_present": true,
+          "original_unique_page_marker_present": true,
+          "body_blocks": [],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/论文3_原文-page-1.txt"
+        }
+      ],
+      "all_pages_have_fixture_body": null,
+      "all_pages_have_formula": true
+    },
+    {
+      "role": "generated-output",
+      "copy": "docs/verification/native-desktop/channels-delivery-20261104-a329045/pdf-examples/57420c801f80421f_译文.pdf",
+      "sha256": "d3b559801c753629cdff52cddaf7e177fc137cdfc4f6ca8f8bf6aab23f28eaec",
+      "recorded_hash_matches": true,
+      "page_count_matches": true,
+      "pages": [
+        {
+          "page": 1,
+          "width": 595.0,
+          "height": 842.0,
+          "fixture_body_present": true,
+          "fixture_body_occurrences": 4,
+          "formula_E_equals_mc_squared_present": false,
+          "original_unique_page_marker_present": false,
+          "body_blocks": [
+            {
+              "bbox": [
+                52.784000396728516,
+                45.751976013183594,
+                219.18399047851562,
+                60.68637466430664
+              ],
+              "text": "科学论文译文保留公式与页面结构，\n"
+            },
+            {
+              "bbox": [
+                52.167999267578125,
+                102.1240005493164,
+                304.1679992675781,
+                114.18639373779297
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                53.03200149536133,
+                173.02236938476562,
+                305.031982421875,
+                185.08477783203125
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                53.20399856567383,
+                727.532958984375,
+                107.80400085449219,
+                740.6005859375
+              ],
+              "text": "科学论文译文\n"
+            }
+          ],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/57420c801f80421f_译文-page-1.txt"
+        },
+        {
+          "page": 2,
+          "width": 595.0,
+          "height": 842.0,
+          "fixture_body_present": true,
+          "fixture_body_occurrences": 4,
+          "formula_E_equals_mc_squared_present": false,
+          "original_unique_page_marker_present": false,
+          "body_blocks": [
+            {
+              "bbox": [
+                52.784000396728516,
+                42.440025329589844,
+                219.18399047851562,
+                72.97440338134766
+              ],
+              "text": "科学论文译文保留公式与页面结构，\n逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                52.167999267578125,
+                99.6399917602539,
+                304.1679992675781,
+                111.70238494873047
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                53.03200149536133,
+                170.53842163085938,
+                305.031982421875,
+                182.600830078125
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                53.20399856567383,
+                724.6349487304688,
+                107.80400085449219,
+                737.7025756835938
+              ],
+              "text": "科学论文译文\n"
+            }
+          ],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/57420c801f80421f_译文-page-2.txt"
+        },
+        {
+          "page": 3,
+          "width": 595.0,
+          "height": 842.0,
+          "fixture_body_present": true,
+          "fixture_body_occurrences": 4,
+          "formula_E_equals_mc_squared_present": false,
+          "original_unique_page_marker_present": false,
+          "body_blocks": [
+            {
+              "bbox": [
+                52.784000396728516,
+                42.440025329589844,
+                219.18399047851562,
+                72.97440338134766
+              ],
+              "text": "科学论文译文保留公式与页面结构，\n逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                52.167999267578125,
+                99.6399917602539,
+                304.1679992675781,
+                111.70238494873047
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                53.03200149536133,
+                170.53842163085938,
+                305.031982421875,
+                182.600830078125
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                53.20399856567383,
+                724.6349487304688,
+                107.80400085449219,
+                737.7025756835938
+              ],
+              "text": "科学论文译文\n"
+            }
+          ],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/57420c801f80421f_译文-page-3.txt"
+        },
+        {
+          "page": 4,
+          "width": 595.0,
+          "height": 842.0,
+          "fixture_body_present": true,
+          "fixture_body_occurrences": 4,
+          "formula_E_equals_mc_squared_present": false,
+          "original_unique_page_marker_present": false,
+          "body_blocks": [
+            {
+              "bbox": [
+                52.784000396728516,
+                42.440025329589844,
+                219.18399047851562,
+                72.97440338134766
+              ],
+              "text": "科学论文译文保留公式与页面结构，\n逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                52.167999267578125,
+                99.6399917602539,
+                304.1679992675781,
+                111.70238494873047
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                53.03200149536133,
+                170.53842163085938,
+                305.031982421875,
+                182.600830078125
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                53.20399856567383,
+                724.6349487304688,
+                107.80400085449219,
+                737.7025756835938
+              ],
+              "text": "科学论文译文\n"
+            }
+          ],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/57420c801f80421f_译文-page-4.txt"
+        },
+        {
+          "page": 5,
+          "width": 595.0,
+          "height": 842.0,
+          "fixture_body_present": true,
+          "fixture_body_occurrences": 4,
+          "formula_E_equals_mc_squared_present": false,
+          "original_unique_page_marker_present": false,
+          "body_blocks": [
+            {
+              "bbox": [
+                52.784000396728516,
+                42.440025329589844,
+                219.18399047851562,
+                72.97440338134766
+              ],
+              "text": "科学论文译文保留公式与页面结构，\n逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                52.167999267578125,
+                99.6399917602539,
+                304.1679992675781,
+                111.70238494873047
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                53.03200149536133,
+                170.53842163085938,
+                305.031982421875,
+                182.600830078125
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                53.20399856567383,
+                724.6349487304688,
+                107.80400085449219,
+                737.7025756835938
+              ],
+              "text": "科学论文译文\n"
+            }
+          ],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/57420c801f80421f_译文-page-5.txt"
+        },
+        {
+          "page": 6,
+          "width": 595.0,
+          "height": 842.0,
+          "fixture_body_present": true,
+          "fixture_body_occurrences": 4,
+          "formula_E_equals_mc_squared_present": false,
+          "original_unique_page_marker_present": false,
+          "body_blocks": [
+            {
+              "bbox": [
+                52.784000396728516,
+                42.440025329589844,
+                219.18399047851562,
+                72.97440338134766
+              ],
+              "text": "科学论文译文保留公式与页面结构，\n逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                52.167999267578125,
+                99.6399917602539,
+                304.1679992675781,
+                111.70238494873047
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                53.03200149536133,
+                170.53842163085938,
+                305.031982421875,
+                182.600830078125
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                53.20399856567383,
+                724.6349487304688,
+                107.80400085449219,
+                737.7025756835938
+              ],
+              "text": "科学论文译文\n"
+            }
+          ],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/57420c801f80421f_译文-page-6.txt"
+        },
+        {
+          "page": 7,
+          "width": 595.0,
+          "height": 842.0,
+          "fixture_body_present": true,
+          "fixture_body_occurrences": 4,
+          "formula_E_equals_mc_squared_present": false,
+          "original_unique_page_marker_present": false,
+          "body_blocks": [
+            {
+              "bbox": [
+                52.784000396728516,
+                42.440025329589844,
+                219.18399047851562,
+                72.97440338134766
+              ],
+              "text": "科学论文译文保留公式与页面结构，\n逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                52.167999267578125,
+                99.6399917602539,
+                304.1679992675781,
+                111.70238494873047
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                53.03200149536133,
+                170.53842163085938,
+                305.031982421875,
+                182.600830078125
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                53.20399856567383,
+                724.6349487304688,
+                107.80400085449219,
+                737.7025756835938
+              ],
+              "text": "科学论文译文\n"
+            }
+          ],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/57420c801f80421f_译文-page-7.txt"
+        }
+      ],
+      "all_pages_have_fixture_body": true,
+      "all_pages_have_formula": false
+    },
+    {
+      "role": "generated-output",
+      "copy": "docs/verification/native-desktop/channels-delivery-20261104-a329045/pdf-examples/4587f650acf64e0e_双语对照.pdf",
+      "sha256": "9b761e48c8a311beedfae7548cf55ec7552df4c92aa62931c12cd47f040475d4",
+      "recorded_hash_matches": true,
+      "page_count_matches": true,
+      "pages": [
+        {
+          "page": 1,
+          "width": 1190.0,
+          "height": 842.0,
+          "fixture_body_present": true,
+          "fixture_body_occurrences": 3,
+          "formula_E_equals_mc_squared_present": true,
+          "original_unique_page_marker_present": true,
+          "body_blocks": [
+            {
+              "bbox": [
+                647.7839965820312,
+                45.751976013183594,
+                814.1840209960938,
+                60.68637466430664
+              ],
+              "text": "科学论文译文保留公式与页面结构，\n"
+            },
+            {
+              "bbox": [
+                647.16796875,
+                102.1240005493164,
+                899.1680297851562,
+                114.18639373779297
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.031982421875,
+                173.02236938476562,
+                900.031982421875,
+                185.08477783203125
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.2039794921875,
+                727.532958984375,
+                702.803955078125,
+                740.6005859375
+              ],
+              "text": "科学论文译文\n"
+            }
+          ],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/4587f650acf64e0e_双语对照-page-1.txt"
+        }
+      ],
+      "all_pages_have_fixture_body": true,
+      "all_pages_have_formula": true
+    },
+    {
+      "role": "source-saved",
+      "copy": "docs/verification/native-desktop/channels-delivery-20261104-a329045/pdf-examples/4587f650acf64e0e_源目录保存1_论文3_双语对照.pdf",
+      "sha256": "9b761e48c8a311beedfae7548cf55ec7552df4c92aa62931c12cd47f040475d4",
+      "recorded_hash_matches": true,
+      "page_count_matches": true,
+      "pages": [
+        {
+          "page": 1,
+          "width": 1190.0,
+          "height": 842.0,
+          "fixture_body_present": true,
+          "fixture_body_occurrences": 3,
+          "formula_E_equals_mc_squared_present": true,
+          "original_unique_page_marker_present": true,
+          "body_blocks": [
+            {
+              "bbox": [
+                647.7839965820312,
+                45.751976013183594,
+                814.1840209960938,
+                60.68637466430664
+              ],
+              "text": "科学论文译文保留公式与页面结构，\n"
+            },
+            {
+              "bbox": [
+                647.16796875,
+                102.1240005493164,
+                899.1680297851562,
+                114.18639373779297
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.031982421875,
+                173.02236938476562,
+                900.031982421875,
+                185.08477783203125
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.2039794921875,
+                727.532958984375,
+                702.803955078125,
+                740.6005859375
+              ],
+              "text": "科学论文译文\n"
+            }
+          ],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/4587f650acf64e0e_源目录保存1_论文3_双语对照-page-1.txt"
+        }
+      ],
+      "all_pages_have_fixture_body": true,
+      "all_pages_have_formula": true
+    },
+    {
+      "role": "generated-output",
+      "copy": "docs/verification/native-desktop/channels-delivery-20261104-a329045/pdf-examples/4e4795d7b5a7444f_双语对照.pdf",
+      "sha256": "aa5f5ef1d86305efa5bf43965c538aa7a0b06e4bec8067aa68275fdcff60d66d",
+      "recorded_hash_matches": true,
+      "page_count_matches": true,
+      "pages": [
+        {
+          "page": 1,
+          "width": 1190.0,
+          "height": 842.0,
+          "fixture_body_present": true,
+          "fixture_body_occurrences": 3,
+          "formula_E_equals_mc_squared_present": true,
+          "original_unique_page_marker_present": true,
+          "body_blocks": [
+            {
+              "bbox": [
+                647.7839965820312,
+                45.751976013183594,
+                814.1840209960938,
+                60.68637466430664
+              ],
+              "text": "科学论文译文保留公式与页面结构，\n"
+            },
+            {
+              "bbox": [
+                647.16796875,
+                102.1240005493164,
+                899.1680297851562,
+                114.18639373779297
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.031982421875,
+                173.02236938476562,
+                900.031982421875,
+                185.08477783203125
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.2039794921875,
+                727.532958984375,
+                702.803955078125,
+                740.6005859375
+              ],
+              "text": "科学论文译文\n"
+            }
+          ],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/4e4795d7b5a7444f_双语对照-page-1.txt"
+        },
+        {
+          "page": 2,
+          "width": 1190.0,
+          "height": 842.0,
+          "fixture_body_present": true,
+          "fixture_body_occurrences": 4,
+          "formula_E_equals_mc_squared_present": true,
+          "original_unique_page_marker_present": true,
+          "body_blocks": [
+            {
+              "bbox": [
+                647.7839965820312,
+                42.440025329589844,
+                814.1840209960938,
+                72.97440338134766
+              ],
+              "text": "科学论文译文保留公式与页面结构，\n逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                647.16796875,
+                99.6399917602539,
+                899.1680297851562,
+                111.70238494873047
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.031982421875,
+                170.53842163085938,
+                900.031982421875,
+                182.600830078125
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.2039794921875,
+                724.6349487304688,
+                702.803955078125,
+                737.7025756835938
+              ],
+              "text": "科学论文译文\n"
+            }
+          ],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/4e4795d7b5a7444f_双语对照-page-2.txt"
+        }
+      ],
+      "all_pages_have_fixture_body": true,
+      "all_pages_have_formula": true
+    },
+    {
+      "role": "source-saved",
+      "copy": "docs/verification/native-desktop/channels-delivery-20261104-a329045/pdf-examples/4e4795d7b5a7444f_源目录保存1_论文2_双语对照.pdf",
+      "sha256": "aa5f5ef1d86305efa5bf43965c538aa7a0b06e4bec8067aa68275fdcff60d66d",
+      "recorded_hash_matches": true,
+      "page_count_matches": true,
+      "pages": [
+        {
+          "page": 1,
+          "width": 1190.0,
+          "height": 842.0,
+          "fixture_body_present": true,
+          "fixture_body_occurrences": 3,
+          "formula_E_equals_mc_squared_present": true,
+          "original_unique_page_marker_present": true,
+          "body_blocks": [
+            {
+              "bbox": [
+                647.7839965820312,
+                45.751976013183594,
+                814.1840209960938,
+                60.68637466430664
+              ],
+              "text": "科学论文译文保留公式与页面结构，\n"
+            },
+            {
+              "bbox": [
+                647.16796875,
+                102.1240005493164,
+                899.1680297851562,
+                114.18639373779297
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.031982421875,
+                173.02236938476562,
+                900.031982421875,
+                185.08477783203125
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.2039794921875,
+                727.532958984375,
+                702.803955078125,
+                740.6005859375
+              ],
+              "text": "科学论文译文\n"
+            }
+          ],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/4e4795d7b5a7444f_源目录保存1_论文2_双语对照-page-1.txt"
+        },
+        {
+          "page": 2,
+          "width": 1190.0,
+          "height": 842.0,
+          "fixture_body_present": true,
+          "fixture_body_occurrences": 4,
+          "formula_E_equals_mc_squared_present": true,
+          "original_unique_page_marker_present": true,
+          "body_blocks": [
+            {
+              "bbox": [
+                647.7839965820312,
+                42.440025329589844,
+                814.1840209960938,
+                72.97440338134766
+              ],
+              "text": "科学论文译文保留公式与页面结构，\n逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                647.16796875,
+                99.6399917602539,
+                899.1680297851562,
+                111.70238494873047
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.031982421875,
+                170.53842163085938,
+                900.031982421875,
+                182.600830078125
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.2039794921875,
+                724.6349487304688,
+                702.803955078125,
+                737.7025756835938
+              ],
+              "text": "科学论文译文\n"
+            }
+          ],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/4e4795d7b5a7444f_源目录保存1_论文2_双语对照-page-2.txt"
+        }
+      ],
+      "all_pages_have_fixture_body": true,
+      "all_pages_have_formula": true
+    },
+    {
+      "role": "generated-output",
+      "copy": "docs/verification/native-desktop/channels-delivery-20261104-a329045/pdf-examples/2961ba9eeacd4c7b_双语对照.pdf",
+      "sha256": "c37904e7cfde7490decb48643174973d7d693ab6f25c2d82db2fae622a33109a",
+      "recorded_hash_matches": true,
+      "page_count_matches": true,
+      "pages": [
+        {
+          "page": 1,
+          "width": 1190.0,
+          "height": 842.0,
+          "fixture_body_present": true,
+          "fixture_body_occurrences": 3,
+          "formula_E_equals_mc_squared_present": true,
+          "original_unique_page_marker_present": true,
+          "body_blocks": [
+            {
+              "bbox": [
+                647.7839965820312,
+                45.751976013183594,
+                814.1840209960938,
+                60.68637466430664
+              ],
+              "text": "科学论文译文保留公式与页面结构，\n"
+            },
+            {
+              "bbox": [
+                647.16796875,
+                102.1240005493164,
+                899.1680297851562,
+                114.18639373779297
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.031982421875,
+                173.02236938476562,
+                900.031982421875,
+                185.08477783203125
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.2039794921875,
+                727.532958984375,
+                702.803955078125,
+                740.6005859375
+              ],
+              "text": "科学论文译文\n"
+            }
+          ],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/2961ba9eeacd4c7b_双语对照-page-1.txt"
+        },
+        {
+          "page": 2,
+          "width": 1190.0,
+          "height": 842.0,
+          "fixture_body_present": true,
+          "fixture_body_occurrences": 4,
+          "formula_E_equals_mc_squared_present": true,
+          "original_unique_page_marker_present": true,
+          "body_blocks": [
+            {
+              "bbox": [
+                647.7839965820312,
+                42.440025329589844,
+                814.1840209960938,
+                72.97440338134766
+              ],
+              "text": "科学论文译文保留公式与页面结构，\n逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                647.16796875,
+                99.6399917602539,
+                899.1680297851562,
+                111.70238494873047
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.031982421875,
+                170.53842163085938,
+                900.031982421875,
+                182.600830078125
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.2039794921875,
+                724.6349487304688,
+                702.803955078125,
+                737.7025756835938
+              ],
+              "text": "科学论文译文\n"
+            }
+          ],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/2961ba9eeacd4c7b_双语对照-page-2.txt"
+        },
+        {
+          "page": 3,
+          "width": 1190.0,
+          "height": 842.0,
+          "fixture_body_present": true,
+          "fixture_body_occurrences": 4,
+          "formula_E_equals_mc_squared_present": true,
+          "original_unique_page_marker_present": true,
+          "body_blocks": [
+            {
+              "bbox": [
+                647.7839965820312,
+                42.440025329589844,
+                814.1840209960938,
+                72.97440338134766
+              ],
+              "text": "科学论文译文保留公式与页面结构，\n逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                647.16796875,
+                99.6399917602539,
+                899.1680297851562,
+                111.70238494873047
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.031982421875,
+                170.53842163085938,
+                900.031982421875,
+                182.600830078125
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.2039794921875,
+                724.6349487304688,
+                702.803955078125,
+                737.7025756835938
+              ],
+              "text": "科学论文译文\n"
+            }
+          ],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/2961ba9eeacd4c7b_双语对照-page-3.txt"
+        },
+        {
+          "page": 4,
+          "width": 1190.0,
+          "height": 842.0,
+          "fixture_body_present": true,
+          "fixture_body_occurrences": 4,
+          "formula_E_equals_mc_squared_present": true,
+          "original_unique_page_marker_present": true,
+          "body_blocks": [
+            {
+              "bbox": [
+                647.7839965820312,
+                42.440025329589844,
+                814.1840209960938,
+                72.97440338134766
+              ],
+              "text": "科学论文译文保留公式与页面结构，\n逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                647.16796875,
+                99.6399917602539,
+                899.1680297851562,
+                111.70238494873047
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.031982421875,
+                170.53842163085938,
+                900.031982421875,
+                182.600830078125
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.2039794921875,
+                724.6349487304688,
+                702.803955078125,
+                737.7025756835938
+              ],
+              "text": "科学论文译文\n"
+            }
+          ],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/2961ba9eeacd4c7b_双语对照-page-4.txt"
+        },
+        {
+          "page": 5,
+          "width": 1190.0,
+          "height": 842.0,
+          "fixture_body_present": true,
+          "fixture_body_occurrences": 4,
+          "formula_E_equals_mc_squared_present": true,
+          "original_unique_page_marker_present": true,
+          "body_blocks": [
+            {
+              "bbox": [
+                647.7839965820312,
+                42.440025329589844,
+                814.1840209960938,
+                72.97440338134766
+              ],
+              "text": "科学论文译文保留公式与页面结构，\n逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                647.16796875,
+                99.6399917602539,
+                899.1680297851562,
+                111.70238494873047
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.031982421875,
+                170.53842163085938,
+                900.031982421875,
+                182.600830078125
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.2039794921875,
+                724.6349487304688,
+                702.803955078125,
+                737.7025756835938
+              ],
+              "text": "科学论文译文\n"
+            }
+          ],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/2961ba9eeacd4c7b_双语对照-page-5.txt"
+        },
+        {
+          "page": 6,
+          "width": 1190.0,
+          "height": 842.0,
+          "fixture_body_present": true,
+          "fixture_body_occurrences": 4,
+          "formula_E_equals_mc_squared_present": true,
+          "original_unique_page_marker_present": true,
+          "body_blocks": [
+            {
+              "bbox": [
+                647.7839965820312,
+                42.440025329589844,
+                814.1840209960938,
+                72.97440338134766
+              ],
+              "text": "科学论文译文保留公式与页面结构，\n逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                647.16796875,
+                99.6399917602539,
+                899.1680297851562,
+                111.70238494873047
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.031982421875,
+                170.53842163085938,
+                900.031982421875,
+                182.600830078125
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.2039794921875,
+                724.6349487304688,
+                702.803955078125,
+                737.7025756835938
+              ],
+              "text": "科学论文译文\n"
+            }
+          ],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/2961ba9eeacd4c7b_双语对照-page-6.txt"
+        },
+        {
+          "page": 7,
+          "width": 1190.0,
+          "height": 842.0,
+          "fixture_body_present": true,
+          "fixture_body_occurrences": 4,
+          "formula_E_equals_mc_squared_present": true,
+          "original_unique_page_marker_present": true,
+          "body_blocks": [
+            {
+              "bbox": [
+                647.7839965820312,
+                42.440025329589844,
+                814.1840209960938,
+                72.97440338134766
+              ],
+              "text": "科学论文译文保留公式与页面结构，\n逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                647.16796875,
+                99.6399917602539,
+                899.1680297851562,
+                111.70238494873047
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.031982421875,
+                170.53842163085938,
+                900.031982421875,
+                182.600830078125
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.2039794921875,
+                724.6349487304688,
+                702.803955078125,
+                737.7025756835938
+              ],
+              "text": "科学论文译文\n"
+            }
+          ],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/2961ba9eeacd4c7b_双语对照-page-7.txt"
+        }
+      ],
+      "all_pages_have_fixture_body": true,
+      "all_pages_have_formula": true
+    },
+    {
+      "role": "source-saved",
+      "copy": "docs/verification/native-desktop/channels-delivery-20261104-a329045/pdf-examples/2961ba9eeacd4c7b_源目录保存1_论文1_双语对照.pdf",
+      "sha256": "c37904e7cfde7490decb48643174973d7d693ab6f25c2d82db2fae622a33109a",
+      "recorded_hash_matches": true,
+      "page_count_matches": true,
+      "pages": [
+        {
+          "page": 1,
+          "width": 1190.0,
+          "height": 842.0,
+          "fixture_body_present": true,
+          "fixture_body_occurrences": 3,
+          "formula_E_equals_mc_squared_present": true,
+          "original_unique_page_marker_present": true,
+          "body_blocks": [
+            {
+              "bbox": [
+                647.7839965820312,
+                45.751976013183594,
+                814.1840209960938,
+                60.68637466430664
+              ],
+              "text": "科学论文译文保留公式与页面结构，\n"
+            },
+            {
+              "bbox": [
+                647.16796875,
+                102.1240005493164,
+                899.1680297851562,
+                114.18639373779297
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.031982421875,
+                173.02236938476562,
+                900.031982421875,
+                185.08477783203125
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.2039794921875,
+                727.532958984375,
+                702.803955078125,
+                740.6005859375
+              ],
+              "text": "科学论文译文\n"
+            }
+          ],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/2961ba9eeacd4c7b_源目录保存1_论文1_双语对照-page-1.txt"
+        },
+        {
+          "page": 2,
+          "width": 1190.0,
+          "height": 842.0,
+          "fixture_body_present": true,
+          "fixture_body_occurrences": 4,
+          "formula_E_equals_mc_squared_present": true,
+          "original_unique_page_marker_present": true,
+          "body_blocks": [
+            {
+              "bbox": [
+                647.7839965820312,
+                42.440025329589844,
+                814.1840209960938,
+                72.97440338134766
+              ],
+              "text": "科学论文译文保留公式与页面结构，\n逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                647.16796875,
+                99.6399917602539,
+                899.1680297851562,
+                111.70238494873047
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.031982421875,
+                170.53842163085938,
+                900.031982421875,
+                182.600830078125
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.2039794921875,
+                724.6349487304688,
+                702.803955078125,
+                737.7025756835938
+              ],
+              "text": "科学论文译文\n"
+            }
+          ],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/2961ba9eeacd4c7b_源目录保存1_论文1_双语对照-page-2.txt"
+        },
+        {
+          "page": 3,
+          "width": 1190.0,
+          "height": 842.0,
+          "fixture_body_present": true,
+          "fixture_body_occurrences": 4,
+          "formula_E_equals_mc_squared_present": true,
+          "original_unique_page_marker_present": true,
+          "body_blocks": [
+            {
+              "bbox": [
+                647.7839965820312,
+                42.440025329589844,
+                814.1840209960938,
+                72.97440338134766
+              ],
+              "text": "科学论文译文保留公式与页面结构，\n逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                647.16796875,
+                99.6399917602539,
+                899.1680297851562,
+                111.70238494873047
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.031982421875,
+                170.53842163085938,
+                900.031982421875,
+                182.600830078125
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.2039794921875,
+                724.6349487304688,
+                702.803955078125,
+                737.7025756835938
+              ],
+              "text": "科学论文译文\n"
+            }
+          ],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/2961ba9eeacd4c7b_源目录保存1_论文1_双语对照-page-3.txt"
+        },
+        {
+          "page": 4,
+          "width": 1190.0,
+          "height": 842.0,
+          "fixture_body_present": true,
+          "fixture_body_occurrences": 4,
+          "formula_E_equals_mc_squared_present": true,
+          "original_unique_page_marker_present": true,
+          "body_blocks": [
+            {
+              "bbox": [
+                647.7839965820312,
+                42.440025329589844,
+                814.1840209960938,
+                72.97440338134766
+              ],
+              "text": "科学论文译文保留公式与页面结构，\n逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                647.16796875,
+                99.6399917602539,
+                899.1680297851562,
+                111.70238494873047
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.031982421875,
+                170.53842163085938,
+                900.031982421875,
+                182.600830078125
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.2039794921875,
+                724.6349487304688,
+                702.803955078125,
+                737.7025756835938
+              ],
+              "text": "科学论文译文\n"
+            }
+          ],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/2961ba9eeacd4c7b_源目录保存1_论文1_双语对照-page-4.txt"
+        },
+        {
+          "page": 5,
+          "width": 1190.0,
+          "height": 842.0,
+          "fixture_body_present": true,
+          "fixture_body_occurrences": 4,
+          "formula_E_equals_mc_squared_present": true,
+          "original_unique_page_marker_present": true,
+          "body_blocks": [
+            {
+              "bbox": [
+                647.7839965820312,
+                42.440025329589844,
+                814.1840209960938,
+                72.97440338134766
+              ],
+              "text": "科学论文译文保留公式与页面结构，\n逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                647.16796875,
+                99.6399917602539,
+                899.1680297851562,
+                111.70238494873047
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.031982421875,
+                170.53842163085938,
+                900.031982421875,
+                182.600830078125
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.2039794921875,
+                724.6349487304688,
+                702.803955078125,
+                737.7025756835938
+              ],
+              "text": "科学论文译文\n"
+            }
+          ],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/2961ba9eeacd4c7b_源目录保存1_论文1_双语对照-page-5.txt"
+        },
+        {
+          "page": 6,
+          "width": 1190.0,
+          "height": 842.0,
+          "fixture_body_present": true,
+          "fixture_body_occurrences": 4,
+          "formula_E_equals_mc_squared_present": true,
+          "original_unique_page_marker_present": true,
+          "body_blocks": [
+            {
+              "bbox": [
+                647.7839965820312,
+                42.440025329589844,
+                814.1840209960938,
+                72.97440338134766
+              ],
+              "text": "科学论文译文保留公式与页面结构，\n逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                647.16796875,
+                99.6399917602539,
+                899.1680297851562,
+                111.70238494873047
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.031982421875,
+                170.53842163085938,
+                900.031982421875,
+                182.600830078125
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.2039794921875,
+                724.6349487304688,
+                702.803955078125,
+                737.7025756835938
+              ],
+              "text": "科学论文译文\n"
+            }
+          ],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/2961ba9eeacd4c7b_源目录保存1_论文1_双语对照-page-6.txt"
+        },
+        {
+          "page": 7,
+          "width": 1190.0,
+          "height": 842.0,
+          "fixture_body_present": true,
+          "fixture_body_occurrences": 4,
+          "formula_E_equals_mc_squared_present": true,
+          "original_unique_page_marker_present": true,
+          "body_blocks": [
+            {
+              "bbox": [
+                647.7839965820312,
+                42.440025329589844,
+                814.1840209960938,
+                72.97440338134766
+              ],
+              "text": "科学论文译文保留公式与页面结构，\n逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                647.16796875,
+                99.6399917602539,
+                899.1680297851562,
+                111.70238494873047
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.031982421875,
+                170.53842163085938,
+                900.031982421875,
+                182.600830078125
+              ],
+              "text": "科学论文译文保留公式与页面结构，逐页记录实验结果和有效配置。\n"
+            },
+            {
+              "bbox": [
+                648.2039794921875,
+                724.6349487304688,
+                702.803955078125,
+                737.7025756835938
+              ],
+              "text": "科学论文译文\n"
+            }
+          ],
+          "text_file": "docs/verification/native-desktop/channels-independent-package-r2-6d9e84a132/pdf-text/2961ba9eeacd4c7b_源目录保存1_论文1_双语对照-page-7.txt"
+        }
+      ],
+      "all_pages_have_fixture_body": true,
+      "all_pages_have_formula": true
+    }
+  ],
+  "passed": false
+}

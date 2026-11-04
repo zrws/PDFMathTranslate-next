@@ -1,0 +1,23 @@
+{
+  "scope": "Actual page coverage and fixture-body delivery only; no claim of semantic, scientific, formula or complex layout quality",
+  "extraction_source": "pdf-body-review.json",
+  "extraction_sha256": "462f51bdbb08ed673fdee11f320b2dfd46b8392713fc84617c36d96b9d432b3d",
+  "strict_formula_verdict_preserved": false,
+  "pdf_count": 10,
+  "extracted_pages": 37,
+  "translated_or_saved_pdf_count": 7,
+  "translated_or_saved_pages": 27,
+  "functional_body_gate_passed": true,
+  "formula_preservation_demonstrated": false,
+  "formula_missing_in_mono_pages": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "interpretation": "The deterministic loopback provider returns the same fixture sentence for every translation chunk, including the literal equation text. Exact sentence is present in body blocks on every translated page. Mono lacks the original literal equation on pages 1-7; dual keeps it on the source half. This proves real all-page pipeline/output selection, not formula retention or provider translation quality. No causal claim of product regression.",
+  "visual_review": "Poppler page-7 source/mono/dual renders independently viewed; formula replacement visible. Native WPF screenshots are separate in-process renders, not OS input evidence."
+}

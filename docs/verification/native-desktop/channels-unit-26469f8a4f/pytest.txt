@@ -1,0 +1,21 @@
+
+[pdf2zh-test-isolation] root=C:\Users\ADMINI~1\AppData\Local\Temp\pdf2zh-pytest-klysaejc
+[pdf2zh-test-isolation] cwd=C:\Users\ADMINI~1\AppData\Local\Temp\pdf2zh-pytest-klysaejc\work
+[pdf2zh-test-isolation] config=C:\Users\ADMINI~1\AppData\Local\Temp\pdf2zh-pytest-klysaejc\home\.config\pdf2zh\config.v3.toml
+[pdf2zh-test-isolation][ok] HOME/USERPROFILE fully inside the isolated root
+..........                                                               [100%]
+============================== warnings summary ===============================
+.local\build-native-cc12e21d7a4e\clean-venv\Lib\site-packages\starlette\testclient.py:45
+  D:\student\翻译\PDFMathTranslate-next\.local\build-native-cc12e21d7a4e\clean-venv\Lib\site-packages\starlette\testclient.py:45: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]
+
+tests/test_desktop_channels.py: 141 warnings
+  D:\student\翻译\PDFMathTranslate-next\source\pdf2zh_next\http_api.py:359: PydanticDeprecatedSince211: Accessing the 'model_fields' attribute on the instance is deprecated. Instead, you should access this attribute from the model class. Deprecated in Pydantic V2.11 to be removed in V3.0.
+    names = list(detail.model_fields.keys())
+
+tests/test_desktop_channels.py: 880 warnings
+  D:\student\翻译\PDFMathTranslate-next\source\pdf2zh_next\desktop\channels.py:23: PydanticDeprecatedSince211: Accessing the 'model_fields' attribute on the instance is deprecated. Instead, you should access this attribute from the model class. Deprecated in Pydantic V2.11 to be removed in V3.0.
+    elif hasattr(value,'model_fields'):rows.extend(secret_values(value,path+(name,)))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+10 passed, 1022 warnings in 23.90s

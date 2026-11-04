@@ -1,0 +1,12 @@
+{
+  "raw_sha256": "E4CF8661343B69D4EE1A0669135E4E18D937585CFB917550793F4595A30454A1",
+  "surviving_identity_count": 0,
+  "workflow_wall_seconds": 336.8148708343506,
+  "peak_threads": 97.0,
+  "observed_cpu_seconds": 370.921875,
+  "peak_private_bytes": 3313946624.0,
+  "scope": "Derived only from fresh-identity kernel Job samples in this workflow; sum of per-process working sets can double-count shared pages; observed CPU is a sampling lower bound; no baseline/GPU/idle comparison",
+  "samples": 503,
+  "observed_identity_count": 47,
+  "peak_summed_working_set_bytes": 2971783168.0
+}

@@ -1,0 +1,30 @@
+{
+  "source": [
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/ChannelsViewModel.cs",
+      "sha256": "6FD575C9170591F1CD9E5FF5CD3E7ED11D77CB70E402985C2BD09D89D78620E1"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/NativeWorkflowVerification.cs",
+      "sha256": "B8CCBCF266D9605980C1DD9CEF06780ED9EE85899431D739AAF7F1C91D140A80"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/WorkbenchViewModel.cs",
+      "sha256": "67C775280851C4CBAB37BA2FE8CD1CAE088D59F5D3D8E1C0A0E3918976FED49A"
+    },
+    {
+      "path": "desktop/PDFMathTranslate.Desktop/WorkbenchPage.xaml",
+      "sha256": "C784481D81BAD1B84166180C59318B755909CF0ACBF9D925CDDBDD363AA42967"
+    }
+  ],
+  "scope": "Supplemental identity binding for final Debug build; original completion is unchanged",
+  "native_dll": {
+    "path": ".local/ui-channels-final/PDFMathTranslate.dll",
+    "sha256": "6685E0BAD394E70B19805235147498353895B941A6B63F85127159A96CEFE548"
+  },
+  "source_commit": "a329045840db30a0b60221408f952baac409c345",
+  "test_dll": {
+    "path": "desktop/PDFMathTranslate.Tests/bin/Release/net10.0/PDFMathTranslate.Tests.dll",
+    "sha256": "A8068BCEB2576C76454F00E6A75F3822E4ADD27534FFBE4A305A1C63A35480BC"
+  }
+}

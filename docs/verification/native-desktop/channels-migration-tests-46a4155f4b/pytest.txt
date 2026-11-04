@@ -1,0 +1,13 @@
+
+[pdf2zh-test-isolation] root=C:\Users\ADMINI~1\AppData\Local\Temp\pdf2zh-pytest-ah4dtgxl
+[pdf2zh-test-isolation] cwd=C:\Users\ADMINI~1\AppData\Local\Temp\pdf2zh-pytest-ah4dtgxl\work
+[pdf2zh-test-isolation] config=C:\Users\ADMINI~1\AppData\Local\Temp\pdf2zh-pytest-ah4dtgxl\home\.config\pdf2zh\config.v3.toml
+[pdf2zh-test-isolation][ok] HOME/USERPROFILE fully inside the isolated root
+...............                                                          [100%]
+============================== warnings summary ===============================
+.local\build-native-cc12e21d7a4e\clean-venv\Lib\site-packages\starlette\testclient.py:45
+  D:\student\翻译\PDFMathTranslate-next\.local\build-native-cc12e21d7a4e\clean-venv\Lib\site-packages\starlette\testclient.py:45: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+15 passed, 1 warning in 9.14s

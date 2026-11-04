@@ -1,0 +1,1 @@
+{"passed": true, "violations": [], "report": "D:\\student\\����\\PDFMathTranslate-next\\docs\\verification\\native-desktop\\channels-validation-5fbed8bf46\\component-contract.json"}

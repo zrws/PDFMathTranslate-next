@@ -1,0 +1,15 @@
+{
+  "passed": false,
+  "actual_exit": 0,
+  "timeout": true,
+  "error": "FileNotFoundError: [Errno 2] No such file or directory: 'D:\\\\student\\\\翻译\\\\PDFMathTranslate-next\\\\docs\\\\verification\\\\native-desktop\\\\channels-workflow-1536162aeb\\\\ui\\\\ui-result.json'",
+  "observer_errors": [],
+  "surviving_identities": [],
+  "provider_calls": [],
+  "source_mode": "repository overlay",
+  "provenance_sha256": "41077148519be966057a5022c15e431c59b117766b4292c32a1f74782823a898",
+  "layout_only": true,
+  "home": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\channels-workflow-1536162aeb\\home",
+  "started": 1793789452.014068,
+  "finished": 1793789632.4372368
+}

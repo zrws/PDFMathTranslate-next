@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "actual_exit": 0,
+  "timeout": false,
+  "error": null,
+  "observer_errors": [],
+  "surviving_identities": [],
+  "provider_calls": [
+    {
+      "prefix": "b",
+      "model": "owned-model-b",
+      "probe": true,
+      "authorization_match": true,
+      "text_length": 21,
+      "mentions_page_seven": false
+    },
+    {
+      "prefix": "b",
+      "model": "owned-model-b",
+      "probe": true,
+      "authorization_match": true,
+      "text_length": 21,
+      "mentions_page_seven": false
+    }
+  ],
+  "source_mode": "repository overlay",
+  "provenance_sha256": "24114989079c68a0cc7df15adc5844e23e9755cdbea6c5e81c4856b9584bc313",
+  "layout_only": true,
+  "home": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\channels-workflow-6044de5f3a\\home",
+  "started": 1793791964.773106,
+  "finished": 1793792017.8390574
+}

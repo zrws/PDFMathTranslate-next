@@ -1,0 +1,97 @@
+{
+  "scope": "Post-run copies of owned fixture PDFs; exact translated body check, independent of watermark/CJK-only check; not another translation run",
+  "workflow_result_sha256": "7d0938380d4e5a42a5100f5e4bed31f9bbd9d83f43e7060b413eb89bbe8de90e",
+  "collector_sha256": "d2a69bfe581ba4ad413ece55fffa7800eacd8da2dda5155746d5dd108eddb6cc",
+  "records": [
+    {
+      "role": "source-original",
+      "original": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\channels-workflow-d343def72d\\source-1\\论文1.pdf",
+      "copy": "docs/verification/native-desktop/channels-delivery-20261104-a329045/pdf-examples/论文1_原文.pdf",
+      "bytes": 7158,
+      "sha256": "9e6e1851410a4d33a7306ac4ae34d6f68e94427828428d752e117a9fc08c9059",
+      "pages": 7,
+      "last_page_contains_fixture_body": false
+    },
+    {
+      "role": "source-original",
+      "original": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\channels-workflow-d343def72d\\source-2\\论文2.pdf",
+      "copy": "docs/verification/native-desktop/channels-delivery-20261104-a329045/pdf-examples/论文2_原文.pdf",
+      "bytes": 2332,
+      "sha256": "8f39c99dcf8c9b23e1a4143335943e750a320d290a300309e91555707812ded1",
+      "pages": 2,
+      "last_page_contains_fixture_body": false
+    },
+    {
+      "role": "source-original",
+      "original": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\channels-workflow-d343def72d\\source-3\\论文3.pdf",
+      "copy": "docs/verification/native-desktop/channels-delivery-20261104-a329045/pdf-examples/论文3_原文.pdf",
+      "bytes": 1367,
+      "sha256": "a9134566fda8798a4337c879b6540a51d5c16ab286e6bad385e8e4668105544e",
+      "pages": 1,
+      "last_page_contains_fixture_body": false
+    },
+    {
+      "role": "generated-output",
+      "original": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\channels-workflow-d343def72d\\home\\work\\outputs\\57420c801f80421f\\53a79cdd__论文1.zh-CN.mono.pdf",
+      "copy": "docs/verification/native-desktop/channels-delivery-20261104-a329045/pdf-examples/57420c801f80421f_译文.pdf",
+      "bytes": 32943,
+      "sha256": "d3b559801c753629cdff52cddaf7e177fc137cdfc4f6ca8f8bf6aab23f28eaec",
+      "pages": 7,
+      "last_page_contains_fixture_body": true
+    },
+    {
+      "role": "generated-output",
+      "original": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\channels-workflow-d343def72d\\home\\work\\outputs\\4587f650acf64e0e\\1abbc77d__论文3.zh-CN.dual.pdf",
+      "copy": "docs/verification/native-desktop/channels-delivery-20261104-a329045/pdf-examples/4587f650acf64e0e_双语对照.pdf",
+      "bytes": 26246,
+      "sha256": "9b761e48c8a311beedfae7548cf55ec7552df4c92aa62931c12cd47f040475d4",
+      "pages": 1,
+      "last_page_contains_fixture_body": true
+    },
+    {
+      "role": "source-saved",
+      "original": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\channels-workflow-d343def72d\\source-3\\论文3_双语对照.pdf",
+      "copy": "docs/verification/native-desktop/channels-delivery-20261104-a329045/pdf-examples/4587f650acf64e0e_源目录保存1_论文3_双语对照.pdf",
+      "bytes": 26246,
+      "sha256": "9b761e48c8a311beedfae7548cf55ec7552df4c92aa62931c12cd47f040475d4",
+      "pages": 1,
+      "last_page_contains_fixture_body": true
+    },
+    {
+      "role": "generated-output",
+      "original": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\channels-workflow-d343def72d\\home\\work\\outputs\\4e4795d7b5a7444f\\9a2d370f__论文2.zh-CN.dual.pdf",
+      "copy": "docs/verification/native-desktop/channels-delivery-20261104-a329045/pdf-examples/4e4795d7b5a7444f_双语对照.pdf",
+      "bytes": 28741,
+      "sha256": "aa5f5ef1d86305efa5bf43965c538aa7a0b06e4bec8067aa68275fdcff60d66d",
+      "pages": 2,
+      "last_page_contains_fixture_body": true
+    },
+    {
+      "role": "source-saved",
+      "original": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\channels-workflow-d343def72d\\source-2\\论文2_双语对照.pdf",
+      "copy": "docs/verification/native-desktop/channels-delivery-20261104-a329045/pdf-examples/4e4795d7b5a7444f_源目录保存1_论文2_双语对照.pdf",
+      "bytes": 28741,
+      "sha256": "aa5f5ef1d86305efa5bf43965c538aa7a0b06e4bec8067aa68275fdcff60d66d",
+      "pages": 2,
+      "last_page_contains_fixture_body": true
+    },
+    {
+      "role": "generated-output",
+      "original": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\channels-workflow-d343def72d\\home\\work\\outputs\\2961ba9eeacd4c7b\\8ae2c4bb__论文1.zh-CN.dual.pdf",
+      "copy": "docs/verification/native-desktop/channels-delivery-20261104-a329045/pdf-examples/2961ba9eeacd4c7b_双语对照.pdf",
+      "bytes": 41211,
+      "sha256": "c37904e7cfde7490decb48643174973d7d693ab6f25c2d82db2fae622a33109a",
+      "pages": 7,
+      "last_page_contains_fixture_body": true
+    },
+    {
+      "role": "source-saved",
+      "original": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\channels-workflow-d343def72d\\source-1\\论文1_双语对照.pdf",
+      "copy": "docs/verification/native-desktop/channels-delivery-20261104-a329045/pdf-examples/2961ba9eeacd4c7b_源目录保存1_论文1_双语对照.pdf",
+      "bytes": 41211,
+      "sha256": "c37904e7cfde7490decb48643174973d7d693ab6f25c2d82db2fae622a33109a",
+      "pages": 7,
+      "last_page_contains_fixture_body": true
+    }
+  ]
+}

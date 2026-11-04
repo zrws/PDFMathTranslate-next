@@ -1,0 +1,9 @@
+{
+  "invalid_summary_sha256": "841A9BB8D209A87400C46E8C3A20C3DCFC32659B317A80B16D683737FC2ED957",
+  "scope": "Failed derivation retained; original translation/process raw unchanged",
+  "replacement_sha256": "BCC0A5B84E59E5A765B0EA4A77D0EC2C2082EE94B734E1EE8CE9AD7248E70894",
+  "invalid_reason": "PowerShell Math.Max chose Int32 overload; values above 2 GiB raised nonterminating conversion errors, clipping reported peaks. Command returned 0 despite these errors; this file is not valid resource evidence.",
+  "method": "Measure-Object maximum over original 64-bit/double sample sums; verified without Math.Max Int32 overload",
+  "replacement_file": "owned-process-summary.json",
+  "invalid_summary_file": "owned-process-summary-invalid-int32.json"
+}

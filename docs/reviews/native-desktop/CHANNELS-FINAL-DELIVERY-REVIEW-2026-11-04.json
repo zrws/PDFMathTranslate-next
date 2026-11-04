@@ -1,0 +1,25 @@
+{
+  "scope": "Independent final read-only delivery index and actual staged Git blob byte verification; indexed roots unchanged; not a test rerun",
+  "index_sha256": "c22687d00b9c8c32601520811f1509e24deb4deefd638ecfd6cba87c8b8a7f71",
+  "index_source_commit": "a329045840db30a0b60221408f952baac409c345",
+  "evidence_roots": 17,
+  "evidence_rows": 191,
+  "source_rows": 520,
+  "exclusions": 0,
+  "filesystem_hash_or_size_mismatches": [],
+  "duplicate_evidence_paths": 0,
+  "root_extra_files": [
+    "docs/verification/native-desktop/channels-delivery-20261104-a329045/delivery-index.json"
+  ],
+  "root_missing_files": [],
+  "evidence_or_index_missing_from_git_index": [],
+  "git_blob_byte_mismatches": [],
+  "staged_count_at_audit": 196,
+  "staged_extra_evidence": [],
+  "staged_forbidden_files": [],
+  "staged_non_docs": [],
+  "high_confidence_credential_texts_scanned": 143,
+  "high_confidence_credential_pattern_hits": [],
+  "product_diff_from_frozen_commit": [],
+  "passed": false
+}

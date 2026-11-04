@@ -1,0 +1,42 @@
+{
+  "api_ready": true,
+  "real_window_visible": true,
+  "window_handle": 2819502,
+  "window_ready_ms": 1808.1728,
+  "api_ready_ms": 7023.2143,
+  "render_kind": "actual running WPF visual tree, RenderTargetBitmap; not OS input automation",
+  "ui_dll_sha256": "4609AAECAC4B8BBBBF7AC48E0EB06C642EF9A5C1DB0F1BA450A9089A3E74982A",
+  "named_channel_A_saved": true,
+  "named_channel_B_saved": true,
+  "late_model_probe_does_not_modify_other_channel": true,
+  "model_discovery_is_real": true,
+  "channel_test_is_real": true,
+  "channels_and_directory_survive_backend_restart": true,
+  "protected_key_restored_after_restart": true,
+  "actual_output_controls_update_viewmodel": true,
+  "all_pages_is_default": true,
+  "three_real_files_imported": true,
+  "compact_batch_layout": {
+    "SubmitButton": {
+      "x": 248.8,
+      "y": 560,
+      "width": 316.6933333333334,
+      "height": 44
+    },
+    "SourceLanguageInput": {
+      "x": 265.8,
+      "y": 433.5,
+      "width": 125.34666666666669,
+      "height": 35.78
+    },
+    "TargetLanguageInput": {
+      "x": 423.1466666666667,
+      "y": 433.5,
+      "width": 125.34666666666669,
+      "height": 35.78
+    }
+  },
+  "passed": true,
+  "completed_at": "2026-11-04T19:09:42.1427798+08:00",
+  "process_id": 4788
+}

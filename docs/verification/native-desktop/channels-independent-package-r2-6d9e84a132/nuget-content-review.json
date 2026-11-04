@@ -1,0 +1,118 @@
+{
+  "nuget_packaging_sha256": "AF4A51957C9A7431C4BB886F7C0DB22ABEE1AA16EFB1DB4A9BB5D35B849D815B",
+  "passed": true,
+  "driver_sha256": "287C74DEC7F37E32D2B58D3B0B2F0030C82660A6ED5ECD548165408CEE9E0094",
+  "sdk": "10.0.403",
+  "api": "NuGet.Packaging.PackageArchiveReader.GetContentHash(CancellationToken.None, null)",
+  "checked_at": "2026-11-04T19:48:22.1721662+08:00",
+  "nuget_packaging_version": "7.9.0.0",
+  "correction": "Raw SHA512 of a signed ZIP is not the packages.lock contentHash. The original raw-archive comparison is retained and invalid as a package-mismatch verdict.",
+  "packages": [
+    {
+      "content_hash": "WadCzGEc2U+3e20avRLng4qNtt4zoOGWrdUISqJWrHe3/FSnrYjuM5Sb4yQb09LhkBXrrI4Zt3dLKgRMbItsrg==",
+      "package": "CommunityToolkit.Mvvm/8.4.2",
+      "runtime_files": [
+        {
+          "payload_sha256": "19B2144FED9600D58A742A5A4A5FD7B10D4D0D2C2E79F5D8019307CF5657044F",
+          "asset": "lib/net8.0/CommunityToolkit.Mvvm.dll",
+          "matches_archive_bytes": true,
+          "archive_entry_sha256": "19B2144FED9600D58A742A5A4A5FD7B10D4D0D2C2E79F5D8019307CF5657044F"
+        }
+      ],
+      "nupkg": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\nuget-packages\\communitytoolkit.mvvm\\8.4.2\\communitytoolkit.mvvm.8.4.2.nupkg",
+      "content_hash_matches_lock": true,
+      "lock_content_hash": "WadCzGEc2U+3e20avRLng4qNtt4zoOGWrdUISqJWrHe3/FSnrYjuM5Sb4yQb09LhkBXrrI4Zt3dLKgRMbItsrg=="
+    },
+    {
+      "content_hash": "L3AdmZ1WOK4XXT5YFPEwyt0ep6l8lGIPs7F5OOBZc77Zqeo01Of7XXICy47628sdVl0v/owxYJTe86DTgFwKCA==",
+      "package": "Microsoft.Extensions.DependencyInjection.Abstractions/10.0.0",
+      "runtime_files": [
+        {
+          "payload_sha256": "7C97C4463FE0FC11D1F22F4D160B2BD2288981ADF1DE2717A6FF3FB993DDF294",
+          "asset": "lib/net10.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+          "matches_archive_bytes": true,
+          "archive_entry_sha256": "7C97C4463FE0FC11D1F22F4D160B2BD2288981ADF1DE2717A6FF3FB993DDF294"
+        }
+      ],
+      "nupkg": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\nuget-packages\\microsoft.extensions.dependencyinjection.abstractions\\10.0.0\\microsoft.extensions.dependencyinjection.abstractions.10.0.0.nupkg",
+      "content_hash_matches_lock": true,
+      "lock_content_hash": "L3AdmZ1WOK4XXT5YFPEwyt0ep6l8lGIPs7F5OOBZc77Zqeo01Of7XXICy47628sdVl0v/owxYJTe86DTgFwKCA=="
+    },
+    {
+      "content_hash": "FU/IfjDfwaMuKr414SSQNTIti/69bHEMb+QKrskRb26oVqpx3lNFXMjs/RC9ZUuhBhcwDM2BwOgoMw+PZ+beqQ==",
+      "package": "Microsoft.Extensions.Logging.Abstractions/10.0.0",
+      "runtime_files": [
+        {
+          "payload_sha256": "A76A735B63E6EF3B0BF41FF92423CBD16103B8952E8306140A9BD650346034DC",
+          "asset": "lib/net10.0/Microsoft.Extensions.Logging.Abstractions.dll",
+          "matches_archive_bytes": true,
+          "archive_entry_sha256": "A76A735B63E6EF3B0BF41FF92423CBD16103B8952E8306140A9BD650346034DC"
+        }
+      ],
+      "nupkg": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\nuget-packages\\microsoft.extensions.logging.abstractions\\10.0.0\\microsoft.extensions.logging.abstractions.10.0.0.nupkg",
+      "content_hash_matches_lock": true,
+      "lock_content_hash": "FU/IfjDfwaMuKr414SSQNTIti/69bHEMb+QKrskRb26oVqpx3lNFXMjs/RC9ZUuhBhcwDM2BwOgoMw+PZ+beqQ=="
+    },
+    {
+      "content_hash": "erBZjkQHWL9jpasCE/0qKAryzVBJFxGHVBAvgRN1bzM0q2s1S4oYREEEL0Vb+1kA/6BKb5FjUZMp5VXmy+gzkQ==",
+      "package": "System.Reactive/5.0.0",
+      "runtime_files": [
+        {
+          "payload_sha256": "2B6C31DFB1FC6019A42A007ED0E5E00574DE6EA0C47FED0CA282BF3BB2771B0C",
+          "asset": "lib/net5.0/System.Reactive.dll",
+          "matches_archive_bytes": true,
+          "archive_entry_sha256": "2B6C31DFB1FC6019A42A007ED0E5E00574DE6EA0C47FED0CA282BF3BB2771B0C"
+        }
+      ],
+      "nupkg": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\nuget-packages\\system.reactive\\5.0.0\\system.reactive.5.0.0.nupkg",
+      "content_hash_matches_lock": true,
+      "lock_content_hash": "erBZjkQHWL9jpasCE/0qKAryzVBJFxGHVBAvgRN1bzM0q2s1S4oYREEEL0Vb+1kA/6BKb5FjUZMp5VXmy+gzkQ=="
+    },
+    {
+      "content_hash": "SIHhc8lIrhEQ/1cLFZN6Dtf8cqsLm4myBULj9obnacd9TyDs2vizhKYzRzTlcPEcnzb3L4EstvPN3M6kcXbJCA==",
+      "package": "WPF-UI/4.3.0",
+      "runtime_files": [
+        {
+          "payload_sha256": "966176695819E39752211DF271A53CEE7DF91F55A5E20EF9BF61FC7220FCAA1A",
+          "asset": "lib/net10.0-windows7.0/Wpf.Ui.dll",
+          "matches_archive_bytes": true,
+          "archive_entry_sha256": "966176695819E39752211DF271A53CEE7DF91F55A5E20EF9BF61FC7220FCAA1A"
+        }
+      ],
+      "nupkg": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\nuget-packages\\wpf-ui\\4.3.0\\wpf-ui.4.3.0.nupkg",
+      "content_hash_matches_lock": true,
+      "lock_content_hash": "SIHhc8lIrhEQ/1cLFZN6Dtf8cqsLm4myBULj9obnacd9TyDs2vizhKYzRzTlcPEcnzb3L4EstvPN3M6kcXbJCA=="
+    },
+    {
+      "content_hash": "7Kj9DmCCo4SOCd1jAiw4+EcMFP2nR8rLLvitAYzVtzbWToTsodkbie24+8x9C4LDLxkopWEUGX62szqqNy7oeg==",
+      "package": "WPF-UI.Abstractions/4.3.0",
+      "runtime_files": [
+        {
+          "payload_sha256": "DEFCD3554E362CE84BE4DBBF98A18308705BF7C16EAC5F483532DF83CB1F87FE",
+          "asset": "lib/net10.0/Wpf.Ui.Abstractions.dll",
+          "matches_archive_bytes": true,
+          "archive_entry_sha256": "DEFCD3554E362CE84BE4DBBF98A18308705BF7C16EAC5F483532DF83CB1F87FE"
+        }
+      ],
+      "nupkg": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\nuget-packages\\wpf-ui.abstractions\\4.3.0\\wpf-ui.abstractions.4.3.0.nupkg",
+      "content_hash_matches_lock": true,
+      "lock_content_hash": "7Kj9DmCCo4SOCd1jAiw4+EcMFP2nR8rLLvitAYzVtzbWToTsodkbie24+8x9C4LDLxkopWEUGX62szqqNy7oeg=="
+    },
+    {
+      "content_hash": "TFNbPjZGQuu6SJcXFgY/MIy0y7RiRim9utapHS9tO5ysE0ddLep++0ceNGQu22QSUpzdyDUg6qlCHZQQAaeKxA==",
+      "package": "XamlFlair.WPF/1.2.13",
+      "runtime_files": [
+        {
+          "payload_sha256": "27A428F3078684A6F64517FCC9F05DF703E35493C5D62DFEB8F16B8D683AB5A1",
+          "asset": "lib/netcoreapp3.1/XamlFlair.WPF.dll",
+          "matches_archive_bytes": true,
+          "archive_entry_sha256": "27A428F3078684A6F64517FCC9F05DF703E35493C5D62DFEB8F16B8D683AB5A1"
+        }
+      ],
+      "nupkg": "D:\\student\\翻译\\PDFMathTranslate-next\\.local\\nuget-packages\\xamlflair.wpf\\1.2.13\\xamlflair.wpf.1.2.13.nupkg",
+      "content_hash_matches_lock": true,
+      "lock_content_hash": "TFNbPjZGQuu6SJcXFgY/MIy0y7RiRim9utapHS9tO5ysE0ddLep++0ceNGQu22QSUpzdyDUg6qlCHZQQAaeKxA=="
+    }
+  ],
+  "scope": "Independent NuGet content semantics and actual archive runtime entry comparison; no installer/application execution"
+}
